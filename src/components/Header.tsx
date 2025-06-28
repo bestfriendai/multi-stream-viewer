@@ -123,11 +123,13 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
                   Discover
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+              <DialogContent className="max-w-[95vw] sm:max-w-5xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-0 sm:p-6">
                 <DialogHeader className="sr-only">
                   <DialogTitle>Discover Streams</DialogTitle>
                 </DialogHeader>
-                <LiveDiscovery />
+                <div className="max-h-[95vh] sm:max-h-[85vh] overflow-y-auto">
+                  <LiveDiscovery />
+                </div>
               </DialogContent>
             </Dialog>
             

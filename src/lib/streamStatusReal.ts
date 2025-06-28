@@ -245,6 +245,7 @@ export async function getTopLiveStreams(limit: number = 20): Promise<Array<{
   viewers: number
   title: string
   game: string
+  profileImage?: string
 }>> {
   try {
     // Since most public APIs have CORS restrictions, we'll use realistic mock data
@@ -464,7 +465,7 @@ export async function getTrendingStreams(): Promise<Array<{
     const randomizedStreams = trendingStreams.map(stream => ({
       ...stream,
       viewers: stream.viewers ? stream.viewers + Math.floor(Math.random() * 1000) - 500 : undefined,
-      isLive: Math.random() > 0.1 // 90% chance of being live (more realistic for trending)
+      isLive: true // Keep all trending streams as live for better UX
     }))
     
     return randomizedStreams
