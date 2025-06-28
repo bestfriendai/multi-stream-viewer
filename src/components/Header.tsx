@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useStreamStore } from '@/store/streamStore'
-import { Plus, Grid, Trash2, Monitor, MessageSquare, TrendingUp, Keyboard } from 'lucide-react'
+import { Plus, Trash2, Monitor, MessageSquare, TrendingUp, Keyboard } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,7 +10,7 @@ import { ThemeToggle } from './theme-toggle'
 import SavedLayoutsDialog from './SavedLayoutsDialog'
 import ShareDialog from './ShareDialog'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import SuggestedStreams from './SuggestedStreams'
+import LiveDiscovery from './LiveDiscovery'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -127,7 +127,7 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
                 <DialogHeader className="sr-only">
                   <DialogTitle>Discover Streams</DialogTitle>
                 </DialogHeader>
-                <SuggestedStreams />
+                <LiveDiscovery />
               </DialogContent>
             </Dialog>
             

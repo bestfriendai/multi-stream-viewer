@@ -6,8 +6,8 @@ import StreamGrid from '@/components/StreamGrid'
 import StreamChat from '@/components/StreamChat'
 import MobileNav from '@/components/MobileNav'
 import MobileSwipeControls from '@/components/MobileSwipeControls'
-import SuggestedStreams from '@/components/SuggestedStreams'
 import FeaturesShowcase from '@/components/FeaturesShowcase'
+import LiveDiscovery from '@/components/LiveDiscovery'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
@@ -103,7 +103,7 @@ export default function Home() {
             </TabsContent>
             
             <TabsContent value="discover" className="flex-1 overflow-y-auto p-4">
-              <SuggestedStreams />
+              <LiveDiscovery />
             </TabsContent>
             
             <TabsContent value="features" className="flex-1 overflow-y-auto p-4">
