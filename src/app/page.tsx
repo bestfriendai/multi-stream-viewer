@@ -1,0 +1,172 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import Header from '@/components/Header'
+import StreamGrid from '@/components/StreamGrid'
+import StreamChat from '@/components/StreamChat'
+import MobileNav from '@/components/MobileNav'
+import MobileSwipeControls from '@/components/MobileSwipeControls'
+import SuggestedStreams from '@/components/SuggestedStreams'
+import FeaturesShowcase from '@/components/FeaturesShowcase'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
+import { useStreamStore } from '@/store/streamStore'
+import { loadFromQueryParams } from '@/lib/shareableLinks'
+import { cn } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
+import { Grid3x3, Compass, Zap } from 'lucide-react'
+
+export default function Home() {
+  const [showChat, setShowChat] = useState(false)
+  const [showAddStream, setShowAddStream] = useState(false)
+  const [showLayouts, setShowLayouts] = useState(false)
+  const [showMobileView, setShowMobileView] = useState(false)
+  const [channelInput, setChannelInput] = useState('')
+  const [activeTab, setActiveTab] = useState('streams')
+  const { addStream, setGridLayout, streams } = useStreamStore()
+  
+  // Enable keyboard shortcuts
+  useKeyboardShortcuts()
+  
+  // Load streams from URL params on mount
+  useEffect(() => {
+    const params = loadFromQueryParams()
+    if (params) {
+      // Clear any existing streams and load from URL
+      params.streams.forEach(stream => {
+        addStream(stream)
+      })
+      setGridLayout(params.layout as 'grid-2x2' | 'grid-3x3' | 'grid-4x4' | 'mosaic' | 'pip')
+    }
+  }, [])
+  
+  // Auto-show mobile view on mobile devices with active streams
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768
+    if (isMobile && streams.filter(s => s.isActive).length > 0) {
+      setShowMobileView(true)
+    }
+  }, [streams])
+  
+  const handleAddStream = (input: string) => {
+    const success = addStream(input)
+    if (success) {
+      setChannelInput('')
+      setShowAddStream(false)
+    }
+    return success
+  }
+  
+  return (
+    <div className="flex flex-col h-screen bg-background">
+      <Header onToggleChat={() => setShowChat(!showChat)} showChat={showChat} />
+      
+      {/* Main Content with Tabs */}
+      <div className={cn(
+        "flex-1 flex overflow-hidden",
+        "pb-14 md:pb-0" // Add padding for mobile nav
+      )}>
+        <main className={cn(
+          "flex-1 overflow-hidden transition-all",
+          showChat && "sm:mr-80"
+        )}>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
+            <div className="border-b px-4">
+              <TabsList className="h-12 bg-transparent">
+                <TabsTrigger value="streams" className="gap-2">
+                  <Grid3x3 size={16} />
+                  <span className="hidden sm:inline">Streams</span>
+                  {streams.length > 0 && (
+                    <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-xs">
+                      {streams.length}
+                    </Badge>
+                  )}
+                </TabsTrigger>
+                <TabsTrigger value="discover" className="gap-2">
+                  <Compass size={16} />
+                  <span className="hidden sm:inline">Discover</span>
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse ml-2" />
+                </TabsTrigger>
+                <TabsTrigger value="features" className="gap-2">
+                  <Zap size={16} />
+                  <span className="hidden sm:inline">Features</span>
+                  <Badge variant="default" className="ml-2 h-5 px-1.5 text-xs bg-gradient-to-r from-purple-600 to-pink-600">
+                    NEW
+                  </Badge>
+                </TabsTrigger>
+              </TabsList>
+            </div>
+            
+            <TabsContent value="streams" className="flex-1 overflow-hidden m-0">
+              <StreamGrid />
+            </TabsContent>
+            
+            <TabsContent value="discover" className="flex-1 overflow-y-auto p-4">
+              <SuggestedStreams />
+            </TabsContent>
+            
+            <TabsContent value="features" className="flex-1 overflow-y-auto p-4">
+              <FeaturesShowcase />
+            </TabsContent>
+          </Tabs>
+        </main>
+        
+        <StreamChat show={showChat} onClose={() => setShowChat(false)} />
+      </div>
+      
+      {/* Mobile Navigation */}
+      <MobileNav
+        onAddStream={() => setShowAddStream(true)}
+        onToggleChat={() => setShowChat(!showChat)}
+        onOpenLayouts={() => setShowLayouts(true)}
+        onOpenDiscover={() => setActiveTab('discover')}
+        showChat={showChat}
+        streamCount={streams.length}
+      />
+      
+      {/* Mobile Swipe Controls */}
+      {showMobileView && <MobileSwipeControls />}
+      
+      {/* Mobile Add Stream Dialog */}
+      <Dialog open={showAddStream} onOpenChange={setShowAddStream}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Stream</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={(e) => {
+            e.preventDefault()
+            if (channelInput.trim()) {
+              handleAddStream(channelInput.trim())
+            }
+          }} className="space-y-4">
+            <input
+              type="text"
+              value={channelInput}
+              onChange={(e) => setChannelInput(e.target.value)}
+              placeholder="Enter channel name or URL"
+              className="w-full px-3 py-2 border rounded-md"
+              autoFocus
+            />
+            <div className="text-xs text-muted-foreground space-y-1">
+              <p>Supported formats:</p>
+              <ul className="list-disc list-inside space-y-0.5 ml-2">
+                <li>Twitch: username or twitch.tv/username</li>
+                <li>YouTube: youtube.com/watch?v=VIDEO_ID</li>
+                <li>Rumble: rumble.com/v1234-title.html</li>
+              </ul>
+            </div>
+            <div className="flex gap-2">
+              <button type="submit" className="px-4 py-2 bg-primary text-primary-foreground rounded-md">
+                Add
+              </button>
+              <button type="button" onClick={() => setShowAddStream(false)} className="px-4 py-2 border rounded-md">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
