@@ -15,7 +15,7 @@ export interface Stream {
   isActive: boolean
 }
 
-export type GridLayout = '1x1' | '2x1' | '2x2' | '3x3' | '4x4' | 'custom'
+export type GridLayout = '1x1' | '2x1' | '2x2' | '3x3' | '4x4' | 'custom' | 'grid-2x2' | 'grid-3x3' | 'grid-4x4' | 'mosaic' | 'pip'
 
 interface StreamStore {
   streams: Stream[]

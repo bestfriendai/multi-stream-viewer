@@ -1,6 +1,8 @@
-# Multi-Stream Viewer
+# Streamyyy.com - Ultimate Multi-Stream Viewer
 
 A feature-rich, modern web application for watching multiple live streams simultaneously from Twitch, YouTube, and Rumble. Built with Next.js 15, React 19, TypeScript, and Tailwind CSS.
+
+**🌐 Visit us at [Streamyyy.com](https://streamyyy.com)**
 
 ## 🚀 Features
 

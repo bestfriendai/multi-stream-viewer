@@ -63,7 +63,7 @@ const StreamGrid: React.FC = React.memo(() => {
   return (
     <div
       className={cn(
-        'stream-grid grid gap-1 sm:gap-2 h-full w-full p-1 sm:p-2 md:p-4',
+        'stream-grid grid gap-2 sm:gap-3 md:gap-4 h-full w-full p-2 sm:p-4 md:p-6 animate-fade-in',
         responsiveGridClass
       )}
       data-count={streams.length}
@@ -74,9 +74,13 @@ const StreamGrid: React.FC = React.memo(() => {
         <div
           key={stream.id}
           className={cn(
-            'relative bg-black rounded-lg overflow-hidden',
-            primaryStreamId === stream.id && gridLayout === 'custom' && 'primary-stream'
+            'relative bg-black rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 animate-scale-in',
+            primaryStreamId === stream.id && gridLayout === 'custom' && 'primary-stream',
+            'border border-border/20'
           )}
+          style={{
+            animationDelay: `${index * 50}ms`
+          }}
           role="gridcell"
           aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}`}
         >
@@ -86,13 +90,13 @@ const StreamGrid: React.FC = React.memo(() => {
       
       {streams.length === 0 && (
         <div
-          className="flex items-center justify-center h-full"
+          className="flex items-center justify-center h-full animate-fade-in"
           role="status"
           aria-live="polite"
         >
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-2">No streams added</h2>
-            <p className="text-muted-foreground">Add a Twitch channel to start watching</p>
+          <div className="text-center p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50">
+            <h2 className="text-2xl font-semibold mb-2 tracking-tight">No streams added</h2>
+            <p className="text-muted-foreground">Add a stream to start watching</p>
           </div>
         </div>
       )}

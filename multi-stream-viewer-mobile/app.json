@@ -1,12 +1,14 @@
 {
   "expo": {
-    "name": "Multi-Stream Viewer",
-    "slug": "multi-stream-viewer",
+    "name": "Streamyyy.com",
+    "slug": "streamyyy-com",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
+    "description": "The ultimate multi-stream viewing platform. Watch multiple live streams simultaneously with Streamyyy.com - your gateway to aggregated streaming content.",
+    "keywords": ["streaming", "multi-stream", "live streams", "stream viewer", "stream aggregation", "twitch", "youtube", "live video"],
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -14,14 +16,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.multistreamviewer.app",
+      "bundleIdentifier": "com.streamyyy.app",
       "infoPlist": {
-        "NSCameraUsageDescription": "This app needs camera access to enable virtual camera features for streaming.",
-        "NSMicrophoneUsageDescription": "This app needs microphone access to enable voice chat with other viewers.",
-        "NSPhotoLibraryUsageDescription": "This app needs photo library access to save screenshots of streams.",
-        "NSPhotoLibraryAddUsageDescription": "This app needs permission to save images to your photo library.",
+        "NSCameraUsageDescription": "Streamyyy.com needs camera access to enable virtual camera features for streaming.",
+        "NSMicrophoneUsageDescription": "Streamyyy.com needs microphone access to enable voice chat with other viewers.",
+        "NSPhotoLibraryUsageDescription": "Streamyyy.com needs photo library access to save screenshots of streams.",
+        "NSPhotoLibraryAddUsageDescription": "Streamyyy.com needs permission to save images to your photo library.",
         "ITSAppUsesNonExemptEncryption": false,
-        "NSUserTrackingUsageDescription": "This app does not track you across apps and websites."
+        "NSUserTrackingUsageDescription": "Streamyyy.com does not track you across apps and websites."
       },
       "requireFullScreen": true,
       "supportsTablet": true
@@ -31,7 +33,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0a0a0a"
       },
-      "package": "com.multistreamviewer.app",
+      "package": "com.streamyyy.app",
       "permissions": [
         "CAMERA",
         "RECORD_AUDIO"
@@ -39,10 +41,21 @@
       "edgeToEdgeEnabled": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "name": "Streamyyy.com - Multi-Stream Viewer",
+      "shortName": "Streamyyy",
+      "lang": "en",
+      "scope": "/",
+      "startUrl": "/",
+      "display": "standalone",
+      "orientation": "any",
+      "themeColor": "#6366f1",
+      "backgroundColor": "#0a0a0a",
+      "description": "Watch multiple live streams simultaneously with Streamyyy.com. The ultimate platform for stream aggregation and multi-stream viewing experience.",
+      "categories": ["entertainment", "video", "streaming"],
+      "screenshots": []
     },
     "plugins": [
-      "expo-av"
     ],
     "assetBundlePatterns": [
       "**/*"

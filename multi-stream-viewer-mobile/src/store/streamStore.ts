@@ -20,7 +20,7 @@ interface StreamStore {
   toggleMute: (streamId: string) => void;
   setQuality: (streamId: string, quality: StreamState['quality']) => void;
   
-  setGridLayout: (layout: typeof gridLayout) => void;
+  setGridLayout: (layout: '1x1' | '2x2' | '3x3' | 'custom') => void;
   setCustomLayout: (rows: number, cols: number) => void;
   reorderStreams: (fromIndex: number, toIndex: number) => void;
   

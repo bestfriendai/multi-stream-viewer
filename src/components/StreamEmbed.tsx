@@ -155,23 +155,23 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
   }
   
   return (
-    <div className="relative w-full h-full group">
-      <div ref={embedRef} className="w-full h-full" />
+    <div className="relative w-full h-full group rounded-2xl overflow-hidden bg-black">
+      <div ref={embedRef} className="w-full h-full rounded-2xl" />
       
       {/* Stream Controls */}
-      <div className="absolute top-0 left-0 right-0 p-2 bg-gradient-to-b from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute top-0 left-0 right-0 p-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 bg-black/50 rounded px-2 py-0.5">
-              {getPlatformIcon()}
-              <span className="text-white text-sm font-medium">{stream.channelName}</span>
+            <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md rounded-full px-3 py-1.5 border border-white/20">
+              <div className="text-white/90">{getPlatformIcon()}</div>
+              <span className="text-white text-sm font-medium tracking-tight">{stream.channelName}</span>
             </div>
           </div>
           
           <div className="flex gap-1">
             <button
               onClick={handleMuteToggle}
-              className="p-1.5 rounded bg-black/50 hover:bg-black/70 text-white transition-colors"
+              className="p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 text-white transition-all duration-200 border border-white/20"
               title={stream.muted ? 'Unmute' : 'Mute'}
             >
               {stream.muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
@@ -179,7 +179,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
             
             <button
               onClick={handleFullscreen}
-              className="p-1.5 rounded bg-black/50 hover:bg-black/70 text-white transition-colors"
+              className="p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 text-white transition-all duration-200 border border-white/20"
               title="Fullscreen"
             >
               <Maximize size={16} />
@@ -188,7 +188,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
             {primaryStreamId !== stream.id && (
               <button
                 onClick={handleMaximize}
-                className="p-1.5 rounded bg-black/50 hover:bg-black/70 text-white transition-colors"
+                className="p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 text-white transition-all duration-200 border border-white/20"
                 title="Set as primary"
               >
                 <Maximize2 size={16} />
@@ -197,7 +197,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
             
             <button
               onClick={handleClose}
-              className="p-1.5 rounded bg-black/50 hover:bg-black/70 text-white transition-colors"
+              className="p-2 rounded-full bg-red-500/20 backdrop-blur-md hover:bg-red-500/30 text-white transition-all duration-200 border border-red-500/30"
               title="Remove stream"
             >
               <X size={16} />

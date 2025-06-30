@@ -352,8 +352,7 @@ export async function getRealTwitchLiveStreams(limit: number = 20): Promise<Arra
         title: streamer.title,
         game: category,
         profileImage: getProfileImage(streamer.name), // Get proper profile image
-        isLive: true,
-        uniqueId: `${category}-${streamer.name}` // Add unique identifier
+        isLive: true
       })
     })
   })

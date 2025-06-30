@@ -84,7 +84,7 @@ export default function ShareDialog() {
             </ul>
           </div>
           
-          {navigator.share && (
+          {'share' in navigator && (
             <Button onClick={handleShare} className="w-full">
               <Share2 size={16} className="mr-2" />
               Share via System

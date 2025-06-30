@@ -11,6 +11,7 @@ import SavedLayoutsDialog from './SavedLayoutsDialog'
 import ShareDialog from './ShareDialog'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import LiveDiscovery from './LiveDiscovery'
+import StreamyyyLogo from './StreamyyyLogo'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -60,15 +61,16 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
   }
   
   return (
-    <header className="bg-background border-b sticky top-0 z-40">
+    <header className="glass sticky top-0 z-40 border-b border-border/50 animate-slide-down">
       <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-3">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-2 sm:gap-4">
           {/* Logo/Title */}
           <div className="flex items-center gap-2 w-full lg:w-auto justify-between">
-            <div className="flex items-center gap-2">
-              <Monitor className="w-5 h-5 sm:w-6 sm:h-6" />
-              <h1 className="text-lg sm:text-xl font-bold">Multi-Stream</h1>
-            </div>
+            <StreamyyyLogo
+              size="md"
+              variant="gradient"
+              className="flex items-center"
+            />
             
             {/* Mobile Stream Count */}
             <div className="text-sm text-muted-foreground lg:hidden">
@@ -79,6 +81,7 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
           {/* Controls */}
           <div className="flex items-center gap-2 flex-wrap justify-center">
             {/* Add Stream */}
+            <div className="animate-fade-in">
             {showAddStream ? (
               <form onSubmit={handleAddStream} className="flex gap-2">
                 <Input
@@ -109,11 +112,13 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
                 onClick={() => setShowAddStream(true)}
                 size="sm"
                 disabled={streams.length >= 16}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
               >
                 <Plus size={16} className="mr-2" />
                 Add Stream
               </Button>
             )}
+            </div>
             
             {/* Enhanced Discovery Dialog */}
             <Dialog>
@@ -171,16 +176,16 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
             </Dialog>
             
             {/* Layout Options */}
-            <div className="flex items-center gap-1 border rounded-md p-1">
+            <div className="flex items-center gap-1 border border-border/50 rounded-xl p-1 bg-muted/30 backdrop-blur-sm">
               {layoutOptions.map((option) => (
                 <button
                   key={option.value}
                   onClick={() => setGridLayout(option.value)}
                   className={cn(
-                    'px-2 py-1 text-sm rounded transition-colors',
+                    'px-2 py-1 text-sm rounded-lg transition-all duration-200',
                     gridLayout === option.value
-                      ? 'bg-primary text-primary-foreground'
-                      : 'hover:bg-muted'
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'hover:bg-muted/50'
                   )}
                   title={option.label}
                 >

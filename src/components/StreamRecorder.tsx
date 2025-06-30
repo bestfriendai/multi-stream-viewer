@@ -59,7 +59,7 @@ export default function StreamRecorder() {
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const recordedChunksRef = useRef<Blob[]>([])
-  const recordingIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const recordingIntervalRef = useRef<number | null>(null)
   
   const { streams } = useStreamStore()
   
@@ -162,7 +162,7 @@ export default function StreamRecorder() {
       mediaRecorderRef.current.start(1000) // Collect data every second
       
       // Update duration and size periodically
-      recordingIntervalRef.current = setInterval(() => {
+      recordingIntervalRef.current = window.setInterval(() => {
         setCurrentRecording(prev => {
           if (!prev) return null
           const duration = Date.now() - prev.startTime

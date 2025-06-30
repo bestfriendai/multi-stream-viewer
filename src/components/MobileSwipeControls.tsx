@@ -21,15 +21,15 @@ interface SwipeGesture {
 export default function MobileSwipeControls() {
   const [currentStreamIndex, setCurrentStreamIndex] = useState(0)
   const [showControls, setShowControls] = useState(true)
-  const [isFullscreen] = useState(false)
+  const [isFullscreen, setIsFullscreen] = useState(false)
   const [swipeGesture, setSwipeGesture] = useState<SwipeGesture | null>(null)
   const [volumeSliderVisible, setVolumeSliderVisible] = useState(false)
   const [currentVolume, setCurrentVolume] = useState(100)
   
   const containerRef = useRef<HTMLDivElement>(null)
-  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const controlsTimeoutRef = useRef<number | null>(null)
   
-  const { streams, updateStreamVolume, toggleStreamMute } = useStreamStore()
+  const { streams, setStreamVolume, toggleStreamMute } = useStreamStore()
   
   const activeStreams = streams.filter(s => s.isActive)
   const currentStream = activeStreams[currentStreamIndex]
@@ -37,7 +37,7 @@ export default function MobileSwipeControls() {
   useEffect(() => {
     // Auto-hide controls after 3 seconds
     if (showControls) {
-      controlsTimeoutRef.current = setTimeout(() => {
+      controlsTimeoutRef.current = window.setTimeout(() => {
         setShowControls(false)
       }, 3000)
     }
@@ -90,7 +90,7 @@ export default function MobileSwipeControls() {
       const newVolume = Math.max(0, Math.min(100, currentVolume + volumeChange))
       
       if (currentStream) {
-        updateStreamVolume(currentStream.id, newVolume)
+        setStreamVolume(currentStream.id, newVolume)
         setCurrentVolume(newVolume)
       }
     }

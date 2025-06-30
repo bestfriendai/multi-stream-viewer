@@ -1,0 +1,46 @@
+# Streamyyy.com Robots.txt
+# https://streamyyy.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Allow all major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/private/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /.well-known/
+
+# Allow API documentation
+Allow: /api/docs/
+
+# Crawl delay (optional)
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://streamyyy.com/sitemap.xml
+Sitemap: https://streamyyy.com/sitemap-streams.xml
+Sitemap: https://streamyyy.com/sitemap-categories.xml
+
+# Additional information
+# Contact: support@streamyyy.com
+# Website: https://streamyyy.com

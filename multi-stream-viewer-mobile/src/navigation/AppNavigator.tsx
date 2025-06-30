@@ -2,7 +2,10 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
+import { BlurView } from 'expo-blur';
+import * as Haptics from 'expo-haptics';
+import { colors, typography, spacing } from '../constants/theme';
 
 import StreamsScreen from '../screens/StreamsScreen';
 import DiscoverScreen from '../screens/DiscoverScreen';
@@ -19,23 +22,45 @@ function StreamsStack() {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#0a0a0a',
+          backgroundColor: colors.background.primary,
+          shadowColor: 'transparent',
+          elevation: 0,
         },
-        headerTintColor: '#fff',
+        headerTintColor: colors.primary,
         headerTitleStyle: {
-          fontWeight: '600',
+          fontWeight: typography.fontWeight.semibold,
+          fontSize: typography.fontSize.headline,
         },
+        headerBackTitleVisible: false,
+        headerTransparent: true,
+        headerBackground: () => (
+          <BlurView 
+            intensity={80} 
+            tint="dark" 
+            style={{ flex: 1 }} 
+          />
+        ),
       }}
     >
       <Stack.Screen 
         name="StreamsList" 
         component={StreamsScreen} 
-        options={{ title: 'Streams' }}
+        options={{ 
+          title: 'Streams',
+          headerLargeTitle: true,
+          headerTransparent: false,
+          headerStyle: {
+            backgroundColor: colors.background.primary,
+          },
+        }}
       />
       <Stack.Screen 
         name="StreamDetail" 
         component={StreamDetailScreen} 
-        options={{ title: 'Stream' }}
+        options={{ 
+          title: '',
+          headerTransparent: true,
+        }}
       />
       <Stack.Screen 
         name="AddStream" 
@@ -43,7 +68,10 @@ function StreamsStack() {
         options={{ 
           title: 'Add Stream',
           presentation: 'modal',
-          headerShown: false,
+          gestureEnabled: true,
+          cardOverlayEnabled: true,
+          headerShown: true,
+          headerLeft: () => null,
         }}
       />
     </Stack.Navigator>
@@ -69,23 +97,131 @@ export default function AppNavigator() {
             iconName = 'alert-circle-outline';
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return (
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <Ionicons 
+                name={iconName} 
+                size={focused ? 26 : 24} 
+                color={color} 
+                style={{ 
+                  transform: [{ scale: focused ? 1.1 : 1 }],
+                  transition: 'all 0.2s',
+                }}
+              />
+            </View>
+          );
         },
-        tabBarActiveTintColor: '#3b82f6',
-        tabBarInactiveTintColor: '#6b7280',
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.text.tertiary,
         tabBarStyle: {
-          backgroundColor: '#0a0a0a',
-          borderTopColor: '#1f2937',
-          paddingBottom: Platform.OS === 'ios' ? 0 : 5,
-          height: Platform.OS === 'ios' ? 85 : 60,
+          position: 'absolute',
+          backgroundColor: Platform.OS === 'ios' ? 'transparent' : colors.background.secondary,
+          borderTopWidth: 0,
+          elevation: 0,
+          paddingBottom: Platform.OS === 'ios' ? spacing.lg : spacing.sm,
+          paddingTop: spacing.sm,
+          height: Platform.OS === 'ios' ? 90 : 65,
+        },
+        tabBarBackground: () => Platform.OS === 'ios' ? (
+          <BlurView 
+            intensity={100} 
+            tint="dark" 
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+          />
+        ) : null,
+        tabBarLabelStyle: {
+          fontSize: typography.fontSize.caption2,
+          fontWeight: typography.fontWeight.medium,
+          marginTop: -spacing.xs,
+          marginBottom: spacing.xs,
         },
         headerShown: false,
+        tabBarButton: (props) => (
+          <View 
+            {...props} 
+            onTouchStart={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            }}
+          />
+        ),
       })}
     >
-      <Tab.Screen name="Streams" component={StreamsStack} />
-      <Tab.Screen name="Discover" component={DiscoverScreen} />
-      <Tab.Screen name="Features" component={FeaturesScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen 
+        name="Streams" 
+        component={StreamsStack}
+        options={{
+          tabBarLabel: 'Streams',
+        }}
+      />
+      <Tab.Screen 
+        name="Discover" 
+        component={DiscoverScreen}
+        options={{
+          tabBarLabel: 'Discover',
+          headerShown: true,
+          headerTransparent: true,
+          headerBackground: () => (
+            <BlurView 
+              intensity={80} 
+              tint="dark" 
+              style={{ flex: 1 }} 
+            />
+          ),
+          headerTintColor: colors.text.primary,
+          headerTitleStyle: {
+            fontWeight: typography.fontWeight.semibold,
+            fontSize: typography.fontSize.headline,
+          },
+        }}
+      />
+      <Tab.Screen 
+        name="Features" 
+        component={FeaturesScreen}
+        options={{
+          tabBarLabel: 'Features',
+          headerShown: true,
+          headerTransparent: true,
+          headerBackground: () => (
+            <BlurView 
+              intensity={80} 
+              tint="dark" 
+              style={{ flex: 1 }} 
+            />
+          ),
+          headerTintColor: colors.text.primary,
+          headerTitleStyle: {
+            fontWeight: typography.fontWeight.semibold,
+            fontSize: typography.fontSize.headline,
+          },
+        }}
+      />
+      <Tab.Screen 
+        name="Settings" 
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: 'Settings',
+          headerShown: true,
+          headerTransparent: true,
+          headerBackground: () => (
+            <BlurView 
+              intensity={80} 
+              tint="dark" 
+              style={{ flex: 1 }} 
+            />
+          ),
+          headerTintColor: colors.text.primary,
+          headerTitleStyle: {
+            fontWeight: typography.fontWeight.semibold,
+            fontSize: typography.fontSize.headline,
+          },
+        }}
+      />
     </Tab.Navigator>
   );
 }

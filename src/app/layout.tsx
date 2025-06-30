@@ -15,14 +15,53 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Multi-Stream Viewer",
-  description: "Watch multiple live streams simultaneously",
+  title: "Streamyyy.com - Ultimate Multi-Stream Viewer",
+  description: "Watch multiple live streams simultaneously with Streamyyy.com. The ultimate platform for stream aggregation and multi-stream viewing experience.",
   manifest: "/manifest.json",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" }
+    { media: "(prefers-color-scheme: light)", color: "#6366f1" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" }
   ],
+  keywords: ["multi-stream viewer", "live streaming", "stream aggregation", "twitch multi-stream", "youtube live streams", "streamyyy"],
+  authors: [{ name: "Streamyyy.com Team" }],
+  creator: "Streamyyy.com",
+  publisher: "Streamyyy.com",
+  openGraph: {
+    title: "Streamyyy.com - Ultimate Multi-Stream Viewer",
+    description: "Watch multiple live streams simultaneously with Streamyyy.com. The ultimate platform for stream aggregation and multi-stream viewing experience.",
+    url: "https://streamyyy.com",
+    siteName: "Streamyyy.com",
+    images: [
+      {
+        url: "https://streamyyy.com/assets/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Streamyyy.com - Multi-Stream Viewer Platform",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Streamyyy.com - Ultimate Multi-Stream Viewer",
+    description: "Watch multiple live streams simultaneously with Streamyyy.com. The ultimate platform for stream aggregation and multi-stream viewing experience.",
+    images: ["https://streamyyy.com/assets/twitter-card.png"],
+    creator: "@streamyyy",
+    site: "@streamyyy",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({

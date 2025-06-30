@@ -1,6 +1,8 @@
-# Multi-Stream Viewer Mobile
+# Streamyyy.com Mobile App
 
-A React Native Expo application for viewing multiple live streams simultaneously on mobile devices.
+A React Native Expo application for viewing multiple live streams simultaneously on mobile devices. The ultimate multi-stream viewing platform for iOS and Android.
+
+**🌐 Visit us at [Streamyyy.com](https://streamyyy.com)**
 
 ## Features
 

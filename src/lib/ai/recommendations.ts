@@ -143,7 +143,7 @@ export class StreamRecommendationEngine {
       const combinedFeatures = this.combineFeatures(userFeatures, streamerFeatures)
       const input = tf.tensor2d([combinedFeatures])
       
-      const prediction = this.model.predict(input) as tf.Tensor
+      const prediction = this.model!.predict(input) as tf.Tensor
       const score = await prediction.data()
       
       // Generate reason based on features
