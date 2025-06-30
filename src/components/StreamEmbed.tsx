@@ -38,6 +38,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       
       script.onload = () => {
         if (window.Twitch && embedRef.current) {
+          const isMobile = window.innerWidth < 768
           const embed = new window.Twitch.Embed(embedRef.current, {
             width: '100%',
             height: '100%',
@@ -45,7 +46,12 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
             parent: [window.location.hostname, 'localhost'],
             autoplay: true,
             muted: stream.muted,
-            layout: 'video'
+            layout: 'video',
+            // Mobile-specific optimizations
+            ...(isMobile && {
+              theme: 'dark',
+              allowfullscreen: true
+            })
           })
           
           embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
@@ -69,6 +75,9 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       const iframe = document.createElement('iframe')
       iframe.width = '100%'
       iframe.height = '100%'
+      iframe.style.width = '100%'
+      iframe.style.height = '100%'
+      iframe.style.minHeight = '120px'
       iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=${stream.muted ? 1 : 0}&enablejsapi=1&modestbranding=1&rel=0`
       iframe.setAttribute('frameborder', '0')
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
@@ -80,6 +89,9 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       const iframe = document.createElement('iframe')
       iframe.width = '100%'
       iframe.height = '100%'
+      iframe.style.width = '100%'
+      iframe.style.height = '100%'
+      iframe.style.minHeight = '120px'
       iframe.src = `https://rumble.com/embed/${stream.channelId}/?pub=4`
       iframe.setAttribute('frameborder', '0')
       iframe.setAttribute('allowfullscreen', 'true')
@@ -156,7 +168,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
   
   return (
     <div className="relative w-full h-full group rounded-2xl overflow-hidden bg-black">
-      <div ref={embedRef} className="w-full h-full rounded-2xl" />
+      <div ref={embedRef} className="w-full h-full rounded-2xl" style={{ minHeight: '120px' }} />
       
       {/* Stream Controls */}
       <div className="absolute top-0 left-0 right-0 p-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">

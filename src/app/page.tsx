@@ -66,7 +66,7 @@ export default function Home() {
       {/* Main Content with Tabs */}
       <div className={cn(
         "flex-1 flex overflow-hidden",
-        "pb-14 md:pb-0" // Add padding for mobile nav
+        "pb-16 md:pb-0" // Add padding for mobile nav
       )}>
         <main className={cn(
           "flex-1 overflow-hidden transition-all",

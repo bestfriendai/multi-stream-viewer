@@ -30,15 +30,17 @@ const calculateGridConfig = (count: number, gridLayout?: string) => {
 
 // Responsive breakpoint classes for mobile support
 const getResponsiveClasses = (baseClass: string) => {
+  // On mobile, let CSS media queries handle the layout
+  // This prevents conflicts between Tailwind responsive classes and CSS media queries
   const responsiveMap: Record<string, string> = {
     'grid-cols-1': 'grid-cols-1',
-    'grid-cols-2 grid-rows-1': 'grid-cols-1 sm:grid-cols-2 sm:grid-rows-1',
-    'grid-cols-2 grid-rows-2': 'grid-cols-1 sm:grid-cols-2 sm:grid-rows-2',
-    'grid-cols-3 grid-rows-2': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2',
-    'grid-cols-3 grid-rows-3': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-3',
-    'grid-cols-4 grid-rows-3': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:grid-rows-3',
-    'grid-cols-4 grid-rows-4': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:grid-rows-4',
-    'grid-cols-4': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+    'grid-cols-2 grid-rows-1': 'grid-cols-2 grid-rows-1',
+    'grid-cols-2 grid-rows-2': 'grid-cols-2 grid-rows-2',
+    'grid-cols-3 grid-rows-2': 'grid-cols-3 grid-rows-2',
+    'grid-cols-3 grid-rows-3': 'grid-cols-3 grid-rows-3',
+    'grid-cols-4 grid-rows-3': 'grid-cols-4 grid-rows-3',
+    'grid-cols-4 grid-rows-4': 'grid-cols-4 grid-rows-4',
+    'grid-cols-4': 'grid-cols-4',
     'stream-grid-focus': 'stream-grid-focus',
   }
   
