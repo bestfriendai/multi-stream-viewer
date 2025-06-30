@@ -1,118 +1,303 @@
 import { create } from 'zustand'
+import { devtools, persist, subscribeWithSelector } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
 import { parseStreamInput } from '@/lib/streamParser'
+import type { 
+  Stream, 
+  StreamStore, 
+  StreamInput, 
+  GridLayout, 
+  Platform,
+  Quality,
+  StreamEvent 
+} from '@/types/stream'
+import { createStreamError, ERROR_CODES } from '@/types/errors'
 
-export type Platform = 'twitch' | 'youtube' | 'rumble'
-
-export interface Stream {
-  id: string
-  channelName: string
-  platform: Platform
-  channelId?: string // For YouTube video IDs
-  quality: 'auto' | '160p' | '360p' | '480p' | '720p' | '1080p'
-  volume: number
-  muted: boolean
-  position: number
-  isActive: boolean
-}
-
-export type GridLayout = '1x1' | '2x1' | '2x2' | '3x3' | '4x4' | 'custom' | 'grid-2x2' | 'grid-3x3' | 'grid-4x4' | 'mosaic' | 'pip'
-
-interface StreamStore {
-  streams: Stream[]
-  activeStreamId: string | null
-  gridLayout: GridLayout
-  primaryStreamId: string | null
-  
-  addStream: (input: string) => boolean
-  removeStream: (streamId: string) => void
-  setStreamQuality: (streamId: string, quality: Stream['quality']) => void
-  setStreamVolume: (streamId: string, volume: number) => void
-  toggleStreamMute: (streamId: string) => void
-  setActiveStream: (streamId: string) => void
-  setPrimaryStream: (streamId: string) => void
-  setGridLayout: (layout: GridLayout) => void
-  reorderStreams: (streams: Stream[]) => void
-  clearAllStreams: () => void
-}
-
-const calculateNextPosition = (streams: Stream[]): number => {
+// Performance optimization: Calculate next position
+const calculateNextPosition = (streams: readonly Stream[]): number => {
   return streams.length
 }
 
-export const useStreamStore = create<StreamStore>((set, get) => ({
-  streams: [],
-  activeStreamId: null,
-  gridLayout: '2x2',
-  primaryStreamId: null,
+// Generate unique stream ID
+const generateStreamId = (): string => {
+  return `stream_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+}
+
+// Validate stream input
+const validateStreamInput = (input: StreamInput): boolean => {
+  if (!input.channelName?.trim()) return false
+  if (!input.platform) return false
+  if (input.volume !== undefined && (input.volume < 0 || input.volume > 100)) return false
+  return true
+}
+
+// Create stream from input
+const createStream = (input: StreamInput): Stream => {
+  const now = new Date()
+  return {
+    id: generateStreamId(),
+    channelName: input.channelName.trim(),
+    platform: input.platform,
+    channelId: input.channelId,
+    quality: input.quality || 'auto',
+    volume: input.volume || 50,
+    muted: false,
+    position: 0, // Will be set by the store
+    isActive: true,
+    createdAt: now,
+    lastUpdated: now,
+  }
+}
+
+// Analytics helper
+const trackEvent = (event: StreamEvent): void => {
+  // In a real app, this would send to analytics service
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Stream Event:', event)
+  }
+}
+
+// Legacy support for string input (backward compatibility)
+const convertLegacyInput = (input: string): StreamInput | null => {
+  const parsed = parseStreamInput(input)
+  if (!parsed) return null
   
-  addStream: (input) => {
-    const parsed = parseStreamInput(input)
-    if (!parsed) return false
-    
-    const state = get()
-    const newStream: Stream = {
-      id: `stream-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      channelName: parsed.channelName,
-      platform: parsed.platform,
-      channelId: parsed.channelId,
-      quality: 'auto',
-      volume: 100,
-      muted: state.streams.length > 0, // Auto-mute non-primary streams
-      position: calculateNextPosition(state.streams),
-      isActive: true
+  return {
+    channelName: parsed.channelName,
+    platform: parsed.platform,
+    channelId: parsed.channelId,
+  }
+}
+
+// Modern Zustand store with middleware for 2025
+export const useStreamStore = create<StreamStore>()()
+  devtools(
+    persist(
+      subscribeWithSelector(
+        immer((set, get) => ({
+          // Initial state
+          streams: [],
+          activeStreamId: null,
+          gridLayout: '2x2' as GridLayout,
+          primaryStreamId: null,
+          isLoading: false,
+          error: null,
+          
+          // Actions with proper error handling and validation
+          addStream: async (input: StreamInput | string): Promise<boolean> => {
+            try {
+              set((state) => {
+                state.isLoading = true
+                state.error = null
+              })
+              
+              // Handle legacy string input
+              const streamInput = typeof input === 'string' ? convertLegacyInput(input) : input
+              
+              if (!streamInput || !validateStreamInput(streamInput)) {
+                const error = createStreamError(
+                  ERROR_CODES.VALIDATION_FORMAT,
+                  'Invalid stream input provided',
+                  { channelName: typeof input === 'string' ? input : input.channelName }
+                )
+                set((state) => {
+                  state.error = error.message
+                  state.isLoading = false
+                })
+                return false
+              }
+              
+              // Check for duplicates
+              const { streams } = get()
+              const isDuplicate = streams.some(
+                (stream) => 
+                  stream.channelName.toLowerCase() === streamInput.channelName.toLowerCase() &&
+                  stream.platform === streamInput.platform
+              )
+              
+              if (isDuplicate) {
+                const error = createStreamError(
+                  ERROR_CODES.STREAM_INVALID_URL,
+                  'Stream already exists',
+                  { channelName: streamInput.channelName, platform: streamInput.platform }
+                )
+                set((state) => {
+                  state.error = error.message
+                  state.isLoading = false
+                })
+                return false
+              }
+              
+              const newStream = createStream(streamInput)
+              
+              set((state) => {
+                newStream.position = calculateNextPosition(state.streams)
+                state.streams.push(newStream)
+                state.isLoading = false
+                
+                // Auto-set as active if it's the first stream
+                if (state.streams.length === 1) {
+                  state.activeStreamId = newStream.id
+                  state.primaryStreamId = newStream.id
+                }
+              })
+              
+              // Track analytics
+              trackEvent({
+                type: 'stream_added',
+                streamId: newStream.id,
+                metadata: { platform: streamInput.platform, channelName: streamInput.channelName },
+                timestamp: new Date(),
+              })
+              
+              return true
+            } catch (error) {
+              const streamError = createStreamError(
+                ERROR_CODES.STREAM_LOAD_FAILED,
+                error instanceof Error ? error.message : 'Failed to add stream',
+                { channelName: typeof input === 'string' ? input : input.channelName }
+              )
+              set((state) => {
+                state.error = streamError.message
+                state.isLoading = false
+              })
+              return false
+            }
+          },
+          
+          removeStream: (streamId: string) => {
+            set((state) => {
+              const streamToRemove = state.streams.find(s => s.id === streamId)
+              state.streams = state.streams.filter(s => s.id !== streamId)
+              
+              // Update active stream if removed
+              if (state.activeStreamId === streamId) {
+                state.activeStreamId = state.streams.length > 0 ? state.streams[0]!.id : null
+              }
+              
+              // Update primary stream if removed
+              if (state.primaryStreamId === streamId) {
+                state.primaryStreamId = state.streams.length > 0 ? state.streams[0]!.id : null
+              }
+            })
+            
+            // Track analytics
+            trackEvent({
+              type: 'stream_removed',
+              streamId,
+              timestamp: new Date(),
+            })
+          },
+          
+          setStreamQuality: (streamId: string, quality: Quality) => {
+            set((state) => {
+              const stream = state.streams.find(s => s.id === streamId)
+              if (stream) {
+                stream.quality = quality
+                stream.lastUpdated = new Date()
+              }
+            })
+            
+            trackEvent({
+              type: 'quality_changed',
+              streamId,
+              metadata: { quality },
+              timestamp: new Date(),
+            })
+          },
+          
+          setStreamVolume: (streamId: string, volume: number) => {
+            if (volume < 0 || volume > 100) return
+            
+            set((state) => {
+              const stream = state.streams.find(s => s.id === streamId)
+              if (stream) {
+                stream.volume = volume
+                stream.lastUpdated = new Date()
+              }
+            })
+          },
+          
+          toggleStreamMute: (streamId: string) => {
+            set((state) => {
+              const stream = state.streams.find(s => s.id === streamId)
+              if (stream) {
+                stream.muted = !stream.muted
+                stream.lastUpdated = new Date()
+              }
+            })
+          },
+          
+          setActiveStream: (streamId: string) => {
+            set((state) => {
+              state.activeStreamId = streamId
+            })
+          },
+          
+          setPrimaryStream: (streamId: string) => {
+            set((state) => {
+              state.primaryStreamId = streamId
+            })
+          },
+          
+          setGridLayout: (layout: GridLayout) => {
+            set((state) => {
+              state.gridLayout = layout
+            })
+            
+            trackEvent({
+              type: 'layout_changed',
+              metadata: { layout },
+              timestamp: new Date(),
+            })
+          },
+          
+          reorderStreams: (streams: readonly Stream[]) => {
+            set((state) => {
+              state.streams = streams.map((stream, index) => ({
+                ...stream,
+                position: index,
+                lastUpdated: new Date(),
+              }))
+            })
+          },
+          
+          clearAllStreams: () => {
+            set((state) => {
+              state.streams = []
+              state.activeStreamId = null
+              state.primaryStreamId = null
+              state.error = null
+            })
+          },
+          
+          setLoading: (loading: boolean) => {
+            set((state) => {
+              state.isLoading = loading
+            })
+          },
+          
+          setError: (error: string | null) => {
+            set((state) => {
+              state.error = error
+            })
+          },
+        }))
+      ),
+      {
+        name: 'stream-store',
+        version: 1,
+        partialize: (state) => ({
+          streams: state.streams,
+          gridLayout: state.gridLayout,
+          primaryStreamId: state.primaryStreamId,
+        }),
+      }
+    ),
+    {
+      name: 'StreamStore',
     }
-    
-    set((state) => ({
-      streams: [...state.streams, newStream],
-      primaryStreamId: state.primaryStreamId || newStream.id
-    }))
-    
-    return true
-  },
-  
-  removeStream: (streamId) => set((state) => ({
-    streams: state.streams.filter(s => s.id !== streamId),
-    activeStreamId: state.activeStreamId === streamId ? null : state.activeStreamId,
-    primaryStreamId: state.primaryStreamId === streamId 
-      ? state.streams.find(s => s.id !== streamId)?.id || null
-      : state.primaryStreamId
-  })),
-  
-  setStreamQuality: (streamId, quality) => set((state) => ({
-    streams: state.streams.map(s => 
-      s.id === streamId ? { ...s, quality } : s
-    )
-  })),
-  
-  setStreamVolume: (streamId, volume) => set((state) => ({
-    streams: state.streams.map(s => 
-      s.id === streamId ? { ...s, volume } : s
-    )
-  })),
-  
-  toggleStreamMute: (streamId) => set((state) => ({
-    streams: state.streams.map(s => 
-      s.id === streamId ? { ...s, muted: !s.muted } : s
-    )
-  })),
-  
-  setActiveStream: (streamId) => set({ activeStreamId: streamId }),
-  
-  setPrimaryStream: (streamId) => set((state) => ({
-    primaryStreamId: streamId,
-    streams: state.streams.map(s => ({
-      ...s,
-      muted: s.id !== streamId // Mute all streams except primary
-    }))
-  })),
-  
-  setGridLayout: (layout) => set({ gridLayout: layout }),
-  
-  reorderStreams: (streams) => set({ streams }),
-  
-  clearAllStreams: () => set({ 
-    streams: [], 
-    activeStreamId: null,
-    primaryStreamId: null 
-  })
-}))
+  )
+
+// Export types for external use
+export type { Stream, StreamStore, StreamInput, GridLayout, Platform, Quality } from '@/types/stream'

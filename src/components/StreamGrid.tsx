@@ -78,10 +78,12 @@ const StreamGrid: React.FC = React.memo(() => {
           className={cn(
             'relative bg-black rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 animate-scale-in',
             primaryStreamId === stream.id && gridLayout === 'custom' && 'primary-stream',
-            'border border-border/20'
+            'border border-border/20',
+            'min-h-[200px] md:min-h-[250px]' // Ensure minimum height on all devices
           )}
           style={{
-            animationDelay: `${index * 50}ms`
+            animationDelay: `${index * 50}ms`,
+            aspectRatio: '16/9'
           }}
           role="gridcell"
           aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}`}

@@ -75,9 +75,11 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       const iframe = document.createElement('iframe')
       iframe.width = '100%'
       iframe.height = '100%'
+      iframe.style.position = 'absolute'
+      iframe.style.top = '0'
+      iframe.style.left = '0'
       iframe.style.width = '100%'
       iframe.style.height = '100%'
-      iframe.style.minHeight = '120px'
       iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=${stream.muted ? 1 : 0}&enablejsapi=1&modestbranding=1&rel=0`
       iframe.setAttribute('frameborder', '0')
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
@@ -89,9 +91,11 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       const iframe = document.createElement('iframe')
       iframe.width = '100%'
       iframe.height = '100%'
+      iframe.style.position = 'absolute'
+      iframe.style.top = '0'
+      iframe.style.left = '0'
       iframe.style.width = '100%'
       iframe.style.height = '100%'
-      iframe.style.minHeight = '120px'
       iframe.src = `https://rumble.com/embed/${stream.channelId}/?pub=4`
       iframe.setAttribute('frameborder', '0')
       iframe.setAttribute('allowfullscreen', 'true')
@@ -168,7 +172,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
   
   return (
     <div className="relative w-full h-full group rounded-2xl overflow-hidden bg-black">
-      <div ref={embedRef} className="w-full h-full rounded-2xl" style={{ minHeight: '120px' }} />
+      <div ref={embedRef} className="absolute inset-0 w-full h-full rounded-2xl" />
       
       {/* Stream Controls */}
       <div className="absolute top-0 left-0 right-0 p-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">

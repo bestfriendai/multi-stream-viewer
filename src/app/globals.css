@@ -259,6 +259,8 @@
     gap: 0.5rem;
     height: calc(100vh - 140px); /* Account for mobile nav and tabs */
     min-height: 400px; /* Ensure minimum height for streams */
+    overflow-y: auto; /* Allow scrolling if needed */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
   }
 
   .stream-grid[data-count="1"] {
@@ -302,8 +304,20 @@
 
   /* Ensure stream containers have proper sizing */
   .stream-grid > div {
-    min-height: 150px;
-    aspect-ratio: 16/9;
+    min-height: 200px;
+    height: auto;
+    position: relative;
+  }
+  
+  /* Ensure iframe/embed containers fill their parent */
+  .stream-grid > div > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
   }
 
   /* Touch-friendly controls */
@@ -325,6 +339,8 @@
     gap: 0.25rem;
     height: calc(100vh - 120px);
     min-height: 300px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .stream-grid[data-count="3"],
@@ -337,8 +353,8 @@
 
   /* Smaller stream containers for very small screens */
   .stream-grid > div {
-    min-height: 120px;
-    aspect-ratio: 16/9;
+    min-height: 180px;
+    height: auto;
   }
 
   /* Ensure minimum touch target size */
