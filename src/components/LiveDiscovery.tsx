@@ -61,6 +61,24 @@ export default function LiveDiscovery() {
     return () => clearInterval(interval)
   }, [])
 
+  // Function to get proper profile image with better fallback
+  const getProfileImage = (stream: LiveStreamer | TopStreamer, size: number = 300) => {
+    if (stream.profileImage && stream.profileImage.startsWith('http')) {
+      return stream.profileImage
+    }
+    
+    // Generate better looking avatars based on platform
+    const colors = {
+      twitch: '9146ff',
+      youtube: 'ff0000', 
+      rumble: '85c742'
+    }
+    
+    const bgColor = colors[stream.platform.toLowerCase() as keyof typeof colors] || '6366f1'
+    
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(stream.name)}&background=${bgColor}&color=fff&size=${size}&bold=true&format=png`
+  }
+
   const formatViewerCount = (count: number): string => {
     if (count >= 1000000) {
       return `${(count / 1000000).toFixed(1)}M`
@@ -191,18 +209,18 @@ export default function LiveDiscovery() {
             {filteredStreams.map((stream, index) => (
               <Card 
                 key={`${stream.platform}-${stream.name}`} 
-                className="touch-manipulation active:scale-95 transition-all duration-200 cursor-pointer group border border-gray-200 active:border-blue-300 bg-white shadow-sm hover:shadow-lg"
+                className="touch-manipulation active:scale-95 transition-all duration-200 cursor-pointer group border border-gray-200 active:border-blue-300 !bg-gradient-to-br !from-gray-50 !to-gray-100 hover:!from-blue-50 hover:!to-purple-50 shadow-sm hover:shadow-lg"
               >
                 <CardContent className="p-3 sm:p-4 lg:p-6">
                   <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4">
                     <div className="relative">
                       <img
-                        src={stream.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(stream.name)}&background=6366f1&color=fff&size=80&bold=true`}
+                        src={getProfileImage(stream, 160)}
                         alt={stream.name}
-                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-gray-200 group-active:border-blue-300 transition-colors shadow-md"
+                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-3 border-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement
-                          target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(stream.name)}&background=6366f1&color=fff&size=80&bold=true`
+                          target.src = getProfileImage(stream, 160)
                         }}
                         loading="lazy"
                       />
@@ -265,18 +283,18 @@ export default function LiveDiscovery() {
             {topStreams.slice(0, 20).map((stream, index) => (
               <Card 
                 key={`${stream.platform}-${stream.name}-top`} 
-                className="touch-manipulation active:scale-95 transition-all duration-200 cursor-pointer group border border-gray-200 active:border-blue-200 shadow-sm hover:shadow-lg"
+                className="touch-manipulation active:scale-95 transition-all duration-200 cursor-pointer group border border-gray-200 active:border-blue-200 !bg-gradient-to-br !from-gray-900 !to-gray-800 hover:!from-gray-800 hover:!to-gray-700 shadow-sm hover:shadow-lg text-white"
               >
                 <CardContent className="p-3 sm:p-4 lg:p-5">
                   <div className="flex items-start gap-2 sm:gap-3 mb-3 sm:mb-4">
                     <div className="relative flex-shrink-0">
                       <img
-                        src={stream.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(stream.name)}&background=random&size=64`}
+                        src={getProfileImage(stream, 128)}
                         alt={stream.name}
-                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-gray-200 group-active:border-blue-300 transition-colors"
+                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-white shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement
-                          target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(stream.name)}&background=random&size=64`
+                          target.src = getProfileImage(stream, 128)
                         }}
                         loading="lazy"
                       />
@@ -290,23 +308,23 @@ export default function LiveDiscovery() {
                       </div>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-sm sm:text-base truncate group-active:text-blue-600 transition-colors mb-1">
+                      <h3 className="font-bold text-sm sm:text-base truncate text-white group-active:text-blue-400 transition-colors mb-1">
                         {stream.name}
                       </h3>
-                      <div className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-gray-500 mb-1 sm:mb-2">
+                      <div className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-gray-400 mb-1 sm:mb-2">
                         <span className="capitalize font-medium truncate">{stream.platform}</span>
                         <span>•</span>
                         <span>#{index + 1}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
-                        <Users className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
-                        <span className="font-semibold text-green-600 truncate">{formatViewerCount(stream.viewers)}</span>
+                      <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-300">
+                        <Users className="h-3 w-3 sm:h-4 sm:w-4 text-green-400 flex-shrink-0" />
+                        <span className="font-semibold text-green-400 truncate">{formatViewerCount(stream.viewers)}</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-2 sm:space-y-3">
-                    <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 leading-relaxed" title={stream.title}>
+                    <p className="text-xs sm:text-sm text-gray-300 line-clamp-2 leading-relaxed" title={stream.title}>
                       {stream.title}
                     </p>
                     

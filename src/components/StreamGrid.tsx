@@ -1,74 +1,95 @@
 'use client'
 
+import React, { useMemo } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import { cn } from '@/lib/utils'
 import StreamEmbed from './StreamEmbed'
 
-export default function StreamGrid() {
-  const { streams, gridLayout, primaryStreamId } = useStreamStore()
-  
-  const getGridClass = () => {
-    const streamCount = streams.length
-    
-    if (gridLayout === 'custom' && primaryStreamId) {
-      return 'stream-grid-focus'
-    }
-    
-    switch (streamCount) {
-      case 0:
-        return 'grid-cols-1'
-      case 1:
-        return 'grid-cols-1'
-      case 2:
-        return gridLayout === '2x1' ? 'grid-cols-2' : 'grid-cols-2 grid-rows-1'
-      case 3:
-      case 4:
-        return 'grid-cols-2 grid-rows-2'
-      case 5:
-      case 6:
-        return 'grid-cols-3 grid-rows-2'
-      case 7:
-      case 8:
-      case 9:
-        return 'grid-cols-3 grid-rows-3'
-      case 10:
-      case 11:
-      case 12:
-        return 'grid-cols-4 grid-rows-3'
-      case 13:
-      case 14:
-      case 15:
-      case 16:
-        return 'grid-cols-4 grid-rows-4'
-      default:
-        return 'grid-cols-4 grid-rows-4'
-    }
+// Memoized grid configuration function with improved case 3 handling
+const calculateGridConfig = (count: number, gridLayout?: string) => {
+  if (count === 0) return { cols: 1, rows: 1, class: 'grid-cols-1' }
+  if (count === 1) return { cols: 1, rows: 1, class: 'grid-cols-1' }
+  if (count === 2) return {
+    cols: 2,
+    rows: 1,
+    class: gridLayout === '2x1' ? 'grid-cols-2' : 'grid-cols-2 grid-rows-1'
   }
   
+  // Fix case 3 handling - ensure proper 2x2 grid with 3 items
+  if (count === 3) return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
+  if (count === 4) return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
+  
+  if (count <= 6) return { cols: 3, rows: 2, class: 'grid-cols-3 grid-rows-2' }
+  if (count <= 9) return { cols: 3, rows: 3, class: 'grid-cols-3 grid-rows-3' }
+  if (count <= 12) return { cols: 4, rows: 3, class: 'grid-cols-4 grid-rows-3' }
+  if (count <= 16) return { cols: 4, rows: 4, class: 'grid-cols-4 grid-rows-4' }
+  
+  // For more than 16 streams, use a 4-column layout with more rows
+  return { cols: 4, rows: Math.ceil(count / 4), class: 'grid-cols-4' }
+}
+
+// Responsive breakpoint classes for mobile support
+const getResponsiveClasses = (baseClass: string) => {
+  const responsiveMap: Record<string, string> = {
+    'grid-cols-1': 'grid-cols-1',
+    'grid-cols-2 grid-rows-1': 'grid-cols-1 sm:grid-cols-2 sm:grid-rows-1',
+    'grid-cols-2 grid-rows-2': 'grid-cols-1 sm:grid-cols-2 sm:grid-rows-2',
+    'grid-cols-3 grid-rows-2': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2',
+    'grid-cols-3 grid-rows-3': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-3',
+    'grid-cols-4 grid-rows-3': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:grid-rows-3',
+    'grid-cols-4 grid-rows-4': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:grid-rows-4',
+    'grid-cols-4': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+    'stream-grid-focus': 'stream-grid-focus',
+  }
+  
+  return responsiveMap[baseClass] || baseClass
+}
+
+const StreamGrid: React.FC = React.memo(() => {
+  const { streams, gridLayout, primaryStreamId } = useStreamStore()
+  
+  const gridConfig = useMemo(() => {
+    if (gridLayout === 'custom' && primaryStreamId) {
+      return { cols: 0, rows: 0, class: 'stream-grid-focus' }
+    }
+    return calculateGridConfig(streams.length, gridLayout)
+  }, [streams.length, gridLayout, primaryStreamId])
+
+  const responsiveGridClass = useMemo(() =>
+    getResponsiveClasses(gridConfig.class),
+    [gridConfig.class]
+  )
+  
   return (
-    <div 
+    <div
       className={cn(
         'stream-grid grid gap-1 sm:gap-2 h-full w-full p-1 sm:p-2 md:p-4',
-        getGridClass()
+        responsiveGridClass
       )}
       data-count={streams.length}
+      role="grid"
+      aria-label={`Stream grid with ${streams.length} stream${streams.length === 1 ? '' : 's'}`}
     >
-      {streams.map((stream) => (
+      {streams.map((stream, index) => (
         <div
           key={stream.id}
           className={cn(
             'relative bg-black rounded-lg overflow-hidden',
             primaryStreamId === stream.id && gridLayout === 'custom' && 'primary-stream'
           )}
+          role="gridcell"
+          aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}`}
         >
-          <StreamEmbed
-            stream={stream}
-          />
+          <StreamEmbed stream={stream} />
         </div>
       ))}
       
       {streams.length === 0 && (
-        <div className="flex items-center justify-center h-full">
+        <div
+          className="flex items-center justify-center h-full"
+          role="status"
+          aria-live="polite"
+        >
           <div className="text-center">
             <h2 className="text-2xl font-semibold mb-2">No streams added</h2>
             <p className="text-muted-foreground">Add a Twitch channel to start watching</p>
@@ -77,4 +98,8 @@ export default function StreamGrid() {
       )}
     </div>
   )
-}
+})
+
+StreamGrid.displayName = 'StreamGrid'
+
+export default StreamGrid

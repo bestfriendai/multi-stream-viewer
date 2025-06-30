@@ -8,6 +8,7 @@ import MobileNav from '@/components/MobileNav'
 import MobileSwipeControls from '@/components/MobileSwipeControls'
 import FeaturesShowcase from '@/components/FeaturesShowcase'
 import LiveDiscovery from '@/components/LiveDiscovery'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
@@ -99,20 +100,28 @@ export default function Home() {
             </div>
             
             <TabsContent value="streams" className="flex-1 overflow-hidden m-0">
-              <StreamGrid />
+              <ErrorBoundary>
+                <StreamGrid />
+              </ErrorBoundary>
             </TabsContent>
             
             <TabsContent value="discover" className="flex-1 overflow-y-auto p-4">
-              <LiveDiscovery />
+              <ErrorBoundary>
+                <LiveDiscovery />
+              </ErrorBoundary>
             </TabsContent>
             
             <TabsContent value="features" className="flex-1 overflow-y-auto p-4">
-              <FeaturesShowcase />
+              <ErrorBoundary>
+                <FeaturesShowcase />
+              </ErrorBoundary>
             </TabsContent>
           </Tabs>
         </main>
         
-        <StreamChat show={showChat} onClose={() => setShowChat(false)} />
+        <ErrorBoundary>
+          <StreamChat show={showChat} onClose={() => setShowChat(false)} />
+        </ErrorBoundary>
       </div>
       
       {/* Mobile Navigation */}
