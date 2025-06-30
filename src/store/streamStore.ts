@@ -70,7 +70,7 @@ const convertLegacyInput = (input: string): StreamInput | null => {
 }
 
 // Modern Zustand store with middleware for 2025
-export const useStreamStore = create<StreamStore>()()
+export const useStreamStore = create<StreamStore>()(
   devtools(
     persist(
       subscribeWithSelector(
@@ -298,6 +298,7 @@ export const useStreamStore = create<StreamStore>()()
       name: 'StreamStore',
     }
   )
+)
 
 // Export types for external use
 export type { Stream, StreamStore, StreamInput, GridLayout, Platform, Quality } from '@/types/stream'
