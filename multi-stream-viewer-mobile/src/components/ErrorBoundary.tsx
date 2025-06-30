@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     borderRadius: borderRadius.md,
     borderWidth: 1,
-    borderColor: colors.border.primary,
+    borderColor: colors.border,
   },
   errorMessage: {
     fontSize: typography.fontSize.xs,

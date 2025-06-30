@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     paddingTop: spacing.sm,
     paddingHorizontal: spacing.sm,
     paddingBottom: spacing.xl,
-    background: 'linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)',
+    // Note: background gradients need to be implemented with LinearGradient component in React Native
   },
   topRow: {
     flexDirection: 'row',

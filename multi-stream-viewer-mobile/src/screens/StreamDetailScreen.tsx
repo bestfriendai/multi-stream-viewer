@@ -118,7 +118,7 @@ export default function StreamDetailScreen() {
               value={streamState.volume}
               onValueChange={(value) => setVolume(stream.id, value)}
               minimumTrackTintColor={colors.primary}
-              maximumTrackTintColor={colors.border.primary}
+              maximumTrackTintColor={colors.border}
               thumbTintColor={colors.primary}
             />
           </View>

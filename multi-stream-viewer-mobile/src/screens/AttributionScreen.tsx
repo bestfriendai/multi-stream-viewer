@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xl,
     paddingTop: spacing.xl,
     borderTopWidth: 1,
-    borderTopColor: colors.border.primary,
+    borderTopColor: colors.border,
   },
   footerText: {
     fontSize: typography.fontSize.xs,

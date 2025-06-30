@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
     backgroundColor: colors.background.secondary,
     borderWidth: 1,
-    borderColor: colors.border.primary,
+    borderColor: colors.border,
   },
   yearButtonActive: {
     backgroundColor: colors.primary,

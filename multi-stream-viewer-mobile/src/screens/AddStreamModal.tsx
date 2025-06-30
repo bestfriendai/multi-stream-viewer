@@ -99,7 +99,7 @@ export default function AddStreamModal() {
                 style={[
                   styles.platformCard,
                   platform === p.id && styles.platformCardActive,
-                  { borderColor: platform === p.id ? p.color : colors.border.primary },
+                  { borderColor: platform === p.id ? p.color : colors.border },
                 ]}
                 onPress={() => {
                   setPlatform(p.id as Stream['platform']);
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background.secondary,
     borderRadius: borderRadius.lg,
     borderWidth: 2,
-    borderColor: colors.border.primary,
+    borderColor: colors.border,
     alignItems: 'center',
     marginBottom: spacing.md,
     ...shadows.sm,
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     fontSize: typography.fontSize.base,
     color: colors.text.primary,
     borderWidth: 1,
-    borderColor: colors.border.primary,
+    borderColor: colors.border,
   },
   addButton: {
     backgroundColor: colors.primary,

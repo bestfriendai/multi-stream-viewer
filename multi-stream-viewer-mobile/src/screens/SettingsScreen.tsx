@@ -54,7 +54,7 @@ function SettingItem({
         <Switch
           value={value as boolean}
           onValueChange={onPress}
-          trackColor={{ false: colors.border.secondary, true: colors.primary }}
+          trackColor={{ false: colors.separator.opaque, true: colors.primary }}
           thumbColor={colors.text.primary}
         />
       ) : (

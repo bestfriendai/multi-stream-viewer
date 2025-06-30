@@ -47,7 +47,6 @@ function StreamsStack() {
         component={StreamsScreen} 
         options={{ 
           title: 'Streams',
-          headerLargeTitle: true,
           headerTransparent: false,
           headerStyle: {
             backgroundColor: colors.background.primary,
@@ -105,7 +104,6 @@ export default function AppNavigator() {
                 color={color} 
                 style={{ 
                   transform: [{ scale: focused ? 1.1 : 1 }],
-                  transition: 'all 0.2s',
                 }}
               />
             </View>
