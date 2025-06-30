@@ -115,20 +115,57 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
               </Button>
             )}
             
-            {/* Suggested Streams */}
+            {/* Enhanced Discovery Dialog */}
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <TrendingUp size={16} className="mr-2" />
-                  Discover
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="relative overflow-hidden bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900/50 dark:to-black/50 border-gray-300 dark:border-gray-700 hover:from-gray-100 hover:to-gray-200 dark:hover:from-gray-800/50 dark:hover:to-gray-900/50 transition-all duration-300 group"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-800/10 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <TrendingUp size={16} className="mr-2 text-gray-700 dark:text-gray-300 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="font-semibold bg-gradient-to-r from-gray-800 to-black dark:from-gray-200 dark:to-white bg-clip-text text-transparent">
+                    Discover
+                  </span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-[95vw] sm:max-w-5xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-0 sm:p-6">
+              <DialogContent
+                className="max-w-[98vw] sm:max-w-7xl max-h-[98vh] sm:max-h-[95vh] p-0 border-0 bg-transparent shadow-none"
+                showCloseButton={false}
+              >
                 <DialogHeader className="sr-only">
-                  <DialogTitle>Discover Streams</DialogTitle>
+                  <DialogTitle>Discover Live Streams</DialogTitle>
                 </DialogHeader>
-                <div className="max-h-[95vh] sm:max-h-[85vh] overflow-y-auto">
-                  <LiveDiscovery />
+
+                {/* Enhanced modal container with glassmorphism */}
+                <div className="relative w-full h-full">
+                  {/* Background blur overlay */}
+                  <div className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-3xl"></div>
+
+                  {/* Main content container */}
+                  <div className="relative bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-3xl shadow-2xl max-h-[98vh] sm:max-h-[95vh] overflow-hidden">
+                    {/* Custom close button */}
+                    <div className="absolute top-4 right-4 z-50">
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="w-10 h-10 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-white/30 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 shadow-lg transition-all duration-300"
+                        >
+                          <span className="sr-only">Close</span>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </Button>
+                      </DialogTrigger>
+                    </div>
+
+                    {/* Scrollable content */}
+                    <div className="max-h-[98vh] sm:max-h-[95vh] overflow-y-auto">
+                      <LiveDiscovery />
+                    </div>
+                  </div>
                 </div>
               </DialogContent>
             </Dialog>

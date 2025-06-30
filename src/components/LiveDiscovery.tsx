@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getTrendingStreams, getTopLiveStreams } from '@/lib/streamStatusReal'
 import { useStreamStore } from '@/store/streamStore'
-import { Play, Users, Eye, Zap, TrendingUp, Globe } from 'lucide-react'
+import { Play, Users, Eye, Zap, TrendingUp, Globe, Star, Flame, Crown, Sparkles } from 'lucide-react'
 
 interface LiveStreamer {
   name: string
@@ -90,21 +90,35 @@ export default function LiveDiscovery() {
 
   const getCategories = () => {
     const categories = new Set(['all'])
-    trendingStreams.forEach(stream => categories.add(stream.category))
+    // Only show categories from live Twitch streams
+    trendingStreams
+      .filter(stream => stream.isLive && stream.platform.toLowerCase() === 'twitch')
+      .forEach(stream => {
+        if (stream.category) {
+          categories.add(stream.category)
+        }
+      })
     return Array.from(categories)
   }
 
-  const filteredStreams = (selectedCategory === 'all' 
-    ? trendingStreams 
-    : trendingStreams.filter(stream => stream.category === selectedCategory)
-  ).filter(stream => stream.isLive) // Only show live streamers
+  // Filter to show only live Twitch streams
+  const filteredStreams = trendingStreams
+    .filter(stream => stream.isLive && stream.platform.toLowerCase() === 'twitch')
+    .filter(stream =>
+      selectedCategory === 'all' || stream.category === selectedCategory
+    )
+
+  // Filter top streams to show only live Twitch streams
+  const filteredTopStreams = topStreams.filter(stream =>
+    stream.platform.toLowerCase() === 'twitch'
+  )
 
   const getPlatformColor = (platform: string) => {
     switch (platform.toLowerCase()) {
-      case 'twitch': return 'bg-purple-500'
-      case 'youtube': return 'bg-red-500'
-      case 'rumble': return 'bg-green-500'
-      default: return 'bg-gray-500'
+      case 'twitch': return 'bg-gradient-to-r from-purple-600 to-purple-700'
+      case 'youtube': return 'bg-gradient-to-r from-red-600 to-red-700'
+      case 'rumble': return 'bg-gradient-to-r from-green-600 to-green-700'
+      default: return 'bg-gradient-to-r from-gray-600 to-gray-700'
     }
   }
 
@@ -152,123 +166,174 @@ export default function LiveDiscovery() {
   }
 
   return (
-    <div className="space-y-4 p-3 sm:p-6 max-w-full overflow-hidden">
-      {/* Mobile-optimized header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <Zap className="h-6 w-6 sm:h-7 sm:w-7 text-blue-500 flex-shrink-0" />
-          <h2 className="text-xl sm:text-3xl font-bold truncate">Live Discovery</h2>
-          <Badge variant="secondary" className="bg-green-100 text-green-800 px-2 py-1 text-xs sm:text-sm flex-shrink-0">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-1 sm:mr-2 animate-pulse"></div>
-            {trendingStreams.filter(s => s.isLive).length} Live
-          </Badge>
+    <div className="space-y-6 p-4 sm:p-6 max-w-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-black dark:to-gray-900 min-h-screen">
+      {/* Sleek black header */}
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-gray-800/30 rounded-2xl blur-xl"></div>
+        <div className="relative bg-white/95 dark:bg-black/95 backdrop-blur-xl border border-gray-200/50 dark:border-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-2xl">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black rounded-xl blur-md opacity-75"></div>
+                <div className="relative bg-gradient-to-r from-gray-800 to-black p-3 rounded-xl">
+                  <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+                </div>
+              </div>
+              <div>
+                <h2 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-gray-900 to-black dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                  Live Discovery
+                </h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  Discover live Twitch streams happening right now
+                </p>
+              </div>
+              <Badge className="bg-gradient-to-r from-green-600 to-green-700 text-white border-0 px-3 py-1.5 text-sm font-semibold shadow-lg">
+                <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
+                {trendingStreams.filter(s => s.isLive && s.platform.toLowerCase() === 'twitch').length} Live
+              </Badge>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.location.reload()}
+              className="self-start sm:self-auto bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-gray-300/50 dark:border-gray-700/50 hover:bg-white dark:hover:bg-gray-800 transition-all duration-300"
+            >
+              <Zap className="h-4 w-4 mr-2" />
+              Refresh
+            </Button>
+          </div>
         </div>
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={() => window.location.reload()}
-          className="flex items-center gap-2 self-start sm:self-auto min-h-[44px] px-4"
-        >
-          <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">Refresh</span>
-        </Button>
       </div>
 
       <Tabs defaultValue="trending" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 h-12 sm:h-14">
-          <TabsTrigger value="trending" className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base px-2">
-            <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="hidden xs:inline">Trending</span>
-            <span className="xs:hidden">Trend</span>
+        <TabsList className="grid w-full grid-cols-2 h-14 sm:h-16 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-800/50 rounded-2xl p-1">
+          <TabsTrigger
+            value="trending"
+            className="flex items-center gap-2 text-sm sm:text-base px-3 py-2 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-gray-800 data-[state=active]:to-black data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
+          >
+            <Flame className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="hidden xs:inline font-semibold">Trending</span>
+            <span className="xs:hidden font-semibold">Trend</span>
           </TabsTrigger>
-          <TabsTrigger value="top" className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base px-2">
-            <Eye className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="hidden xs:inline">Top Streams</span>
-            <span className="xs:hidden">Top</span>
+          <TabsTrigger
+            value="top"
+            className="flex items-center gap-2 text-sm sm:text-base px-3 py-2 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-gray-700 data-[state=active]:to-gray-900 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
+          >
+            <Crown className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="hidden xs:inline font-semibold">Top Streams</span>
+            <span className="xs:hidden font-semibold">Top</span>
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="trending" className="space-y-4 sm:space-y-6 mt-4">
-          {/* Mobile-optimized Category Filter */}
-          <div className="flex flex-wrap gap-2 max-w-full overflow-x-auto pb-2">
-            {getCategories().map(category => (
-              <Button
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory(category)}
-                className="capitalize whitespace-nowrap min-h-[40px] px-3 text-xs sm:text-sm flex-shrink-0"
-              >
-                {category === 'all' ? 'All Categories' : category}
-              </Button>
-            ))}
+        <TabsContent value="trending" className="space-y-6 mt-6">
+          {/* Sleek Category Filter */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-800/20 to-black/20 rounded-2xl blur-xl"></div>
+            <div className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-800/50 rounded-2xl p-4">
+              <div className="flex flex-wrap gap-3 max-w-full overflow-x-auto">
+                {getCategories().map(category => (
+                  <Button
+                    key={category}
+                    variant={selectedCategory === category ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory(category)}
+                    className={`capitalize whitespace-nowrap min-h-[44px] px-4 text-sm font-medium flex-shrink-0 transition-all duration-300 ${
+                      selectedCategory === category
+                        ? 'bg-gradient-to-r from-gray-800 to-black text-white shadow-lg border-0 hover:from-gray-700 hover:to-gray-900'
+                        : 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-gray-300/50 dark:border-gray-700/50 hover:bg-white dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    {category === 'all' ? '⭐ All Categories' : `🎮 ${category}`}
+                  </Button>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Mobile-optimized Trending Streams Grid */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+          {/* Enhanced Trending Streams Grid */}
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {filteredStreams.map((stream, index) => (
-              <Card 
-                key={`${stream.platform}-${stream.name}`} 
-                className="touch-manipulation active:scale-95 transition-all duration-200 cursor-pointer group border border-gray-200 active:border-blue-300 !bg-gradient-to-br !from-gray-50 !to-gray-100 hover:!from-blue-50 hover:!to-purple-50 shadow-sm hover:shadow-lg"
+              <Card
+                key={stream.uniqueId || `${stream.platform}-${stream.name}-${index}`}
+                className="group relative overflow-hidden touch-manipulation active:scale-95 transition-all duration-300 cursor-pointer border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-xl hover:shadow-2xl hover:scale-105"
               >
-                <CardContent className="p-3 sm:p-4 lg:p-6">
-                  <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4">
+                {/* Subtle dark overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-900/5 to-black/10 dark:from-white/5 dark:to-gray-300/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                {/* Trending rank badge */}
+                <div className="absolute top-3 left-3 z-10">
+                  <div className="bg-gradient-to-r from-gray-800 to-black text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg">
+                    #{index + 1}
+                  </div>
+                </div>
+
+                <CardContent className="relative p-4 sm:p-6">
+                  <div className="flex flex-col items-center text-center space-y-4">
                     <div className="relative">
+                      {/* Subtle dark ring effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
+
                       <img
                         src={getProfileImage(stream, 160)}
                         alt={stream.name}
-                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-3 border-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105"
+                        className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement
                           target.src = getProfileImage(stream, 160)
                         }}
                         loading="lazy"
                       />
+
                       {stream.isLive && (
-                        <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-red-500 rounded-full flex items-center justify-center border-2 border-white shadow-lg">
-                          <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-white rounded-full animate-pulse"></div>
+                        <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center border-3 border-white dark:border-gray-700 shadow-lg">
+                          <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse"></div>
                         </div>
                       )}
-                      <div className={`absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 ${getPlatformColor(stream.platform)} rounded-full flex items-center justify-center border-2 border-white shadow-lg`}>
-                        <span className="text-xs sm:text-sm text-white font-bold">
-                          {stream.platform === 'twitch' ? 'T' : stream.platform === 'youtube' ? 'Y' : 'R'}
+
+                      <div className={`absolute -bottom-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 ${getPlatformColor(stream.platform)} rounded-full flex items-center justify-center border-3 border-white dark:border-gray-700 shadow-lg`}>
+                        <span className="text-xs text-white font-bold">
+                          T
                         </span>
                       </div>
                     </div>
-                    
-                    <div className="space-y-2 w-full min-w-0">
-                      <h3 className="font-bold text-sm sm:text-base lg:text-lg group-active:text-blue-600 transition-colors truncate">
+
+                    <div className="space-y-3 w-full min-w-0">
+                      <h3 className="font-bold text-base sm:text-lg bg-gradient-to-r from-gray-900 to-black dark:from-white dark:to-gray-300 bg-clip-text text-transparent group-hover:from-gray-700 group-hover:to-gray-900 dark:group-hover:from-gray-200 dark:group-hover:to-white transition-all duration-300 truncate">
                         {stream.name}
                       </h3>
-                      
-                      <div className="flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500">
-                        <span className="capitalize font-medium truncate">{stream.platform}</span>
-                        <span>•</span>
-                        <span>#{index + 1}</span>
+
+                      <div className="flex items-center justify-center gap-2 text-sm">
+                        <Badge className="bg-gradient-to-r from-purple-600 to-purple-700 text-white border-0 px-2 py-1 text-xs font-semibold">
+                          TWITCH
+                        </Badge>
+                        <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+                          <Flame className="h-3 w-3" />
+                          <span className="text-xs font-bold">Trending</span>
+                        </div>
                       </div>
-                      
+
                       {stream.viewers && (
-                        <div className="flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm">
-                          <Users className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
-                          <span className="font-semibold text-green-600 truncate">{formatViewerCount(stream.viewers)} viewers</span>
+                        <div className="flex items-center justify-center gap-2 text-sm bg-green-50 dark:bg-green-900/20 rounded-full px-3 py-1.5">
+                          <Users className="h-4 w-4 text-green-500" />
+                          <span className="font-bold text-green-600 dark:text-green-400">{formatViewerCount(stream.viewers)}</span>
                         </div>
                       )}
-                      
-                      <Badge variant="secondary" className="text-xs sm:text-sm font-medium bg-blue-50 text-blue-700 px-2 py-1 max-w-full truncate">
-                        {stream.category}
+
+                      <Badge className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 text-gray-700 dark:text-gray-300 border-0 px-3 py-1.5 text-sm font-medium max-w-full truncate">
+                        🎮 {stream.category}
                       </Badge>
                     </div>
 
-                    <Button 
+                    <Button
                       size="sm"
                       onClick={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
                         handleAddStream(stream)
                       }}
-                      className="w-full min-h-[44px] text-xs sm:text-sm font-semibold bg-gradient-to-r from-blue-500 to-purple-600 active:from-blue-600 active:to-purple-700 transition-all duration-200 shadow-md active:shadow-lg touch-manipulation"
+                      className="w-full min-h-[48px] text-sm font-bold bg-gradient-to-r from-gray-800 to-black hover:from-gray-700 hover:to-gray-900 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105"
                     >
-                      <Play className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                      <Play className="h-4 w-4 mr-2" />
                       Watch Live
                     </Button>
                   </div>
@@ -278,70 +343,100 @@ export default function LiveDiscovery() {
           </div>
         </TabsContent>
 
-        <TabsContent value="top" className="space-y-4 sm:space-y-6 mt-4">
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-            {topStreams.slice(0, 20).map((stream, index) => (
-              <Card 
-                key={`${stream.platform}-${stream.name}-top`} 
-                className="touch-manipulation active:scale-95 transition-all duration-200 cursor-pointer group border border-gray-200 active:border-blue-200 !bg-gradient-to-br !from-gray-900 !to-gray-800 hover:!from-gray-800 hover:!to-gray-700 shadow-sm hover:shadow-lg text-white"
+        <TabsContent value="top" className="space-y-6 mt-6">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+            {filteredTopStreams.slice(0, 20).map((stream, index) => (
+              <Card
+                key={`top-${stream.uniqueId || `${stream.platform}-${stream.name}-${index}`}`}
+                className="group relative overflow-hidden touch-manipulation active:scale-95 transition-all duration-300 cursor-pointer border border-gray-800 bg-gradient-to-br from-gray-900 via-black to-gray-900 shadow-2xl hover:shadow-gray-900/50 hover:scale-105"
               >
-                <CardContent className="p-3 sm:p-4 lg:p-5">
-                  <div className="flex items-start gap-2 sm:gap-3 mb-3 sm:mb-4">
+                {/* Subtle dark glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-800/30 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                {/* Top rank crown for top 3 */}
+                {index < 3 && (
+                  <div className="absolute top-3 right-3 z-10">
+                    <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black p-1.5 rounded-full shadow-lg">
+                      <Crown className="h-3 w-3" />
+                    </div>
+                  </div>
+                )}
+
+                {/* Rank badge */}
+                <div className="absolute top-3 left-3 z-10">
+                  <div className="bg-gradient-to-r from-gray-700 to-gray-800 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg">
+                    #{index + 1}
+                  </div>
+                </div>
+
+                <CardContent className="relative p-4 sm:p-5">
+                  <div className="flex items-start gap-3 mb-4">
                     <div className="relative flex-shrink-0">
+                      {/* Subtle dark avatar glow */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-800 rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
+
                       <img
                         src={getProfileImage(stream, 128)}
                         alt={stream.name}
-                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-white shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105"
+                        className="relative w-14 h-14 sm:w-18 sm:h-18 rounded-full object-cover border-3 border-gray-600 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement
                           target.src = getProfileImage(stream, 128)
                         }}
                         loading="lazy"
                       />
-                      <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 rounded-full flex items-center justify-center border-2 border-white">
-                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse"></div>
+
+                      <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center border-2 border-gray-600 shadow-lg">
+                        <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                       </div>
-                      <div className={`absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 ${getPlatformColor(stream.platform)} rounded-full flex items-center justify-center border-2 border-white`}>
-                        <span className="text-[10px] sm:text-xs text-white font-bold">
-                          {stream.platform === 'twitch' ? 'T' : stream.platform === 'youtube' ? 'Y' : 'R'}
+
+                      <div className="absolute -bottom-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center border-2 border-gray-600 shadow-lg">
+                        <span className="text-xs text-white font-bold">
+                          T
                         </span>
                       </div>
                     </div>
+
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-sm sm:text-base truncate text-white group-active:text-blue-400 transition-colors mb-1">
+                      <h3 className="font-bold text-sm sm:text-base truncate text-white group-hover:text-gray-300 transition-all duration-300 mb-2">
                         {stream.name}
                       </h3>
-                      <div className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-gray-400 mb-1 sm:mb-2">
-                        <span className="capitalize font-medium truncate">{stream.platform}</span>
-                        <span>•</span>
-                        <span>#{index + 1}</span>
+
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge className="bg-gradient-to-r from-purple-600 to-purple-700 text-white border-0 px-2 py-0.5 text-xs font-semibold">
+                          TWITCH
+                        </Badge>
+                        <div className="flex items-center gap-1 text-gray-400">
+                          <Star className="h-3 w-3 fill-current" />
+                          <span className="text-xs font-bold">Top</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-300">
-                        <Users className="h-3 w-3 sm:h-4 sm:w-4 text-green-400 flex-shrink-0" />
-                        <span className="font-semibold text-green-400 truncate">{formatViewerCount(stream.viewers)}</span>
+                      <div className="flex items-center gap-2 bg-green-500/20 rounded-full px-3 py-1">
+                        <Users className="h-4 w-4 text-green-400" />
+                        <span className="font-bold text-green-400 text-sm">{formatViewerCount(stream.viewers)}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="space-y-2 sm:space-y-3">
-                    <p className="text-xs sm:text-sm text-gray-300 line-clamp-2 leading-relaxed" title={stream.title}>
+                  <div className="space-y-3">
+                    <p className="text-sm text-gray-300 line-clamp-2 leading-relaxed group-hover:text-gray-200 transition-colors duration-300" title={stream.title}>
                       {stream.title}
                     </p>
-                    
-                    <Badge variant="secondary" className="text-xs sm:text-sm font-medium bg-blue-50 text-blue-700 px-2 py-1 max-w-full truncate">
-                      {stream.game}
+
+                    <Badge className="bg-gradient-to-r from-gray-700/50 to-gray-800/50 text-gray-300 border border-gray-600/30 px-3 py-1 text-sm font-medium max-w-full truncate">
+                      🎮 {stream.game}
                     </Badge>
 
-                    <Button 
-                      size="sm" 
-                      className="w-full min-h-[40px] sm:min-h-[44px] text-xs sm:text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-600 active:from-blue-600 active:to-purple-700 transition-all duration-200 touch-manipulation"
+                    <Button
+                      size="sm"
+                      className="w-full min-h-[48px] text-sm font-bold bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-600 hover:to-gray-800 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105"
                       onClick={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
                         handleAddStream(stream)
                       }}
                     >
-                      <Play className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                      <Play className="h-4 w-4 mr-2" />
                       Watch Live
                     </Button>
                   </div>
