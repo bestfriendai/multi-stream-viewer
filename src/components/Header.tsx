@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useStreamStore } from '@/store/streamStore'
-import { Plus, Trash2, Monitor, MessageSquare, TrendingUp, Keyboard } from 'lucide-react'
+import { Plus, Trash2, MessageSquare, TrendingUp, Keyboard } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -66,12 +67,18 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-2 sm:gap-4">
           {/* Logo/Title */}
           <div className="flex items-center gap-2 w-full lg:w-auto justify-between">
-            <StreamyyyLogo
-              size="md"
-              variant="gradient"
-              className="flex items-center"
-            />
-            
+            <Link
+              href="/"
+              className="transition-opacity hover:opacity-80 cursor-pointer"
+              title="Go to Home"
+            >
+              <StreamyyyLogo
+                size="md"
+                variant="gradient"
+                className="flex items-center"
+              />
+            </Link>
+
             {/* Mobile Stream Count */}
             <div className="text-sm text-muted-foreground lg:hidden">
               {streams.length}/16
