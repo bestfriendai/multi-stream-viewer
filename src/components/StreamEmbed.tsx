@@ -100,10 +100,13 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
     } else if (stream.platform === 'youtube' && embedRef.current) {
       const iframe = embedRef.current.querySelector('iframe')
       if (iframe) {
-        // Update YouTube mute state
-        const src = iframe.src
-        const newSrc = src.replace(/mute=\d/, `mute=${stream.muted ? 1 : 0}`)
-        if (src !== newSrc) {
+        // Update YouTube mute state by recreating iframe with new mute parameter
+        const currentSrc = iframe.src
+        const urlObj = new URL(currentSrc)
+        urlObj.searchParams.set('mute', stream.muted ? '1' : '0')
+        const newSrc = urlObj.toString()
+
+        if (currentSrc !== newSrc) {
           iframe.src = newSrc
         }
       }
@@ -166,15 +169,13 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
           </div>
           
           <div className="flex gap-1">
-            {stream.platform === 'twitch' && (
-              <button
-                onClick={handleMuteToggle}
-                className="p-1.5 rounded bg-black/50 hover:bg-black/70 text-white transition-colors"
-                title={stream.muted ? 'Unmute' : 'Mute'}
-              >
-                {stream.muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-              </button>
-            )}
+            <button
+              onClick={handleMuteToggle}
+              className="p-1.5 rounded bg-black/50 hover:bg-black/70 text-white transition-colors"
+              title={stream.muted ? 'Unmute' : 'Mute'}
+            >
+              {stream.muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+            </button>
             
             <button
               onClick={handleFullscreen}

@@ -45,11 +45,20 @@ export default function StreamDetailScreen() {
       case 'twitch':
         return `https://player.twitch.tv/?channel=${stream.channelName}&parent=localhost&muted=${streamState.isMuted}`;
       case 'youtube':
-        return `https://www.youtube.com/embed/live_stream?channel=${stream.channelName}&autoplay=1&mute=${streamState.isMuted ? 1 : 0}`;
+        return `https://www.youtube.com/embed/live_stream?channel=${stream.channelName}&autoplay=1&mute=${streamState.isMuted ? 1 : 0}&enablejsapi=1`;
+      case 'kick':
+        return `https://kick.com/${stream.channelName}/embed`;
       default:
         return stream.streamUrl;
     }
   };
+
+  // Force WebView reload when mute state changes
+  useEffect(() => {
+    if (webViewRef.current) {
+      webViewRef.current.reload();
+    }
+  }, [streamState.isMuted]);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>

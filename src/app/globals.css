@@ -143,26 +143,79 @@
   .stream-grid {
     padding: 0.5rem;
     gap: 0.25rem;
+    height: calc(100vh - 120px); /* Account for mobile nav */
   }
-  
+
+  .stream-grid[data-count="1"] {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  .stream-grid[data-count="2"] {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .stream-grid[data-count="3"],
   .stream-grid[data-count="4"] {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
   }
-  
-  .stream-grid[data-count="6"],
+
+  .stream-grid[data-count="5"],
+  .stream-grid[data-count="6"] {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+  .stream-grid[data-count="7"],
+  .stream-grid[data-count="8"],
   .stream-grid[data-count="9"] {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 1fr;
   }
-  
+
   .stream-grid-focus {
     grid-template-columns: 1fr;
     grid-template-rows: 2fr repeat(3, 1fr);
   }
-  
+
   .stream-grid-focus .primary-stream {
     grid-column: 1;
     grid-row: 1;
+  }
+
+  /* Touch-friendly controls */
+  .stream-embed-controls {
+    padding: 0.75rem;
+  }
+
+  .stream-embed-controls button {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.75rem;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  .stream-grid {
+    padding: 0.25rem;
+    gap: 0.125rem;
+    height: calc(100vh - 100px);
+  }
+
+  .stream-grid[data-count="3"],
+  .stream-grid[data-count="4"],
+  .stream-grid[data-count="5"],
+  .stream-grid[data-count="6"] {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
+  }
+
+  /* Ensure minimum touch target size */
+  button, .clickable {
+    min-width: 44px;
+    min-height: 44px;
   }
 }

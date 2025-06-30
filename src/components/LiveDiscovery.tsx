@@ -8,6 +8,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getTrendingStreams, getTopLiveStreams } from '@/lib/streamStatusReal'
 import { useStreamStore } from '@/store/streamStore'
 import { Play, Users, Eye, Zap, TrendingUp, Globe, Star, Flame, Crown, Sparkles } from 'lucide-react'
+import AvatarImage from './AvatarImage'
+import TwitchAvatarImage from './TwitchAvatarImage'
+import { getTwitchProfileImage } from '@/lib/twitchApi'
 
 interface LiveStreamer {
   name: string
@@ -273,16 +276,23 @@ export default function LiveDiscovery() {
                       {/* Subtle dark ring effect */}
                       <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
 
-                      <img
-                        src={getProfileImage(stream, 160)}
-                        alt={stream.name}
-                        className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement
-                          target.src = getProfileImage(stream, 160)
-                        }}
-                        loading="lazy"
-                      />
+                      {stream.platform.toLowerCase() === 'twitch' ? (
+                        <TwitchAvatarImage
+                          username={stream.name}
+                          name={stream.name}
+                          size={96}
+                          platform="twitch"
+                          className="relative border-4 border-white dark:border-gray-700 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110"
+                        />
+                      ) : (
+                        <AvatarImage
+                          src={getProfileImage(stream, 160)}
+                          name={stream.name}
+                          size={96}
+                          platform={stream.platform.toLowerCase() as 'twitch' | 'youtube' | 'rumble'}
+                          className="relative border-4 border-white dark:border-gray-700 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110"
+                        />
+                      )}
 
                       {stream.isLive && (
                         <div className="absolute -top-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center border-3 border-white dark:border-gray-700 shadow-lg">
@@ -375,16 +385,23 @@ export default function LiveDiscovery() {
                       {/* Subtle dark avatar glow */}
                       <div className="absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-800 rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
 
-                      <img
-                        src={getProfileImage(stream, 128)}
-                        alt={stream.name}
-                        className="relative w-14 h-14 sm:w-18 sm:h-18 rounded-full object-cover border-3 border-gray-600 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement
-                          target.src = getProfileImage(stream, 128)
-                        }}
-                        loading="lazy"
-                      />
+                      {stream.platform.toLowerCase() === 'twitch' ? (
+                        <TwitchAvatarImage
+                          username={stream.name}
+                          name={stream.name}
+                          size={64}
+                          platform="twitch"
+                          className="relative border-3 border-gray-600 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110"
+                        />
+                      ) : (
+                        <AvatarImage
+                          src={getProfileImage(stream, 128)}
+                          name={stream.name}
+                          size={64}
+                          platform={stream.platform.toLowerCase() as 'twitch' | 'youtube' | 'rumble'}
+                          className="relative border-3 border-gray-600 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110"
+                        />
+                      )}
 
                       <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center border-2 border-gray-600 shadow-lg">
                         <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>

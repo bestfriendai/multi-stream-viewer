@@ -21,6 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { Stream } from '../types';
 import { colors, spacing, borderRadius, typography, shadows } from '../constants/theme';
+import AvatarImage from './AvatarImage';
 
 interface AnimatedStreamCardProps {
   stream: Stream;
@@ -146,8 +147,12 @@ export default function AnimatedStreamCard({
           
           <View style={styles.bottomInfo}>
             <View style={styles.channelInfo}>
-              <Image
-                source={{ uri: stream.avatarUrl }}
+              <AvatarImage
+                uri={stream.avatarUrl}
+                name={stream.displayName}
+                size={32}
+                platform={stream.platform}
+                username={stream.platform === 'twitch' ? stream.channelName : undefined}
                 style={styles.avatar}
               />
               <View style={styles.textInfo}>
