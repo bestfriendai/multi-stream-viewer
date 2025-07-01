@@ -189,33 +189,36 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-3xl animate-pulse animation-delay-2000" />
         </div>
         
-        {/* Background Live Streams */}
+        {/* Background Live Streams - Full Coverage */}
         {liveChannels.length > 0 && (
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 grid grid-cols-2 gap-6 p-12 scale-110">
-              {liveChannels.slice(0, 4).map((channel, index) => (
-                <motion.div 
-                  key={channel.channelName} 
-                  className="relative overflow-hidden rounded-2xl shadow-2xl"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 0.15, scale: 1 }}
-                  transition={{ delay: index * 0.2, duration: 1 }}
-                >
-                  <div className="aspect-video relative">
-                    <iframe
-                      src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
-                      className="absolute inset-0 w-full h-full"
-                      frameBorder="0"
-                      scrolling="no"
-                      allowFullScreen={false}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/60 to-background/40" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-                  </div>
-                </motion.div>
-              ))}
+            <div className="absolute inset-0 grid grid-cols-4 grid-rows-3 gap-2 scale-110">
+              {[...Array(12)].map((_, index) => {
+                const channel = liveChannels[index % liveChannels.length]
+                if (!channel) return null
+                return (
+                  <motion.div 
+                    key={`${channel.channelName}-${index}`} 
+                    className="relative overflow-hidden"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 0.4, scale: 1 }}
+                    transition={{ delay: (index % 4) * 0.1, duration: 0.8 }}
+                  >
+                    <div className="aspect-video relative">
+                      <iframe
+                        src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
+                        className="absolute inset-0 w-full h-full"
+                        frameBorder="0"
+                        scrolling="no"
+                        allowFullScreen={false}
+                      />
+                    </div>
+                  </motion.div>
+                )
+              })}
             </div>
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background/90" />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/80 to-background/95" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/20 via-transparent to-background/20" />
           </div>
         )}
         
@@ -334,7 +337,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: i * 0.05 }}
                           className={cn(
-                            "bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-md flex flex-col items-center justify-center relative overflow-hidden",
+                            "bg-black rounded-md relative overflow-hidden",
                             activeDemo === 2 && i === 0 && "col-span-8 row-span-6",
                             activeDemo === 2 && i === 1 && "col-span-4 row-span-3",
                             activeDemo === 2 && i === 2 && "col-span-4 row-span-3",
@@ -342,14 +345,18 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                             activeDemo === 2 && i === 4 && "col-span-4 row-span-2"
                           )}
                         >
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                          
                           {stream ? (
                             <>
-                              <PlayCircle className="w-8 h-8 text-white/70 mb-2" />
-                              <div className="absolute bottom-2 left-2 right-2 text-white">
-                                <p className="text-xs font-medium truncate">{stream.channelName}</p>
-                                <p className="text-xs opacity-80">
+                              <iframe
+                                src={`https://player.twitch.tv/?channel=${stream.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true`}
+                                className="absolute inset-0 w-full h-full"
+                                frameBorder="0"
+                                scrolling="no"
+                                allowFullScreen={true}
+                              />
+                              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
+                                <p className="text-xs font-medium text-white truncate">{stream.channelName}</p>
+                                <p className="text-xs text-white/80">
                                   {stream.viewerCount.toLocaleString()} viewers
                                 </p>
                               </div>
@@ -358,12 +365,12 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                               </Badge>
                             </>
                           ) : (
-                            <>
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-500/20 flex flex-col items-center justify-center">
                               <PlayCircle className="w-8 h-8 text-white/50" />
-                              <div className="absolute bottom-2 left-2 text-xs text-white/70">
+                              <div className="text-xs text-white/70 mt-2">
                                 Stream {i + 1}
                               </div>
-                            </>
+                            </div>
                           )}
                         </motion.div>
                       )
