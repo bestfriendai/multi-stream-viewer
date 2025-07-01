@@ -3,6 +3,14 @@ import { tokenManager } from '@/lib/twitch/tokenManager';
 import { twitchAPI } from '@/lib/twitch/api';
 
 export async function GET(request: NextRequest) {
+  // Only allow in development environment
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json(
+      { error: 'Not available in production' },
+      { status: 403 }
+    );
+  }
+  
   try {
     const tests = {
       environment: {

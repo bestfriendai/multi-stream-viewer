@@ -80,10 +80,10 @@ const nextConfig: NextConfig = {
   
   // Enable strict mode for better performance
   eslint: {
-    ignoreDuringBuilds: true, // Temporarily disable ESLint for deployment
+    ignoreDuringBuilds: false, // Enable ESLint during builds for code quality
   },
   typescript: {
-    ignoreBuildErrors: true, // Temporarily disable TypeScript checking for deployment
+    ignoreBuildErrors: false, // Enable TypeScript checking for type safety
   },
 };
 

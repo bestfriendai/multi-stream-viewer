@@ -1,8 +1,24 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
-  // Only show in development or with secret key
-  const debugKey = process.env.DEBUG_KEY || 'debug123';
+export async function GET(request: Request) {
+  // Only allow in development environment
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json(
+      { error: 'Not available in production' },
+      { status: 403 }
+    );
+  }
+  
+  // Additional security: Check for debug key in headers
+  const debugKey = request.headers.get('x-debug-key');
+  const expectedKey = process.env.DEBUG_KEY;
+  
+  if (expectedKey && debugKey !== expectedKey) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
   
   return NextResponse.json({
     message: 'Environment check',
