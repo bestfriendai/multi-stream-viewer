@@ -67,36 +67,36 @@ export default function AmpSummerPage() {
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl" />
         
-        <div className="relative container mx-auto px-4 py-8">
+        <div className="relative container mx-auto px-4 py-4">
           <div className="text-center space-y-4">
             {/* Title with animation */}
             <div className="flex items-center justify-center gap-3">
-              <Zap className="w-8 h-8 text-yellow-500 animate-pulse" />
-              <h1 className="text-4xl md:text-6xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
+              <Zap className="w-6 h-6 text-yellow-500 animate-pulse" />
+              <h1 className="text-2xl md:text-4xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
                 AMP SUMMER
               </h1>
-              <Zap className="w-8 h-8 text-yellow-500 animate-pulse" />
+              <Zap className="w-6 h-6 text-yellow-500 animate-pulse" />
             </div>
             
             {/* Subtitle */}
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Watch all your favorite AMP members live in one place. The ultimate streaming experience.
+            <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
+              Watch all your favorite AMP members live in one place.
             </p>
             
             {/* Streamer avatars */}
-            <div className="flex items-center justify-center gap-4 pt-4">
+            <div className="flex items-center justify-center gap-3 pt-2">
               {AMP_STREAMERS.map((streamer, index) => (
                 <div 
                   key={streamer.name}
                   className="relative group"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-yellow-500/50 group-hover:border-yellow-500 transition-all duration-300">
+                  <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-yellow-500/50 group-hover:border-yellow-500 transition-all duration-300">
                     <TwitchAvatarImage
                       username={streamer.name}
                       name={streamer.displayName}
                       platform={streamer.platform}
-                      size={80}
+                      size={64}
                       className="w-full h-full"
                     />
                   </div>
@@ -124,9 +124,9 @@ export default function AmpSummerPage() {
       <StreamStatusBar />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-auto">
         {/* Streams Grid */}
-        <div className="flex-1 overflow-hidden bg-gradient-to-b from-background to-black/5">
+        <div className="flex-1 overflow-auto bg-gradient-to-b from-background to-black/5">
           <StreamGrid />
         </div>
 
