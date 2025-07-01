@@ -55,7 +55,7 @@ export default function WatchMultipleStreams() {
             The Best Way to Watch Multiple Streams
           </h2>
           <p className="text-xl text-center text-muted-foreground mb-12 max-w-3xl mx-auto">
-            Whether you're following esports tournaments, content creators, or live events, 
+            Whether you&apos;re following esports tournaments, content creators, or live events, 
             Streamyyy makes it easy to watch everything at once.
           </p>
           

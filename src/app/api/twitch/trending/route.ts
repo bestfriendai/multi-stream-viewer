@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     });
     
     // Convert to array and sort by viewer count
-    let streams = Array.from(uniqueStreams.values())
+    const streams = Array.from(uniqueStreams.values())
       .sort((a, b) => b.viewer_count - a.viewer_count)
       .slice(0, limit);
 

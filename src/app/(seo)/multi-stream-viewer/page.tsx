@@ -172,7 +172,7 @@ export default function MultiStreamViewer() {
                   Enter channel names or stream URLs from any supported platform:
                 </p>
                 <ul className="list-disc list-inside text-sm space-y-1 text-muted-foreground">
-                  <li>Twitch: Enter username (e.g., "ninja") or full URL</li>
+                  <li>Twitch: Enter username (e.g., &quot;ninja&quot;) or full URL</li>
                   <li>YouTube: Paste the live stream or video URL</li>
                   <li>Rumble: Use the embed URL from any live stream</li>
                 </ul>

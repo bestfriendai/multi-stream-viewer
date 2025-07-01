@@ -50,8 +50,8 @@ const TWITCH_HELIX_CLIENT_ID = 'gp762nuuoqcoxypju8c569th9wz7q5' // Public client
 const YOUTUBE_OEMBED_API = 'https://noembed.com/embed'
 
 // Cache for app access token
-let cachedAppToken: string | null = null
-let tokenExpiry: number = 0
+const cachedAppToken: string | null = null
+const tokenExpiry: number = 0
 
 // Alternative approach: Use public Twitch data through CORS proxy
 async function getTwitchStreamsViaProxy(limit: number = 20): Promise<any[]> {

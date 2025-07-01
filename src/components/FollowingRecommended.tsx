@@ -364,7 +364,7 @@ export default function FollowingRecommended() {
               
               {notificationsEnabled && (
                 <p className="text-sm text-muted-foreground">
-                  You'll receive browser notifications when followed channels go live
+                  You&apos;ll receive browser notifications when followed channels go live
                 </p>
               )}
             </div>

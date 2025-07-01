@@ -299,7 +299,7 @@ export default function SuggestedStreams() {
           <p className="text-lg font-medium mb-2">No live streams found</p>
           <p className="text-muted-foreground max-w-md mx-auto">
             {searchQuery ? (
-              <>No streams match "<strong>{searchQuery}</strong>". Try a different search term.</>
+              <>No streams match &quot;<strong>{searchQuery}</strong>&quot;. Try a different search term.</>
             ) : selectedCategory !== 'All' ? (
               <>No live streams in <strong>{selectedCategory}</strong> right now. Try a different category.</>
             ) : (

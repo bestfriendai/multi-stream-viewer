@@ -191,7 +191,7 @@ export default function WatchMultipleTwitchStreams() {
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
             Join thousands of viewers using Streamyyy to enhance their Twitch viewing experience.
-            It's completely free!
+            It&apos;s completely free!
           </p>
           <Link href="/">
             <Button size="lg" className="text-lg px-12">
