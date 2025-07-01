@@ -7,6 +7,7 @@ import StreamChat from '@/components/StreamChat'
 import MobileNav from '@/components/MobileNav'
 import MobileSwipeControls from '@/components/MobileSwipeControls'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import SEOSchema from '@/components/SEOSchema'
 import dynamic from 'next/dynamic'
 
 // Lazy load heavy components
@@ -66,8 +67,28 @@ export default function Home() {
     return success
   }
   
+  const faqItems = [
+    {
+      question: "How many streams can I watch at once?",
+      answer: "You can watch up to 16 streams simultaneously with Streamyyy. The layout automatically adjusts based on the number of streams you add."
+    },
+    {
+      question: "Is Streamyyy free to use?",
+      answer: "Yes! Streamyyy is completely free to use. No registration, subscription, or hidden fees required."
+    },
+    {
+      question: "Can I watch Twitch and YouTube streams together?",
+      answer: "Absolutely! You can mix streams from Twitch, YouTube, Rumble and other supported platforms in the same viewer."
+    },
+    {
+      question: "Does it work on mobile devices?",
+      answer: "Yes, Streamyyy is fully responsive and optimized for phones, tablets, and desktop computers."
+    }
+  ]
+
   return (
     <div className="flex flex-col h-screen bg-background">
+      <SEOSchema faqs={faqItems} type="WebApplication" />
       <Header onToggleChat={() => setShowChat(!showChat)} showChat={showChat} />
       
       {/* Main Content with Tabs */}

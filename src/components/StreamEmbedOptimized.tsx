@@ -217,7 +217,7 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
   const viewerCount = twitchStatus?.isLive ? twitchStatus.viewerCount : 0
   
   return (
-    <div className="relative h-full w-full bg-black rounded-lg overflow-hidden group">
+    <div className="absolute inset-0 bg-black overflow-hidden group">
       {/* Stream Controls */}
       <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between p-2 bg-gradient-to-b from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto">
         <div className="flex items-center gap-2">
