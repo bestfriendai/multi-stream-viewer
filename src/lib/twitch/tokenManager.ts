@@ -45,11 +45,21 @@ class TokenManager {
 
     const response = await fetch('https://id.twitch.tv/oauth2/token', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
       body: params
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to get Twitch token: ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('Twitch token error:', response.status, errorText);
+      console.error('Request params:', {
+        client_id: process.env.TWITCH_CLIENT_ID?.substring(0, 5) + '...',
+        client_secret: process.env.TWITCH_CLIENT_SECRET?.substring(0, 5) + '...',
+        grant_type: 'client_credentials'
+      });
+      throw new Error(`Failed to get Twitch token: ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json();
