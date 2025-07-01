@@ -1,0 +1,46 @@
+/* AMP Summer Page Mobile Optimizations */
+@media (max-width: 768px) {
+  /* Reduce hero section height on mobile */
+  .amp-hero-section {
+    padding: 1rem 0 !important;
+  }
+  
+  /* Smaller avatars on mobile to save space */
+  .amp-avatar-container {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+  
+  /* Ensure stream grid uses maximum available space */
+  .amp-stream-container {
+    height: calc(100vh - 120px) !important;
+    min-height: calc(100vh - 120px) !important;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  /* Even smaller hero on very small screens */
+  .amp-hero-section {
+    padding: 0.5rem 0 !important;
+  }
+  
+  /* Hide less important elements to maximize stream space */
+  .amp-hero-section .text-xs {
+    display: none !important;
+  }
+  
+  /* Ensure streams fill viewport */
+  .stream-grid[data-count="4"] {
+    height: calc(100vh - 100px) !important;
+    padding: 0.25rem !important;
+  }
+  
+  .stream-grid[data-count="4"] > * {
+    /* Force square aspect ratio but use all available space */
+    width: calc((100vw - 1rem) / 2) !important;
+    height: calc((100vw - 1rem) / 2) !important;
+    max-width: calc((100vh - 120px) / 2) !important;
+    max-height: calc((100vh - 120px) / 2) !important;
+  }
+}

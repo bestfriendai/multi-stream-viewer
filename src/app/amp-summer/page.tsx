@@ -67,6 +67,7 @@ import { Zap, Users } from 'lucide-react'
 import Image from 'next/image'
 import TwitchAvatarImage from '@/components/TwitchAvatarImage'
 import Script from 'next/script'
+import './amp-summer.css'
 
 const AMP_STREAMERS = [
   { 
@@ -194,7 +195,7 @@ export default function AmpSummerPage() {
       <Header showChat={showChat} onToggleChat={() => setShowChat(!showChat)} />
       
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500/20 via-orange-500/10 to-background border-b">
+      <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500/20 via-orange-500/10 to-background border-b amp-hero-section">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl" />
@@ -223,7 +224,7 @@ export default function AmpSummerPage() {
                   className="relative group"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-yellow-500/50 group-hover:border-yellow-500 transition-all duration-300">
+                  <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-yellow-500/50 group-hover:border-yellow-500 transition-all duration-300 amp-avatar-container">
                     <TwitchAvatarImage
                       username={streamer.name}
                       name={streamer.displayName}
@@ -265,9 +266,9 @@ export default function AmpSummerPage() {
       <StreamStatusBar />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex overflow-auto">
+      <div className="flex-1 flex overflow-auto min-h-0 amp-stream-container">
         {/* Streams Grid */}
-        <div className="flex-1 overflow-auto bg-gradient-to-b from-background to-black/5">
+        <div className="flex-1 overflow-auto bg-gradient-to-b from-background to-black/5 min-h-0">
           <StreamGrid />
         </div>
 
