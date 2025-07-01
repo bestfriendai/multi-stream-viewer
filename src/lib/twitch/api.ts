@@ -1,4 +1,5 @@
 import { tokenManager } from './tokenManager';
+import { TwitchRateLimitHandler } from './rateLimitHandler';
 
 export interface StreamData {
   id: string;
@@ -40,24 +41,20 @@ export interface GameData {
 
 class TwitchAPI {
   private baseUrl = 'https://api.twitch.tv/helix';
+  private rateLimitHandler = new TwitchRateLimitHandler();
 
   private async makeRequest<T>(endpoint: string, params?: URLSearchParams): Promise<T> {
     const token = await tokenManager.getValidToken();
     const url = params ? `${this.baseUrl}${endpoint}?${params}` : `${this.baseUrl}${endpoint}`;
 
-    const response = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Client-Id': process.env.TWITCH_CLIENT_ID!
-      }
+    return this.rateLimitHandler.executeRequest<T>(async () => {
+      return fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Client-Id': process.env.TWITCH_CLIENT_ID!
+        }
+      });
     });
-
-    if (!response.ok) {
-      throw new Error(`Twitch API error: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
   }
 
   async getStreams(userLogins: string[]): Promise<StreamData[]> {

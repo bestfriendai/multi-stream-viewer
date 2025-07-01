@@ -1,13 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { twitchAPI } from '@/lib/twitch/api';
 
-// Rate limiting
+// Rate limiting with more conservative limits
 const requestCounts = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 100; // requests per minute per IP
+const RATE_LIMIT = 20; // requests per minute per IP (more conservative)
 const RATE_WINDOW = 60000; // 1 minute
+
+// Global rate limit for all requests
+let globalRequestCount = 0;
+let globalResetTime = Date.now() + RATE_WINDOW;
+const GLOBAL_RATE_LIMIT = 50; // Total requests per minute across all users
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
+  
+  // Check global rate limit first
+  if (now > globalResetTime) {
+    globalRequestCount = 0;
+    globalResetTime = now + RATE_WINDOW;
+  }
+  
+  if (globalRequestCount >= GLOBAL_RATE_LIMIT) {
+    return false;
+  }
+  
+  // Check per-IP rate limit
   const record = requestCounts.get(ip) || { count: 0, resetTime: now + RATE_WINDOW };
 
   if (now > record.resetTime) {
@@ -20,7 +37,19 @@ function checkRateLimit(ip: string): boolean {
   }
 
   record.count++;
+  globalRequestCount++;
   requestCounts.set(ip, record);
+  
+  // Clean up old entries to prevent memory leak
+  if (requestCounts.size > 1000) {
+    const oldestTime = now - RATE_WINDOW * 2;
+    for (const [key, value] of requestCounts.entries()) {
+      if (value.resetTime < oldestTime) {
+        requestCounts.delete(key);
+      }
+    }
+  }
+  
   return true;
 }
 
@@ -29,9 +58,22 @@ export async function POST(request: NextRequest) {
     // Check rate limit
     const ip = request.headers.get('x-forwarded-for') || 'unknown';
     if (!checkRateLimit(ip)) {
+      const retryAfter = Math.ceil((globalResetTime - Date.now()) / 1000);
       return NextResponse.json(
-        { error: 'Rate limit exceeded' },
-        { status: 429 }
+        { 
+          error: 'Rate limit exceeded',
+          retryAfter,
+          message: 'Too many requests. Please wait before trying again.'
+        },
+        { 
+          status: 429,
+          headers: {
+            'Retry-After': retryAfter.toString(),
+            'X-RateLimit-Limit': RATE_LIMIT.toString(),
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': new Date(globalResetTime).toISOString()
+          }
+        }
       );
     }
 

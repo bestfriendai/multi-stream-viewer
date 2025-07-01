@@ -16,11 +16,15 @@ export type StreamStatusMap = Map<string, StreamInfo>;
 
 class TwitchService {
   private cache = new Map<string, CachedStreamData>();
-  private cacheTimeout = 60000; // 1 minute cache
-  private batchDelay = 100; // 100ms delay for batching requests
+  private cacheTimeout = 120000; // 2 minute cache (increased to reduce API calls)
+  private batchDelay = 500; // 500ms delay for batching requests (increased)
   private pendingChannels: Set<string> = new Set();
   private batchTimeout: NodeJS.Timeout | null = null;
   private resolvers: Map<string, ((value: StreamInfo) => void)[]> = new Map();
+  private retryAfter: number = 0;
+  private lastRequestTime: number = 0;
+  private requestCount: number = 0;
+  private requestResetTime: number = Date.now() + 60000;
 
   async getStreamStatus(channels: string[]): Promise<StreamStatusMap> {
     const now = Date.now();
@@ -71,10 +75,32 @@ class TwitchService {
       return;
     }
 
+    // Check if we're in a rate limit cooldown
+    if (this.retryAfter > Date.now()) {
+      // Reschedule for after the cooldown
+      this.batchTimeout = setTimeout(() => this.processBatch(), this.retryAfter - Date.now() + 100);
+      return;
+    }
+
+    // Simple client-side rate limiting
+    const now = Date.now();
+    if (now > this.requestResetTime) {
+      this.requestCount = 0;
+      this.requestResetTime = now + 60000;
+    }
+    
+    if (this.requestCount >= 10) { // Max 10 requests per minute from client
+      // Reschedule for next minute
+      this.batchTimeout = setTimeout(() => this.processBatch(), this.requestResetTime - now + 100);
+      return;
+    }
+
     // Get channels to process
     const channels = Array.from(this.pendingChannels);
     this.pendingChannels.clear();
     this.batchTimeout = null;
+    this.requestCount++;
+    this.lastRequestTime = now;
 
     try {
       // Fetch data for all channels in batch
@@ -85,7 +111,42 @@ class TwitchService {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch stream data');
+        if (response.status === 429) {
+          // Handle rate limit
+          const retryAfterHeader = response.headers.get('Retry-After');
+          const retryAfterSeconds = retryAfterHeader ? parseInt(retryAfterHeader) : 60;
+          this.retryAfter = Date.now() + (retryAfterSeconds * 1000);
+          
+          console.warn(`Rate limited. Retrying after ${retryAfterSeconds} seconds`);
+          
+          // Reschedule pending requests
+          channels.forEach(channel => {
+            this.pendingChannels.add(channel);
+          });
+          
+          if (!this.batchTimeout) {
+            this.batchTimeout = setTimeout(() => this.processBatch(), retryAfterSeconds * 1000 + 100);
+          }
+          
+          // Return offline status for now
+          channels.forEach(channel => {
+            const offlineInfo: StreamInfo = {
+              isLive: false,
+              viewerCount: 0,
+              gameName: '',
+              title: '',
+              thumbnailUrl: '',
+              startedAt: null
+            };
+            
+            const resolvers = this.resolvers.get(channel) || [];
+            resolvers.forEach(resolve => resolve(offlineInfo));
+            this.resolvers.delete(channel);
+          });
+          
+          return;
+        }
+        throw new Error(`Failed to fetch stream data: ${response.status}`);
       }
 
       const data = await response.json();

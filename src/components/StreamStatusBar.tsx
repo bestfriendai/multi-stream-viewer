@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import { useTwitchStatus } from '@/hooks/useTwitchStatus'
 import LiveIndicator from './LiveIndicator'
@@ -8,13 +9,23 @@ import { cn } from '@/lib/utils'
 
 export default function StreamStatusBar() {
   const { streams } = useStreamStore()
+  const [enableStatus, setEnableStatus] = useState(false)
+  
+  // Delay enabling status check to prevent immediate API calls
+  useEffect(() => {
+    const timer = setTimeout(() => setEnableStatus(true), 2000)
+    return () => clearTimeout(timer)
+  }, [])
   
   // Get all Twitch channel names
   const twitchChannels = streams
     .filter(stream => stream.platform === 'twitch')
     .map(stream => stream.channelName)
   
-  const { status, loading } = useTwitchStatus(twitchChannels)
+  const { status, loading } = useTwitchStatus(
+    twitchChannels,
+    { enabled: enableStatus && twitchChannels.length > 0 }
+  )
   
   // Calculate total viewers
   const totalViewers = Array.from(status.values())

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTwitchStatus } from '@/hooks/useTwitchStatus'
 import LiveIndicator from './LiveIndicator'
 import { Button } from './ui/button'
@@ -13,7 +13,18 @@ export default function TwitchTestPanel() {
   
   // Test channels - mix of usually live and offline
   const testChannels = ['ninja', 'shroud', 'pokimane', 'lirik', 'summit1g']
-  const { status, loading: statusLoading, error: statusError } = useTwitchStatus(testChannels)
+  const [enableStatus, setEnableStatus] = useState(false)
+  
+  // Delay enabling status check to prevent immediate API calls
+  useEffect(() => {
+    const timer = setTimeout(() => setEnableStatus(true), 1000)
+    return () => clearTimeout(timer)
+  }, [])
+  
+  const { status, loading: statusLoading, error: statusError } = useTwitchStatus(
+    testChannels,
+    { enabled: enableStatus, refreshInterval: 180000 } // 3 minutes for test panel
+  )
 
   const runApiTests = async () => {
     setLoading(true)

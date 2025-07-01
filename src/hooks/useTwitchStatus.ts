@@ -10,7 +10,7 @@ export function useTwitchStatus(
   channels: string[],
   options: UseTwitchStatusOptions = {}
 ) {
-  const { refreshInterval = 60000, enabled = true } = options;
+  const { refreshInterval = 120000, enabled = true } = options; // Default to 2 minutes
   
   const [status, setStatus] = useState<StreamStatusMap>(new Map());
   const [loading, setLoading] = useState(true);
