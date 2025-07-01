@@ -56,7 +56,7 @@ function checkRateLimit(ip: string): boolean {
 export async function POST(request: NextRequest) {
   try {
     // Check rate limit
-    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     if (!checkRateLimit(ip)) {
       const retryAfter = Math.ceil((globalResetTime - Date.now()) / 1000);
       return NextResponse.json(
@@ -79,10 +79,24 @@ export async function POST(request: NextRequest) {
 
     // Validate environment variables
     if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
-      console.error('Missing Twitch API credentials');
+      console.error('Missing Twitch API credentials in environment');
+      console.error('TWITCH_CLIENT_ID exists:', !!process.env.TWITCH_CLIENT_ID);
+      console.error('TWITCH_CLIENT_SECRET exists:', !!process.env.TWITCH_CLIENT_SECRET);
+      
+      // Return empty results instead of error to prevent UI breaks
+      const { channels = [] } = await request.json();
+      const emptyResults = channels.map((channel: string) => ({
+        channel: channel.toLowerCase(),
+        isLive: false,
+        data: null
+      }));
+      
       return NextResponse.json(
-        { error: 'Server configuration error' },
-        { status: 500 }
+        { 
+          results: emptyResults,
+          error: 'Twitch integration not configured'
+        },
+        { status: 200 } // Return 200 to prevent UI errors
       );
     }
 
@@ -167,14 +181,39 @@ export async function POST(request: NextRequest) {
         },
       }
     );
-  } catch (error) {
-    console.error('Twitch API error:', error);
+  } catch (error: any) {
+    console.error('Twitch API endpoint error:', error);
+    console.error('Error details:', error.message);
+    console.error('Stack:', error.stack);
     
-    // Don't expose internal error details
-    return NextResponse.json(
-      { error: 'Failed to fetch stream data' },
-      { status: 500 }
-    );
+    // Try to parse request body for graceful fallback
+    try {
+      const body = await request.json().catch(() => ({ channels: [] }));
+      const channels = body.channels || [];
+      
+      const fallbackResults = channels.map((channel: string) => ({
+        channel: channel.toLowerCase(),
+        isLive: false,
+        data: null
+      }));
+      
+      return NextResponse.json(
+        { 
+          results: fallbackResults,
+          error: 'Twitch service temporarily unavailable'
+        },
+        { status: 200 }
+      );
+    } catch {
+      // If all else fails, return empty results
+      return NextResponse.json(
+        { 
+          results: [],
+          error: 'Service error'
+        },
+        { status: 200 }
+      );
+    }
   }
 }
 

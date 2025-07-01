@@ -108,6 +108,9 @@ class TwitchService {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ channels })
+      }).catch(error => {
+        console.error('Network error calling Twitch API:', error);
+        throw new Error('Network error');
       });
 
       if (!response.ok) {
@@ -151,6 +154,12 @@ class TwitchService {
 
       const data = await response.json();
       const now = Date.now();
+
+      // Check if we got valid results
+      if (!data.results || !Array.isArray(data.results)) {
+        console.error('Invalid response from Twitch API:', data);
+        throw new Error('Invalid API response');
+      }
 
       // Process results and update cache
       data.results.forEach((result: any) => {

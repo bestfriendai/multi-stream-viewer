@@ -22,7 +22,11 @@ export async function GET(request: NextRequest) {
     // Test 1: Environment Variables
     if (!tests.environment.clientId || !tests.environment.clientSecret) {
       tests.errors.push('Missing Twitch credentials in environment variables');
-      return NextResponse.json(tests, { status: 500 });
+      tests.summary = {
+        totalErrors: 1,
+        recommendation: 'Please add TWITCH_CLIENT_ID and TWITCH_CLIENT_SECRET environment variables in Vercel dashboard'
+      };
+      return NextResponse.json(tests, { status: 200 }); // Return 200 to show results
     }
 
     // Test 2: Token Generation
