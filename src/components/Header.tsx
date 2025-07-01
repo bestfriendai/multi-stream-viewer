@@ -3,15 +3,26 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useStreamStore } from '@/store/streamStore'
-import { Plus, Trash2, MessageSquare, TrendingUp, Keyboard, Monitor, Smartphone, Zap } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { 
+  Plus, 
+  Menu, 
+  MessageSquare, 
+  Compass, 
+  Zap, 
+  X,
+  Trash2,
+  Keyboard,
+  Share2,
+  BookmarkPlus,
+  MoreVertical
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ThemeToggle } from './theme-toggle'
 import SavedLayoutsDialog from './SavedLayoutsDialog'
 import ShareDialog from './ShareDialog'
 import LayoutSelector from './LayoutSelector'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import LiveDiscovery from './LiveDiscovery'
 import StreamyyyLogo from './StreamyyyLogo'
 import {
@@ -21,16 +32,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu"
-
-const layoutOptions = [
-  { value: '1x1', label: '1x1', icon: '◻' },
-  { value: '2x1', label: '2x1', icon: '◻◻' },
-  { value: '2x2', label: '2x2', icon: '⊞' },
-  { value: '3x3', label: '3x3', icon: '⊟' },
-  { value: '4x4', label: '4x4', icon: '⊞' },
-  { value: 'custom', label: 'Focus', icon: '◧' }
-] as const
+import { Separator } from "@/components/ui/separator"
 
 interface HeaderProps {
   onToggleChat: () => void
@@ -40,13 +44,12 @@ interface HeaderProps {
 export default function Header({ onToggleChat, showChat }: HeaderProps) {
   const [channelInput, setChannelInput] = useState('')
   const [showAddStream, setShowAddStream] = useState(false)
-  const [desktopMode, setDesktopMode] = useState(false)
+  const [showDiscovery, setShowDiscovery] = useState(false)
+  
   const { 
     streams, 
     addStream, 
-    clearAllStreams, 
-    gridLayout, 
-    setGridLayout 
+    clearAllStreams
   } = useStreamStore()
   
   const handleAddStream = async (e: React.FormEvent) => {
@@ -56,229 +59,202 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
       if (success) {
         setChannelInput('')
         setShowAddStream(false)
-      } else {
-        // Invalid input - you might want to show an error message
-        alert('Invalid stream URL or username. Please enter a valid Twitch username/URL, YouTube URL, or Rumble URL.')
       }
     }
   }
   
   return (
-    <header className="glass sticky top-0 z-40 border-b border-border/50 animate-slide-down">
-      <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-3">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-2 sm:gap-4">
-          {/* Logo/Title */}
-          <div className="flex items-center gap-2 w-full lg:w-auto justify-between">
-            <Link
-              href="/"
-              className="transition-opacity hover:opacity-80 cursor-pointer"
-              title="Go to Home"
-            >
-              <StreamyyyLogo
-                size="md"
-                variant="gradient"
-                className="flex items-center"
-              />
+    <>
+      <header className="bg-background/80 backdrop-blur-md sticky top-0 z-40 border-b">
+        <div className="container mx-auto px-3 sm:px-4">
+          <div className="h-14 flex items-center justify-between gap-4">
+            {/* Logo */}
+            <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
+              <StreamyyyLogo size="sm" variant="gradient" />
             </Link>
 
-            {/* Mobile Controls */}
-            <div className="flex items-center gap-2 lg:hidden">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setDesktopMode(!desktopMode)
-                  document.body.classList.toggle('force-desktop-mode', !desktopMode)
-                }}
-                className="p-2"
-                title={desktopMode ? "Switch to Mobile View" : "Switch to Desktop View"}
-              >
-                {desktopMode ? <Smartphone size={16} /> : <Monitor size={16} />}
-              </Button>
-              <span className="text-sm text-muted-foreground">
-                {streams.length}/16
-              </span>
-            </div>
-          </div>
-          
-          {/* Controls */}
-          <div className="flex items-center gap-2 flex-wrap justify-center">
-            {/* AMP Summer Link */}
-            <Link href="/amp-summer">
-              <Button
-                variant="outline"
-                size="sm"
-                className="relative overflow-hidden bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/50 hover:border-yellow-500 hover:from-yellow-500/20 hover:to-orange-500/20 transition-all duration-300 group"
-              >
-                <Zap className="w-4 h-4 mr-1 text-yellow-600 group-hover:text-yellow-500 animate-pulse" />
-                <span className="font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
-                  AMP SUMMER
-                </span>
-                <Zap className="w-4 h-4 ml-1 text-yellow-600 group-hover:text-yellow-500 animate-pulse" />
-              </Button>
-            </Link>
-            
-            {/* Add Stream */}
-            <div className="animate-fade-in">
-            {showAddStream ? (
-              <form onSubmit={handleAddStream} className="flex gap-2">
-                <Input
-                  type="text"
-                  value={channelInput}
-                  onChange={(e) => setChannelInput(e.target.value)}
-                  placeholder="Channel or URL"
-                  className="h-8 w-40 sm:w-64"
-                  autoFocus
-                />
-                <Button type="submit" size="sm">
-                  Add
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setShowAddStream(false)
-                    setChannelInput('')
-                  }}
-                >
-                  Cancel
-                </Button>
-              </form>
-            ) : (
-              <Button
-                onClick={() => setShowAddStream(true)}
-                size="sm"
-                disabled={streams.length >= 16}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
-              >
-                <Plus size={16} className="mr-2" />
-                Add Stream
-              </Button>
-            )}
-            </div>
-            
-            {/* Enhanced Discovery Dialog */}
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="relative overflow-hidden bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900/50 dark:to-black/50 border-gray-300 dark:border-gray-700 hover:from-gray-100 hover:to-gray-200 dark:hover:from-gray-800/50 dark:hover:to-gray-900/50 transition-all duration-300 group"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-gray-800/10 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <TrendingUp size={16} className="mr-2 text-gray-700 dark:text-gray-300 group-hover:scale-110 transition-transform duration-300" />
-                  <span className="font-semibold bg-gradient-to-r from-gray-800 to-black dark:from-gray-200 dark:to-white bg-clip-text text-transparent">
-                    Discover
-                  </span>
-                </Button>
-              </DialogTrigger>
-              <DialogContent
-                className="max-w-[98vw] sm:max-w-7xl max-h-[98vh] sm:max-h-[95vh] p-0 border-0 bg-transparent shadow-none"
-                showCloseButton={false}
-              >
-                <DialogHeader className="sr-only">
-                  <DialogTitle>Discover Live Streams</DialogTitle>
-                </DialogHeader>
+            {/* Main Actions - Center */}
+            <div className="flex items-center gap-2 flex-1 justify-center">
+              {/* Add Stream */}
+              {showAddStream ? (
+                <form onSubmit={handleAddStream} className="flex items-center gap-2 max-w-xs">
+                  <Input
+                    type="text"
+                    value={channelInput}
+                    onChange={(e) => setChannelInput(e.target.value)}
+                    placeholder="Enter channel or URL"
+                    className="h-8"
+                    autoFocus
+                  />
+                  <Button type="submit" size="sm" className="h-8">
+                    Add
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 w-8 p-0"
+                    onClick={() => {
+                      setShowAddStream(false)
+                      setChannelInput('')
+                    }}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </form>
+              ) : (
+                <>
+                  <Button
+                    onClick={() => setShowAddStream(true)}
+                    size="sm"
+                    className="h-8"
+                    disabled={streams.length >= 16}
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span className="ml-1.5 hidden sm:inline">Add Stream</span>
+                  </Button>
 
-                {/* Enhanced modal container with glassmorphism */}
-                <div className="relative w-full h-full">
-                  {/* Background blur overlay */}
-                  <div className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-3xl"></div>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="h-8"
+                    onClick={() => setShowDiscovery(true)}
+                  >
+                    <Compass className="h-4 w-4" />
+                    <span className="ml-1.5 hidden sm:inline">Discover</span>
+                  </Button>
 
-                  {/* Main content container */}
-                  <div className="relative bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-3xl shadow-2xl max-h-[98vh] sm:max-h-[95vh] overflow-hidden">
-                    {/* Custom close button */}
-                    <div className="absolute top-4 right-4 z-50">
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="w-10 h-10 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-white/30 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-700 shadow-lg transition-all duration-300"
-                        >
-                          <span className="sr-only">Close</span>
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </Button>
-                      </DialogTrigger>
-                    </div>
-
-                    {/* Scrollable content */}
-                    <div className="max-h-[98vh] sm:max-h-[95vh] overflow-y-auto">
-                      <LiveDiscovery />
-                    </div>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-            
-            {/* Layout Options */}
-            <div className="hidden md:block">
-              <LayoutSelector />
-            </div>
-            
-            {/* Saved Layouts */}
-            <div className="hidden md:block">
-              <SavedLayoutsDialog />
-            </div>
-            
-            {/* Share */}
-            <div className="hidden md:block">
-              <ShareDialog />
-            </div>
-            
-            {/* Chat Toggle */}
-            <Button
-              variant={showChat ? 'default' : 'outline'}
-              size="sm"
-              onClick={onToggleChat}
-            >
-              <MessageSquare size={16} className="mr-2" />
-              Chat
-            </Button>
-            
-            {/* More Options */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  More
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Options</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => {
-                  alert('Keyboard Shortcuts:\n\n1-9: Switch to stream\nSpace/M: Mute/unmute\n←→: Navigate streams\nCtrl+X: Clear all\n?: Show help')
-                }}>
-                  <Keyboard className="mr-2 h-4 w-4" />
-                  Keyboard Shortcuts
-                </DropdownMenuItem>
-                {streams.length > 0 && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem 
-                      onSelect={clearAllStreams}
-                      className="text-destructive"
+                  {/* AMP Summer */}
+                  <Link href="/amp-summer" className="hidden sm:block">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 border-yellow-500/30 hover:border-yellow-500/50 hover:bg-yellow-500/10"
                     >
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Clear All Streams
-                    </DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            {/* Theme Toggle */}
-            <ThemeToggle />
-          </div>
-          
-          {/* Desktop Stream Count */}
-          <div className="text-sm text-muted-foreground hidden lg:block">
-            {streams.length} / 16 streams
+                      <Zap className="h-4 w-4 text-yellow-600" />
+                      <span className="ml-1.5 font-medium">AMP</span>
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Right Actions */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {/* Desktop Actions */}
+              <div className="hidden md:flex items-center gap-2">
+                <LayoutSelector />
+                
+                <SavedLayoutsDialog />
+                
+                <ShareDialog />
+                
+                <Separator orientation="vertical" className="h-6" />
+                
+                <Button
+                  variant={showChat ? "default" : "ghost"}
+                  size="sm"
+                  onClick={onToggleChat}
+                  className="h-8"
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  <span className="ml-1.5">Chat</span>
+                </Button>
+              </div>
+
+              {/* Mobile Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild className="md:hidden">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <Menu className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={onToggleChat}>
+                    <MessageSquare className="mr-2 h-4 w-4" />
+                    {showChat ? 'Hide' : 'Show'} Chat
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuItem asChild>
+                    <Link href="/amp-summer">
+                      <Zap className="mr-2 h-4 w-4 text-yellow-600" />
+                      AMP Summer
+                    </Link>
+                  </DropdownMenuItem>
+                  
+                  {streams.length > 0 && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem 
+                        onClick={clearAllStreams}
+                        className="text-destructive focus:text-destructive"
+                      >
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Clear All
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <ThemeToggle />
+              
+              {/* More Options */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <MoreVertical className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Options</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuItem
+                    onClick={() => {
+                      alert(
+                        'Keyboard Shortcuts:\n\n' +
+                        '1-9: Switch to stream\n' +
+                        'Space/M: Mute/unmute\n' +
+                        '←→: Navigate streams\n' +
+                        'C: Toggle chat\n' +
+                        'F: Fullscreen\n' +
+                        'Ctrl+X: Clear all\n' +
+                        '?: Show help'
+                      )
+                    }}
+                  >
+                    <Keyboard className="mr-2 h-4 w-4" />
+                    Shortcuts
+                    <DropdownMenuShortcut>?</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuItem className="text-xs text-muted-foreground">
+                    {streams.length} / 16 streams
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Dialogs */}
+      <Dialog open={showDiscovery} onOpenChange={setShowDiscovery}>
+        <DialogContent className="max-w-[95vw] sm:max-w-6xl max-h-[90vh] p-0">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Discover Live Streams</DialogTitle>
+          </DialogHeader>
+          <div className="overflow-auto max-h-[85vh]">
+            <LiveDiscovery />
+          </div>
+        </DialogContent>
+      </Dialog>
+
+    </>
   )
 }
