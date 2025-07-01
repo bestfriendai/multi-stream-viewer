@@ -140,9 +140,7 @@ export default function AmpSummerPage() {
         </div>
 
         {/* Chat Panel */}
-        {showChat && (
-          <StreamChat onClose={() => setShowChat(false)} />
-        )}
+        <StreamChat show={showChat} onClose={() => setShowChat(false)} />
       </div>
 
       {/* Footer Info */}
