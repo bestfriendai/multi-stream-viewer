@@ -189,6 +189,36 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-3xl animate-pulse animation-delay-2000" />
         </div>
         
+        {/* Background Live Streams */}
+        {liveChannels.length > 0 && (
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 grid grid-cols-2 gap-6 p-12 scale-110">
+              {liveChannels.slice(0, 4).map((channel, index) => (
+                <motion.div 
+                  key={channel.channelName} 
+                  className="relative overflow-hidden rounded-2xl shadow-2xl"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 0.15, scale: 1 }}
+                  transition={{ delay: index * 0.2, duration: 1 }}
+                >
+                  <div className="aspect-video relative">
+                    <iframe
+                      src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
+                      className="absolute inset-0 w-full h-full"
+                      frameBorder="0"
+                      scrolling="no"
+                      allowFullScreen={false}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/60 to-background/40" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background/90" />
+          </div>
+        )}
+        
         <div className="container mx-auto px-4 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
