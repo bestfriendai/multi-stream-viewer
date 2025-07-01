@@ -1,8 +1,14 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Monitor, Youtube, Twitch, Globe, Zap, Users, Layout, PlayCircle } from 'lucide-react'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [{ media: '(prefers-color-scheme: dark)', color: '#0a0a0a' }],
+}
 
 export const metadata: Metadata = {
   title: 'Watch Multiple Streams at Once - Multi-Platform Stream Viewer',

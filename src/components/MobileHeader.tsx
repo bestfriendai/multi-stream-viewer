@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { ThemeToggle } from './theme-toggle'
 import StreamyyyLogo from './StreamyyyLogo'
 import {
@@ -41,6 +42,7 @@ export default function MobileHeader({
 }: MobileHeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchInput, setSearchInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const { streams, addStream, clearAllStreams } = useStreamStore()
   const { trackMenuItemClick, trackStreamSearch } = useAnalytics()
 
@@ -48,12 +50,17 @@ export default function MobileHeader({
 
   const handleQuickSearch = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (searchInput.trim()) {
-      const success = await addStream(searchInput.trim())
-      if (success) {
-        trackStreamSearch(searchInput, 'mobile_header')
-        setSearchInput('')
-        setIsSearchOpen(false)
+    if (searchInput.trim() && !isLoading) {
+      setIsLoading(true)
+      try {
+        const success = await addStream(searchInput.trim())
+        if (success) {
+          trackStreamSearch(searchInput, 'mobile_header')
+          setSearchInput('')
+          setIsSearchOpen(false)
+        }
+      } finally {
+        setIsLoading(false)
       }
     }
   }
@@ -168,9 +175,9 @@ export default function MobileHeader({
                 type="submit" 
                 size="sm" 
                 className="h-9 px-3"
-                disabled={!searchInput.trim()}
+                disabled={!searchInput.trim() || isLoading}
               >
-                Add
+                {isLoading ? <LoadingSpinner size="sm" /> : 'Add'}
               </Button>
             </form>
             <div className="mt-2 text-xs text-muted-foreground">

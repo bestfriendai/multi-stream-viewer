@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -9,6 +9,12 @@ import {
   Monitor, Users, Zap, Globe, MessageSquare, Layout, 
   CheckCircle2, Star, TrendingUp, Shield, Clock, Smartphone 
 } from 'lucide-react'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [{ media: '(prefers-color-scheme: dark)', color: '#0a0a0a' }],
+}
 
 export const metadata: Metadata = {
   title: 'Multi-Stream Viewer - Watch Multiple Live Streams Simultaneously | Streamyyy',

@@ -21,6 +21,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#6366f1" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" }
+  ],
+}
+
 export const metadata: Metadata = {
   title: "Watch Multiple Streams at Once - Streamyyy Multi-Stream Viewer",
   description: "Watch multiple Twitch streams, YouTube streams, and more simultaneously. Free multi-stream viewer for watching many streams at once. Perfect for esports, gaming events, and content creators.",
@@ -29,11 +39,6 @@ export const metadata: Metadata = {
     canonical: "https://streamyyy.com",
   },
   manifest: "/manifest.json",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#6366f1" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" }
-  ],
   keywords: [
     "watch multiple streams",
     "multi stream viewer",
