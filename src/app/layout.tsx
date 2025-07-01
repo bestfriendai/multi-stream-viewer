@@ -199,11 +199,10 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         
         {/* Google AdSense */}
-        <Script 
+        <script 
           async 
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4679934692726562"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
         />
         
         {/* Google tag (gtag.js) */}

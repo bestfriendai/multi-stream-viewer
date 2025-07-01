@@ -111,6 +111,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
     gameName: string
     title: string
     isLive: boolean
+    thumbnailUrl?: string
   }>>([])
   const [activeDemo, setActiveDemo] = useState(0)
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
@@ -119,7 +120,20 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
     viewerCount: number
   }>>([])
   const [loading, setLoading] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
   
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   // Fetch top live streams directly with priority
   useEffect(() => {
     const fetchTopStreams = async () => {
@@ -320,13 +334,30 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                         >
                           {stream ? (
                             <>
-                              <iframe
-                                src={`https://player.twitch.tv/?channel=${stream.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true`}
-                                className="absolute inset-0 w-full h-full"
-                                frameBorder="0"
-                                scrolling="no"
-                                allowFullScreen={true}
-                              />
+                              {isMobile ? (
+                                // Mobile: Show thumbnail
+                                <>
+                                  <img 
+                                    src={`https://static-cdn.jtvnw.net/previews-ttv/live_user_${stream.channelName}-1920x1080.jpg`}
+                                    alt={stream.channelName}
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                    loading="lazy"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent" />
+                                  <div className="absolute inset-0 flex items-center justify-center">
+                                    <PlayCircle className="w-10 h-10 text-white/80 drop-shadow-lg" />
+                                  </div>
+                                </>
+                              ) : (
+                                // Desktop: Show live iframe
+                                <iframe
+                                  src={`https://player.twitch.tv/?channel=${stream.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true`}
+                                  className="absolute inset-0 w-full h-full"
+                                  frameBorder="0"
+                                  scrolling="no"
+                                  allowFullScreen={true}
+                                />
+                              )}
                               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
                                 <p className="text-xs font-medium text-white truncate">{stream.channelName}</p>
                                 <p className="text-xs text-white/80">
@@ -513,14 +544,31 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                     className="overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer group"
                     onClick={() => handleQuickAdd(channel.channelName)}
                   >
-                    <div className="aspect-video relative overflow-hidden">
-                      <iframe
-                        src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
-                        className="absolute inset-0 w-full h-full"
-                        frameBorder="0"
-                        scrolling="no"
-                        allowFullScreen={false}
-                      />
+                    <div className="aspect-video relative overflow-hidden bg-black">
+                      {isMobile ? (
+                        // Mobile: Show thumbnail only
+                        <>
+                          <img 
+                            src={channel.thumbnailUrl || `https://static-cdn.jtvnw.net/previews-ttv/live_user_${channel.channelName}-1920x1080.jpg`}
+                            alt={channel.channelName}
+                            className="absolute inset-0 w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <PlayCircle className="w-12 h-12 text-white/80 drop-shadow-lg" />
+                          </div>
+                        </>
+                      ) : (
+                        // Desktop: Show live iframe
+                        <iframe
+                          src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
+                          className="absolute inset-0 w-full h-full"
+                          frameBorder="0"
+                          scrolling="no"
+                          allowFullScreen={false}
+                        />
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
                       <div className="absolute top-2 right-2 z-10">
                         <Badge className="bg-red-600 text-white border-0 text-xs">

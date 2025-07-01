@@ -20,14 +20,31 @@ interface OptimizedBackgroundStreamsProps {
 export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgroundStreamsProps) {
   const [loadedStreams, setLoadedStreams] = useState<number[]>([])
   const [shouldLoadStreams, setShouldLoadStreams] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
-  // Delay loading streams until after initial page render
+  // Check if mobile and delay loading streams until after initial page render
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShouldLoadStreams(true)
-    }, 500) // Start loading after 500ms
-
-    return () => clearTimeout(timer)
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    // Only load streams on desktop
+    if (window.innerWidth >= 768) {
+      const timer = setTimeout(() => {
+        setShouldLoadStreams(true)
+      }, 500) // Start loading after 500ms
+      
+      return () => {
+        clearTimeout(timer)
+        window.removeEventListener('resize', checkMobile)
+      }
+    }
+    
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   // Load streams one by one with delay
@@ -68,8 +85,8 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
               transition={{ delay: index * 0.15, duration: 0.6 }}
             >
               <div className="aspect-video relative bg-black">
-                {/* Thumbnail placeholder */}
-                {!shouldLoad && (
+                {/* Thumbnail placeholder - always show on mobile, show on desktop until loaded */}
+                {(isMobile || !shouldLoad) && (
                   <div className="absolute inset-0">
                     <img 
                       src={thumbnailUrl}
@@ -84,8 +101,8 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
                   </div>
                 )}
                 
-                {/* Actual stream embed */}
-                {shouldLoad && (
+                {/* Actual stream embed - only on desktop */}
+                {shouldLoad && !isMobile && (
                   <iframe
                     src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
                     className="absolute inset-0 w-full h-full"
