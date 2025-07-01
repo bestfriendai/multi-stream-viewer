@@ -20,7 +20,7 @@ export default function TermsConditionsPage() {
             <h1 className="text-4xl font-bold text-foreground">Terms & Conditions</h1>
           </div>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            These terms govern your use of Streamyyy's multi-stream viewing platform and services. Please read them carefully.
+            These terms govern your use of Streamyyy&apos;s multi-stream viewing platform and services. Please read them carefully.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
@@ -91,9 +91,9 @@ export default function TermsConditionsPage() {
           <section id="acceptance" className="mb-12">
             <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
             <p className="mb-4">
-              These Terms & Conditions ("Terms") constitute a legally binding agreement between you ("User," "you," or "your") 
-              and Streamyyy ("Company," "we," "us," or "our") regarding your use of the Streamyyy website (streamyyy.com) 
-              and related services (collectively, the "Service").
+              These Terms & Conditions (&quot;Terms&quot;) constitute a legally binding agreement between you (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) 
+              and Streamyyy (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) regarding your use of the Streamyyy website (streamyyy.com) 
+              and related services (collectively, the &quot;Service&quot;).
             </p>
             <p className="mb-4">
               By accessing or using our Service, you acknowledge that you have read, understood, and agree to be bound by 
@@ -292,9 +292,9 @@ export default function TermsConditionsPage() {
           <section id="disclaimers" className="mb-12">
             <h2 className="text-2xl font-semibold mb-4">8. Disclaimers</h2>
             
-            <h3 className="text-xl font-medium mt-6 mb-3">8.1 Service "As Is"</h3>
+            <h3 className="text-xl font-medium mt-6 mb-3">8.1 Service &quot;As Is&quot;</h3>
             <p className="mb-4">
-              THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. WE MAKE NO REPRESENTATIONS OR 
+              THE SERVICE IS PROVIDED ON AN &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; BASIS. WE MAKE NO REPRESENTATIONS OR 
               WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, 
               FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
             </p>
@@ -415,7 +415,7 @@ export default function TermsConditionsPage() {
             <h3 className="text-xl font-medium mt-6 mb-3">13.5 Updates to Terms</h3>
             <p className="mb-4">
               We reserve the right to modify these Terms at any time. We will notify users of material changes 
-              by posting the updated Terms on our website and updating the "Last Updated" date.
+              by posting the updated Terms on our website and updating the &quot;Last Updated&quot; date.
             </p>
           </section>
 

@@ -297,7 +297,7 @@ export default function CookiePolicyPage() {
               <div className="p-4 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
                 <h3 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">Functional Cookies Disabled</h3>
                 <ul className="text-sm text-yellow-700 dark:text-yellow-300 list-disc pl-4">
-                  <li>Preferences won't be saved</li>
+                  <li>Preferences won&apos;t be saved</li>
                   <li>Layout settings reset each visit</li>
                   <li>Reduced personalization</li>
                 </ul>
@@ -342,7 +342,7 @@ export default function CookiePolicyPage() {
               legal and regulatory reasons. When we make significant changes, we will:
             </p>
             <ul className="list-disc pl-6 mb-4">
-              <li>Update the "Last Updated" date at the top of this policy</li>
+              <li>Update the &quot;Last Updated&quot; date at the top of this policy</li>
               <li>Notify you through our website or by email</li>
               <li>Request renewed consent where required by law</li>
             </ul>

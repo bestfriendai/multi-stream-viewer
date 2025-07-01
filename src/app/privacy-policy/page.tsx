@@ -62,7 +62,7 @@ export default function PrivacyPolicyPage() {
             <a href="#security" className="text-primary hover:underline">Security Measures</a>
             <a href="#cookies" className="text-primary hover:underline">Cookies & Tracking</a>
             <a href="#international-transfers" className="text-primary hover:underline">International Transfers</a>
-            <a href="#children" className="text-primary hover:underline">Children's Privacy</a>
+            <a href="#children" className="text-primary hover:underline">Children&apos;s Privacy</a>
             <a href="#contact" className="text-primary hover:underline">Contact Us</a>
           </div>
         </div>
@@ -74,13 +74,13 @@ export default function PrivacyPolicyPage() {
           <section className="mb-12">
             <h2 className="text-2xl font-semibold mb-4">Introduction</h2>
             <p className="mb-4">
-              Streamyyy ("we," "our," or "us") operates the website streamyyy.com and provides multi-stream viewing services. 
+              Streamyyy (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) operates the website streamyyy.com and provides multi-stream viewing services. 
               This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our 
               website or use our services.
             </p>
             <p className="mb-4">
-              We are committed to complying with applicable privacy laws including the European Union's General Data Protection 
-              Regulation (GDPR), the California Consumer Privacy Act (CCPA), and Canada's Personal Information Protection and 
+              We are committed to complying with applicable privacy laws including the European Union&apos;s General Data Protection 
+              Regulation (GDPR), the California Consumer Privacy Act (CCPA), and Canada&apos;s Personal Information Protection and 
               Electronic Documents Act (PIPEDA).
             </p>
             <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border-l-4 border-blue-500">
@@ -302,7 +302,7 @@ export default function PrivacyPolicyPage() {
 
           {/* Children's Privacy */}
           <section id="children" className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">Children's Privacy</h2>
+            <h2 className="text-2xl font-semibold mb-4">Children&apos;s Privacy</h2>
             <p className="mb-4">
               Our service is not intended for children under 13 years of age. We do not knowingly collect personal 
               information from children under 13. If you become aware that a child has provided us with personal 
@@ -322,7 +322,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <ul className="list-disc pl-6 mb-4">
               <li>Posting the updated policy on this page</li>
-              <li>Updating the "Last Updated" date</li>
+              <li>Updating the &quot;Last Updated&quot; date</li>
               <li>Sending email notifications for significant changes (if you have an account)</li>
               <li>Displaying prominent notices on our website</li>
             </ul>

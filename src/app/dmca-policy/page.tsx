@@ -102,7 +102,7 @@ export default function DMCAPolicyPage() {
 
           {/* Our Role */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">Streamyyy's Role and Limitations</h2>
+            <h2 className="text-2xl font-semibold mb-4">Streamyyy&apos;s Role and Limitations</h2>
             <p className="mb-4">
               <strong>Important:</strong> Streamyyy is a multi-stream viewing platform that aggregates and displays 
               publicly available streams from third-party platforms such as Twitch, YouTube, and others.
@@ -116,7 +116,7 @@ export default function DMCAPolicyPage() {
               <li>Implement repeat infringer policies</li>
             </ul>
 
-            <h3 className="text-xl font-medium mt-6 mb-3">What We Don't Control</h3>
+            <h3 className="text-xl font-medium mt-6 mb-3">What We Don&apos;t Control</h3>
             <ul className="list-disc pl-6 mb-4">
               <li>Content hosted on third-party streaming platforms</li>
               <li>Streams broadcasted by individual streamers</li>
@@ -323,7 +323,7 @@ export default function DMCAPolicyPage() {
             <ul className="list-disc pl-6 mb-4">
               <li>Number and frequency of infringement claims</li>
               <li>Validity of the claims</li>
-              <li>User's response to previous notices</li>
+              <li>User&apos;s response to previous notices</li>
               <li>Overall pattern of behavior</li>
             </ul>
           </section>
@@ -345,7 +345,7 @@ export default function DMCAPolicyPage() {
 
             <h3 className="text-xl font-medium mt-6 mb-3">Potential Consequences</h3>
             <ul className="list-disc pl-6 mb-4">
-              <li>Legal liability for damages including costs and attorney's fees</li>
+              <li>Legal liability for damages including costs and attorney&apos;s fees</li>
               <li>Suspension or termination of your account</li>
               <li>Referral to appropriate legal authorities</li>
               <li>Permanent ban from our services</li>
@@ -356,7 +356,7 @@ export default function DMCAPolicyPage() {
           <section className="mb-12">
             <h2 className="text-2xl font-semibold mb-4">Safe Harbor Compliance</h2>
             <p className="mb-4">
-              Streamyyy operates in compliance with the DMCA's safe harbor provisions under Section 512. 
+              Streamyyy operates in compliance with the DMCA&apos;s safe harbor provisions under Section 512. 
               We have implemented policies and procedures to:
             </p>
             <ul className="list-disc pl-6 mb-4">
@@ -445,7 +445,7 @@ export default function DMCAPolicyPage() {
             <h2 className="text-2xl font-semibold mb-4">Policy Updates</h2>
             <p className="mb-4">
               We may update this DMCA policy from time to time to reflect changes in law or our procedures. 
-              Material changes will be posted on this page with an updated "Last Updated" date.
+              Material changes will be posted on this page with an updated &quot;Last Updated&quot; date.
             </p>
           </section>
         </div>

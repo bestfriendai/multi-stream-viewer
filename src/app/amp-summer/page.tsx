@@ -261,7 +261,7 @@ export default function AmpSummerPage() {
             <li>Agent00 - Elite gamer and content creator</li>
             <li>Fanum - The comedic genius of AMP</li>
           </ul>
-          <p>Join millions of viewers watching AMP Summer on AMPSUMMER.com. Any Means Possible represents the future of content creation. Don't miss out on AMP exclusive streams, special events, and collaborations only on AMPSUMMER.com.</p>
+          <p>Join millions of viewers watching AMP Summer on AMPSUMMER.com. Any Means Possible represents the future of content creation. Don&apos;t miss out on AMP exclusive streams, special events, and collaborations only on AMPSUMMER.com.</p>
         </div>
       </div>
     </div>
