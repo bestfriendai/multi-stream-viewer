@@ -17,24 +17,20 @@ import {
   Sparkles,
   Users,
   Eye,
-  Check,
-  Star,
-  TrendingUp,
-  Shield,
   Gamepad2,
   Music,
   Video,
   Mic,
-  Heart,
-  Clock,
   ChevronRight,
   ExternalLink,
-  Plus
+  Plus,
+  Grid3x3,
+  LayoutGrid,
+  PictureInPicture2
 } from 'lucide-react'
 import { useStreamStore } from '@/store/streamStore'
 import { useTwitchStatus } from '@/hooks/useTwitchStatus'
 import { cn } from '@/lib/utils'
-import Image from 'next/image'
 import '@/styles/landing.css'
 
 interface LandingPageProps {
@@ -107,35 +103,11 @@ const useCases = [
   }
 ]
 
-const testimonials = [
-  {
-    text: "Game changer for tournament viewing! I can watch all POVs at once.",
-    author: "Esports Fan",
-    rating: 5
-  },
-  {
-    text: "Perfect for monitoring multiple streams as a content creator.",
-    author: "Twitch Streamer",
-    rating: 5
-  },
-  {
-    text: "The mobile experience is incredible. So smooth!",
-    author: "Mobile User",
-    rating: 5
-  }
-]
-
 const popularStreamers = [
   'xqc', 'kaicenat', 'nickmercs', 'pokimane', 'hasanabi', 
   'shroud', 'summit1g', 'lirik', 'tarik', 'symfuhny',
-  'caseoh_', 'jynxzi', 'stable_ronaldo', 'pestily', 'admiralbahroo'
-]
-
-const stats = [
-  { label: "Active Users", value: "50K+", icon: Users },
-  { label: "Streams Watched", value: "1M+", icon: Eye },
-  { label: "Uptime", value: "99.9%", icon: TrendingUp },
-  { label: "Free Forever", value: "100%", icon: Heart }
+  'caseoh_', 'jynxzi', 'stable_ronaldo', 'pestily', 'admiralbahroo',
+  'moistcr1tikal', 'mizkif', 'nmplol', 'forsen', 'sodapoppin'
 ]
 
 export default function LandingPage({ onAddStream }: LandingPageProps) {
@@ -149,6 +121,10 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
   }>>([])
   const [activeDemo, setActiveDemo] = useState(0)
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
+  const [demoStreams, setDemoStreams] = useState<Array<{
+    channelName: string
+    viewerCount: number
+  }>>([])
   
   // Get live status for popular streamers
   const { status } = useTwitchStatus(popularStreamers, {
@@ -171,25 +147,23 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
     }
     // Sort by viewer count
     channels.sort((a, b) => b.viewerCount - a.viewerCount)
-    setLiveChannels(channels.slice(0, 12)) // Show top 12
+    setLiveChannels(channels)
+    
+    // Set demo streams from top live channels
+    setDemoStreams(channels.slice(0, 9).map(ch => ({
+      channelName: ch.channelName,
+      viewerCount: ch.viewerCount
+    })))
   }, [status])
-
-  // Rotate demo every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveDemo((prev) => (prev + 1) % 3)
-    }, 3000)
-    return () => clearInterval(interval)
-  }, [])
 
   const handleQuickAdd = async (channelName: string) => {
     await addStream(channelName)
   }
 
   const demoLayouts = [
-    { name: "2x2 Grid", streams: 4, layout: "grid-cols-2" },
-    { name: "3x3 Grid", streams: 9, layout: "grid-cols-3" },
-    { name: "Mosaic", streams: 5, layout: "mosaic" }
+    { name: "2x2 Grid", streams: 4, icon: Grid3x3 },
+    { name: "3x3 Grid", streams: 9, icon: LayoutGrid },
+    { name: "Picture in Picture", streams: 5, icon: PictureInPicture2 }
   ]
 
   return (
@@ -261,56 +235,21 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </div>
-
-            {/* Trust Indicators */}
-            <div className="flex items-center justify-center gap-6 pt-8 flex-wrap">
-              <Badge variant="secondary" className="gap-2 px-4 py-2">
-                <Shield className="w-4 h-4" />
-                No Login Required
-              </Badge>
-              <Badge variant="secondary" className="gap-2 px-4 py-2">
-                <Zap className="w-4 h-4" />
-                100% Free
-              </Badge>
-              <Badge variant="secondary" className="gap-2 px-4 py-2">
-                <Heart className="w-4 h-4" />
-                Ad-Free Experience
-              </Badge>
-            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 border-y bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
-              >
-                <stat.icon className="w-8 h-8 mx-auto mb-2 text-primary" />
-                <div className="text-3xl font-bold">{stat.value}</div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Interactive Demo Section */}
+      {/* Interactive Demo Section with Live Streams */}
       <section id="demo" className="py-20 bg-gradient-to-b from-background to-muted/20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">See It In Action</h2>
-            <p className="text-xl text-muted-foreground">Experience the power of multi-stream viewing</p>
+            <p className="text-xl text-muted-foreground">
+              Experience multi-stream viewing with real live streams
+            </p>
           </div>
           
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <Card className="p-8 bg-gradient-to-br from-card to-card/50 border-2">
               {/* Demo Controls */}
               <div className="flex justify-center gap-2 mb-6">
@@ -320,13 +259,15 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                     variant={activeDemo === index ? "default" : "outline"}
                     size="sm"
                     onClick={() => setActiveDemo(index)}
+                    className="gap-2"
                   >
+                    <layout.icon className="w-4 h-4" />
                     {layout.name}
                   </Button>
                 ))}
               </div>
               
-              {/* Animated Demo Grid */}
+              {/* Animated Demo Grid with Live Streams */}
               <div className="relative aspect-video bg-black/10 rounded-lg overflow-hidden">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -342,34 +283,57 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                       activeDemo === 2 && "grid-cols-12 grid-rows-8"
                     )}
                   >
-                    {Array.from({ length: demoLayouts[activeDemo]?.streams || 0 }).map((_, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.05 }}
-                        className={cn(
-                          "bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-md flex items-center justify-center relative overflow-hidden",
-                          activeDemo === 2 && i === 0 && "col-span-8 row-span-6",
-                          activeDemo === 2 && i === 1 && "col-span-4 row-span-3",
-                          activeDemo === 2 && i === 2 && "col-span-4 row-span-3",
-                          activeDemo === 2 && i === 3 && "col-span-4 row-span-2",
-                          activeDemo === 2 && i === 4 && "col-span-4 row-span-2"
-                        )}
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                        <PlayCircle className="w-8 h-8 text-white/50" />
-                        <div className="absolute bottom-2 left-2 text-xs text-white/70">
-                          Stream {i + 1}
-                        </div>
-                      </motion.div>
-                    ))}
+                    {Array.from({ length: demoLayouts[activeDemo]?.streams || 0 }).map((_, i) => {
+                      const stream = demoStreams[i]
+                      return (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.05 }}
+                          className={cn(
+                            "bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-md flex flex-col items-center justify-center relative overflow-hidden",
+                            activeDemo === 2 && i === 0 && "col-span-8 row-span-6",
+                            activeDemo === 2 && i === 1 && "col-span-4 row-span-3",
+                            activeDemo === 2 && i === 2 && "col-span-4 row-span-3",
+                            activeDemo === 2 && i === 3 && "col-span-4 row-span-2",
+                            activeDemo === 2 && i === 4 && "col-span-4 row-span-2"
+                          )}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                          
+                          {stream ? (
+                            <>
+                              <PlayCircle className="w-8 h-8 text-white/70 mb-2" />
+                              <div className="absolute bottom-2 left-2 right-2 text-white">
+                                <p className="text-xs font-medium truncate">{stream.channelName}</p>
+                                <p className="text-xs opacity-80">
+                                  {stream.viewerCount.toLocaleString()} viewers
+                                </p>
+                              </div>
+                              <Badge className="absolute top-2 right-2 bg-red-600 text-white border-0 text-xs">
+                                LIVE
+                              </Badge>
+                            </>
+                          ) : (
+                            <>
+                              <PlayCircle className="w-8 h-8 text-white/50" />
+                              <div className="absolute bottom-2 left-2 text-xs text-white/70">
+                                Stream {i + 1}
+                              </div>
+                            </>
+                          )}
+                        </motion.div>
+                      )
+                    })}
                   </motion.div>
                 </AnimatePresence>
               </div>
               
               <p className="text-center text-sm text-muted-foreground mt-4">
-                Layouts automatically adjust based on the number of streams
+                {demoStreams.length > 0 
+                  ? "Showing actual live streams - Click 'Start Watching Now' to try it yourself!"
+                  : "Layouts automatically adjust based on the number of streams"}
               </p>
             </Card>
           </div>
@@ -500,25 +464,19 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       {liveChannels.length > 0 && (
         <section className="py-20 border-t bg-gradient-to-b from-background to-muted/20">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-12">
-              <div>
-                <h2 className="text-3xl font-bold flex items-center gap-3">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-red-600 blur-xl opacity-50 animate-pulse" />
-                    <div className="w-4 h-4 bg-red-600 rounded-full relative" />
-                  </div>
-                  Popular Streams Live Now
-                </h2>
-                <p className="text-muted-foreground mt-2">Click any stream to add it instantly</p>
-              </div>
-              <Badge variant="secondary" className="gap-2 px-4 py-2">
-                <Users className="w-4 h-4" />
-                {liveChannels.reduce((sum, ch) => sum + ch.viewerCount, 0).toLocaleString()} total viewers
-              </Badge>
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold flex items-center gap-3 mb-2">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-red-600 blur-xl opacity-50 animate-pulse" />
+                  <div className="w-4 h-4 bg-red-600 rounded-full relative" />
+                </div>
+                Popular Streams Live Now
+              </h2>
+              <p className="text-muted-foreground">Click any stream to add it instantly</p>
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-              {liveChannels.map((channel, index) => (
+              {liveChannels.slice(0, 12).map((channel, index) => (
                 <motion.div
                   key={channel.channelName}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -561,34 +519,6 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         </section>
       )}
 
-      {/* Testimonials */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Loved by Viewers</h2>
-          
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card className="p-6 h-full">
-                  <div className="flex gap-1 mb-3">
-                    {Array.from({ length: testimonial.rating }).map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                    ))}
-                  </div>
-                  <p className="text-muted-foreground mb-4">"{testimonial.text}"</p>
-                  <p className="text-sm font-medium">- {testimonial.author}</p>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Final CTA Section */}
       <section className="py-24 bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10">
         <div className="container mx-auto px-4 text-center">
@@ -603,10 +533,9 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             </h2>
             <p className="text-xl text-muted-foreground">
               Join thousands of viewers who've discovered the better way to watch streams.
-              No sign-up, no fees, just pure streaming excellence.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <div className="pt-4">
               <Button 
                 size="lg" 
                 onClick={onAddStream}
@@ -615,31 +544,6 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 <Zap className="w-6 h-6" />
                 Start Streaming Now
               </Button>
-              
-              <Button 
-                size="lg" 
-                variant="outline"
-                onClick={() => window.open('https://github.com/bestfriendai/multi-stream-viewer', '_blank')}
-                className="gap-3 text-lg px-10 py-6"
-              >
-                <Star className="w-5 h-5" />
-                Star on GitHub
-              </Button>
-            </div>
-            
-            <div className="flex items-center justify-center gap-8 pt-8">
-              <div className="flex items-center gap-2">
-                <Check className="w-5 h-5 text-green-500" />
-                <span className="text-sm">No Account Needed</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="w-5 h-5 text-green-500" />
-                <span className="text-sm">100% Free</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="w-5 h-5 text-green-500" />
-                <span className="text-sm">No Ads</span>
-              </div>
             </div>
           </motion.div>
         </div>
