@@ -119,20 +119,24 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm text-muted-foreground">
             <p>&copy; {currentYear} Streamyyy.com. All rights reserved.</p>
             <div className="flex space-x-4">
-              <Link href="/privacy" className="hover:text-primary transition-colors">
+              <Link href="/privacy-policy" className="hover:text-primary transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="hover:text-primary transition-colors">
-                Terms of Service
+              <Link href="/terms-conditions" className="hover:text-primary transition-colors">
+                Terms & Conditions
               </Link>
-              <Link href="/cookies" className="hover:text-primary transition-colors">
+              <Link href="/cookie-policy" className="hover:text-primary transition-colors">
                 Cookie Policy
+              </Link>
+              <Link href="/dmca-policy" className="hover:text-primary transition-colors">
+                DMCA Policy
               </Link>
             </div>
           </div>
           
           <div className="mt-4 md:mt-0 text-sm text-muted-foreground">
-            <p>Made with ❤️ for the streaming community</p>
+            <p className="mb-2">Made with ❤️ for the streaming community</p>
+            <p className="text-xs">GDPR, CCPA & PIPEDA Compliant • We respect your privacy</p>
           </div>
         </div>
 

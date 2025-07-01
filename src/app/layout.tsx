@@ -10,6 +10,7 @@ import AnalyticsPageTracker from "@/components/AnalyticsPageTracker";
 import SessionTracker from "@/components/SessionTracker";
 import MobileAnalyticsTracker from "@/components/MobileAnalyticsTracker";
 import GADebugPanel from "@/components/GADebugPanel";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -228,7 +229,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="flex flex-col min-h-screen">
+            {children}
+            <Footer />
+          </div>
           <Toaster />
           <GADebugPanel />
         </ThemeProvider>
