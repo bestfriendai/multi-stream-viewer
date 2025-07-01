@@ -51,7 +51,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
             width: '100%',
             height: '100%',
             channel: stream.channelName,
-            parent: [window.location.hostname, 'localhost', 'streamyyyy.com'],
+            parent: [window.location.hostname, 'localhost', 'streamyyy.com'],
             autoplay: true,
             muted: stream.muted,
             layout: 'video',

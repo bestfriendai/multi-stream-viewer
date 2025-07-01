@@ -33,7 +33,7 @@ The following files have been created and are ready to use:
    - **Name**: Choose a unique name (e.g., "My Multi-Stream Viewer")
    - **OAuth Redirect URLs**: Add these URLs:
      - `http://localhost:3000/auth/twitch/callback` (for development)
-     - `https://yourdomain.com/auth/twitch/callback` (for production)
+     - `https://streamyyy.com/auth/twitch/callback` (for production)
    - **Category**: Select "Website Integration"
    - **Client Type**: Select "Confidential"
 5. Click "Create"
