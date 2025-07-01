@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
@@ -22,7 +23,7 @@ import { Input } from '@/components/ui/input'
 import { ThemeToggle } from './theme-toggle'
 import SavedLayoutsDialog from './SavedLayoutsDialog'
 import ShareDialog from './ShareDialog'
-import LayoutSelector from './LayoutSelector'
+import EnhancedLayoutSelector from './EnhancedLayoutSelector'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import LiveDiscovery from './LiveDiscovery'
 import StreamyyyLogo from './StreamyyyLogo'
@@ -72,86 +73,91 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
   }
   
   return (
-    <>
+    <div>
       <header className="bg-background/80 backdrop-blur-md sticky top-0 z-40 border-b">
         <div className="container mx-auto px-3 sm:px-4">
           <div className="h-14 flex items-center justify-between gap-4">
             {/* Logo */}
-            <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
-              <StreamyyyLogo size="sm" variant="gradient" />
-            </Link>
+            <div>
+              <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
+                <StreamyyyLogo size="sm" variant="gradient" />
+              </Link>
+            </div>
 
             {/* Main Actions - Center */}
             <div className="flex items-center gap-2 flex-1 justify-center">
               {/* Add Stream */}
               {showAddStream ? (
-                <form onSubmit={handleAddStream} className="flex items-center gap-2 max-w-xs">
-                  <Input
-                    type="text"
-                    value={channelInput}
-                    onChange={(e) => setChannelInput(e.target.value)}
-                    placeholder="Enter channel or URL"
-                    className="h-8"
-                    autoFocus
-                  />
-                  <Button type="submit" size="sm" className="h-8">
-                    Add
-                  </Button>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="ghost"
-                    className="h-8 w-8 p-0"
-                    onClick={() => {
-                      setShowAddStream(false)
-                      setChannelInput('')
-                    }}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </form>
-              ) : (
-                <>
-                  <Button
-                    onClick={() => setShowAddStream(true)}
-                    size="sm"
-                    className="h-8"
-                    disabled={streams.length >= 16}
-                  >
-                    <Plus className="h-4 w-4" />
-                    <span className="ml-1.5 hidden sm:inline">Add Stream</span>
-                  </Button>
-
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="h-8"
-                    onClick={() => setShowDiscovery(true)}
-                  >
-                    <Compass className="h-4 w-4" />
-                    <span className="ml-1.5 hidden sm:inline">Discover</span>
-                  </Button>
-
-                  {/* AMP Summer */}
-                  <Link href="/amp-summer" className="hidden sm:block">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-8 border-yellow-500/30 hover:border-yellow-500/50 hover:bg-yellow-500/10"
-                    >
-                      <Zap className="h-4 w-4 text-yellow-600" />
-                      <span className="ml-1.5 font-medium">AMP</span>
+                <form 
+                  onSubmit={handleAddStream} 
+                  className="flex items-center gap-2 max-w-xs"
+                >
+                    <Input
+                      type="text"
+                      value={channelInput}
+                      onChange={(e) => setChannelInput(e.target.value)}
+                      placeholder="Enter channel or URL"
+                      className="h-8"
+                      autoFocus
+                    />
+                    <Button type="submit" size="sm" className="h-8">
+                      Add
                     </Button>
-                  </Link>
-                </>
-              )}
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      className="h-8 w-8 p-0"
+                      onClick={() => {
+                        setShowAddStream(false)
+                        setChannelInput('')
+                      }}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </form>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Button
+                      onClick={() => setShowAddStream(true)}
+                      size="sm"
+                      className="h-8"
+                      disabled={streams.length >= 16}
+                    >
+                      <Plus className="h-4 w-4" />
+                      <span className="ml-1.5 hidden sm:inline">Add Stream</span>
+                    </Button>
+
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-8"
+                      onClick={() => setShowDiscovery(true)}
+                    >
+                      <Compass className="h-4 w-4" />
+                      <span className="ml-1.5 hidden sm:inline">Discover</span>
+                    </Button>
+
+                    {/* AMP Summer */}
+                    <Link href="/amp-summer" className="hidden sm:block">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 border-yellow-500/30 hover:border-yellow-500/50 hover:bg-yellow-500/10"
+                      >
+                        <Zap className="h-4 w-4 text-yellow-600" />
+                        <span className="ml-1.5 font-medium">AMP</span>
+                      </Button>
+                    </Link>
+                  </div>
+                )}
             </div>
 
             {/* Right Actions */}
             <div className="flex items-center gap-2 flex-shrink-0">
               {/* Desktop Actions */}
               <div className="hidden md:flex items-center gap-2">
-                <LayoutSelector />
+                <EnhancedLayoutSelector />
                 
                 <SavedLayoutsDialog />
                 
@@ -263,6 +269,6 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
         </DialogContent>
       </Dialog>
 
-    </>
+    </div>
   )
 }

@@ -1,0 +1,247 @@
+'use client'
+
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import type { Variants } from 'framer-motion'
+import { useStreamStore } from '@/store/streamStore'
+import { Button } from '@/components/ui/button'
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel
+} from '@/components/ui/dropdown-menu'
+import { 
+  Grid3x3, 
+  Grid2x2, 
+  LayoutGrid,
+  Maximize2,
+  PictureInPicture,
+  MoreHorizontal,
+  Sparkles
+} from 'lucide-react'
+
+interface LayoutOption {
+  id: string
+  name: string
+  icon: React.ComponentType<any>
+  description: string
+  gridClass: string
+  isNew?: boolean
+  isPro?: boolean
+}
+
+const layoutOptions: LayoutOption[] = [
+  {
+    id: 'grid-2x2',
+    name: '2×2 Grid',
+    icon: Grid2x2,
+    description: 'Perfect for 4 streams',
+    gridClass: 'grid-cols-2 grid-rows-2'
+  },
+  {
+    id: 'grid-3x3',
+    name: '3×3 Grid',
+    icon: Grid3x3,
+    description: 'Classic multi-stream layout',
+    gridClass: 'grid-cols-3 grid-rows-3'
+  },
+  {
+    id: 'mosaic',
+    name: 'Mosaic',
+    icon: LayoutGrid,
+    description: 'Adaptive smart layout',
+    gridClass: 'mosaic-layout',
+    isNew: true
+  },
+  {
+    id: 'focus',
+    name: 'Focus Mode',
+    icon: Maximize2,
+    description: 'Main stream with sidebar',
+    gridClass: 'focus-layout'
+  },
+  {
+    id: 'pip',
+    name: 'Picture-in-Picture',
+    icon: PictureInPicture,
+    description: 'Floating overlay streams',
+    gridClass: 'pip-layout',
+    isNew: true
+  },
+  {
+    id: 'custom',
+    name: 'Custom Layout',
+    icon: MoreHorizontal,
+    description: 'Resizable panels',
+    gridClass: 'custom-layout',
+    isPro: true
+  }
+]
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.8, y: 10 },
+  visible: { 
+    opacity: 1, 
+    scale: 1, 
+    y: 0,
+    transition: {
+      duration: 0.2
+    }
+  },
+  hover: { 
+    scale: 1.02,
+    transition: {
+      duration: 0.1
+    }
+  }
+}
+
+export default function EnhancedLayoutSelector() {
+  const { gridLayout, setGridLayout, streams } = useStreamStore()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const currentLayout = layoutOptions.find(layout => layout.id === gridLayout) || layoutOptions[0]!
+
+  const handleLayoutChange = (layoutId: string) => {
+    setGridLayout(layoutId as any)
+    setIsOpen(false)
+  }
+
+  return (
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuTrigger asChild>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.1 }}
+        >
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="h-8 gap-2"
+          >
+            <currentLayout.icon size={16} />
+            <span className="hidden sm:inline">{currentLayout.name}</span>
+          </Button>
+        </motion.div>
+      </DropdownMenuTrigger>
+      
+      <DropdownMenuContent 
+        align="end" 
+        className="w-64 p-2"
+        sideOffset={8}
+      >
+        <DropdownMenuLabel className="text-xs uppercase tracking-wide text-muted-foreground">
+          Layout Options
+        </DropdownMenuLabel>
+        
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.05
+              }
+            }
+          }}
+        >
+          {layoutOptions.map((layout) => {
+            const Icon = layout.icon
+            const isActive = gridLayout === layout.id
+            const isDisabled = layout.isPro && streams.length === 0
+            
+            return (
+              <motion.div
+                key={layout.id}
+                variants={itemVariants}
+                whileHover="hover"
+              >
+                <DropdownMenuItem
+                  onClick={() => !isDisabled && handleLayoutChange(layout.id)}
+                  disabled={!!isDisabled}
+                  className={`
+                    relative p-3 cursor-pointer rounded-lg transition-all
+                    ${isActive 
+                      ? 'bg-primary/10 border border-primary/20' 
+                      : 'hover:bg-accent/50'
+                    }
+                    ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
+                  `}
+                >
+                  <div className="flex items-center gap-3 w-full">
+                    <div className={`
+                      p-2 rounded-md transition-colors
+                      ${isActive 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'bg-accent text-accent-foreground'
+                      }
+                    `}>
+                      <Icon size={16} />
+                    </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-sm">{layout.name}</span>
+                        {layout.isNew && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.2 }}
+                          >
+                            <span className="px-1.5 py-0.5 text-xs bg-green-500/20 text-green-700 dark:text-green-300 rounded-full">
+                              NEW
+                            </span>
+                          </motion.div>
+                        )}
+                        {layout.isPro && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.2 }}
+                          >
+                            <span className="px-1.5 py-0.5 text-xs bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-700 dark:text-yellow-300 rounded-full flex items-center gap-1">
+                              <Sparkles size={10} />
+                              PRO
+                            </span>
+                          </motion.div>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {layout.description}
+                      </p>
+                    </div>
+                    
+                    {isActive && (
+                      <motion.div
+                        layoutId="active-indicator"
+                        className="w-2 h-2 bg-primary rounded-full"
+                        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                      />
+                    )}
+                  </div>
+                </DropdownMenuItem>
+              </motion.div>
+            )
+          })}
+        </motion.div>
+        
+        <DropdownMenuSeparator className="my-2" />
+        
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="px-2 py-1"
+        >
+          <p className="text-xs text-muted-foreground">
+            {streams.length} stream{streams.length !== 1 ? 's' : ''} active
+          </p>
+        </motion.div>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}

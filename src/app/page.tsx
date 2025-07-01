@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Header from '@/components/Header'
 import MobileHeader from '@/components/MobileHeader'
-import MobileStreamViewer from '@/components/MobileStreamViewer'
+import EnhancedMobileStreamViewer from '@/components/EnhancedMobileStreamViewer'
 import StreamGrid from '@/components/StreamGrid'
+import ResizableStreamGrid from '@/components/ResizableStreamGrid'
 import StreamChat from '@/components/StreamChat'
 import MobileNav from '@/components/MobileNav'
 import MobileSwipeControls from '@/components/MobileSwipeControls'
@@ -41,7 +43,7 @@ export default function Home() {
   const [showMobileStreamViewer, setShowMobileStreamViewer] = useState(false)
   const [channelInput, setChannelInput] = useState('')
   const [activeTab, setActiveTab] = useState('streams')
-  const { addStream, setGridLayout, streams } = useStreamStore()
+  const { addStream, setGridLayout, streams, gridLayout } = useStreamStore()
   const { trackChatToggle, trackFeatureUsage, trackStreamAdded } = useAnalytics()
   
   // Enable keyboard shortcuts
@@ -119,6 +121,31 @@ export default function Home() {
       answer: "Yes, Streamyyy is fully responsive and optimized for phones, tablets, and desktop computers."
     }
   ]
+
+  // Enhanced page variants for smooth transitions
+  const pageVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
+        staggerChildren: 0.1
+      }
+    }
+  }
+
+  const contentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    }
+  }
 
   return (
     <div className="flex flex-col h-screen bg-background">
@@ -220,7 +247,12 @@ export default function Home() {
               <ErrorBoundary>
                 <StreamStatusBar />
                 <div className="flex-1 overflow-y-auto md:overflow-auto">
-                  <StreamGrid />
+                  {/* Use ResizableStreamGrid for custom layouts, regular StreamGrid for others */}
+                  {gridLayout === 'custom' ? (
+                    <ResizableStreamGrid layoutType={gridLayout} />
+                  ) : (
+                    <StreamGrid />
+                  )}
                 </div>
               </ErrorBoundary>
             </TabsContent>
@@ -278,8 +310,8 @@ export default function Home() {
         }}
       />
       
-      {/* Mobile Stream Viewer */}
-      <MobileStreamViewer 
+      {/* Enhanced Mobile Stream Viewer */}
+      <EnhancedMobileStreamViewer 
         show={showMobileStreamViewer} 
         onClose={() => setShowMobileStreamViewer(false)} 
       />
