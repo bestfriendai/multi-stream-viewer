@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useStreamStore } from '@/store/streamStore'
-import { Plus, Trash2, MessageSquare, TrendingUp, Keyboard } from 'lucide-react'
+import { Plus, Trash2, MessageSquare, TrendingUp, Keyboard, Monitor, Smartphone } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -39,6 +39,7 @@ interface HeaderProps {
 export default function Header({ onToggleChat, showChat }: HeaderProps) {
   const [channelInput, setChannelInput] = useState('')
   const [showAddStream, setShowAddStream] = useState(false)
+  const [desktopMode, setDesktopMode] = useState(false)
   const { 
     streams, 
     addStream, 
@@ -79,9 +80,23 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
               />
             </Link>
 
-            {/* Mobile Stream Count */}
-            <div className="text-sm text-muted-foreground lg:hidden">
-              {streams.length}/16
+            {/* Mobile Controls */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setDesktopMode(!desktopMode)
+                  document.body.classList.toggle('force-desktop-mode', !desktopMode)
+                }}
+                className="p-2"
+                title={desktopMode ? "Switch to Mobile View" : "Switch to Desktop View"}
+              >
+                {desktopMode ? <Smartphone size={16} /> : <Monitor size={16} />}
+              </Button>
+              <span className="text-sm text-muted-foreground">
+                {streams.length}/16
+              </span>
             </div>
           </div>
           
@@ -183,7 +198,7 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
             </Dialog>
             
             {/* Layout Options */}
-            <div className="flex items-center gap-1 border border-border/50 rounded-xl p-1 bg-muted/30 backdrop-blur-sm">
+            <div className="hidden md:flex items-center gap-1 border border-border/50 rounded-xl p-1 bg-muted/30 backdrop-blur-sm">
               {layoutOptions.map((option) => (
                 <button
                   key={option.value}
@@ -202,10 +217,14 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
             </div>
             
             {/* Saved Layouts */}
-            <SavedLayoutsDialog />
+            <div className="hidden md:block">
+              <SavedLayoutsDialog />
+            </div>
             
             {/* Share */}
-            <ShareDialog />
+            <div className="hidden md:block">
+              <ShareDialog />
+            </div>
             
             {/* Chat Toggle */}
             <Button

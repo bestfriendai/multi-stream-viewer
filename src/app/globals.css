@@ -240,6 +240,21 @@
   height: calc(100vh - 64px); /* Account for header */
 }
 
+/* Force desktop mode on mobile */
+body.force-desktop-mode .md\:hidden {
+  display: none !important;
+}
+
+body.force-desktop-mode .hidden.md\:block,
+body.force-desktop-mode .hidden.md\:flex,
+body.force-desktop-mode .hidden.md\:inline {
+  display: block !important;
+}
+
+body.force-desktop-mode .stream-grid {
+  height: calc(100vh - 64px) !important; /* Desktop height */
+}
+
 .stream-grid-focus {
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -263,6 +278,7 @@
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
   }
 
+  /* Removed forced mobile layouts - users can now choose their preferred grid layout
   .stream-grid[data-count="1"] {
     grid-template-columns: 1fr !important;
     grid-template-rows: 1fr !important;
@@ -291,7 +307,9 @@
     grid-template-columns: repeat(2, 1fr) !important;
     grid-auto-rows: minmax(150px, 1fr) !important;
   }
+  */
 
+  /* Removed forced mobile focus layout - users can now use desktop-style focus mode
   .stream-grid-focus {
     grid-template-columns: 1fr !important;
     grid-template-rows: 2fr repeat(3, 0.5fr) !important;
@@ -301,6 +319,7 @@
     grid-column: 1;
     grid-row: 1;
   }
+  */
 
   /* Ensure stream containers have proper sizing */
   .stream-grid > div {
@@ -343,6 +362,7 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  /* Removed forced single-column layout for small screens
   .stream-grid[data-count="3"],
   .stream-grid[data-count="4"],
   .stream-grid[data-count="5"],
@@ -350,6 +370,7 @@
     grid-template-columns: 1fr !important;
     grid-auto-rows: minmax(120px, 1fr) !important;
   }
+  */
 
   /* Smaller stream containers for very small screens */
   .stream-grid > div {

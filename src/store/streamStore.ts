@@ -41,7 +41,7 @@ const createStream = (input: StreamInput): Stream => {
     channelId: input.channelId,
     quality: input.quality || 'auto',
     volume: input.volume || 50,
-    muted: false,
+    muted: true, // Always start muted to ensure only one unmuted stream
     position: 0, // Will be set by the store
     isActive: true,
     createdAt: now,
@@ -222,6 +222,14 @@ export const useStreamStore = create<StreamStore>()(
             set((state) => {
               const stream = state.streams.find(s => s.id === streamId)
               if (stream) {
+                // If unmuting this stream, mute all others
+                if (stream.muted) {
+                  state.streams.forEach(s => {
+                    if (s.id !== streamId) {
+                      s.muted = true
+                    }
+                  })
+                }
                 stream.muted = !stream.muted
                 stream.lastUpdated = new Date()
               }

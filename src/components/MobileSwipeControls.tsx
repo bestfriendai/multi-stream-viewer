@@ -18,7 +18,11 @@ interface SwipeGesture {
   startTime: number
 }
 
-export default function MobileSwipeControls() {
+interface MobileSwipeControlsProps {
+  onClose?: () => void
+}
+
+export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProps) {
   const [currentStreamIndex, setCurrentStreamIndex] = useState(0)
   const [showControls, setShowControls] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -249,7 +253,12 @@ export default function MobileSwipeControls() {
                 <Maximize2 size={20} />
               </button>
               <button
-                onClick={() => toast.info('Switching to grid view')}
+                onClick={() => {
+                  if (onClose) {
+                    onClose()
+                    toast.info('Switched to grid view')
+                  }
+                }}
                 className="text-white/80 hover:text-white"
               >
                 <Grid size={20} />

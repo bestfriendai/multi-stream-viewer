@@ -42,13 +42,13 @@ export default function Home() {
     }
   }, [])
   
-  // Auto-show mobile view on mobile devices with active streams
-  useEffect(() => {
-    const isMobile = window.innerWidth < 768
-    if (isMobile && streams.filter(s => s.isActive).length > 0) {
-      setShowMobileView(true)
-    }
-  }, [streams])
+  // Removed auto-show mobile view - let users choose their preferred view
+  // useEffect(() => {
+  //   const isMobile = window.innerWidth < 768
+  //   if (isMobile && streams.filter(s => s.isActive).length > 0) {
+  //     setShowMobileView(true)
+  //   }
+  // }, [streams])
   
   const handleAddStream = (input: string) => {
     const success = addStream(input)
@@ -132,10 +132,11 @@ export default function Home() {
         onOpenDiscover={() => setActiveTab('discover')}
         showChat={showChat}
         streamCount={streams.length}
+        onToggleSwipeView={() => setShowMobileView(true)}
       />
       
-      {/* Mobile Swipe Controls */}
-      {showMobileView && <MobileSwipeControls />}
+      {/* Mobile Swipe Controls - Only show when explicitly enabled */}
+      {showMobileView && <MobileSwipeControls onClose={() => setShowMobileView(false)} />}
       
       {/* Mobile Add Stream Dialog */}
       <Dialog open={showAddStream} onOpenChange={setShowAddStream}>
