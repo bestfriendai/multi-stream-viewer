@@ -78,7 +78,31 @@ export async function POST(request: NextRequest) {
     }
 
     // Get stream data from Twitch API
-    const streams = await twitchAPI.getStreams(sanitizedChannels);
+    let streams;
+    try {
+      streams = await twitchAPI.getStreams(sanitizedChannels);
+    } catch (error: any) {
+      console.error('Twitch API call failed:', error);
+      
+      // Return offline status for all channels on API failure
+      const offlineResults = sanitizedChannels.map(channel => ({
+        channel: channel,
+        isLive: false,
+        data: null
+      }));
+      
+      return NextResponse.json(
+        { 
+          results: offlineResults,
+          error: 'Twitch API temporarily unavailable'
+        },
+        {
+          headers: {
+            'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=30',
+          },
+        }
+      );
+    }
     
     // Create a map for easy lookup
     const streamMap = new Map(
