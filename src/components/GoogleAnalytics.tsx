@@ -13,10 +13,9 @@ declare global {
   }
 }
 
-// Helper functions for tracking events
+// Helper functions for tracking events - using exact Google specification
 export const pageview = (url: string) => {
   if (typeof window !== 'undefined' && window.gtag) {
-    console.log('GA Pageview:', url) // Debug log
     window.gtag('config', GA_TRACKING_ID, {
       page_path: url,
     })
@@ -30,7 +29,6 @@ export const event = ({ action, category, label, value }: {
   value?: number
 }) => {
   if (typeof window !== 'undefined' && window.gtag) {
-    console.log('GA Event:', { action, category, label, value }) // Debug log
     window.gtag('event', action, {
       event_category: category,
       event_label: label,

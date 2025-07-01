@@ -43,27 +43,21 @@ export default function Home() {
   // Enable keyboard shortcuts
   useKeyboardShortcuts()
   
-  // Test GA on mount
+  // Track homepage visit
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      console.log('✅ GA Available - sending test event')
-      ;(window as any).gtag('event', 'page_load', {
-        event_category: 'Test',
-        event_label: 'Homepage_Loaded'
-      })
-    } else {
-      console.log('❌ GA not available yet')
-      // Retry after a delay
-      setTimeout(() => {
-        if (typeof window !== 'undefined' && (window as any).gtag) {
-          console.log('✅ GA Available (delayed) - sending test event')
-          ;(window as any).gtag('event', 'page_load_delayed', {
-            event_category: 'Test',
-            event_label: 'Homepage_Loaded_Delayed'
-          })
-        }
-      }, 3000)
+    // Simple check for GA and track page view
+    const checkGA = () => {
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'page_view', {
+          page_title: document.title,
+          page_location: window.location.href
+        })
+      }
     }
+    
+    // Try immediately and after a short delay
+    checkGA()
+    setTimeout(checkGA, 1000)
   }, [])
   
   // Load streams from URL params on mount

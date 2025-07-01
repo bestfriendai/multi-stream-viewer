@@ -144,7 +144,7 @@ export default function RootLayout({
         <link rel="canonical" href="https://streamyyy.com" />
         <meta name="google-site-verification" content="your-verification-code" />
         
-        {/* Google Analytics - Direct Implementation */}
+        {/* Google tag (gtag.js) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-BGPSFX3HF1"></script>
         <script
           dangerouslySetInnerHTML={{
@@ -152,11 +152,7 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-BGPSFX3HF1', {
-                page_title: typeof document !== 'undefined' ? document.title : '',
-                page_location: typeof window !== 'undefined' ? window.location.href : ''
-              });
-              console.log('🚀 GA Direct Load: G-BGPSFX3HF1');
+              gtag('config', 'G-BGPSFX3HF1');
             `,
           }}
         />
