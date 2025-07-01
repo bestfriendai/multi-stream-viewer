@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { twitchAPI } from '@/lib/twitch/api';
+import { twitchCache } from '@/lib/twitch/cache';
 
 // Rate limiting with more conservative limits
 const requestCounts = new Map<string, { count: number; resetTime: number }>();
@@ -133,6 +134,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check cache first
+    const cacheKey = `streams:${sanitizedChannels.sort().join(',')}`;
+    const cachedData = twitchCache.get<any>(cacheKey);
+    
+    if (cachedData) {
+      return NextResponse.json(
+        cachedData,
+        {
+          headers: {
+            'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30',
+            'X-Cache': 'HIT'
+          },
+        }
+      );
+    }
+
     // Get stream data from Twitch API
     let streams;
     try {
@@ -172,12 +189,17 @@ export async function POST(request: NextRequest) {
       data: streamMap.get(channel) || null
     }));
 
+    // Cache the response
+    const responseData = { results };
+    twitchCache.set(cacheKey, responseData, 120000); // 2 minute cache
+
     // Add cache headers
     return NextResponse.json(
-      { results },
+      responseData,
       {
         headers: {
           'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30',
+          'X-Cache': 'MISS'
         },
       }
     );

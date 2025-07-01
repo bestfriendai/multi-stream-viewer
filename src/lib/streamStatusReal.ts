@@ -601,8 +601,29 @@ export async function getTopLiveStreams(limit: number = 20): Promise<Array<{
   try {
     console.log('🏆 Loading top Twitch streamers...')
 
-    // Get top streamers
-    const topStreamers = await getRealTwitchLiveStreams(limit)
+    // Fetch real data from Twitch API
+    const response = await fetch('/api/twitch/top-streams', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ limit })
+    })
+
+    if (!response.ok) {
+      console.error('Failed to fetch top streams:', response.status)
+      return []
+    }
+
+    const data = await response.json()
+    
+    // Transform the data to match expected format
+    const topStreamers = data.streams.map((stream: any) => ({
+      name: stream.user_login,
+      platform: 'twitch',
+      viewers: stream.viewer_count,
+      title: stream.title,
+      game: stream.game_name,
+      profileImage: stream.thumbnail_url?.replace('{width}', '300').replace('{height}', '300')
+    }))
 
     console.log(`✅ Loaded ${topStreamers.length} top Twitch streamers`)
     return topStreamers
@@ -621,21 +642,34 @@ export async function getTrendingStreams(): Promise<Array<{
   isLive: boolean
   viewers?: number
   profileImage?: string
+  uniqueId?: string
 }>> {
   try {
     console.log('📈 Loading trending Twitch streamers...')
 
-    // Get top streamers and format for trending
-    const topStreamers = await getRealTwitchLiveStreams(50)
+    // Fetch real trending data from Twitch API - get top streams by different categories
+    const response = await fetch('/api/twitch/trending', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ limit: 50 })
+    })
 
-    // Convert to trending format
-    const trendingStreams = topStreamers.map(stream => ({
-      name: stream.name,
-      platform: stream.platform,
-      category: stream.game,
-      isLive: stream.isLive,
-      viewers: stream.viewers,
-      profileImage: stream.profileImage
+    if (!response.ok) {
+      console.error('Failed to fetch trending streams:', response.status)
+      return []
+    }
+
+    const data = await response.json()
+    
+    // Transform the data to match expected format
+    const trendingStreams = data.streams.map((stream: any, index: number) => ({
+      name: stream.user_login,
+      platform: 'twitch',
+      category: stream.game_name || 'Just Chatting',
+      isLive: true,
+      viewers: stream.viewer_count,
+      profileImage: stream.thumbnail_url?.replace('{width}', '300').replace('{height}', '300'),
+      uniqueId: `twitch-${stream.user_login}-${index}`
     }))
 
     console.log(`✅ Loaded ${trendingStreams.length} trending Twitch streamers`)

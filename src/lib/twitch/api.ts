@@ -127,6 +127,28 @@ class TwitchAPI {
     const response = await this.makeRequest<{ data: any[] }>('/search/channels', params);
     return response.data;
   }
+
+  // Get top streams
+  async getTopStreams(options: {
+    first?: number;
+    game_id?: string;
+    language?: string;
+  } = {}): Promise<StreamData[]> {
+    const params = new URLSearchParams();
+    
+    if (options.first) {
+      params.append('first', Math.min(options.first, 100).toString());
+    }
+    if (options.game_id) {
+      params.append('game_id', options.game_id);
+    }
+    if (options.language) {
+      params.append('language', options.language);
+    }
+
+    const response = await this.makeRequest<{ data: StreamData[] }>('/streams', params);
+    return response.data;
+  }
 }
 
 export const twitchAPI = new TwitchAPI();
