@@ -346,7 +346,7 @@ body.force-desktop-mode .stream-grid {
     will-change: scroll-position;
   }
 
-  /* Removed forced mobile layouts - users can now choose their preferred grid layout
+  /* Mobile-optimized grid layouts to prevent overlapping */
   .stream-grid[data-count="1"] {
     grid-template-columns: 1fr !important;
     grid-template-rows: 1fr !important;
@@ -373,21 +373,32 @@ body.force-desktop-mode .stream-grid {
   .stream-grid[data-count="8"],
   .stream-grid[data-count="9"] {
     grid-template-columns: repeat(2, 1fr) !important;
-    grid-auto-rows: minmax(150px, 1fr) !important;
+    grid-auto-rows: minmax(180px, 1fr) !important;
   }
-  */
 
-  /* Removed forced mobile focus layout - users can now use desktop-style focus mode
+  /* For more than 9 streams, use a scrollable 2-column layout */
+  .stream-grid[data-count="10"],
+  .stream-grid[data-count="11"],
+  .stream-grid[data-count="12"],
+  .stream-grid[data-count="13"],
+  .stream-grid[data-count="14"],
+  .stream-grid[data-count="15"],
+  .stream-grid[data-count="16"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-auto-rows: minmax(180px, 1fr) !important;
+  }
+
+  /* Mobile focus layout - stack primary stream on top */
   .stream-grid-focus {
     grid-template-columns: 1fr !important;
-    grid-template-rows: 2fr repeat(3, 0.5fr) !important;
+    grid-template-rows: 2fr repeat(3, 0.8fr) !important;
+    gap: 0.5rem !important;
   }
 
   .stream-grid-focus .primary-stream {
-    grid-column: 1;
-    grid-row: 1;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
   }
-  */
 
   /* Ensure stream containers have proper sizing */
   .stream-grid > div {
@@ -451,19 +462,21 @@ body.force-desktop-mode .stream-grid {
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Removed forced single-column layout for small screens
+  /* Single column layout for very small screens to prevent overlapping */
   .stream-grid[data-count="3"],
   .stream-grid[data-count="4"],
   .stream-grid[data-count="5"],
-  .stream-grid[data-count="6"] {
+  .stream-grid[data-count="6"],
+  .stream-grid[data-count="7"],
+  .stream-grid[data-count="8"],
+  .stream-grid[data-count="9"] {
     grid-template-columns: 1fr !important;
-    grid-auto-rows: minmax(120px, 1fr) !important;
+    grid-auto-rows: minmax(160px, 1fr) !important;
   }
-  */
 
   /* Smaller stream containers for very small screens */
   .stream-grid > div {
-    min-height: 180px;
+    min-height: 160px;
     height: auto;
   }
 

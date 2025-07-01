@@ -45,8 +45,8 @@ export default function StreamyyyLogo({
 }: StreamyyyLogoProps) {
   const config = sizeConfig[size];
   
-  const getGradientId = () => `streamyyyGradient-${size}-${Math.random().toString(36).substr(2, 9)}`;
-  const gradientId = getGradientId();
+  // Use a stable ID to prevent hydration mismatches
+  const gradientId = `streamyyyGradient-${size}`;
   
   const getTextClasses = () => {
     switch (variant) {
