@@ -65,7 +65,7 @@ const StreamGrid: React.FC = React.memo(() => {
   return (
     <div
       className={cn(
-        'stream-grid grid gap-2 sm:gap-3 md:gap-4 h-full w-full p-2 sm:p-4 md:p-6 animate-fade-in',
+        'stream-grid grid h-full w-full animate-fade-in',
         responsiveGridClass,
         'touch-pan-y touch-pan-x'
       )}
@@ -82,12 +82,10 @@ const StreamGrid: React.FC = React.memo(() => {
             'animate-scale-in transform-gpu',
             primaryStreamId === stream.id && gridLayout === 'custom' && 'primary-stream',
             'border border-border/20',
-            'min-h-[200px] md:min-h-[250px]', // Ensure minimum height on all devices
             'will-change-transform'
           )}
           style={{
             animationDelay: `${index * 30}ms`,
-            aspectRatio: '16/9',
             contain: 'layout style paint'
           }}
           role="gridcell"
