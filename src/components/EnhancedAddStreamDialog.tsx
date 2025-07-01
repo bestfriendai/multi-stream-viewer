@@ -52,21 +52,21 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
       const response = await fetch('/api/twitch/top-streams', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ limit: 16 })
+        body: JSON.stringify({ limit: 4 })
       })
       
       if (response.ok) {
         const data = await response.json()
         if (data.streams && Array.isArray(data.streams)) {
-          // Add first 16 streams
-          const topStreams = data.streams.slice(0, 16)
+          // Add first 4 streams
+          const topStreams = data.streams.slice(0, 4)
           for (const stream of topStreams) {
             if (stream.user_login) {
               await addStream(stream.user_login)
             }
           }
-          // Set layout to 4x4
-          setGridLayout('grid-4x4')
+          // Set layout to 2x2
+          setGridLayout('grid-2x2')
           onOpenChange(false)
         }
       }
@@ -84,23 +84,23 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
       const response = await fetch('/api/twitch/top-streams', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ limit: 100 })
+        body: JSON.stringify({ limit: 50 })
       })
       
       if (response.ok) {
         const data = await response.json()
         if (data.streams && Array.isArray(data.streams)) {
-          // Shuffle and pick 16 random streams
+          // Shuffle and pick 4 random streams
           const shuffled = [...data.streams].sort(() => Math.random() - 0.5)
-          const randomStreams = shuffled.slice(0, 16)
+          const randomStreams = shuffled.slice(0, 4)
           
           for (const stream of randomStreams) {
             if (stream.user_login) {
               await addStream(stream.user_login)
             }
           }
-          // Set layout to 4x4
-          setGridLayout('grid-4x4')
+          // Set layout to 2x2
+          setGridLayout('grid-2x2')
           onOpenChange(false)
         }
       }
@@ -173,7 +173,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
                   <TrendingUp className="w-6 h-6 text-primary" />
                   <div className="text-center">
                     <div className="font-semibold">Top Lives</div>
-                    <div className="text-xs text-muted-foreground">Add top 16 live streams</div>
+                    <div className="text-xs text-muted-foreground">Add top 4 live streams</div>
                   </div>
                 </>
               )}
@@ -192,7 +192,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
                   <Shuffle className="w-6 h-6 text-primary" />
                   <div className="text-center">
                     <div className="font-semibold">Random Streamers</div>
-                    <div className="text-xs text-muted-foreground">Discover 16 random streams</div>
+                    <div className="text-xs text-muted-foreground">Discover 4 random streams</div>
                   </div>
                 </>
               )}
