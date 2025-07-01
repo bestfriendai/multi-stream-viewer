@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useStreamStore } from '@/store/streamStore'
 import { MessageSquare, X, ChevronDown, Users, Eye } from 'lucide-react'
@@ -31,6 +31,26 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
     enabled: show && twitchChannels.length > 0,
     refreshInterval: 60000
   })
+  
+  // Auto-select stream with most viewers when chat opens
+  useEffect(() => {
+    if (show && status.size > 0) {
+      let maxViewers = 0
+      let maxViewerStreamId = twitchStreams[0]?.id || ''
+      
+      twitchStreams.forEach(stream => {
+        const streamStatus = status.get(stream.channelName)
+        if (streamStatus && streamStatus.isLive && streamStatus.viewerCount > maxViewers) {
+          maxViewers = streamStatus.viewerCount
+          maxViewerStreamId = stream.id
+        }
+      })
+      
+      if (maxViewerStreamId && maxViewerStreamId !== selectedStreamId) {
+        setSelectedStreamId(maxViewerStreamId)
+      }
+    }
+  }, [show, status]) // eslint-disable-line react-hooks/exhaustive-deps
   
   if (!show) return null
   

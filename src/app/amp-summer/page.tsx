@@ -26,7 +26,7 @@ const AMP_STREAMERS = [
     platform: 'twitch' as const
   },
   { 
-    name: 'dukedennis', 
+    name: 'duke', 
     displayName: 'Duke Dennis', 
     platform: 'twitch' as const
   },
@@ -100,7 +100,7 @@ export default function AmpSummerPage() {
         {
           '@type': 'Person',
           name: 'Duke Dennis',
-          url: 'https://twitch.tv/dukedennis',
+          url: 'https://www.twitch.tv/duke',
           sameAs: ['https://twitter.com/dukedennis', 'https://instagram.com/dukedennis']
         },
         {

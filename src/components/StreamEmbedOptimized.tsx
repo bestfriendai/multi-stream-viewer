@@ -190,12 +190,22 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
     return () => {
       cancelled = true
     }
-  }, [stream.channelName, stream.channelId, stream.platform, stream.muted, cleanup])
+  }, [stream.channelName, stream.channelId, stream.platform, cleanup])
   
   // Handle mute state changes
   useEffect(() => {
-    if (playerRef.current?.setMuted && stream.platform === 'twitch') {
+    if (stream.platform === 'twitch' && playerRef.current?.setMuted) {
       playerRef.current.setMuted(stream.muted)
+    } else if (stream.platform === 'youtube' && embedRef.current) {
+      // For YouTube, we need to use postMessage to control the player
+      const iframe = embedRef.current.querySelector('iframe')
+      if (iframe && iframe.contentWindow) {
+        const command = stream.muted ? 'mute' : 'unMute'
+        iframe.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: command }),
+          'https://www.youtube.com'
+        )
+      }
     }
   }, [stream.muted, stream.platform])
   
