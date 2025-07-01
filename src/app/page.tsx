@@ -13,7 +13,7 @@ import dynamic from 'next/dynamic'
 const FeaturesShowcase = dynamic(() => import('@/components/FeaturesShowcase'), {
   loading: () => <div className="p-8 text-center">Loading features...</div>
 })
-const LiveDiscoveryOptimized = dynamic(() => import('@/components/LiveDiscoveryOptimized'), {
+const EnhancedDiscovery = dynamic(() => import('@/components/EnhancedDiscovery'), {
   loading: () => <div className="p-8 text-center">Loading discovery...</div>
 })
 import StreamStatusBar from '@/components/StreamStatusBar'
@@ -115,9 +115,9 @@ export default function Home() {
               </ErrorBoundary>
             </TabsContent>
             
-            <TabsContent value="discover" className="flex-1 overflow-y-auto p-4">
+            <TabsContent value="discover" className="flex-1 overflow-y-auto">
               <ErrorBoundary>
-                <LiveDiscoveryOptimized />
+                <EnhancedDiscovery />
               </ErrorBoundary>
             </TabsContent>
             

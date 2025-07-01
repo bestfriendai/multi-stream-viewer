@@ -133,6 +133,7 @@ class TwitchAPI {
     first?: number;
     game_id?: string;
     language?: string;
+    user_id?: string[];
   } = {}): Promise<StreamData[]> {
     const params = new URLSearchParams();
     
@@ -145,8 +146,164 @@ class TwitchAPI {
     if (options.language) {
       params.append('language', options.language);
     }
+    if (options.user_id) {
+      options.user_id.forEach(id => params.append('user_id', id));
+    }
 
     const response = await this.makeRequest<{ data: StreamData[] }>('/streams', params);
+    return response.data;
+  }
+
+  // Get clips for a specific game or channel
+  async getClips(options: {
+    broadcaster_id?: string;
+    game_id?: string;
+    first?: number;
+    started_at?: string;
+    ended_at?: string;
+  } = {}): Promise<{
+    id: string;
+    url: string;
+    embed_url: string;
+    broadcaster_id: string;
+    broadcaster_name: string;
+    creator_id: string;
+    creator_name: string;
+    video_id: string;
+    game_id: string;
+    language: string;
+    title: string;
+    view_count: number;
+    created_at: string;
+    thumbnail_url: string;
+    duration: number;
+    vod_offset: number;
+  }[]> {
+    const params = new URLSearchParams();
+    
+    if (options.broadcaster_id) {
+      params.append('broadcaster_id', options.broadcaster_id);
+    }
+    if (options.game_id) {
+      params.append('game_id', options.game_id);
+    }
+    if (options.first) {
+      params.append('first', Math.min(options.first, 100).toString());
+    }
+    if (options.started_at) {
+      params.append('started_at', options.started_at);
+    }
+    if (options.ended_at) {
+      params.append('ended_at', options.ended_at);
+    }
+
+    const response = await this.makeRequest<{ data: any[] }>('/clips', params);
+    return response.data;
+  }
+
+  // Get stream tags
+  async getStreamTags(): Promise<{
+    tag_id: string;
+    is_auto: boolean;
+    localization_names: Record<string, string>;
+    localization_descriptions: Record<string, string>;
+  }[]> {
+    const response = await this.makeRequest<{ data: any[] }>('/tags/streams');
+    return response.data;
+  }
+
+  // Get videos (VODs, highlights, uploads)
+  async getVideos(options: {
+    user_id?: string;
+    game_id?: string;
+    first?: number;
+    type?: 'archive' | 'highlight' | 'upload';
+  } = {}): Promise<{
+    id: string;
+    user_id: string;
+    user_login: string;
+    user_name: string;
+    title: string;
+    description: string;
+    created_at: string;
+    published_at: string;
+    url: string;
+    thumbnail_url: string;
+    viewable: string;
+    view_count: number;
+    language: string;
+    type: string;
+    duration: string;
+  }[]> {
+    const params = new URLSearchParams();
+    
+    if (options.user_id) {
+      params.append('user_id', options.user_id);
+    }
+    if (options.game_id) {
+      params.append('game_id', options.game_id);
+    }
+    if (options.first) {
+      params.append('first', Math.min(options.first, 100).toString());
+    }
+    if (options.type) {
+      params.append('type', options.type);
+    }
+
+    const response = await this.makeRequest<{ data: any[] }>('/videos', params);
+    return response.data;
+  }
+
+  // Get channel information
+  async getChannelInfo(broadcaster_ids: string[]): Promise<{
+    broadcaster_id: string;
+    broadcaster_login: string;
+    broadcaster_name: string;
+    broadcaster_language: string;
+    game_id: string;
+    game_name: string;
+    title: string;
+    delay: number;
+    tags: string[];
+  }[]> {
+    if (broadcaster_ids.length === 0) return [];
+
+    const params = new URLSearchParams();
+    broadcaster_ids.slice(0, 100).forEach(id => {
+      params.append('broadcaster_id', id);
+    });
+
+    const response = await this.makeRequest<{ data: any[] }>('/channels', params);
+    return response.data;
+  }
+
+  // Get user follows
+  async getUserFollows(options: {
+    from_id?: string;
+    to_id?: string;
+    first?: number;
+  } = {}): Promise<{
+    from_id: string;
+    from_login: string;
+    from_name: string;
+    to_id: string;
+    to_login: string;
+    to_name: string;
+    followed_at: string;
+  }[]> {
+    const params = new URLSearchParams();
+    
+    if (options.from_id) {
+      params.append('from_id', options.from_id);
+    }
+    if (options.to_id) {
+      params.append('to_id', options.to_id);
+    }
+    if (options.first) {
+      params.append('first', Math.min(options.first, 100).toString());
+    }
+
+    const response = await this.makeRequest<{ data: any[] }>('/channels/followers', params);
     return response.data;
   }
 }
