@@ -58,6 +58,7 @@ export const metadata: Metadata = {
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useStreamStore } from '@/store/streamStore'
+import { useAnalytics } from '@/hooks/useAnalytics'
 import Header from '@/components/Header'
 import StreamGrid from '@/components/StreamGrid'
 import StreamChat from '@/components/StreamChat'
@@ -96,8 +97,12 @@ export default function AmpSummerPage() {
   const router = useRouter()
   const { streams, addStream, setGridLayout, clearAllStreams } = useStreamStore()
   const [showChat, setShowChat] = useState(false)
+  const { trackAMPSummerView, trackChatToggle } = useAnalytics()
 
   useEffect(() => {
+    // Track AMP Summer page view
+    trackAMPSummerView()
+    
     // Clear existing streams and add AMP streamers
     clearAllStreams()
     
@@ -192,7 +197,10 @@ export default function AmpSummerPage() {
       />
       <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <Header showChat={showChat} onToggleChat={() => setShowChat(!showChat)} />
+      <Header showChat={showChat} onToggleChat={() => {
+        setShowChat(!showChat)
+        trackChatToggle(!showChat)
+      }} />
       
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500/20 via-orange-500/10 to-background border-b amp-hero-section">
