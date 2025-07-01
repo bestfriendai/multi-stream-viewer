@@ -15,6 +15,39 @@
   .amp-stream-container {
     height: calc(100vh - 120px) !important;
     min-height: calc(100vh - 120px) !important;
+    overflow: hidden !important;
+  }
+  
+  /* Override default mobile stack layout for AMP page */
+  .amp-stream-container .stream-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-rows: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+    padding: 0.5rem !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    flex-direction: unset !important;
+    overflow: hidden !important;
+  }
+  
+  /* Full width square streams on mobile */
+  .amp-stream-container .stream-grid > div {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    max-height: unset !important;
+    min-height: 0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+  }
+  
+  /* Ensure stream embeds fill their containers */
+  .amp-stream-container .stream-grid > div > * {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 }
 
@@ -30,17 +63,57 @@
     display: none !important;
   }
   
-  /* Ensure streams fill viewport */
-  .stream-grid[data-count="4"] {
+  /* Adjust container height for smaller screens */
+  .amp-stream-container {
     height: calc(100vh - 100px) !important;
+    min-height: calc(100vh - 100px) !important;
+  }
+  
+  /* Tighter spacing on very small screens */
+  .amp-stream-container .stream-grid {
+    gap: 0.25rem !important;
     padding: 0.25rem !important;
   }
   
-  .stream-grid[data-count="4"] > * {
-    /* Force square aspect ratio but use all available space */
-    width: calc((100vw - 1rem) / 2) !important;
-    height: calc((100vw - 1rem) / 2) !important;
-    max-width: calc((100vh - 120px) / 2) !important;
-    max-height: calc((100vh - 120px) / 2) !important;
+  /* Smaller border radius on tiny screens */
+  .amp-stream-container .stream-grid > div {
+    border-radius: 6px !important;
+  }
+}
+
+/* Live stream enhancements */
+.amp-stream-container .stream-grid > div.ring-2 {
+  animation: live-pulse 2s ease-in-out infinite;
+  z-index: 10;
+}
+
+@keyframes live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+/* Ensure live indicator is always visible */
+.amp-stream-container .absolute.top-2.left-2 {
+  z-index: 20 !important;
+}
+
+/* Add subtle animation to live badge */
+.amp-stream-container .bg-red-600 {
+  animation: live-badge-glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes live-badge-glow {
+  from {
+    box-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+  }
+  to {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
   }
 }

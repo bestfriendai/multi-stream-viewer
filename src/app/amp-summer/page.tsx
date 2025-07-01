@@ -1,16 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState, useMemo } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { useTwitchStatus } from '@/hooks/useTwitchStatus'
 import Header from '@/components/Header'
-import StreamGrid from '@/components/StreamGrid'
+import AMPStreamGrid from '@/components/AMPStreamGrid'
 import StreamChat from '@/components/StreamChat'
 import StreamStatusBar from '@/components/StreamStatusBar'
 import { Badge } from '@/components/ui/badge'
 import { Zap, Users } from 'lucide-react'
-import Image from 'next/image'
 import TwitchAvatarImage from '@/components/TwitchAvatarImage'
 import Script from 'next/script'
 import './amp-summer.css'
@@ -39,10 +38,20 @@ const AMP_STREAMERS = [
 ]
 
 export default function AmpSummerPage() {
-  const router = useRouter()
   const { streams, addStream, setGridLayout, clearAllStreams } = useStreamStore()
   const [showChat, setShowChat] = useState(false)
   const { trackAMPSummerView, trackChatToggle } = useAnalytics()
+  
+  // Get live status for all AMP streamers
+  const channelNames = useMemo(() => 
+    streams.map(stream => stream.channelName).filter(Boolean),
+    [streams]
+  )
+  
+  const { status: liveStatusMap } = useTwitchStatus(channelNames, {
+    refreshInterval: 30000, // Check every 30 seconds
+    enabled: true
+  })
 
   useEffect(() => {
     // Track AMP Summer page view
@@ -58,7 +67,7 @@ export default function AmpSummerPage() {
     AMP_STREAMERS.forEach(streamer => {
       addStream({
         channelName: streamer.name,
-        platform: streamer.platform as any
+        platform: streamer.platform
       })
     })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -222,7 +231,7 @@ export default function AmpSummerPage() {
       <div className="flex-1 flex overflow-auto min-h-0 amp-stream-container">
         {/* Streams Grid */}
         <div className="flex-1 overflow-auto bg-gradient-to-b from-background to-black/5 min-h-0">
-          <StreamGrid />
+          <AMPStreamGrid streams={streams} liveStatusMap={liveStatusMap} />
         </div>
 
         {/* Chat Panel */}
