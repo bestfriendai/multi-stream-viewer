@@ -1,3 +1,58 @@
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'AMP Summer 2025 - Watch Kai Cenat, Duke Dennis, Agent00, Fanum Live | AMPSUMMER.com',
+  description: 'Watch AMP Summer live streams featuring Kai Cenat, Duke Dennis, Agent00, and Fanum all in one place. Any Means Possible ⚡️ AMP exclusive content, multi-stream viewer for the ultimate AMP gang experience.',
+  keywords: 'AMP Summer, AMPSUMMER.com, Kai Cenat, Duke Dennis, Agent00, Fanum, AMP, Any Means Possible, AMP gang, AMP exclusive, ampexclusive, AMP streamers, live stream, Twitch, multi stream, watch AMP live, AMP members, AMP content, AMP 2025, streaming',
+  authors: [{ name: 'AMP Summer' }],
+  creator: 'AMP Summer',
+  publisher: 'AMPSUMMER.com',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://ampsummer.com'),
+  alternates: {
+    canonical: '/amp-summer',
+  },
+  openGraph: {
+    title: 'AMP Summer 2025 - Watch Kai Cenat, Duke Dennis, Agent00, Fanum Live',
+    description: 'Watch all AMP members live in one place. Any Means Possible ⚡️ Experience AMP Summer with Kai Cenat, Duke Dennis, Agent00, and Fanum streaming together.',
+    url: 'https://ampsummer.com/amp-summer',
+    siteName: 'AMP Summer',
+    images: [
+      {
+        url: '/amp-summer-og.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'AMP Summer - Kai Cenat, Duke Dennis, Agent00, Fanum Live Streams',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AMP Summer 2025 - Live Now ⚡️',
+    description: 'Watch Kai Cenat, Duke Dennis, Agent00 & Fanum live on AMPSUMMER.com. Any Means Possible exclusive content.',
+    images: ['/amp-summer-twitter.jpg'],
+    creator: '@AMPexclusive',
+    site: '@AMPexclusive',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+}
+
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -11,6 +66,7 @@ import { Badge } from '@/components/ui/badge'
 import { Zap, Users } from 'lucide-react'
 import Image from 'next/image'
 import TwitchAvatarImage from '@/components/TwitchAvatarImage'
+import Script from 'next/script'
 
 const AMP_STREAMERS = [
   { 
@@ -56,8 +112,84 @@ export default function AmpSummerPage() {
     })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'AMP Summer 2025 - Live Streaming Hub',
+    description: 'Watch AMP Summer 2025 with Kai Cenat, Duke Dennis, Agent00, and Fanum streaming live. Any Means Possible ⚡️ The official AMP exclusive multi-stream viewer.',
+    url: 'https://ampsummer.com/amp-summer',
+    mainEntity: {
+      '@type': 'Event',
+      name: 'AMP Summer 2025',
+      description: 'AMP Summer 2025 featuring Kai Cenat, Duke Dennis, Agent00, and Fanum. Watch all AMP members live in one place.',
+      startDate: '2025-01-01',
+      endDate: '2025-12-31',
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+      location: {
+        '@type': 'VirtualLocation',
+        url: 'https://ampsummer.com/amp-summer'
+      },
+      performer: [
+        {
+          '@type': 'Person',
+          name: 'Kai Cenat',
+          url: 'https://twitch.tv/kaicenat',
+          sameAs: ['https://twitter.com/kaicenat', 'https://instagram.com/kaicenat']
+        },
+        {
+          '@type': 'Person',
+          name: 'Duke Dennis',
+          url: 'https://twitch.tv/dukedennis',
+          sameAs: ['https://twitter.com/dukedennis', 'https://instagram.com/dukedennis']
+        },
+        {
+          '@type': 'Person',
+          name: 'Agent00',
+          url: 'https://twitch.tv/agent00',
+          sameAs: ['https://twitter.com/callmeagent00', 'https://instagram.com/callmeagent00']
+        },
+        {
+          '@type': 'Person',
+          name: 'Fanum',
+          url: 'https://twitch.tv/fanum',
+          sameAs: ['https://twitter.com/fanum', 'https://instagram.com/fanum']
+        }
+      ],
+      organizer: {
+        '@type': 'Organization',
+        name: 'AMP (Any Means Possible)',
+        url: 'https://ampsummer.com',
+        sameAs: ['https://twitter.com/AMPexclusive']
+      }
+    },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://ampsummer.com'
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'AMP Summer',
+          item: 'https://ampsummer.com/amp-summer'
+        }
+      ]
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <>
+      <Script
+        id="amp-summer-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <Header showChat={showChat} onToggleChat={() => setShowChat(!showChat)} />
       
@@ -73,14 +205,14 @@ export default function AmpSummerPage() {
             <div className="flex items-center justify-center gap-3">
               <Zap className="w-6 h-6 text-yellow-500 animate-pulse" />
               <h1 className="text-2xl md:text-4xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AMP SUMMER
+                AMP SUMMER 2025
               </h1>
               <Zap className="w-6 h-6 text-yellow-500 animate-pulse" />
             </div>
             
             {/* Subtitle */}
             <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
-              Watch all your favorite AMP members live in one place.
+              Watch all your favorite AMP members live in one place on AMPSUMMER.com - The official home of AMP (Any Means Possible) streaming.
             </p>
             
             {/* Streamer avatars */}
@@ -116,6 +248,15 @@ export default function AmpSummerPage() {
                 <span className="text-red-600 font-semibold">LIVE NOW</span>
               </div>
             </div>
+            
+            {/* SEO Keywords */}
+            <div className="flex flex-wrap justify-center gap-2 mt-2">
+              <span className="text-xs text-muted-foreground">#AMPSummer</span>
+              <span className="text-xs text-muted-foreground">#AMPexclusive</span>
+              <span className="text-xs text-muted-foreground">#AnyMeansPossible</span>
+              <span className="text-xs text-muted-foreground">#KaiCenat</span>
+              <span className="text-xs text-muted-foreground">#DukeDennis</span>
+            </div>
           </div>
         </div>
       </div>
@@ -150,10 +291,26 @@ export default function AmpSummerPage() {
             
             <div className="text-sm text-muted-foreground text-center md:text-right">
               <p>Watching: {AMP_STREAMERS.map(s => s.displayName).join(', ')}</p>
+              <p className="text-xs mt-1">AMP Summer 2025 • AMPSUMMER.com • Any Means Possible ⚡️ #AMPexclusive</p>
             </div>
           </div>
         </div>
+        
+        {/* SEO Content Section */}
+        <div className="sr-only">
+          <h2>About AMP Summer 2025</h2>
+          <p>AMP Summer 2025 is the premier streaming event featuring all members of AMP (Any Means Possible). Watch Kai Cenat, Duke Dennis, Agent00, and Fanum live on AMPSUMMER.com. Experience the best of AMP exclusive content with our multi-stream viewer.</p>
+          <h3>Featured AMP Streamers</h3>
+          <ul>
+            <li>Kai Cenat - The energetic entertainer bringing non-stop content</li>
+            <li>Duke Dennis - Gaming legend and AMP co-founder</li>
+            <li>Agent00 - Elite gamer and content creator</li>
+            <li>Fanum - The comedic genius of AMP</li>
+          </ul>
+          <p>Join millions of viewers watching AMP Summer on AMPSUMMER.com. Any Means Possible represents the future of content creation. Don't miss out on AMP exclusive streams, special events, and collaborations only on AMPSUMMER.com.</p>
+        </div>
       </div>
     </div>
+    </>
   )
 }
