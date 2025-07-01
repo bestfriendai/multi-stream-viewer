@@ -444,7 +444,7 @@ body.force-desktop-mode .stream-grid {
 @media (max-width: 768px) {
   .stream-grid {
     padding: 0.5rem;
-    gap: 1rem; /* Increased gap to prevent overlap */
+    gap: 0.5rem; /* Reduced gap for better space utilization */
     min-height: 400px; /* Ensure minimum height for streams */
     
     /* Performance optimizations */
@@ -470,33 +470,50 @@ body.force-desktop-mode .stream-grid {
   }
   
   .stream-grid[data-count="2"] > * {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1 / 1;
   }
 
   .stream-grid[data-count="3"],
   .stream-grid[data-count="4"] {
     grid-template-columns: repeat(2, 1fr) !important;
-    grid-template-rows: repeat(2, auto) !important;
+    grid-template-rows: repeat(2, 1fr) !important;
     gap: 0.75rem !important;
+  }
+  
+  .stream-grid[data-count="3"] > *,
+  .stream-grid[data-count="4"] > * {
+    aspect-ratio: 1 / 1;
   }
   
   .stream-grid[data-count="3"] > *:last-child {
     grid-column: 1 / -1; /* Make the third item span full width */
+    aspect-ratio: 2 / 1; /* Wider aspect ratio for the spanning item */
   }
 
   .stream-grid[data-count="5"],
   .stream-grid[data-count="6"] {
     grid-template-columns: repeat(2, 1fr) !important;
-    grid-template-rows: repeat(3, minmax(160px, 1fr)) !important;
+    grid-template-rows: repeat(3, 1fr) !important;
     gap: 0.75rem !important;
+  }
+  
+  .stream-grid[data-count="5"] > *,
+  .stream-grid[data-count="6"] > * {
+    aspect-ratio: 1 / 1;
   }
 
   .stream-grid[data-count="7"],
   .stream-grid[data-count="8"],
   .stream-grid[data-count="9"] {
     grid-template-columns: repeat(2, 1fr) !important;
-    grid-auto-rows: minmax(160px, 1fr) !important;
+    grid-auto-rows: 1fr !important;
     gap: 0.75rem !important;
+  }
+  
+  .stream-grid[data-count="7"] > *,
+  .stream-grid[data-count="8"] > *,
+  .stream-grid[data-count="9"] > * {
+    aspect-ratio: 1 / 1;
   }
 
   /* For more than 9 streams, use a scrollable 2-column layout */
@@ -508,8 +525,18 @@ body.force-desktop-mode .stream-grid {
   .stream-grid[data-count="15"],
   .stream-grid[data-count="16"] {
     grid-template-columns: repeat(2, 1fr) !important;
-    grid-auto-rows: minmax(160px, 1fr) !important;
+    grid-auto-rows: 1fr !important;
     gap: 0.75rem !important;
+  }
+  
+  .stream-grid[data-count="10"] > *,
+  .stream-grid[data-count="11"] > *,
+  .stream-grid[data-count="12"] > *,
+  .stream-grid[data-count="13"] > *,
+  .stream-grid[data-count="14"] > *,
+  .stream-grid[data-count="15"] > *,
+  .stream-grid[data-count="16"] > * {
+    aspect-ratio: 1 / 1;
   }
 
   /* Mobile focus layout - stack primary stream on top */
