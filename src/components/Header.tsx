@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { useTwitchAutosuggest } from '@/hooks/useTwitchAutosuggest'
 import { 
   Plus, 
   Menu, 
@@ -47,6 +48,9 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
   const [channelInput, setChannelInput] = useState('')
   const [showAddStream, setShowAddStream] = useState(false)
   const [showDiscovery, setShowDiscovery] = useState(false)
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const suggestionsRef = useRef<HTMLDivElement>(null)
   
   const { 
     streams, 
@@ -55,6 +59,7 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
   } = useStreamStore()
   
   const { trackStreamAdded, trackFeatureUsage, trackMenuItemClick } = useAnalytics()
+  const { suggestions, isLoading, searchChannels, clearSuggestions } = useTwitchAutosuggest()
   
   const handleAddStream = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -68,9 +73,72 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
         
         setChannelInput('')
         setShowAddStream(false)
+        clearSuggestions()
       }
     }
   }
+
+  const handleInputChange = (value: string) => {
+    setChannelInput(value)
+    setSelectedSuggestionIndex(-1)
+    
+    // Only search if it looks like a Twitch username (no URLs)
+    if (!value.includes('.') && !value.includes('/')) {
+      searchChannels(value)
+    } else {
+      clearSuggestions()
+    }
+  }
+
+  const handleSelectSuggestion = (login: string) => {
+    setChannelInput(login)
+    clearSuggestions()
+    setSelectedSuggestionIndex(-1)
+    inputRef.current?.focus()
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (suggestions.length === 0) return
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault()
+        setSelectedSuggestionIndex(prev => 
+          prev < suggestions.length - 1 ? prev + 1 : prev
+        )
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        setSelectedSuggestionIndex(prev => 
+          prev > -1 ? prev - 1 : -1
+        )
+        break
+      case 'Enter':
+        if (selectedSuggestionIndex >= 0 && suggestions[selectedSuggestionIndex]) {
+          e.preventDefault()
+          handleSelectSuggestion(suggestions[selectedSuggestionIndex].login)
+        }
+        break
+      case 'Escape':
+        clearSuggestions()
+        setSelectedSuggestionIndex(-1)
+        break
+    }
+  }
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node) &&
+          inputRef.current && !inputRef.current.contains(event.target as Node)) {
+        clearSuggestions()
+        setSelectedSuggestionIndex(-1)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [clearSuggestions])
   
   return (
     <div>
@@ -90,16 +158,79 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
               {showAddStream ? (
                 <form 
                   onSubmit={handleAddStream} 
-                  className="flex items-center gap-2 max-w-xs"
+                  className="flex items-center gap-2 max-w-xs relative"
                 >
-                    <Input
-                      type="text"
-                      value={channelInput}
-                      onChange={(e) => setChannelInput(e.target.value)}
-                      placeholder="Enter channel or URL"
-                      className="h-8"
-                      autoFocus
-                    />
+                    <div className="relative flex-1">
+                      <Input
+                        ref={inputRef}
+                        type="text"
+                        value={channelInput}
+                        onChange={(e) => handleInputChange(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        placeholder="Enter channel or URL"
+                        className="h-8"
+                        autoFocus
+                      />
+                      
+                      {/* Autosuggest Dropdown */}
+                      {suggestions.length > 0 && (
+                        <div 
+                          ref={suggestionsRef}
+                          className="absolute top-full left-0 right-0 mt-1 bg-popover border rounded-md shadow-lg z-50 overflow-hidden"
+                        >
+                          <div className="max-h-64 overflow-y-auto">
+                            {suggestions.map((channel, index) => (
+                              <button
+                                key={channel.id}
+                                type="button"
+                                className={`w-full px-3 py-2 text-left hover:bg-accent transition-colors flex items-center gap-3 ${
+                                  index === selectedSuggestionIndex ? 'bg-accent' : ''
+                                }`}
+                                onClick={() => handleSelectSuggestion(channel.login)}
+                                onMouseEnter={() => setSelectedSuggestionIndex(index)}
+                              >
+                                {channel.profile_image_url && (
+                                  <img
+                                    src={channel.profile_image_url}
+                                    alt={channel.display_name}
+                                    className="w-8 h-8 rounded-full"
+                                  />
+                                )}
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-medium truncate">{channel.display_name}</span>
+                                    {channel.is_live && (
+                                      <span className="flex items-center gap-1 text-xs text-red-600">
+                                        <span className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
+                                        LIVE
+                                      </span>
+                                    )}
+                                  </div>
+                                  {channel.game_name && (
+                                    <p className="text-xs text-muted-foreground truncate">
+                                      {channel.game_name}
+                                      {channel.stream?.viewer_count && (
+                                        <span className="ml-2">
+                                          {channel.stream.viewer_count.toLocaleString()} viewers
+                                        </span>
+                                      )}
+                                    </p>
+                                  )}
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Loading indicator */}
+                      {isLoading && channelInput.length >= 2 && !channelInput.includes('.') && (
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-popover border rounded-md shadow-lg z-50 p-3 text-center text-sm text-muted-foreground">
+                          Searching...
+                        </div>
+                      )}
+                    </div>
+                    
                     <Button type="submit" size="sm" className="h-8">
                       Add
                     </Button>
@@ -111,6 +242,7 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
                       onClick={() => {
                         setShowAddStream(false)
                         setChannelInput('')
+                        clearSuggestions()
                       }}
                     >
                       <X className="h-4 w-4" />

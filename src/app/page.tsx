@@ -26,6 +26,7 @@ const FollowingRecommended = dynamic(() => import('@/components/FollowingRecomme
   loading: () => <div className="p-8 text-center">Loading...</div>
 })
 import StreamStatusBar from '@/components/StreamStatusBar'
+import LandingPage from '@/components/LandingPage'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
@@ -208,10 +209,7 @@ export default function Home() {
         "overflow-hidden md:overflow-hidden", // Hidden on desktop, auto on mobile
         "md:h-full" // Full height on desktop
       )}>
-        <main className={cn(
-          "flex-1 overflow-hidden transition-all",
-          showChat && "sm:mr-80"
-        )}>
+        <main className="flex-1 overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
             <div className="border-b px-4">
               <TabsList className="h-12 bg-transparent">
@@ -245,15 +243,21 @@ export default function Home() {
             
             <TabsContent value="streams" className="flex-1 m-0 flex flex-col overflow-y-auto md:overflow-hidden">
               <ErrorBoundary>
-                <StreamStatusBar />
-                <div className="flex-1 overflow-y-auto md:overflow-auto">
-                  {/* Use ResizableStreamGrid for custom layouts, regular StreamGrid for others */}
-                  {gridLayout === 'custom' ? (
-                    <ResizableStreamGrid layoutType={gridLayout} />
-                  ) : (
-                    <StreamGrid />
-                  )}
-                </div>
+                {streams.length === 0 ? (
+                  <LandingPage onAddStream={() => setShowAddStream(true)} />
+                ) : (
+                  <>
+                    <StreamStatusBar />
+                    <div className="flex-1 overflow-y-auto md:overflow-auto">
+                      {/* Use ResizableStreamGrid for custom layouts, regular StreamGrid for others */}
+                      {gridLayout === 'custom' ? (
+                        <ResizableStreamGrid layoutType={gridLayout} />
+                      ) : (
+                        <StreamGrid />
+                      )}
+                    </div>
+                  </>
+                )}
               </ErrorBoundary>
             </TabsContent>
             

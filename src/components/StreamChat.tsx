@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useStreamStore } from '@/store/streamStore'
-import { MessageSquare, X, ChevronDown, Users, Eye } from 'lucide-react'
+import { MessageSquare, X, ChevronDown, Users, Eye, Volume2, VolumeX } from 'lucide-react'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { cn } from '@/lib/utils'
@@ -32,9 +32,18 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
     refreshInterval: 60000
   })
   
-  // Auto-select stream with most viewers when chat opens
+  // Auto-select unmuted stream, or stream with most viewers if all are muted
   useEffect(() => {
-    if (show && status.size > 0) {
+    // First, check for unmuted stream
+    const unmutedStream = twitchStreams.find(s => !s.muted)
+    
+    if (unmutedStream) {
+      // If there's an unmuted stream, select it
+      if (unmutedStream.id !== selectedStreamId) {
+        setSelectedStreamId(unmutedStream.id)
+      }
+    } else if (show && status.size > 0) {
+      // If all streams are muted, select the one with most viewers
       let maxViewers = 0
       let maxViewerStreamId = twitchStreams[0]?.id || ''
       
@@ -50,14 +59,15 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
         setSelectedStreamId(maxViewerStreamId)
       }
     }
-  }, [show, status]) // eslint-disable-line react-hooks/exhaustive-deps
-  
-  if (!show) return null
+  }, [show, status, twitchStreams]) // eslint-disable-line react-hooks/exhaustive-deps
   
   const selectedStream = twitchStreams.find(s => s.id === selectedStreamId) || twitchStreams[0]
   
   return (
-    <div className="fixed right-0 top-0 h-screen w-full sm:w-96 bg-background border-l z-50 flex flex-col shadow-xl">
+    <div className={cn(
+      "fixed md:relative right-0 top-0 h-screen md:h-auto w-full sm:w-96 bg-background border-l z-50 md:z-auto flex flex-col shadow-xl md:shadow-none",
+      !show && "hidden"
+    )}>
       {/* Header */}
       <div className="p-4 border-b bg-card/50 backdrop-blur-sm">
         <div className="flex items-center justify-between mb-3">
@@ -91,6 +101,9 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
                 <div className="flex items-center gap-2 flex-1 truncate">
                   <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                   <span className="truncate">{selectedStream?.channelName}</span>
+                  {selectedStream && !selectedStream.muted && (
+                    <Volume2 className="w-4 h-4 text-primary" />
+                  )}
                   {selectedStream?.channelName && status.get(selectedStream.channelName) && (
                     <Badge variant="secondary" className="ml-auto mr-2">
                       <Eye className="w-3 h-3 mr-1" />
@@ -121,13 +134,18 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
                             streamStatus?.isLive ? "bg-red-500 animate-pulse" : "bg-gray-400"
                           )} />
                           <span className="font-medium">{stream.channelName}</span>
+                          {!stream.muted && (
+                            <Volume2 className="w-3 h-3 text-primary" />
+                          )}
                         </div>
-                        {streamStatus && (
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <Users className="w-3 h-3" />
-                            {streamStatus.viewerCount.toLocaleString()}
-                          </div>
-                        )}
+                        <div className="flex items-center gap-3">
+                          {streamStatus && (
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <Users className="w-3 h-3" />
+                              {streamStatus.viewerCount.toLocaleString()}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </DropdownMenuItem>
                   )
