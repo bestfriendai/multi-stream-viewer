@@ -509,8 +509,7 @@ body.force-desktop-mode .stream-grid {
     );
     animation: shimmer 2s infinite;
   }
-}
-
+  
   /* Mobile streams are always full width and stacked vertically */
   .stream-grid[data-count] > * {
     width: 100% !important;
@@ -595,6 +594,7 @@ body.force-desktop-mode .stream-grid {
     backface-visibility: hidden;
     perspective: 1000px;
   }
+}
 
 /* Extra small mobile devices */
 @media (max-width: 480px) {
