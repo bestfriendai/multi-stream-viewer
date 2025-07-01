@@ -2,7 +2,9 @@
 
 import { useEffect, useRef } from 'react'
 import { useStreamStore, Stream } from '@/store/streamStore'
-import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize } from 'lucide-react'
+import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from 'lucide-react'
+import { useSingleChannelStatus } from '@/hooks/useTwitchStatus'
+import LiveIndicator from './LiveIndicator'
 
 interface StreamEmbedProps {
   stream: Stream
@@ -24,6 +26,12 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
     primaryStreamId 
   } = useStreamStore()
   
+  // Get live status for Twitch streams
+  const { status: twitchStatus } = useSingleChannelStatus(
+    stream.platform === 'twitch' ? stream.channelName : '',
+    { enabled: stream.platform === 'twitch' }
+  )
+  
   useEffect(() => {
     if (!embedRef.current) return
     
@@ -43,7 +51,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
             width: '100%',
             height: '100%',
             channel: stream.channelName,
-            parent: [window.location.hostname, 'localhost'],
+            parent: [window.location.hostname, 'localhost', 'streamyyyy.com'],
             autoplay: true,
             muted: stream.muted,
             layout: 'video',
@@ -184,6 +192,13 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
               <div className="text-white/90">{getPlatformIcon()}</div>
               <span className="text-white text-xs sm:text-sm font-medium tracking-tight truncate max-w-[100px] sm:max-w-none">{stream.channelName}</span>
             </div>
+            {stream.platform === 'twitch' && twitchStatus?.isLive && (
+              <LiveIndicator 
+                isLive={true} 
+                viewerCount={twitchStatus.viewerCount}
+                size="sm"
+              />
+            )}
           </div>
           
           <div className="flex gap-0.5 sm:gap-1">
@@ -235,6 +250,29 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
           </div>
         </div>
       </div>
+      
+      {/* Stream Info Overlay */}
+      {stream.platform === 'twitch' && twitchStatus?.isLive && twitchStatus.gameName && (
+        <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none">
+          <div className="space-y-1">
+            <p className="text-white text-xs sm:text-sm font-medium truncate">
+              {twitchStatus.title}
+            </p>
+            <div className="flex items-center gap-2 text-white/80 text-xs">
+              <span className="truncate">Playing {twitchStatus.gameName}</span>
+              {twitchStatus.viewerCount > 0 && (
+                <>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    <Users size={12} />
+                    {twitchStatus.viewerCount.toLocaleString()}
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

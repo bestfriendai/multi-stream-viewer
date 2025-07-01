@@ -9,6 +9,7 @@ import MobileSwipeControls from '@/components/MobileSwipeControls'
 import FeaturesShowcase from '@/components/FeaturesShowcase'
 import LiveDiscovery from '@/components/LiveDiscovery'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import StreamStatusBar from '@/components/StreamStatusBar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
@@ -21,7 +22,6 @@ import { Grid3x3, Compass, Zap } from 'lucide-react'
 export default function Home() {
   const [showChat, setShowChat] = useState(false)
   const [showAddStream, setShowAddStream] = useState(false)
-  const [showLayouts, setShowLayouts] = useState(false)
   const [showMobileView, setShowMobileView] = useState(false)
   const [channelInput, setChannelInput] = useState('')
   const [activeTab, setActiveTab] = useState('streams')
@@ -99,9 +99,12 @@ export default function Home() {
               </TabsList>
             </div>
             
-            <TabsContent value="streams" className="flex-1 overflow-hidden m-0">
+            <TabsContent value="streams" className="flex-1 overflow-hidden m-0 flex flex-col">
               <ErrorBoundary>
-                <StreamGrid />
+                <StreamStatusBar />
+                <div className="flex-1 overflow-hidden">
+                  <StreamGrid />
+                </div>
               </ErrorBoundary>
             </TabsContent>
             
@@ -128,7 +131,7 @@ export default function Home() {
       <MobileNav
         onAddStream={() => setShowAddStream(true)}
         onToggleChat={() => setShowChat(!showChat)}
-        onOpenLayouts={() => setShowLayouts(true)}
+        onOpenLayouts={() => {}}
         onOpenDiscover={() => setActiveTab('discover')}
         showChat={showChat}
         streamCount={streams.length}
