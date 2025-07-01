@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useStreamStore } from '@/store/streamStore'
+import { useAnalytics } from '@/hooks/useAnalytics'
 import { 
   Plus, 
   Menu, 
@@ -52,11 +53,18 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
     clearAllStreams
   } = useStreamStore()
   
+  const { trackStreamAdded, trackFeatureUsage, trackMenuItemClick } = useAnalytics()
+  
   const handleAddStream = async (e: React.FormEvent) => {
     e.preventDefault()
     if (channelInput.trim()) {
       const success = await addStream(channelInput.trim())
       if (success) {
+        // Track stream addition
+        const platform = channelInput.includes('youtube') || channelInput.includes('youtu.be') ? 'youtube' : 'twitch'
+        const channelName = channelInput.split('/').pop() || channelInput
+        trackStreamAdded(channelName, platform)
+        
         setChannelInput('')
         setShowAddStream(false)
       }

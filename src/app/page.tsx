@@ -25,6 +25,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useStreamStore } from '@/store/streamStore'
+import { useAnalytics } from '@/hooks/useAnalytics'
 import { loadFromQueryParams } from '@/lib/shareableLinks'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -37,6 +38,7 @@ export default function Home() {
   const [channelInput, setChannelInput] = useState('')
   const [activeTab, setActiveTab] = useState('streams')
   const { addStream, setGridLayout, streams } = useStreamStore()
+  const { trackChatToggle, trackFeatureUsage, trackStreamAdded } = useAnalytics()
   
   // Enable keyboard shortcuts
   useKeyboardShortcuts()
@@ -67,6 +69,11 @@ export default function Home() {
   const handleAddStream = async (input: string) => {
     const success = await addStream(input)
     if (success) {
+      // Track stream addition
+      const platform = input.includes('youtube') || input.includes('youtu.be') ? 'youtube' : 'twitch'
+      const channelName = input.split('/').pop() || input
+      trackStreamAdded(channelName, platform)
+      
       setChannelInput('')
       setShowAddStream(false)
     }
@@ -167,19 +174,36 @@ export default function Home() {
         </main>
         
         <ErrorBoundary>
-          <StreamChat show={showChat} onClose={() => setShowChat(false)} />
+          <StreamChat show={showChat} onClose={() => {
+            setShowChat(false)
+            trackChatToggle(false)
+          }} />
         </ErrorBoundary>
       </div>
       
       {/* Mobile Navigation */}
       <MobileNav
-        onAddStream={() => setShowAddStream(true)}
-        onToggleChat={() => setShowChat(!showChat)}
-        onOpenLayouts={() => {}}
-        onOpenDiscover={() => setActiveTab('discover')}
+        onAddStream={() => {
+          setShowAddStream(true)
+          trackFeatureUsage('add_stream_mobile')
+        }}
+        onToggleChat={() => {
+          setShowChat(!showChat)
+          trackChatToggle(!showChat)
+        }}
+        onOpenLayouts={() => {
+          trackFeatureUsage('layouts_mobile')
+        }}
+        onOpenDiscover={() => {
+          setActiveTab('discover')
+          trackFeatureUsage('discover_mobile')
+        }}
         showChat={showChat}
         streamCount={streams.length}
-        onToggleSwipeView={() => setShowMobileView(true)}
+        onToggleSwipeView={() => {
+          setShowMobileView(true)
+          trackFeatureUsage('swipe_view_mobile')
+        }}
       />
       
       {/* Mobile Swipe Controls - Only show when explicitly enabled */}

@@ -5,6 +5,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import AnalyticsPageTracker from "@/components/AnalyticsPageTracker";
+import SessionTracker from "@/components/SessionTracker";
+import MobileAnalyticsTracker from "@/components/MobileAnalyticsTracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -148,6 +151,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <GoogleAnalytics />
+        <AnalyticsPageTracker />
+        <SessionTracker />
+        <MobileAnalyticsTracker />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
