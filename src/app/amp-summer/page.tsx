@@ -10,31 +10,28 @@ import StreamStatusBar from '@/components/StreamStatusBar'
 import { Badge } from '@/components/ui/badge'
 import { Zap, Users } from 'lucide-react'
 import Image from 'next/image'
+import TwitchAvatarImage from '@/components/TwitchAvatarImage'
 
 const AMP_STREAMERS = [
   { 
     name: 'kaicenat', 
     displayName: 'Kai Cenat', 
-    platform: 'twitch',
-    profileImage: 'https://static-cdn.jtvnw.net/jtv_user_pictures/kaicenat-profile_image-7ef1ceaac993b96e-300x300.png'
+    platform: 'twitch' as const
   },
   { 
     name: 'fanum', 
     displayName: 'Fanum', 
-    platform: 'twitch',
-    profileImage: 'https://static-cdn.jtvnw.net/jtv_user_pictures/fanum-profile_image-300x300.png'
+    platform: 'twitch' as const
   },
   { 
     name: 'dukedennis', 
     displayName: 'Duke Dennis', 
-    platform: 'twitch',
-    profileImage: 'https://static-cdn.jtvnw.net/jtv_user_pictures/dukedennis-profile_image-300x300.png'
+    platform: 'twitch' as const
   },
   { 
     name: 'agent00', 
     displayName: 'Agent 00', 
-    platform: 'twitch',
-    profileImage: 'https://static-cdn.jtvnw.net/jtv_user_pictures/agent00-profile_image-300x300.png'
+    platform: 'twitch' as const
   }
 ]
 
@@ -95,19 +92,13 @@ export default function AmpSummerPage() {
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-yellow-500/50 group-hover:border-yellow-500 transition-all duration-300">
-                    <img 
-                      src={streamer.profileImage} 
-                      alt={streamer.displayName}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        // Fallback to initial letter if image fails
-                        e.currentTarget.style.display = 'none';
-                        e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                      }}
+                    <TwitchAvatarImage
+                      username={streamer.name}
+                      name={streamer.displayName}
+                      platform={streamer.platform}
+                      size={80}
+                      className="w-full h-full"
                     />
-                    <div className="hidden absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 flex items-center justify-center text-2xl font-bold">
-                      {streamer.displayName[0]}
-                    </div>
                   </div>
                   <Badge 
                     className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-black text-white border-yellow-500 text-xs whitespace-nowrap"
