@@ -595,7 +595,6 @@ body.force-desktop-mode .stream-grid {
     backface-visibility: hidden;
     perspective: 1000px;
   }
-}
 
 /* Extra small mobile devices */
 @media (max-width: 480px) {

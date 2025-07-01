@@ -26,11 +26,15 @@ export default function MobileAnalyticsTracker() {
     let touchStartX = 0
 
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY
-      touchStartX = e.touches[0].clientX
+      if (e.touches[0]) {
+        touchStartY = e.touches[0].clientY
+        touchStartX = e.touches[0].clientX
+      }
     }
 
     const handleTouchEnd = (e: TouchEvent) => {
+      if (!e.changedTouches[0]) return
+      
       const touchEndY = e.changedTouches[0].clientY
       const touchEndX = e.changedTouches[0].clientX
       const deltaY = touchStartY - touchEndY

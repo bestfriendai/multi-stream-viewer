@@ -80,7 +80,7 @@ export default function MobileStreamViewer({ show, onClose }: MobileStreamViewer
   }
 
   const shareStream = () => {
-    if (currentStream && navigator.share) {
+    if (currentStream && typeof navigator !== 'undefined' && 'share' in navigator) {
       navigator.share({
         title: `Watch ${currentStream.channelName} on ${currentStream.platform}`,
         url: window.location.href
@@ -124,7 +124,7 @@ export default function MobileStreamViewer({ show, onClose }: MobileStreamViewer
                   <Maximize2 className="mr-2 h-4 w-4" />
                   {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
                 </DropdownMenuItem>
-                {navigator.share && (
+                {typeof navigator !== 'undefined' && 'share' in navigator && (
                   <DropdownMenuItem onClick={shareStream} className="text-white">
                     <Share2 className="mr-2 h-4 w-4" />
                     Share Stream
@@ -164,7 +164,6 @@ export default function MobileStreamViewer({ show, onClose }: MobileStreamViewer
           >
             <StreamEmbedOptimized 
               stream={currentStream}
-              className="w-full h-full"
             />
           </div>
         )}

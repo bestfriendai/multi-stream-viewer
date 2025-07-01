@@ -10,7 +10,7 @@ export default function GADebugPanel() {
 
   useEffect(() => {
     const checkGA = () => {
-      if (typeof window !== 'undefined' && window.gtag) {
+      if (typeof window !== 'undefined' && (window as any).gtag) {
         setIsGALoaded(true)
       }
     }

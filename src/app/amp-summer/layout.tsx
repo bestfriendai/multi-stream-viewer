@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'AMP Summer 2025 - Watch Kai Cenat, Duke Dennis, Agent00, Fanum Live | AMPSUMMER.com',
