@@ -3,13 +3,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useStreamStore } from '@/store/streamStore'
-import { Plus, Trash2, MessageSquare, TrendingUp, Keyboard, Monitor, Smartphone } from 'lucide-react'
+import { Plus, Trash2, MessageSquare, TrendingUp, Keyboard, Monitor, Smartphone, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ThemeToggle } from './theme-toggle'
 import SavedLayoutsDialog from './SavedLayoutsDialog'
 import ShareDialog from './ShareDialog'
+import LayoutSelector from './LayoutSelector'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import LiveDiscovery from './LiveDiscovery'
 import StreamyyyLogo from './StreamyyyLogo'
@@ -102,6 +103,21 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
           
           {/* Controls */}
           <div className="flex items-center gap-2 flex-wrap justify-center">
+            {/* AMP Summer Link */}
+            <Link href="/amp-summer">
+              <Button
+                variant="outline"
+                size="sm"
+                className="relative overflow-hidden bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/50 hover:border-yellow-500 hover:from-yellow-500/20 hover:to-orange-500/20 transition-all duration-300 group"
+              >
+                <Zap className="w-4 h-4 mr-1 text-yellow-600 group-hover:text-yellow-500 animate-pulse" />
+                <span className="font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                  AMP SUMMER
+                </span>
+                <Zap className="w-4 h-4 ml-1 text-yellow-600 group-hover:text-yellow-500 animate-pulse" />
+              </Button>
+            </Link>
+            
             {/* Add Stream */}
             <div className="animate-fade-in">
             {showAddStream ? (
@@ -198,22 +214,8 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
             </Dialog>
             
             {/* Layout Options */}
-            <div className="hidden md:flex items-center gap-1 border border-border/50 rounded-xl p-1 bg-muted/30 backdrop-blur-sm">
-              {layoutOptions.map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => setGridLayout(option.value)}
-                  className={cn(
-                    'px-2 py-1 text-sm rounded-lg transition-all duration-200',
-                    gridLayout === option.value
-                      ? 'bg-primary text-primary-foreground shadow-sm'
-                      : 'hover:bg-muted/50'
-                  )}
-                  title={option.label}
-                >
-                  <span className="font-mono">{option.icon}</span>
-                </button>
-              ))}
+            <div className="hidden md:block">
+              <LayoutSelector />
             </div>
             
             {/* Saved Layouts */}

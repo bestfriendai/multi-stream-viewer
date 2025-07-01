@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
+import FollowingRecommended from './FollowingRecommended'
 
 interface StreamData {
   id: string

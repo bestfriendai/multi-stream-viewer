@@ -17,6 +17,9 @@ const FeaturesShowcase = dynamic(() => import('@/components/FeaturesShowcase'), 
 const EnhancedDiscovery = dynamic(() => import('@/components/EnhancedDiscovery'), {
   loading: () => <div className="p-8 text-center">Loading discovery...</div>
 })
+const FollowingRecommended = dynamic(() => import('@/components/FollowingRecommended'), {
+  loading: () => <div className="p-8 text-center">Loading...</div>
+})
 import StreamStatusBar from '@/components/StreamStatusBar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -25,7 +28,7 @@ import { useStreamStore } from '@/store/streamStore'
 import { loadFromQueryParams } from '@/lib/shareableLinks'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
-import { Grid3x3, Compass, Zap } from 'lucide-react'
+import { Grid3x3, Compass, Zap, Heart } from 'lucide-react'
 
 export default function Home() {
   const [showChat, setShowChat] = useState(false)
@@ -117,12 +120,16 @@ export default function Home() {
                   <span className="hidden sm:inline">Discover</span>
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse ml-2" />
                 </TabsTrigger>
+                <TabsTrigger value="following" className="gap-2">
+                  <Heart size={16} />
+                  <span className="hidden sm:inline">Following</span>
+                  <Badge variant="default" className="ml-2 h-5 px-1.5 text-xs bg-gradient-to-r from-red-600 to-pink-600">
+                    NEW
+                  </Badge>
+                </TabsTrigger>
                 <TabsTrigger value="features" className="gap-2">
                   <Zap size={16} />
                   <span className="hidden sm:inline">Features</span>
-                  <Badge variant="default" className="ml-2 h-5 px-1.5 text-xs bg-gradient-to-r from-purple-600 to-pink-600">
-                    NEW
-                  </Badge>
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -139,6 +146,12 @@ export default function Home() {
             <TabsContent value="discover" className="flex-1 overflow-y-auto">
               <ErrorBoundary>
                 <EnhancedDiscovery />
+              </ErrorBoundary>
+            </TabsContent>
+            
+            <TabsContent value="following" className="flex-1 overflow-y-auto">
+              <ErrorBoundary>
+                <FollowingRecommended />
               </ErrorBoundary>
             </TabsContent>
             

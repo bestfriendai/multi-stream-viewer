@@ -3,6 +3,32 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Enable modern React features
   
+  // Image optimization
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'static-cdn.jtvnw.net',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'clips-media-assets2.twitch.tv',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'vod-secure.twitch.tv',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.ytimg.com',
+        pathname: '/**',
+      },
+    ],
+  },
+  
   // Performance optimizations
   compress: true,
   poweredByHeader: false,
