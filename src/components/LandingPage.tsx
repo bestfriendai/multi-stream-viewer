@@ -179,48 +179,47 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
   ]
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div className="flex-1 overflow-y-auto relative">
+      {/* Background Live Streams - Full Page Coverage */}
+      {liveChannels.length > 0 && (
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 gap-2 scale-110">
+            {[...Array(16)].map((_, index) => {
+              const channel = liveChannels[index % liveChannels.length]
+              if (!channel) return null
+              return (
+                <motion.div 
+                  key={`bg-${channel.channelName}-${index}`} 
+                  className="relative overflow-hidden"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 0.7, scale: 1 }}
+                  transition={{ delay: (index % 4) * 0.1, duration: 0.8 }}
+                >
+                  <div className="aspect-video relative">
+                    <iframe
+                      src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
+                      className="absolute inset-0 w-full h-full"
+                      frameBorder="0"
+                      scrolling="no"
+                      allowFullScreen={false}
+                    />
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/70 to-background/85" />
+        </div>
+      )}
+      
       {/* Enhanced Hero Section */}
       <section className="relative overflow-hidden py-20 lg:py-32">
-        {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-background">
+        {/* Animated Background Effects */}
+        <div className="absolute inset-0">
           <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-32" />
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-3xl animate-pulse animation-delay-2000" />
         </div>
-        
-        {/* Background Live Streams - Full Coverage */}
-        {liveChannels.length > 0 && (
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 grid grid-cols-4 grid-rows-3 gap-2 scale-110">
-              {[...Array(12)].map((_, index) => {
-                const channel = liveChannels[index % liveChannels.length]
-                if (!channel) return null
-                return (
-                  <motion.div 
-                    key={`${channel.channelName}-${index}`} 
-                    className="relative overflow-hidden"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 0.4, scale: 1 }}
-                    transition={{ delay: (index % 4) * 0.1, duration: 0.8 }}
-                  >
-                    <div className="aspect-video relative">
-                      <iframe
-                        src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
-                        className="absolute inset-0 w-full h-full"
-                        frameBorder="0"
-                        scrolling="no"
-                        allowFullScreen={false}
-                      />
-                    </div>
-                  </motion.div>
-                )
-              })}
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/80 to-background/95" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/20 via-transparent to-background/20" />
-          </div>
-        )}
         
         <div className="container mx-auto px-4 relative z-10">
           <motion.div 
@@ -540,14 +539,22 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                     className="overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer group"
                     onClick={() => handleQuickAdd(channel.channelName)}
                   >
-                    <div className="aspect-video bg-gradient-to-br from-red-600/20 to-purple-600/20 relative">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <PlayCircle className="w-12 h-12 text-white/50 group-hover:text-white/80 transition-colors" />
-                      </div>
-                      <div className="absolute top-2 right-2">
+                    <div className="aspect-video relative overflow-hidden">
+                      <iframe
+                        src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
+                        className="absolute inset-0 w-full h-full"
+                        frameBorder="0"
+                        scrolling="no"
+                        allowFullScreen={false}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute top-2 right-2 z-10">
                         <Badge className="bg-red-600 text-white border-0 text-xs">
                           LIVE
                         </Badge>
+                      </div>
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 pointer-events-none">
+                        <Plus className="w-12 h-12 text-white" />
                       </div>
                     </div>
                     
