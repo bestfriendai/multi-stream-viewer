@@ -21,10 +21,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Get top categories/games from Twitch
-    const response = await twitchAPI('/games/top', {
-      first: first.toString(),
-      ...(after && { after })
-    });
+    const games = await twitchAPI.getTopGames(first);
+    
+    const response = {
+      data: games,
+      pagination: {} // TODO: Add pagination support to getTopGames method
+    };
 
     const categories = response.data.map((category: any) => ({
       id: category.id,
@@ -79,11 +81,17 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Search categories
-    const response = await twitchAPI('/search/categories', {
-      query,
-      first: '50'
-    });
+    // Search categories - using searchChannels as a proxy since there's no searchCategories method
+    const channels = await twitchAPI.searchChannels(query, 50);
+    
+    // Transform channel data to category-like structure
+    const response = {
+      data: channels.map(channel => ({
+        id: channel.game_id || channel.id,
+        name: channel.game_name || channel.display_name,
+        box_art_url: channel.thumbnail_url || ''
+      }))
+    };
 
     const categories = response.data.map((category: any) => ({
       id: category.id,

@@ -236,8 +236,8 @@ export default function LiveDiscoveryOptimized() {
     }
   }, [fetchLiveData])
 
-  const handleAddStream = useCallback((stream: LiveStreamer | TopStreamer) => {
-    const success = addStream(stream.name)
+  const handleAddStream = useCallback(async (stream: LiveStreamer | TopStreamer) => {
+    const success = await addStream(stream.name)
     if (!success) {
       console.log(`Stream ${stream.name} already added or invalid`)
     }

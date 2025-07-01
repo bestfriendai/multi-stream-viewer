@@ -141,8 +141,8 @@ export async function checkStreamStatus(streamerName: string, platform: 'twitch'
   return {
     isLive: true,
     viewerCount,
-    title: `${game} - Chill Stream`, // Would come from API
-    game
+    title: `${game || 'Gaming'} - Chill Stream`, // Would come from API
+    game: game || 'Gaming'
   }
 }
 

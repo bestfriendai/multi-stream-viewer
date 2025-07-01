@@ -33,7 +33,7 @@ export default function TwitchTestPanel() {
       const data = await response.json()
       setTestResults(data)
     } catch (error) {
-      setTestResults({ status: 'error', error: error.message })
+      setTestResults({ status: 'error', error: error instanceof Error ? error.message : 'Unknown error' })
     } finally {
       setLoading(false)
     }

@@ -44,7 +44,7 @@ export default function WatchParty() {
       participants: [{
         id: user.id || 'anonymous',
         name: user.username || 'Anonymous',
-        avatar: user.avatar,
+        avatar: user.avatar || '',
         isMuted: false,
         reactions: []
       }],

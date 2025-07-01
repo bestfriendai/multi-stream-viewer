@@ -184,7 +184,7 @@ export default function SuggestedStreams() {
     return randomizeViewers(b.viewers) - randomizeViewers(a.viewers)
   })
   
-  const handleAddStream = (stream: typeof TOP_STREAMERS[0]) => {
+  const handleAddStream = async (stream: typeof TOP_STREAMERS[0]) => {
     if (streams.length >= 16) {
       toast.error('Maximum 16 streams allowed')
       return
@@ -196,7 +196,7 @@ export default function SuggestedStreams() {
         ? `youtube:${stream.name}`
         : stream.name
     
-    const success = addStream(input)
+    const success = await addStream(input)
     if (success) {
       toast.success(`✨ Added ${stream.name} to your view`, {
         description: `${stream.platform} • ${stream.category}`,

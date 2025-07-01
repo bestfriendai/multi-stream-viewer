@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
-import { twitchService, StreamStatusMap } from '@/services/twitchService';
+import { twitchService } from '@/services/twitchService';
+import type { StreamStatusMap } from '@/services/twitchService';
 
 interface UseTwitchStatusOptions {
   refreshInterval?: number; // in milliseconds, default 60000 (1 minute)

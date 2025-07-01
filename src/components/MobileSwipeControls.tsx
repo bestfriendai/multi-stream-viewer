@@ -67,6 +67,8 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
   
   const handleTouchStart = (e: React.TouchEvent) => {
     const touch = e.touches[0]
+    if (!touch) return
+    
     setSwipeGesture({
       startX: touch.clientX,
       startY: touch.clientY,
@@ -85,6 +87,8 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
     if (!swipeGesture) return
     
     const touch = e.touches[0]
+    if (!touch) return
+    
     const currentTime = Date.now()
     const deltaTime = currentTime - swipeGesture.lastTime
     
@@ -153,7 +157,7 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
       if (shouldSwipe && deltaX > 0 && currentStreamIndex > 0) {
         // Swipe right - previous stream
         setCurrentStreamIndex(currentStreamIndex - 1)
-        toast.info(`Switched to ${activeStreams[currentStreamIndex - 1].channelName}`)
+        toast.info(`Switched to ${activeStreams[currentStreamIndex - 1]?.channelName || 'stream'}`)
         
         // Haptic feedback
         if ('vibrate' in navigator) {
@@ -162,7 +166,7 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
       } else if (shouldSwipe && deltaX < 0 && currentStreamIndex < activeStreams.length - 1) {
         // Swipe left - next stream
         setCurrentStreamIndex(currentStreamIndex + 1)
-        toast.info(`Switched to ${activeStreams[currentStreamIndex + 1].channelName}`)
+        toast.info(`Switched to ${activeStreams[currentStreamIndex + 1]?.channelName || 'stream'}`)
         
         // Haptic feedback
         if ('vibrate' in navigator) {

@@ -1,4 +1,4 @@
-import { Platform } from '@/store/streamStore'
+import type { Platform } from '@/types/stream'
 
 export interface ParsedStream {
   platform: Platform
@@ -36,7 +36,7 @@ export function parseStreamInput(input: string): ParsedStream | null {
   // Check YouTube
   for (const pattern of youtubePatterns) {
     const match = trimmedInput.match(pattern)
-    if (match) {
+    if (match && match[1]) {
       return {
         platform: 'youtube',
         channelName: match[1],
@@ -48,7 +48,7 @@ export function parseStreamInput(input: string): ParsedStream | null {
   // Check Rumble
   for (const pattern of rumblePatterns) {
     const match = trimmedInput.match(pattern)
-    if (match) {
+    if (match && match[1]) {
       return {
         platform: 'rumble',
         channelName: match[1],
@@ -60,7 +60,7 @@ export function parseStreamInput(input: string): ParsedStream | null {
   // Check Twitch (this should be last as it has the most permissive pattern)
   for (const pattern of twitchPatterns) {
     const match = trimmedInput.match(pattern)
-    if (match) {
+    if (match && match[1]) {
       return {
         platform: 'twitch',
         channelName: match[1]

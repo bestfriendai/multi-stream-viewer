@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
         is_live: channel.is_live,
         game_name: channel.game_name,
         title: channel.title,
-        tags: channel.tags || [],
+        tags: [],
         // If live, add stream data
         ...(stream && {
           stream: {

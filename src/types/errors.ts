@@ -71,10 +71,10 @@ export const createStreamError = (
   message,
   severity: 'medium',
   timestamp: new Date(),
-  context,
-  streamId: context?.streamId,
-  platform: context?.platform as string | undefined,
-  channelName: context?.channelName as string | undefined,
+  ...(context && { context }),
+  ...(context?.streamId && { streamId: context.streamId }),
+  ...(context?.platform && { platform: context.platform }),
+  ...(context?.channelName && { channelName: context.channelName }),
 });
 
 export const createNetworkError = (
@@ -91,10 +91,10 @@ export const createNetworkError = (
   message,
   severity: 'high',
   timestamp: new Date(),
-  context,
-  url: context?.url,
-  status: context?.status,
-  retryCount: context?.retryCount,
+  ...(context && { context }),
+  ...(context?.url && { url: context.url }),
+  ...(context?.status && { status: context.status }),
+  ...(context?.retryCount && { retryCount: context.retryCount }),
 });
 
 export const createValidationError = (

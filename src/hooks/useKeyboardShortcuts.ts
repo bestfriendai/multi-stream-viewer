@@ -60,8 +60,10 @@ export function useKeyboardShortcuts() {
     const currentIndex = streams.findIndex(s => s.id === activeStreamId)
     if (currentIndex > 0) {
       const prevStream = streams[currentIndex - 1]
-      setActiveStream(prevStream.id)
-      toast.success(`Switched to ${prevStream.channelName}`)
+      if (prevStream) {
+        setActiveStream(prevStream.id)
+        toast.success(`Switched to ${prevStream.channelName}`)
+      }
     }
   })
 
@@ -69,8 +71,10 @@ export function useKeyboardShortcuts() {
     const currentIndex = streams.findIndex(s => s.id === activeStreamId)
     if (currentIndex < streams.length - 1) {
       const nextStream = streams[currentIndex + 1]
-      setActiveStream(nextStream.id)
-      toast.success(`Switched to ${nextStream.channelName}`)
+      if (nextStream) {
+        setActiveStream(nextStream.id)
+        toast.success(`Switched to ${nextStream.channelName}`)
+      }
     }
   })
 

@@ -38,7 +38,7 @@ const createStream = (input: StreamInput): Stream => {
     id: generateStreamId(),
     channelName: input.channelName.trim(),
     platform: input.platform,
-    channelId: input.channelId,
+    ...(input.channelId && { channelId: input.channelId }),
     quality: input.quality || 'auto',
     volume: input.volume || 50,
     muted: true, // Always start muted to ensure only one unmuted stream
@@ -65,7 +65,7 @@ const convertLegacyInput = (input: string): StreamInput | null => {
   return {
     channelName: parsed.channelName,
     platform: parsed.platform,
-    channelId: parsed.channelId,
+    ...(parsed.channelId && { channelId: parsed.channelId }),
   }
 }
 

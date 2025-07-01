@@ -1,4 +1,4 @@
-import { Stream } from '@/store/streamStore'
+import type { Stream } from '@/types/stream'
 
 export interface SavedLayout {
   id: string
@@ -30,7 +30,7 @@ export function saveLayout(name: string, streams: Stream[], gridLayout: string):
     streams: streams.map(s => ({
       channelName: s.channelName,
       platform: s.platform,
-      channelId: s.channelId
+      ...(s.channelId && { channelId: s.channelId })
     })),
     gridLayout,
     createdAt: Date.now()
@@ -53,8 +53,11 @@ export function updateLayout(layoutId: string, updates: Partial<SavedLayout>) {
   const index = layouts.findIndex(l => l.id === layoutId)
   
   if (index !== -1) {
-    layouts[index] = { ...layouts[index], ...updates }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(layouts))
+    const currentLayout = layouts[index]
+    if (currentLayout) {
+      layouts[index] = { ...currentLayout, ...updates }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(layouts))
+    }
   }
 }
 

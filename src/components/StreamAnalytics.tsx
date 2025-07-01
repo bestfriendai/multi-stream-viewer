@@ -388,8 +388,10 @@ export default function StreamAnalytics() {
               <div className="space-y-4">
                 {Object.values(streamStats).map((stat, index) => {
                   const history = viewerHistory[stat.channelName] || []
-                  const growth = history.length > 1
-                    ? ((history[history.length - 1].viewers - history[0].viewers) / history[0].viewers) * 100
+                  const firstEntry = history[0]
+                  const lastEntry = history[history.length - 1]
+                  const growth = history.length > 1 && firstEntry && lastEntry
+                    ? ((lastEntry.viewers - firstEntry.viewers) / firstEntry.viewers) * 100
                     : 0
 
                   return (

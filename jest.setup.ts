@@ -1,5 +1,6 @@
 // Learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+import React from 'react';
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({

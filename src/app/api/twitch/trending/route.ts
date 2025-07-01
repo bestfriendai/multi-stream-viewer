@@ -51,12 +51,15 @@ export async function POST(request: NextRequest) {
     
     // Get top streams from top 3 games
     for (let i = 0; i < Math.min(3, topGames.length); i++) {
-      streamPromises.push(
-        twitchAPI.getTopStreams({ 
-          first: 10, 
-          game_id: topGames[i].id 
-        })
-      );
+      const game = topGames[i];
+      if (game) {
+        streamPromises.push(
+          twitchAPI.getTopStreams({ 
+            first: 10, 
+            game_id: game.id 
+          })
+        );
+      }
     }
 
     // Wait for all requests

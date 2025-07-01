@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useCallback, memo } from 'react'
-import { useStreamStore, Stream } from '@/store/streamStore'
+import { useStreamStore } from '@/store/streamStore'
+import type { Stream } from '@/types/stream'
 import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from 'lucide-react'
 import { useSingleChannelStatus } from '@/hooks/useTwitchStatus'
 import LiveIndicator from './LiveIndicator'
@@ -210,7 +211,11 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
   
   const handleMaximize = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
-    setPrimaryStream(stream.id === primaryStreamId ? null : stream.id)
+    if (stream.id === primaryStreamId) {
+      setPrimaryStream('')
+    } else {
+      setPrimaryStream(stream.id)
+    }
   }, [stream.id, primaryStreamId, setPrimaryStream])
   
   // Show viewer count for live streams

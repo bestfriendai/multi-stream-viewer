@@ -29,7 +29,10 @@ export default function AmpSummerPage() {
     
     // Add all AMP streamers
     AMP_STREAMERS.forEach(streamer => {
-      addStream(streamer.name)
+      addStream({
+        channelName: streamer.name,
+        platform: streamer.platform as any
+      })
     })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 

@@ -189,8 +189,8 @@ export default function FollowingRecommended() {
   }, [viewingHistory])
 
   // Handle adding stream and updating history
-  const handleAddStream = useCallback((channelName: string) => {
-    const success = addStream(channelName)
+  const handleAddStream = useCallback(async (channelName: string) => {
+    const success = await addStream(channelName)
     if (success) {
       updateViewingHistory(channelName)
     }
@@ -427,7 +427,7 @@ export default function FollowingRecommended() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                             <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
-                              {channel.channelName[0].toUpperCase()}
+                              {channel.channelName[0]?.toUpperCase() || '?'}
                             </div>
                             <div>
                               <p className="font-semibold">{channel.channelName}</p>

@@ -43,14 +43,17 @@ export default function Home() {
   
   // Load streams from URL params on mount
   useEffect(() => {
-    const params = loadFromQueryParams()
-    if (params) {
-      // Clear any existing streams and load from URL
-      params.streams.forEach(stream => {
-        addStream(stream)
-      })
-      setGridLayout(params.layout as 'grid-2x2' | 'grid-3x3' | 'grid-4x4' | 'mosaic' | 'pip')
+    const loadStreams = async () => {
+      const params = loadFromQueryParams()
+      if (params) {
+        // Clear any existing streams and load from URL
+        for (const stream of params.streams) {
+          await addStream(stream)
+        }
+        setGridLayout(params.layout as 'grid-2x2' | 'grid-3x3' | 'grid-4x4' | 'mosaic' | 'pip')
+      }
     }
+    loadStreams()
   }, [])
   
   // Removed auto-show mobile view - let users choose their preferred view
@@ -61,8 +64,8 @@ export default function Home() {
   //   }
   // }, [streams])
   
-  const handleAddStream = (input: string) => {
-    const success = addStream(input)
+  const handleAddStream = async (input: string) => {
+    const success = await addStream(input)
     if (success) {
       setChannelInput('')
       setShowAddStream(false)

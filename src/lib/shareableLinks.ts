@@ -1,4 +1,4 @@
-import { Stream } from '@/store/streamStore'
+import type { Stream } from '@/types/stream'
 
 export function generateShareableLink(streams: Stream[], gridLayout: string): string {
   const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''

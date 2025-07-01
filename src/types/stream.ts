@@ -7,7 +7,7 @@ export const QUALITIES = ['auto', '160p', '360p', '480p', '720p', '1080p'] as co
 export type Quality = typeof QUALITIES[number];
 
 export const GRID_LAYOUTS = [
-  '1x1', '2x1', '2x2', '3x3', '4x4', 
+  '1x1', '2x1', '1x2', '2x2', '3x3', '4x4', 
   'custom', 'grid-2x2', 'grid-3x3', 'grid-4x4', 
   'mosaic', 'pip'
 ] as const;
@@ -49,7 +49,7 @@ export interface StreamState {
 
 // Stream store actions interface
 export interface StreamActions {
-  addStream: (input: StreamInput) => Promise<boolean>;
+  addStream: (input: StreamInput | string) => Promise<boolean>;
   removeStream: (streamId: string) => void;
   setStreamQuality: (streamId: string, quality: Quality) => void;
   setStreamVolume: (streamId: string, volume: number) => void;

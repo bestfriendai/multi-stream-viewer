@@ -13,7 +13,7 @@ export default function ShareDialog() {
   const [copied, setCopied] = useState(false)
   const { streams, gridLayout } = useStreamStore()
   
-  const shareableLink = generateShareableLink(streams, gridLayout)
+  const shareableLink = generateShareableLink([...streams], gridLayout)
   
   const handleCopy = async () => {
     try {

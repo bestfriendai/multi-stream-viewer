@@ -113,8 +113,8 @@ export class StreamRecommendationEngine {
       streamerFeatures.avgViewers / 100000, // Normalize viewers
       streamerFeatures.streamFrequency / 7, // Normalize frequency
       streamerFeatures.contentRating,
-      userFeatures[8], // User avg session length
-      userFeatures[9]  // User viewing frequency
+      userFeatures[8] ?? 0, // User avg session length
+      userFeatures[9] ?? 0  // User viewing frequency
     ]
   }
   
@@ -153,7 +153,7 @@ export class StreamRecommendationEngine {
       
       if (userTopCategory === streamerCategory) {
         reason = `Popular in ${streamer.category}`
-      } else if (score[0] > 0.8) {
+      } else if (score[0] !== undefined && score[0] > 0.8) {
         reason = 'Highly recommended'
       } else if (viewingHistory.some(v => v.category === streamer.category)) {
         reason = `Similar to streams you watch`
@@ -161,7 +161,7 @@ export class StreamRecommendationEngine {
       
       recommendations.push({
         streamerId: streamer.name,
-        score: score[0],
+        score: score[0] ?? 0,
         reason
       })
       
@@ -192,9 +192,12 @@ export class StreamRecommendationEngine {
       
       if (combinedScore > threshold) {
         // Check if it's a sustained spike (not just a blip)
+        const prevEvent = streamEvents[idx - 1]
+        const nextEvent = streamEvents[idx + 1]
         const sustainedSpike = idx > 0 && idx < streamEvents.length - 1 &&
-          streamEvents[idx - 1].viewerCount > avgViewers * 0.8 &&
-          streamEvents[idx + 1].viewerCount > avgViewers * 0.8
+          prevEvent && nextEvent &&
+          prevEvent.viewerCount > avgViewers * 0.8 &&
+          nextEvent.viewerCount > avgViewers * 0.8
         
         if (sustainedSpike || combinedScore > threshold * 1.5) {
           highlights.push({

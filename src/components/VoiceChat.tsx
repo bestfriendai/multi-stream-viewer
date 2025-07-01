@@ -56,13 +56,15 @@ export default function VoiceChat({ roomId }: { roomId: string }) {
     
     try {
       // Request microphone permission
+      const audioConstraints: MediaTrackConstraints = {
+        echoCancellation,
+        noiseSuppression,
+        autoGainControl,
+        ...(inputDevice && { deviceId: { exact: inputDevice } })
+      }
+      
       const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          echoCancellation,
-          noiseSuppression,
-          autoGainControl,
-          deviceId: inputDevice ? { exact: inputDevice } : undefined
-        }
+        audio: audioConstraints
       })
       
       localStreamRef.current = stream
@@ -334,7 +336,7 @@ export default function VoiceChat({ roomId }: { roomId: string }) {
                     <Volume2 size={14} className="text-muted-foreground" />
                     <Slider
                       value={[participant.volume]}
-                      onValueChange={([value]) => adjustParticipantVolume(participant.id, value)}
+                      onValueChange={([value]) => adjustParticipantVolume(participant.id, value ?? 100)}
                       max={200}
                       step={10}
                       className="w-20"
@@ -360,7 +362,7 @@ export default function VoiceChat({ roomId }: { roomId: string }) {
                     <Mic size={14} className="text-muted-foreground" />
                     <Slider
                       value={[inputVolume]}
-                      onValueChange={([value]) => setInputVolume(value)}
+                      onValueChange={([value]) => setInputVolume(value ?? 100)}
                       max={200}
                       step={10}
                       className="flex-1"
@@ -375,7 +377,7 @@ export default function VoiceChat({ roomId }: { roomId: string }) {
                     <Volume2 size={14} className="text-muted-foreground" />
                     <Slider
                       value={[outputVolume]}
-                      onValueChange={([value]) => setOutputVolume(value)}
+                      onValueChange={([value]) => setOutputVolume(value ?? 100)}
                       max={200}
                       step={10}
                       className="flex-1"

@@ -1,6 +1,7 @@
 'use client'
 
-import React, { Component, ErrorInfo, ReactNode } from 'react'
+import React, { Component } from 'react'
+import type { ErrorInfo, ReactNode } from 'react'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 
 interface Props {
@@ -25,7 +26,7 @@ class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error }
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo)
     
     this.setState({
@@ -45,14 +46,14 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   handleReset = () => {
-    this.setState({ hasError: false, error: undefined, errorInfo: undefined })
+    this.setState({ hasError: false })
   }
 
   handleReload = () => {
     window.location.reload()
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       // Custom fallback UI
       if (this.props.fallback) {

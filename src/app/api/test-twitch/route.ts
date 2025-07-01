@@ -24,7 +24,8 @@ export async function GET(request: NextRequest) {
         specificStreams: null as any,
         searchChannels: null as any
       },
-      errors: [] as string[]
+      errors: [] as string[],
+      summary: null as any
     };
 
     // Test 1: Environment Variables

@@ -163,7 +163,7 @@ const StreamCard = memo(({
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-lg font-bold">
-                {stream.user_name[0].toUpperCase()}
+                {stream.user_name[0]?.toUpperCase() || '?'}
               </div>
             )}
           </div>
@@ -362,8 +362,8 @@ export default function EnhancedDiscovery() {
     fetchClips()
   }, [fetchCategorizedStreams, fetchClips])
 
-  const handleAddStream = useCallback((channelName: string) => {
-    const success = addStream(channelName)
+  const handleAddStream = useCallback(async (channelName: string) => {
+    const success = await addStream(channelName)
     if (!success) {
       console.log(`Stream ${channelName} already added or invalid`)
     }

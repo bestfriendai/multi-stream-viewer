@@ -61,6 +61,7 @@ export default function VirtualCamera() {
       
       return () => clearInterval(interval)
     }
+    return undefined
   }, [isActive])
   
   useEffect(() => {
@@ -328,7 +329,7 @@ export default function VirtualCamera() {
               <div className="flex items-center gap-2 mt-1">
                 <Slider
                   value={[settings.bitrate]}
-                  onValueChange={([value]) => setSettings(prev => ({ ...prev, bitrate: value }))}
+                  onValueChange={([value]) => setSettings(prev => ({ ...prev, bitrate: value ?? 4500 }))}
                   min={1000}
                   max={10000}
                   step={500}

@@ -36,16 +36,18 @@ export default function StreamScheduler() {
     
     const scheduledDate = new Date(`${newSchedule.date}T${newSchedule.time}`)
     
-    scheduleStream({
+    const scheduleData = {
       streamerId: newSchedule.streamerId,
       platform: newSchedule.platform,
       scheduledTime: scheduledDate.getTime(),
       recurring: newSchedule.recurring,
-      recurrencePattern: newSchedule.recurring 
-        ? newSchedule.weekdays.map((enabled, idx) => enabled ? DAYS_OF_WEEK[idx] : '').filter(Boolean).join(',')
-        : undefined,
-      enabled: newSchedule.enabled
-    })
+      enabled: newSchedule.enabled,
+      ...(newSchedule.recurring && {
+        recurrencePattern: newSchedule.weekdays.map((enabled, idx) => enabled ? DAYS_OF_WEEK[idx] : '').filter(Boolean).join(',')
+      })
+    }
+    
+    scheduleStream(scheduleData)
     
     toast.success(`Scheduled ${newSchedule.streamerId} for ${format(scheduledDate, 'PPp')}`)
     setShowAddForm(false)

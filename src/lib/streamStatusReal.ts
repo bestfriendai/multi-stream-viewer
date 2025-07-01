@@ -79,7 +79,7 @@ async function getTwitchStreamsViaProxy(limit: number = 20): Promise<any[]> {
 
       const login = loginMatch ? loginMatch[1] : `streamer${index}`
       const displayName = displayNameMatch ? displayNameMatch[1] : login
-      const viewers = viewersMatch ? parseInt(viewersMatch[1]) : 0
+      const viewers = viewersMatch && viewersMatch[1] ? parseInt(viewersMatch[1]) : 0
 
       return {
         user_login: login,
@@ -437,7 +437,7 @@ async function checkTwitchStreamAlternative(channelName: string): Promise<Stream
 
     return {
       isLive,
-      viewerCount,
+      viewerCount: viewerCount ?? 0,
       title: isLive ? 'Live Stream' : '',
       game: 'Gaming'
     }

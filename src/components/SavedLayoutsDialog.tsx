@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import { Bookmark, Save, Trash2, Play, Clock } from 'lucide-react'
 import { useStreamStore } from '@/store/streamStore'
-import { getSavedLayouts, saveLayout, deleteLayout, DEFAULT_PRESETS, SavedLayout } from '@/lib/savedLayouts'
+import { getSavedLayouts, saveLayout, deleteLayout, DEFAULT_PRESETS } from '@/lib/savedLayouts'
+import type { SavedLayout } from '@/lib/savedLayouts'
 import { toast } from 'sonner'
 
 export default function SavedLayoutsDialog() {
@@ -31,7 +32,7 @@ export default function SavedLayoutsDialog() {
       return
     }
     
-    const newLayout = saveLayout(newLayoutName, streams, gridLayout)
+    const newLayout = saveLayout(newLayoutName, [...streams], gridLayout)
     setLayouts([...layouts, newLayout])
     setNewLayoutName('')
     setShowSaveForm(false)

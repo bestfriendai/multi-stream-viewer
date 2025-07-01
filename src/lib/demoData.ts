@@ -37,8 +37,10 @@ export function generateMockAnalyticsData() {
   // Generate favorite streamers based on watch time
   const favoriteStreamers: Record<string, number> = {}
   streamingHistory.forEach(session => {
-    const watchTime = session.endTime - session.startTime
-    favoriteStreamers[session.streamerId] = (favoriteStreamers[session.streamerId] || 0) + watchTime
+    if (session.streamerId) {
+      const watchTime = session.endTime - session.startTime
+      favoriteStreamers[session.streamerId] = (favoriteStreamers[session.streamerId] || 0) + watchTime
+    }
   })
   
   // Generate peak viewing hours

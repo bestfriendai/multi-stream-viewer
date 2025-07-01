@@ -71,10 +71,10 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
                 <div className="flex items-center gap-2 flex-1 truncate">
                   <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                   <span className="truncate">{selectedStream?.channelName}</span>
-                  {status.get(selectedStream?.channelName) && (
+                  {selectedStream?.channelName && status.get(selectedStream.channelName) && (
                     <Badge variant="secondary" className="ml-auto mr-2">
                       <Eye className="w-3 h-3 mr-1" />
-                      {status.get(selectedStream?.channelName)?.viewerCount.toLocaleString()}
+                      {status.get(selectedStream.channelName)?.viewerCount.toLocaleString()}
                     </Badge>
                   )}
                 </div>

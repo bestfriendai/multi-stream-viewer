@@ -126,8 +126,8 @@ export default function LiveDiscovery() {
   }
 
 
-  const handleAddStream = (stream: LiveStreamer | TopStreamer) => {
-    const success = addStream(stream.name)
+  const handleAddStream = async (stream: LiveStreamer | TopStreamer) => {
+    const success = await addStream(stream.name)
     if (success) {
       // Show success feedback
       console.log(`Added ${stream.name} to streams`)
@@ -257,7 +257,7 @@ export default function LiveDiscovery() {
           <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {filteredStreams.map((stream, index) => (
               <Card
-                key={stream.uniqueId || `${stream.platform}-${stream.name}-${index}`}
+                key={`${stream.platform}-${stream.name}-${index}`}
                 className="group relative overflow-hidden touch-manipulation active:scale-95 transition-all duration-300 cursor-pointer border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-xl hover:shadow-2xl hover:scale-105"
               >
                 {/* Subtle dark overlay */}
@@ -357,7 +357,7 @@ export default function LiveDiscovery() {
           <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
             {filteredTopStreams.slice(0, 20).map((stream, index) => (
               <Card
-                key={`top-${stream.uniqueId || `${stream.platform}-${stream.name}-${index}`}`}
+                key={`top-${stream.platform}-${stream.name}-${index}`}
                 className="group relative overflow-hidden touch-manipulation active:scale-95 transition-all duration-300 cursor-pointer border border-gray-800 bg-gradient-to-br from-gray-900 via-black to-gray-900 shadow-2xl hover:shadow-gray-900/50 hover:scale-105"
               >
                 {/* Subtle dark glow effect */}

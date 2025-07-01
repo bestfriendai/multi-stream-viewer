@@ -49,10 +49,10 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
     setGridLayout 
   } = useStreamStore()
   
-  const handleAddStream = (e: React.FormEvent) => {
+  const handleAddStream = async (e: React.FormEvent) => {
     e.preventDefault()
     if (channelInput.trim()) {
-      const success = addStream(channelInput.trim())
+      const success = await addStream(channelInput.trim())
       if (success) {
         setChannelInput('')
         setShowAddStream(false)

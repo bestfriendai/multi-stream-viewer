@@ -185,7 +185,7 @@ export default function AudioMixer() {
           <VolumeX size={16} className="text-muted-foreground" />
           <Slider
             value={[masterVolume]}
-            onValueChange={([value]) => setMasterVolume(value)}
+            onValueChange={([value]) => setMasterVolume(value ?? 50)}
             max={100}
             step={1}
             className="flex-1"
@@ -214,7 +214,7 @@ export default function AudioMixer() {
             
             <Slider
               value={[channel.volume]}
-              onValueChange={([value]) => updateChannelVolume(channel.streamId, value)}
+              onValueChange={([value]) => updateChannelVolume(channel.streamId, value ?? 50)}
               max={100}
               step={1}
               disabled={channel.isMuted}
@@ -230,7 +230,7 @@ export default function AudioMixer() {
                     <span>L</span>
                     <Slider
                       value={[channel.pan]}
-                      onValueChange={([value]) => updateChannelPan(channel.streamId, value)}
+                      onValueChange={([value]) => updateChannelPan(channel.streamId, value ?? 0)}
                       min={-1}
                       max={1}
                       step={0.1}
@@ -248,7 +248,7 @@ export default function AudioMixer() {
                       <div key={band} className="text-center">
                         <Slider
                           value={[value]}
-                          onValueChange={([v]) => updateEQ(channel.streamId, band as keyof EQSettings, v)}
+                          onValueChange={([v]) => updateEQ(channel.streamId, band as keyof EQSettings, v ?? 0)}
                           min={-12}
                           max={12}
                           step={1}

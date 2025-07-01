@@ -63,6 +63,14 @@
     "node_modules",
     ".next",
     "out",
-    "dist"
+    "dist",
+    "MultiStreamViewerTest",
+    "multi-stream-viewer-mobile",
+    "jest.config.ts",
+    "jest.setup.ts",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
   ]
 }

@@ -242,6 +242,7 @@ export default function TwitchLikeDiscovery() {
       element.addEventListener('scroll', handleScroll)
       return () => element.removeEventListener('scroll', handleScroll)
     }
+    return undefined
   }, [handleScroll])
 
   const CategoryCard = ({ category }: { category: Category }) => (
