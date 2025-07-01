@@ -66,7 +66,8 @@ const StreamGrid: React.FC = React.memo(() => {
     <div
       className={cn(
         'stream-grid grid gap-2 sm:gap-3 md:gap-4 h-full w-full p-2 sm:p-4 md:p-6 animate-fade-in',
-        responsiveGridClass
+        responsiveGridClass,
+        'touch-pan-y touch-pan-x'
       )}
       data-count={streams.length}
       role="grid"
@@ -76,14 +77,18 @@ const StreamGrid: React.FC = React.memo(() => {
         <div
           key={stream.id}
           className={cn(
-            'relative bg-black rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 animate-scale-in',
+            'relative bg-black rounded-2xl overflow-hidden shadow-lg transition-all duration-300',
+            'hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]',
+            'animate-scale-in transform-gpu',
             primaryStreamId === stream.id && gridLayout === 'custom' && 'primary-stream',
             'border border-border/20',
-            'min-h-[200px] md:min-h-[250px]' // Ensure minimum height on all devices
+            'min-h-[200px] md:min-h-[250px]', // Ensure minimum height on all devices
+            'will-change-transform'
           )}
           style={{
-            animationDelay: `${index * 50}ms`,
-            aspectRatio: '16/9'
+            animationDelay: `${index * 30}ms`,
+            aspectRatio: '16/9',
+            contain: 'layout style paint'
           }}
           role="gridcell"
           aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}`}
@@ -98,7 +103,7 @@ const StreamGrid: React.FC = React.memo(() => {
           role="status"
           aria-live="polite"
         >
-          <div className="text-center p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50">
+          <div className="text-center p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 animate-bounce-in transform-gpu">
             <h2 className="text-2xl font-semibold mb-2 tracking-tight">No streams added</h2>
             <p className="text-muted-foreground">Add a stream to start watching</p>
           </div>

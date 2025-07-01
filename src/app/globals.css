@@ -150,11 +150,30 @@
     @apply outline-2 outline-offset-2 outline-primary;
   }
   
-  /* Smooth transitions */
+  /* Smooth transitions with iOS-like spring animations */
   * {
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-duration: 200ms;
+  }
+  
+  /* Optimize touch interactions */
+  @media (hover: none) and (pointer: coarse) {
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      touch-action: manipulation;
+    }
+    
+    /* Momentum scrolling on all scrollable elements */
+    *::-webkit-scrollbar {
+      display: none;
+    }
+    
+    * {
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
   }
   
   /* Apple-style scrollbar */
@@ -191,15 +210,15 @@
   border: 1px solid oklch(1 0 0 / 0.1);
 }
 
-/* Apple-style animations */
+/* Apple-style animations with spring physics */
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -215,7 +234,7 @@
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.9);
   }
   to {
     opacity: 1;
@@ -223,8 +242,35 @@
   }
 }
 
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Pull to refresh animation */
+@keyframes pullRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .animate-slide-up {
-  animation: slideUp 0.3s ease-out;
+  animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .animate-fade-in {
@@ -232,7 +278,23 @@
 }
 
 .animate-scale-in {
-  animation: scaleIn 0.3s ease-out;
+  animation: scaleIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Mobile-specific fluid animations */
+@media (hover: none) and (pointer: coarse) {
+  .hover\:scale-105:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease-out;
+  }
+  
+  .hover\:shadow-xl:active {
+    box-shadow: var(--shadow-md);
+  }
 }
 
 /* Stream Grid Styles */
@@ -276,6 +338,12 @@ body.force-desktop-mode .stream-grid {
     min-height: 400px; /* Ensure minimum height for streams */
     overflow-y: auto; /* Allow scrolling if needed */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    scroll-behavior: smooth;
+    overscroll-behavior-y: contain;
+    
+    /* Performance optimizations */
+    contain: layout style paint;
+    will-change: scroll-position;
   }
 
   /* Removed forced mobile layouts - users can now choose their preferred grid layout
@@ -339,15 +407,36 @@ body.force-desktop-mode .stream-grid {
     height: 100%;
   }
 
-  /* Touch-friendly controls */
+  /* Touch-friendly controls with better tap targets */
   .stream-embed-controls {
     padding: 0.75rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.5);
   }
 
   .stream-embed-controls button {
     min-width: 44px;
     min-height: 44px;
     padding: 0.75rem;
+    position: relative;
+    
+    /* Larger touch target without visual change */
+    &::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      right: -8px;
+      bottom: -8px;
+    }
+  }
+  
+  /* Prevent layout shifts during transitions */
+  .stream-grid > div {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
 }
 

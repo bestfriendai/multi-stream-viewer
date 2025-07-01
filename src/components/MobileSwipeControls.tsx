@@ -16,6 +16,11 @@ interface SwipeGesture {
   currentX: number
   currentY: number
   startTime: number
+  velocityX: number
+  velocityY: number
+  lastX: number
+  lastY: number
+  lastTime: number
 }
 
 interface MobileSwipeControlsProps {
@@ -67,7 +72,12 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
       startY: touch.clientY,
       currentX: touch.clientX,
       currentY: touch.clientY,
-      startTime: Date.now()
+      startTime: Date.now(),
+      velocityX: 0,
+      velocityY: 0,
+      lastX: touch.clientX,
+      lastY: touch.clientY,
+      lastTime: Date.now()
     })
   }
   
@@ -75,27 +85,44 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
     if (!swipeGesture) return
     
     const touch = e.touches[0]
+    const currentTime = Date.now()
+    const deltaTime = currentTime - swipeGesture.lastTime
+    
+    // Calculate velocity for momentum scrolling
+    const velocityX = deltaTime > 0 ? (touch.clientX - swipeGesture.lastX) / deltaTime : 0
+    const velocityY = deltaTime > 0 ? (touch.clientY - swipeGesture.lastY) / deltaTime : 0
+    
     setSwipeGesture({
       ...swipeGesture,
       currentX: touch.clientX,
-      currentY: touch.clientY
+      currentY: touch.clientY,
+      velocityX,
+      velocityY,
+      lastX: touch.clientX,
+      lastY: touch.clientY,
+      lastTime: currentTime
     })
     
-    // Handle vertical swipe for volume
+    // Handle vertical swipe for volume with haptic feedback
     const deltaY = swipeGesture.startY - touch.clientY
     const screenHeight = window.innerHeight
     
-    if (Math.abs(deltaY) > 50 && Math.abs(deltaY) > Math.abs(touch.clientX - swipeGesture.startX)) {
+    if (Math.abs(deltaY) > 30 && Math.abs(deltaY) > Math.abs(touch.clientX - swipeGesture.startX)) {
       // Show volume slider
       setVolumeSliderVisible(true)
       
-      // Calculate new volume based on swipe distance
-      const volumeChange = (deltaY / screenHeight) * 200
+      // Calculate new volume with easing
+      const volumeChange = (deltaY / screenHeight) * 150
       const newVolume = Math.max(0, Math.min(100, currentVolume + volumeChange))
       
       if (currentStream) {
         setStreamVolume(currentStream.id, newVolume)
         setCurrentVolume(newVolume)
+        
+        // Haptic feedback at volume limits
+        if ((newVolume === 0 || newVolume === 100) && 'vibrate' in navigator) {
+          navigator.vibrate(10)
+        }
       }
     }
   }
@@ -116,16 +143,31 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
       return
     }
     
-    // Horizontal swipe - change stream
-    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
-      if (deltaX > 0 && currentStreamIndex > 0) {
+    // Horizontal swipe with velocity detection
+    const minSwipeDistance = 50
+    const minVelocity = 0.3
+    
+    if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
+      const shouldSwipe = Math.abs(swipeGesture.velocityX) > minVelocity || Math.abs(deltaX) > window.innerWidth * 0.3
+      
+      if (shouldSwipe && deltaX > 0 && currentStreamIndex > 0) {
         // Swipe right - previous stream
         setCurrentStreamIndex(currentStreamIndex - 1)
         toast.info(`Switched to ${activeStreams[currentStreamIndex - 1].channelName}`)
-      } else if (deltaX < 0 && currentStreamIndex < activeStreams.length - 1) {
+        
+        // Haptic feedback
+        if ('vibrate' in navigator) {
+          navigator.vibrate(20)
+        }
+      } else if (shouldSwipe && deltaX < 0 && currentStreamIndex < activeStreams.length - 1) {
         // Swipe left - next stream
         setCurrentStreamIndex(currentStreamIndex + 1)
         toast.info(`Switched to ${activeStreams[currentStreamIndex + 1].channelName}`)
+        
+        // Haptic feedback
+        if ('vibrate' in navigator) {
+          navigator.vibrate(20)
+        }
       }
     }
     
@@ -192,14 +234,17 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
         {volumeSliderVisible && (
           <div className="absolute right-8 top-1/2 -translate-y-1/2 bg-black/80 rounded-full p-4">
             <div className="flex flex-col items-center gap-2">
-              <Volume2 className="text-white" size={24} />
-              <div className="h-40 w-2 bg-white/20 rounded-full relative">
+              <Volume2 className="text-white animate-pulse" size={24} />
+              <div className="h-40 w-2 bg-white/20 rounded-full relative overflow-hidden">
                 <div 
-                  className="absolute bottom-0 left-0 right-0 bg-white rounded-full transition-all"
-                  style={{ height: `${currentVolume}%` }}
+                  className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white to-white/80 rounded-full transition-all duration-75 ease-out"
+                  style={{ 
+                    height: `${currentVolume}%`,
+                    boxShadow: '0 0 20px rgba(255,255,255,0.5)'
+                  }}
                 />
               </div>
-              <span className="text-white text-sm">{Math.round(currentVolume)}%</span>
+              <span className="text-white text-sm font-medium">{Math.round(currentVolume)}%</span>
             </div>
           </div>
         )}
@@ -327,12 +372,22 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
         </div>
       </div>
       
-      {/* Gesture Hints */}
+      {/* Gesture Hints with animation */}
       {showControls && activeStreams.length === 1 && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-white/60 pointer-events-none">
-          <p className="text-sm mb-2">Swipe up/down to adjust volume</p>
-          <p className="text-sm mb-2">Double tap to fullscreen</p>
-          <p className="text-sm">Tap to show/hide controls</p>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-white/60 pointer-events-none animate-fade-in">
+          <div className="space-y-3">
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                <ChevronLeft className="w-6 h-6" />
+              </div>
+              <p className="text-sm">Swipe to change streams</p>
+              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                <ChevronRight className="w-6 h-6" />
+              </div>
+            </div>
+            <p className="text-sm">Swipe up/down to adjust volume</p>
+            <p className="text-sm">Double tap to fullscreen</p>
+          </div>
         </div>
       )}
       
