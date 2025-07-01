@@ -444,9 +444,13 @@ body.force-desktop-mode .stream-grid {
 @media (max-width: 768px) {
   .stream-grid {
     padding: 0.5rem;
-    gap: 0.5rem;
-    min-height: calc(100vh - 160px);
-    height: calc(100vh - 160px);
+    gap: 1rem;
+    min-height: auto;
+    height: auto;
+    
+    /* Mobile stack layout - single column */
+    display: flex !important;
+    flex-direction: column !important;
     
     /* Performance optimizations */
     contain: layout style paint;
@@ -458,14 +462,24 @@ body.force-desktop-mode .stream-grid {
     scroll-snap-type: y proximity;
   }
   
-  /* Improved mobile stream containers */
+  /* Mobile stream containers - full width and optimized */
   .stream-grid > div {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    min-height: 200px;
+    max-height: 300px;
+    
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     scroll-snap-align: start;
     background: hsl(var(--card));
     border: 1px solid hsl(var(--border));
+    
+    /* Ensure proper flex behavior */
+    flex-shrink: 0;
+    flex-grow: 0;
   }
   
   .stream-grid > div:active {
@@ -497,92 +511,25 @@ body.force-desktop-mode .stream-grid {
   }
 }
 
-  /* Mobile-optimized grid layouts to prevent overlapping */
-  .stream-grid[data-count="1"] {
-    grid-template-columns: 1fr !important;
-    grid-template-rows: 1fr !important;
-    gap: 0 !important; /* No gap needed for single stream */
+  /* Mobile streams are always full width and stacked vertically */
+  .stream-grid[data-count] > * {
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    min-height: 200px !important;
+    max-height: 300px !important;
   }
   
-  .stream-grid[data-count="1"] > * {
-    aspect-ratio: 16 / 9;
-    max-height: calc(100vh - 200px);
-  }
-
-  .stream-grid[data-count="2"] {
-    grid-template-columns: 1fr !important;
-    grid-template-rows: repeat(2, auto) !important;
-    gap: 1rem !important;
-  }
-  
-  .stream-grid[data-count="2"] > * {
-    aspect-ratio: 1 / 1;
-  }
-
-  .stream-grid[data-count="3"],
-  .stream-grid[data-count="4"] {
-    grid-template-columns: repeat(2, 1fr) !important;
-    grid-template-rows: repeat(2, 1fr) !important;
-    gap: 0.5rem !important; /* Smaller gap for larger streams */
-  }
-  
-  .stream-grid[data-count="3"] > *,
-  .stream-grid[data-count="4"] > * {
-    aspect-ratio: 1 / 1;
-  }
-  
-  .stream-grid[data-count="3"] > *:last-child {
-    grid-column: 1 / -1; /* Make the third item span full width */
-    aspect-ratio: 2 / 1; /* Wider aspect ratio for the spanning item */
-  }
-
-  .stream-grid[data-count="5"],
-  .stream-grid[data-count="6"] {
-    grid-template-columns: repeat(2, 1fr) !important;
-    grid-template-rows: repeat(3, 1fr) !important;
-    gap: 0.75rem !important;
-  }
-  
-  .stream-grid[data-count="5"] > *,
-  .stream-grid[data-count="6"] > * {
-    aspect-ratio: 1 / 1;
-  }
-
-  .stream-grid[data-count="7"],
-  .stream-grid[data-count="8"],
-  .stream-grid[data-count="9"] {
-    grid-template-columns: repeat(2, 1fr) !important;
-    grid-auto-rows: 1fr !important;
-    gap: 0.75rem !important;
-  }
-  
-  .stream-grid[data-count="7"] > *,
-  .stream-grid[data-count="8"] > *,
-  .stream-grid[data-count="9"] > * {
-    aspect-ratio: 1 / 1;
-  }
-
-  /* For more than 9 streams, use a scrollable 2-column layout */
-  .stream-grid[data-count="10"],
-  .stream-grid[data-count="11"],
-  .stream-grid[data-count="12"],
-  .stream-grid[data-count="13"],
-  .stream-grid[data-count="14"],
-  .stream-grid[data-count="15"],
-  .stream-grid[data-count="16"] {
-    grid-template-columns: repeat(2, 1fr) !important;
-    grid-auto-rows: 1fr !important;
-    gap: 0.75rem !important;
-  }
-  
-  .stream-grid[data-count="10"] > *,
-  .stream-grid[data-count="11"] > *,
-  .stream-grid[data-count="12"] > *,
-  .stream-grid[data-count="13"] > *,
-  .stream-grid[data-count="14"] > *,
-  .stream-grid[data-count="15"] > *,
-  .stream-grid[data-count="16"] > * {
-    aspect-ratio: 1 / 1;
+  /* Add mobile layout indicator */
+  .stream-grid::before {
+    content: "📱 Mobile Layout: Full Width Streams";
+    display: block;
+    text-align: center;
+    padding: 8px;
+    background: hsl(var(--muted));
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: hsl(var(--muted-foreground));
   }
 
   /* Mobile focus layout - stack primary stream on top */
@@ -654,19 +601,29 @@ body.force-desktop-mode .stream-grid {
 @media (max-width: 480px) {
   .stream-grid {
     padding: 0.25rem;
-    gap: 0.5rem;
-    min-height: calc(100vh - 140px);
-    height: calc(100vh - 140px);
+    gap: 0.75rem;
+    min-height: auto;
+    height: auto;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    
+    /* Maintain flex column layout for very small screens */
+    display: flex !important;
+    flex-direction: column !important;
   }
   
-    /* Enhanced touch feedback */
+  /* Enhanced touch feedback */
   .stream-grid > div {
     touch-action: manipulation;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    
+    /* Full width on very small screens */
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    min-height: 180px !important;
+    max-height: 250px !important;
   }
   
   /* Better contrast for mobile */
@@ -740,41 +697,8 @@ body.force-desktop-mode .stream-grid {
   }
 }
 
-  /* Single column layout for very small screens to prevent overlapping */
-  .stream-grid[data-count="5"],
-  .stream-grid[data-count="6"],
-  .stream-grid[data-count="7"],
-  .stream-grid[data-count="8"],
-  .stream-grid[data-count="9"] {
-    grid-template-columns: 1fr !important;
-    grid-auto-rows: auto !important;
-    gap: 0.75rem !important;
-  }
-  
-  /* Keep 2x2 grid for 3 and 4 items even on very small screens */
-  .stream-grid[data-count="3"],
-  .stream-grid[data-count="4"] {
-    grid-template-columns: repeat(2, 1fr) !important;
-    grid-template-rows: repeat(2, 1fr) !important;
-    gap: 0.25rem !important; /* Minimal gap for maximum stream size */
-  }
-  
-  .stream-grid[data-count="4"] > * {
-    aspect-ratio: 1 / 1;
-  }
-  
-  .stream-grid[data-count="3"] > *:last-child {
-    grid-column: 1; /* Reset for small screens */
-  }
-
-  /* Smaller stream containers for very small screens */
-  .stream-grid > div {
-    aspect-ratio: 16 / 9;
-  }
-
-  /* Ensure minimum touch target size */
-  button, .clickable {
-    min-width: 44px;
-    min-height: 44px;
-  }
+/* Ensure minimum touch target size */
+button, .clickable {
+  min-width: 44px;
+  min-height: 44px;
 }

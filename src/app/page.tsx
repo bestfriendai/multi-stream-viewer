@@ -140,8 +140,10 @@ export default function Home() {
       
       {/* Main Content with Tabs */}
       <div className={cn(
-        "flex-1 flex overflow-hidden",
-        "pb-16 md:pb-0" // Add padding for mobile nav
+        "flex-1 flex",
+        "pb-16 md:pb-0", // Add padding for mobile nav
+        "overflow-hidden md:overflow-hidden", // Hidden on desktop, auto on mobile
+        "md:h-full" // Full height on desktop
       )}>
         <main className={cn(
           "flex-1 overflow-hidden transition-all",
@@ -178,10 +180,10 @@ export default function Home() {
               </TabsList>
             </div>
             
-            <TabsContent value="streams" className="flex-1 overflow-hidden m-0 flex flex-col">
+            <TabsContent value="streams" className="flex-1 m-0 flex flex-col overflow-y-auto md:overflow-hidden">
               <ErrorBoundary>
                 <StreamStatusBar />
-                <div className="flex-1 overflow-auto">
+                <div className="flex-1 overflow-y-auto md:overflow-auto">
                   <StreamGrid />
                 </div>
               </ErrorBoundary>
