@@ -1,24 +1,47 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useStreamStore } from '@/store/streamStore'
+import Header from '@/components/Header'
 import StreamGrid from '@/components/StreamGrid'
+import StreamChat from '@/components/StreamChat'
 import StreamStatusBar from '@/components/StreamStatusBar'
 import { Badge } from '@/components/ui/badge'
 import { Zap, Users } from 'lucide-react'
 import Image from 'next/image'
 
 const AMP_STREAMERS = [
-  { name: 'fanum', displayName: 'Fanum', platform: 'twitch' },
-  { name: 'duke', displayName: 'Duke Dennis', platform: 'twitch' },
-  { name: 'agent00', displayName: 'Agent 00', platform: 'twitch' },
-  { name: 'kai5fn', displayName: 'Kai Cenat', platform: 'twitch' } // Using correct username
+  { 
+    name: 'kaicenat', 
+    displayName: 'Kai Cenat', 
+    platform: 'twitch',
+    profileImage: 'https://static-cdn.jtvnw.net/jtv_user_pictures/kaicenat-profile_image-7ef1ceaac993b96e-300x300.png'
+  },
+  { 
+    name: 'fanum', 
+    displayName: 'Fanum', 
+    platform: 'twitch',
+    profileImage: 'https://static-cdn.jtvnw.net/jtv_user_pictures/fanum-profile_image-300x300.png'
+  },
+  { 
+    name: 'dukedennis', 
+    displayName: 'Duke Dennis', 
+    platform: 'twitch',
+    profileImage: 'https://static-cdn.jtvnw.net/jtv_user_pictures/dukedennis-profile_image-300x300.png'
+  },
+  { 
+    name: 'agent00', 
+    displayName: 'Agent 00', 
+    platform: 'twitch',
+    profileImage: 'https://static-cdn.jtvnw.net/jtv_user_pictures/agent00-profile_image-300x300.png'
+  }
 ]
 
 export default function AmpSummerPage() {
   const router = useRouter()
   const { streams, addStream, setGridLayout, clearAllStreams } = useStreamStore()
+  const [showChat, setShowChat] = useState(false)
 
   useEffect(() => {
     // Clear existing streams and add AMP streamers
@@ -37,26 +60,29 @@ export default function AmpSummerPage() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
+      <Header showChat={showChat} onToggleChat={() => setShowChat(!showChat)} />
+      
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-yellow-500/20 via-orange-500/10 to-background border-b">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl" />
         
-        <div className="relative container mx-auto px-4 py-12">
-          <div className="text-center space-y-6">
+        <div className="relative container mx-auto px-4 py-8">
+          <div className="text-center space-y-4">
             {/* Title with animation */}
             <div className="flex items-center justify-center gap-3">
-              <Zap className="w-10 h-10 text-yellow-500 animate-pulse" />
-              <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
+              <Zap className="w-8 h-8 text-yellow-500 animate-pulse" />
+              <h1 className="text-4xl md:text-6xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
                 AMP SUMMER
               </h1>
-              <Zap className="w-10 h-10 text-yellow-500 animate-pulse" />
+              <Zap className="w-8 h-8 text-yellow-500 animate-pulse" />
             </div>
             
             {/* Subtitle */}
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Watch all your favorite AMP members live in one place. The ultimate streaming experience.
             </p>
             
@@ -68,9 +94,18 @@ export default function AmpSummerPage() {
                   className="relative group"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-4 border-yellow-500/50 group-hover:border-yellow-500 transition-all duration-300 animate-bounce-in">
-                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-orange-500/20" />
-                    <div className="flex items-center justify-center h-full text-2xl md:text-3xl font-bold">
+                  <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-yellow-500/50 group-hover:border-yellow-500 transition-all duration-300">
+                    <img 
+                      src={streamer.profileImage} 
+                      alt={streamer.displayName}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        // Fallback to initial letter if image fails
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                    <div className="hidden absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 flex items-center justify-center text-2xl font-bold">
                       {streamer.displayName[0]}
                     </div>
                   </div>
@@ -97,14 +132,22 @@ export default function AmpSummerPage() {
       {/* Stream Status Bar */}
       <StreamStatusBar />
 
-      {/* Streams Grid */}
-      <div className="flex-1 overflow-hidden bg-gradient-to-b from-background to-black/5">
-        <StreamGrid />
+      {/* Main Content Area */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Streams Grid */}
+        <div className="flex-1 overflow-hidden bg-gradient-to-b from-background to-black/5">
+          <StreamGrid />
+        </div>
+
+        {/* Chat Panel */}
+        {showChat && (
+          <StreamChat onClose={() => setShowChat(false)} />
+        )}
       </div>
 
       {/* Footer Info */}
       <div className="border-t bg-card/50 backdrop-blur">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Badge variant="outline" className="gap-2">
