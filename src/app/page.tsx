@@ -6,9 +6,16 @@ import StreamGrid from '@/components/StreamGrid'
 import StreamChat from '@/components/StreamChat'
 import MobileNav from '@/components/MobileNav'
 import MobileSwipeControls from '@/components/MobileSwipeControls'
-import FeaturesShowcase from '@/components/FeaturesShowcase'
-import LiveDiscovery from '@/components/LiveDiscovery'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import dynamic from 'next/dynamic'
+
+// Lazy load heavy components
+const FeaturesShowcase = dynamic(() => import('@/components/FeaturesShowcase'), {
+  loading: () => <div className="p-8 text-center">Loading features...</div>
+})
+const LiveDiscoveryOptimized = dynamic(() => import('@/components/LiveDiscoveryOptimized'), {
+  loading: () => <div className="p-8 text-center">Loading discovery...</div>
+})
 import StreamStatusBar from '@/components/StreamStatusBar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -110,7 +117,7 @@ export default function Home() {
             
             <TabsContent value="discover" className="flex-1 overflow-y-auto p-4">
               <ErrorBoundary>
-                <LiveDiscovery />
+                <LiveDiscoveryOptimized />
               </ErrorBoundary>
             </TabsContent>
             

@@ -34,42 +34,49 @@ export function useTwitchStatus(
       return;
     }
 
-    const fetchStatus = async () => {
-      try {
-        setLoading(true);
-        const data = await twitchService.getStreamStatus(channels);
+    // Debounce channel changes to prevent excessive API calls
+    const channelKey = channels.sort().join(',');
+    const timeoutId = setTimeout(async () => {
+      const fetchStatus = async () => {
+        if (!mountedRef.current) return;
         
-        if (mountedRef.current) {
-          setStatus(data);
-          setError(null);
+        try {
+          const data = await twitchService.getStreamStatus(channels);
+          
+          if (mountedRef.current) {
+            setStatus(data);
+            setError(null);
+          }
+        } catch (err) {
+          if (mountedRef.current) {
+            setError(err as Error);
+            console.error('Failed to fetch Twitch status:', err);
+          }
+        } finally {
+          if (mountedRef.current) {
+            setLoading(false);
+          }
         }
-      } catch (err) {
-        if (mountedRef.current) {
-          setError(err as Error);
-          console.error('Failed to fetch Twitch status:', err);
-        }
-      } finally {
-        if (mountedRef.current) {
-          setLoading(false);
-        }
+      };
+
+      // Initial fetch
+      setLoading(true);
+      await fetchStatus();
+
+      // Set up refresh interval only if component is still mounted
+      if (refreshInterval > 0 && mountedRef.current) {
+        intervalRef.current = setInterval(fetchStatus, refreshInterval);
       }
-    };
-
-    // Initial fetch
-    fetchStatus();
-
-    // Set up refresh interval
-    if (refreshInterval > 0) {
-      intervalRef.current = setInterval(fetchStatus, refreshInterval);
-    }
+    }, 500); // 500ms debounce
 
     return () => {
+      clearTimeout(timeoutId);
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
     };
-  }, [channels, refreshInterval, enabled]);
+  }, [channels.sort().join(','), refreshInterval, enabled]); // Use stable dependency
 
   return { status, loading, error };
 }

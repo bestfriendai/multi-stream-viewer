@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import { cn } from '@/lib/utils'
-import StreamEmbed from './StreamEmbed'
+import StreamEmbedOptimized from './StreamEmbedOptimized'
 
 // Memoized grid configuration function with improved case 3 handling
 const calculateGridConfig = (count: number, gridLayout?: string) => {
@@ -93,7 +93,7 @@ const StreamGrid: React.FC = React.memo(() => {
           role="gridcell"
           aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}`}
         >
-          <StreamEmbed stream={stream} />
+          <StreamEmbedOptimized stream={stream} />
         </div>
       ))}
       

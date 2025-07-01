@@ -13,7 +13,7 @@ export default function StreamStatusBar() {
   
   // Delay enabling status check to prevent immediate API calls
   useEffect(() => {
-    const timer = setTimeout(() => setEnableStatus(true), 2000)
+    const timer = setTimeout(() => setEnableStatus(true), 3000) // Increased delay
     return () => clearTimeout(timer)
   }, [])
   
@@ -24,7 +24,10 @@ export default function StreamStatusBar() {
   
   const { status, loading } = useTwitchStatus(
     twitchChannels,
-    { enabled: enableStatus && twitchChannels.length > 0 }
+    { 
+      enabled: enableStatus && twitchChannels.length > 0,
+      refreshInterval: 180000 // 3 minutes instead of 2
+    }
   )
   
   // Calculate total viewers

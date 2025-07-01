@@ -16,8 +16,8 @@ export type StreamStatusMap = Map<string, StreamInfo>;
 
 class TwitchService {
   private cache = new Map<string, CachedStreamData>();
-  private cacheTimeout = 120000; // 2 minute cache (increased to reduce API calls)
-  private batchDelay = 500; // 500ms delay for batching requests (increased)
+  private cacheTimeout = 180000; // 3 minute cache to reduce API calls
+  private batchDelay = 1000; // 1 second delay for better batching
   private pendingChannels: Set<string> = new Set();
   private batchTimeout: NodeJS.Timeout | null = null;
   private resolvers: Map<string, ((value: StreamInfo) => void)[]> = new Map();
@@ -25,6 +25,7 @@ class TwitchService {
   private lastRequestTime: number = 0;
   private requestCount: number = 0;
   private requestResetTime: number = Date.now() + 60000;
+  private isProcessing: boolean = false; // Prevent concurrent batch processing
 
   async getStreamStatus(channels: string[]): Promise<StreamStatusMap> {
     const now = Date.now();
@@ -70,7 +71,8 @@ class TwitchService {
   }
 
   private async processBatch() {
-    if (this.pendingChannels.size === 0) {
+    // Prevent concurrent processing
+    if (this.isProcessing || this.pendingChannels.size === 0) {
       this.batchTimeout = null;
       return;
     }
@@ -89,15 +91,18 @@ class TwitchService {
       this.requestResetTime = now + 60000;
     }
     
-    if (this.requestCount >= 10) { // Max 10 requests per minute from client
+    if (this.requestCount >= 5) { // Reduced to 5 requests per minute
       // Reschedule for next minute
       this.batchTimeout = setTimeout(() => this.processBatch(), this.requestResetTime - now + 100);
       return;
     }
 
+    // Mark as processing
+    this.isProcessing = true;
+    
     // Get channels to process
-    const channels = Array.from(this.pendingChannels);
-    this.pendingChannels.clear();
+    const channels = Array.from(this.pendingChannels).slice(0, 50); // Limit batch size
+    channels.forEach(ch => this.pendingChannels.delete(ch));
     this.batchTimeout = null;
     this.requestCount++;
     this.lastRequestTime = now;
@@ -201,6 +206,14 @@ class TwitchService {
         resolvers.forEach(resolve => resolve(offlineInfo));
         this.resolvers.delete(channel);
       });
+    } finally {
+      // Always mark as not processing
+      this.isProcessing = false;
+      
+      // If there are more pending channels, schedule next batch
+      if (this.pendingChannels.size > 0 && !this.batchTimeout) {
+        this.batchTimeout = setTimeout(() => this.processBatch(), this.batchDelay);
+      }
     }
   }
 
