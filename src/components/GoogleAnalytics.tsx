@@ -1,13 +1,23 @@
 'use client'
 
 import Script from 'next/script'
+import { useEffect } from 'react'
 
-export const GA_TRACKING_ID = 'G-BGPSFX3HF1'
+export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID || 'G-BGPSFX3HF1'
+
+// Declare gtag function globally
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void
+    dataLayer: any[]
+  }
+}
 
 // Helper functions for tracking events
 export const pageview = (url: string) => {
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('config', GA_TRACKING_ID, {
+  if (typeof window !== 'undefined' && window.gtag) {
+    console.log('GA Pageview:', url) // Debug log
+    window.gtag('config', GA_TRACKING_ID, {
       page_path: url,
     })
   }
@@ -19,8 +29,9 @@ export const event = ({ action, category, label, value }: {
   label?: string
   value?: number
 }) => {
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', action, {
+  if (typeof window !== 'undefined' && window.gtag) {
+    console.log('GA Event:', { action, category, label, value }) // Debug log
+    window.gtag('event', action, {
       event_category: category,
       event_label: label,
       value: value,
@@ -29,21 +40,55 @@ export const event = ({ action, category, label, value }: {
 }
 
 export default function GoogleAnalytics() {
+  useEffect(() => {
+    // Debug: Check if GA is loaded
+    const checkGA = () => {
+      if (window.gtag) {
+        console.log('✅ Google Analytics loaded successfully')
+        // Send initial test event
+        window.gtag('event', 'page_view', {
+          event_category: 'Debug',
+          event_label: 'GA_Loaded'
+        })
+      } else {
+        console.log('❌ Google Analytics not loaded yet')
+      }
+    }
+    
+    // Check immediately and after a delay
+    checkGA()
+    setTimeout(checkGA, 2000)
+  }, [])
+
   return (
     <>
       <Script
-        strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+        strategy="afterInteractive"
+        onLoad={() => {
+          console.log('✅ Google Analytics script loaded')
+        }}
+        onError={(e) => {
+          console.error('❌ Google Analytics script failed to load:', e)
+        }}
       />
       <Script
         id="google-analytics"
         strategy="afterInteractive"
+        onLoad={() => {
+          console.log('✅ Google Analytics config loaded')
+        }}
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${GA_TRACKING_ID}');
+            gtag('config', '${GA_TRACKING_ID}', {
+              page_title: document.title,
+              page_location: window.location.href,
+              debug_mode: true
+            });
+            console.log('🚀 Google Analytics initialized with ID: ${GA_TRACKING_ID}');
           `,
         }}
       />

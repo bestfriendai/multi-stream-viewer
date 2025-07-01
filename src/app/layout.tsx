@@ -5,9 +5,11 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import GoogleAnalyticsSimple from "@/components/GoogleAnalyticsSimple";
 import AnalyticsPageTracker from "@/components/AnalyticsPageTracker";
 import SessionTracker from "@/components/SessionTracker";
 import MobileAnalyticsTracker from "@/components/MobileAnalyticsTracker";
+import GADebugPanel from "@/components/GADebugPanel";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -141,6 +143,24 @@ export default function RootLayout({
       <head>
         <link rel="canonical" href="https://streamyyy.com" />
         <meta name="google-site-verification" content="your-verification-code" />
+        
+        {/* Google Analytics - Direct Implementation */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-BGPSFX3HF1"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-BGPSFX3HF1', {
+                page_title: typeof document !== 'undefined' ? document.title : '',
+                page_location: typeof window !== 'undefined' ? window.location.href : ''
+              });
+              console.log('🚀 GA Direct Load: G-BGPSFX3HF1');
+            `,
+          }}
+        />
+        
         <Script
           id="json-ld"
           type="application/ld+json"
@@ -150,7 +170,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <GoogleAnalytics />
         <AnalyticsPageTracker />
         <SessionTracker />
         <MobileAnalyticsTracker />
@@ -162,6 +181,7 @@ export default function RootLayout({
         >
           {children}
           <Toaster />
+          <GADebugPanel />
         </ThemeProvider>
       </body>
     </html>
