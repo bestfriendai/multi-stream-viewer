@@ -1,0 +1,97 @@
+<svg width="1200" height="600" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="600" fill="url(#twitterGradient)" />
+  
+  <!-- Grid pattern -->
+  <defs>
+    <pattern id="twitterGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="twitterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1d4ed8;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1200" height="600" fill="url(#twitterGrid)" opacity="0.4"/>
+  
+  <!-- Content optimized for Twitter -->
+  <g transform="translate(80, 120)">
+    <!-- Logo area -->
+    <rect x="0" y="0" width="70" height="70" rx="18" fill="white" opacity="0.95"/>
+    <rect x="15" y="15" width="12" height="12" rx="3" fill="#1d4ed8"/>
+    <rect x="33" y="15" width="12" height="12" rx="3" fill="#6366f1"/>
+    <rect x="51" y="15" width="12" height="12" rx="3" fill="#8b5cf6"/>
+    <rect x="15" y="33" width="12" height="12" rx="3" fill="#8b5cf6"/>
+    <rect x="33" y="33" width="12" height="12" rx="3" fill="#a855f7"/>
+    <rect x="51" y="33" width="12" height="12" rx="3" fill="#ec4899"/>
+    <rect x="15" y="51" width="12" height="12" rx="3" fill="#f59e0b"/>
+    <rect x="33" y="51" width="12" height="12" rx="3" fill="#10b981"/>
+    <rect x="51" y="51" width="12" height="12" rx="3" fill="#ef4444"/>
+    
+    <!-- Title optimized for Twitter -->
+    <text x="90" y="28" font-family="system-ui, -apple-system, sans-serif" font-size="42" font-weight="800" fill="white">
+      Watch Multiple Streams
+    </text>
+    <text x="90" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600" fill="rgba(255,255,255,0.9)">
+      Simultaneously with Streamyyy
+    </text>
+    
+    <!-- Key benefits -->
+    <text x="0" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="500" fill="rgba(255,255,255,0.85)">
+      🎮 Perfect for tournaments, esports &amp; content creators
+    </text>
+    <text x="0" y="165" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="500" fill="rgba(255,255,255,0.85)">
+      📱 Works on mobile, tablet &amp; desktop
+    </text>
+    <text x="0" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="500" fill="rgba(255,255,255,0.85)">
+      💬 Integrated chat from all platforms
+    </text>
+    
+    <!-- CTA -->
+    <rect x="0" y="240" width="280" height="60" rx="30" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+    <text x="140" y="275" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600" fill="white" text-anchor="middle">
+      Try Free Now →
+    </text>
+  </g>
+  
+  <!-- Stats -->
+  <g transform="translate(680, 160)">
+    <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600" fill="rgba(255,255,255,0.9)">
+      Trusted by streamers worldwide
+    </text>
+    
+    <g transform="translate(0, 40)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="800" fill="#10b981">
+        50K+
+      </text>
+      <text x="0" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="rgba(255,255,255,0.7)">
+        Active Users
+      </text>
+    </g>
+    
+    <g transform="translate(120, 40)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="800" fill="#f59e0b">
+        16
+      </text>
+      <text x="0" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="rgba(255,255,255,0.7)">
+        Max Streams
+      </text>
+    </g>
+    
+    <g transform="translate(200, 40)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="800" fill="#ef4444">
+        4.8★
+      </text>
+      <text x="0" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="rgba(255,255,255,0.7)">
+        User Rating
+      </text>
+    </g>
+  </g>
+  
+  <!-- Bottom -->
+  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="500" fill="rgba(255,255,255,0.6)">
+    streamyyy.com • Free Multi-Stream Viewer • No Registration Required
+  </text>
+</svg>

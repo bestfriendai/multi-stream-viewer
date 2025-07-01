@@ -10,6 +10,7 @@ import MobileNav from '@/components/MobileNav'
 import MobileSwipeControls from '@/components/MobileSwipeControls'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import SEOSchema from '@/components/SEOSchema'
+import SEOContent from '@/components/SEOContent'
 import dynamic from 'next/dynamic'
 
 // Lazy load heavy components
@@ -122,6 +123,41 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen bg-background">
       <SEOSchema faqs={faqItems} type="WebApplication" />
+      <SEOContent 
+        keywords={[
+          "watch multiple streams",
+          "multi stream viewer", 
+          "twitch multistream",
+          "youtube multi stream",
+          "stream aggregator",
+          "esports viewing",
+          "gaming streams",
+          "live streaming platform"
+        ]}
+        topics={[
+          "Esports tournament viewing",
+          "Gaming content creation",
+          "Live streaming entertainment",
+          "Multi-platform stream monitoring",
+          "Content creator collaboration"
+        ]}
+        features={[
+          "Multi-stream grid layouts",
+          "Real-time chat integration", 
+          "Mobile responsive design",
+          "Keyboard shortcuts support",
+          "Stream synchronization",
+          "Picture-in-picture mode",
+          "Dark/light theme support",
+          "Accessibility features"
+        ]}
+        platforms={[
+          "Twitch",
+          "YouTube",
+          "Kick",
+          "Rumble"
+        ]}
+      />
       
       {/* Desktop Header */}
       <div className="hidden md:block">

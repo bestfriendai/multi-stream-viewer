@@ -1,0 +1,119 @@
+<svg width="1200" height="600" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="600" fill="url(#ampTwitterGradient)" />
+  
+  <defs>
+    <linearGradient id="ampTwitterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ef4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+    
+    <pattern id="ampPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+      <polygon points="15,5 25,20 20,25 30,35 20,32 15,27 10,32 20,20 15,15" fill="rgba(255,255,255,0.03)"/>
+    </pattern>
+  </defs>
+  
+  <rect width="1200" height="600" fill="url(#ampPattern)" opacity="0.8"/>
+  
+  <!-- Content optimized for Twitter -->
+  <g transform="translate(80, 80)">
+    <!-- Lightning bolt -->
+    <polygon points="15,0 35,30 27,35 42,65 22,62 12,50 5,62 25,32 15,25" fill="white" opacity="0.95"/>
+    <polygon points="18,3 32,28 27,32 38,57 25,55 15,46 10,55 25,30 18,28" fill="#fbbf24"/>
+    
+    <!-- Title -->
+    <text x="60" y="28" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="900" fill="white">
+      AMP SUMMER 2025
+    </text>
+    <text x="60" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="600" fill="rgba(255,255,255,0.9)">
+      Any Means Possible ⚡️ LIVE NOW
+    </text>
+    
+    <!-- Key message for Twitter -->
+    <text x="0" y="120" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="600" fill="rgba(255,255,255,0.95)">
+      🔥 Watch ALL AMP members streaming LIVE
+    </text>
+    <text x="0" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="600" fill="rgba(255,255,255,0.95)">
+      👑 Kai Cenat • Duke Dennis • Agent00 • Fanum
+    </text>
+    <text x="0" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="600" fill="rgba(255,255,255,0.95)">
+      💯 FREE multi-stream viewer at AMPSUMMER.com
+    </text>
+    
+    <!-- Social proof -->
+    <g transform="translate(0, 220)">
+      <rect x="0" y="0" width="280" height="50" rx="25" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+      <circle cx="25" cy="25" r="8" fill="#ef4444"/>
+      <circle cx="25" cy="25" r="4" fill="white"/>
+      <text x="45" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="white">
+        LIVE • 50K+ watching now
+      </text>
+    </g>
+    
+    <!-- Hashtags -->
+    <g transform="translate(0, 300)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600" fill="rgba(255,255,255,0.8)">
+        #AMPSummer #AMP #KaiCenat #DukeDennis #Agent00 #Fanum
+      </text>
+      <text x="0" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600" fill="rgba(255,255,255,0.8)">
+        #AnyMeansPossible #MultiStream #AMPexclusive
+      </text>
+    </g>
+  </g>
+  
+  <!-- Right side content -->
+  <g transform="translate(650, 120)">
+    <!-- Grid visualization -->
+    <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600" fill="rgba(255,255,255,0.9)">
+      Watch all streams at once:
+    </text>
+    
+    <g transform="translate(20, 30)">
+      <!-- 2x2 grid representation -->
+      <rect x="0" y="0" width="60" height="45" rx="8" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <text x="30" y="28" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="white" text-anchor="middle">Kai</text>
+      
+      <rect x="80" y="0" width="60" height="45" rx="8" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <text x="110" y="28" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="white" text-anchor="middle">Duke</text>
+      
+      <rect x="0" y="65" width="60" height="45" rx="8" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <text x="30" y="93" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="white" text-anchor="middle">Agent</text>
+      
+      <rect x="80" y="65" width="60" height="45" rx="8" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <text x="110" y="93" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="white" text-anchor="middle">Fanum</text>
+    </g>
+    
+    <!-- Features -->
+    <g transform="translate(0, 180)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="rgba(255,255,255,0.9)">
+        ✨ Features:
+      </text>
+      <text x="0" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="rgba(255,255,255,0.8)">
+        • Chat from all streams
+      </text>
+      <text x="0" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="rgba(255,255,255,0.8)">
+        • Mobile responsive
+      </text>
+      <text x="0" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="rgba(255,255,255,0.8)">
+        • No registration needed
+      </text>
+      <text x="0" y="85" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="rgba(255,255,255,0.8)">
+        • 100% FREE forever
+      </text>
+    </g>
+  </g>
+  
+  <!-- Bottom CTA -->
+  <g transform="translate(80, 480)">
+    <rect x="0" y="0" width="250" height="60" rx="30" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+    <text x="125" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle">
+      🔗 AMPSUMMER.com
+    </text>
+  </g>
+  
+  <!-- URL -->
+  <text x="400" y="515" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="rgba(255,255,255,0.7)">
+    The official AMP multi-stream experience
+  </text>
+</svg>

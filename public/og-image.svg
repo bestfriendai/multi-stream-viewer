@@ -1,0 +1,70 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#gradient)" />
+  
+  <!-- Grid pattern -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.3"/>
+  
+  <!-- Main content -->
+  <g transform="translate(60, 150)">
+    <!-- Logo/Icon area -->
+    <rect x="0" y="0" width="80" height="80" rx="20" fill="white" opacity="0.9"/>
+    <rect x="20" y="20" width="15" height="15" rx="3" fill="#6366f1"/>
+    <rect x="45" y="20" width="15" height="15" rx="3" fill="#8b5cf6"/>
+    <rect x="20" y="45" width="15" height="15" rx="3" fill="#a855f7"/>
+    <rect x="45" y="45" width="15" height="15" rx="3" fill="#ec4899"/>
+    
+    <!-- Title -->
+    <text x="100" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="700" fill="white">
+      Streamyyy
+    </text>
+    <text x="100" y="75" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="500" fill="rgba(255,255,255,0.9)">
+      Multi-Stream Viewer
+    </text>
+    
+    <!-- Description -->
+    <text x="0" y="140" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="400" fill="rgba(255,255,255,0.8)">
+      Watch multiple Twitch, YouTube &amp; live streams simultaneously
+    </text>
+    <text x="0" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="400" fill="rgba(255,255,255,0.7)">
+      Free • No Registration • Up to 16 Streams • Mobile Optimized
+    </text>
+    
+    <!-- Features -->
+    <g transform="translate(0, 220)">
+      <circle cx="12" cy="12" r="8" fill="#10b981"/>
+      <text x="35" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="white">Multiple Platforms</text>
+      
+      <circle cx="12" cy="52" r="8" fill="#f59e0b"/>
+      <text x="35" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="white">Custom Layouts</text>
+      
+      <circle cx="12" cy="92" r="8" fill="#ef4444"/>
+      <text x="35" y="98" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="white">Chat Integration</text>
+      
+      <circle cx="250" cy="12" r="8" fill="#8b5cf6"/>
+      <text x="273" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="white">Mobile Responsive</text>
+      
+      <circle cx="250" cy="52" r="8" fill="#06b6d4"/>
+      <text x="273" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="white">Real-time Updates</text>
+      
+      <circle cx="250" cy="92" r="8" fill="#84cc16"/>
+      <text x="273" y="98" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="white">100% Free</text>
+    </g>
+  </g>
+  
+  <!-- Bottom branding -->
+  <text x="60" y="580" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="rgba(255,255,255,0.6)">
+    streamyyy.com • The Ultimate Multi-Stream Experience
+  </text>
+</svg>
