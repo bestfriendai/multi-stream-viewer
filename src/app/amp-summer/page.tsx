@@ -34,6 +34,11 @@ const AMP_STREAMERS = [
     name: 'agent00', 
     displayName: 'Agent 00', 
     platform: 'twitch' as const
+  },
+  { 
+    name: 'davis', 
+    displayName: 'Davis', 
+    platform: 'twitch' as const
   }
 ]
 
@@ -60,8 +65,8 @@ export default function AmpSummerPage() {
     // Clear existing streams and add AMP streamers
     clearAllStreams()
     
-    // Set 2x2 grid layout for 4 streams
-    setGridLayout('2x2')
+    // Set mosaic layout for 5 streams
+    setGridLayout('mosaic')
     
     // Add all AMP streamers
     AMP_STREAMERS.forEach(streamer => {

@@ -31,6 +31,7 @@ import {
 import { useStreamStore } from '@/store/streamStore'
 import { cn } from '@/lib/utils'
 import '@/styles/landing.css'
+import OptimizedBackgroundStreams from './OptimizedBackgroundStreams'
 
 interface LandingPageProps {
   onAddStream: () => void
@@ -119,15 +120,17 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
   }>>([])
   const [loading, setLoading] = useState(true)
   
-  // Fetch top live streams directly
+  // Fetch top live streams directly with priority
   useEffect(() => {
     const fetchTopStreams = async () => {
       try {
         setLoading(true)
+        // Use high priority fetch for faster loading
         const response = await fetch('/api/twitch/top-streams', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ limit: 20 })
+          body: JSON.stringify({ limit: 20 }),
+          priority: 'high' as RequestPriority
         })
         
         if (response.ok) {
@@ -180,37 +183,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
 
   return (
     <div className="flex-1 overflow-y-auto relative">
-      {/* Background Live Streams - Full Page Coverage */}
-      {liveChannels.length > 0 && (
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-4 p-8 scale-105">
-            {[...Array(4)].map((_, index) => {
-              const channel = liveChannels[index % liveChannels.length]
-              if (!channel) return null
-              return (
-                <motion.div 
-                  key={`bg-${channel.channelName}-${index}`} 
-                  className="relative overflow-hidden"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 0.7, scale: 1 }}
-                  transition={{ delay: (index % 4) * 0.1, duration: 0.8 }}
-                >
-                  <div className="aspect-video relative">
-                    <iframe
-                      src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
-                      className="absolute inset-0 w-full h-full"
-                      frameBorder="0"
-                      scrolling="no"
-                      allowFullScreen={false}
-                    />
-                  </div>
-                </motion.div>
-              )
-            })}
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/70 to-background/85" />
-        </div>
-      )}
+      {/* Optimized Background Live Streams */}
+      <OptimizedBackgroundStreams channels={liveChannels} />
       
       {/* Enhanced Hero Section */}
       <section className="relative overflow-hidden py-20 lg:py-32">
