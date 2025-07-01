@@ -29,7 +29,6 @@ import {
   PictureInPicture2
 } from 'lucide-react'
 import { useStreamStore } from '@/store/streamStore'
-import { useTwitchStatus } from '@/hooks/useTwitchStatus'
 import { cn } from '@/lib/utils'
 import '@/styles/landing.css'
 
@@ -103,13 +102,6 @@ const useCases = [
   }
 ]
 
-const popularStreamers = [
-  'xqc', 'kaicenat', 'nickmercs', 'pokimane', 'hasanabi', 
-  'shroud', 'summit1g', 'lirik', 'tarik', 'symfuhny',
-  'caseoh_', 'jynxzi', 'stable_ronaldo', 'pestily', 'admiralbahroo',
-  'moistcr1tikal', 'mizkif', 'nmplol', 'forsen', 'sodapoppin'
-]
-
 export default function LandingPage({ onAddStream }: LandingPageProps) {
   const { addStream } = useStreamStore()
   const [liveChannels, setLiveChannels] = useState<Array<{
@@ -125,36 +117,56 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
     channelName: string
     viewerCount: number
   }>>([])
+  const [loading, setLoading] = useState(true)
   
-  // Get live status for popular streamers
-  const { status } = useTwitchStatus(popularStreamers, {
-    refreshInterval: 60000,
-    enabled: true
-  })
-
+  // Fetch top live streams directly
   useEffect(() => {
-    const channels = []
-    for (const [channel, data] of status) {
-      if (data.isLive) {
-        channels.push({
-          channelName: channel,
-          viewerCount: data.viewerCount || 0,
-          gameName: data.gameName || '',
-          title: data.title || '',
-          isLive: true
+    const fetchTopStreams = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch('/api/twitch/top-streams', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ limit: 20 })
         })
+        
+        if (response.ok) {
+          const data = await response.json()
+          console.log('API Response:', data)
+          
+          if (data.streams && Array.isArray(data.streams)) {
+            const channels = data.streams.map((stream: any) => ({
+              channelName: stream.user_login || stream.user_name,
+              viewerCount: stream.viewer_count || 0,
+              gameName: stream.game_name || '',
+              title: stream.title || '',
+              isLive: true
+            }))
+            
+            // Sort by viewer count
+            channels.sort((a: any, b: any) => b.viewerCount - a.viewerCount)
+            setLiveChannels(channels)
+            
+            // Set demo streams from top live channels
+            setDemoStreams(channels.slice(0, 9).map((ch: any) => ({
+              channelName: ch.channelName,
+              viewerCount: ch.viewerCount
+            })))
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch top streams:', error)
+      } finally {
+        setLoading(false)
       }
     }
-    // Sort by viewer count
-    channels.sort((a, b) => b.viewerCount - a.viewerCount)
-    setLiveChannels(channels)
     
-    // Set demo streams from top live channels
-    setDemoStreams(channels.slice(0, 9).map(ch => ({
-      channelName: ch.channelName,
-      viewerCount: ch.viewerCount
-    })))
-  }, [status])
+    fetchTopStreams()
+    // Refresh every 2 minutes
+    const interval = setInterval(fetchTopStreams, 120000)
+    
+    return () => clearInterval(interval)
+  }, [])
 
   const handleQuickAdd = async (channelName: string) => {
     await addStream(channelName)
@@ -245,7 +257,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">See It In Action</h2>
             <p className="text-xl text-muted-foreground">
-              Experience multi-stream viewing with real live streams
+              {loading ? "Loading live streams..." : "Experience multi-stream viewing with real live streams"}
             </p>
           </div>
           
@@ -333,7 +345,9 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               <p className="text-center text-sm text-muted-foreground mt-4">
                 {demoStreams.length > 0 
                   ? "Showing actual live streams - Click 'Start Watching Now' to try it yourself!"
-                  : "Layouts automatically adjust based on the number of streams"}
+                  : loading 
+                    ? "Loading live streams..." 
+                    : "Layouts automatically adjust based on the number of streams"}
               </p>
             </Card>
           </div>
