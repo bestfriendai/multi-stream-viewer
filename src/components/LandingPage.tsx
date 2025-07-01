@@ -183,8 +183,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       {/* Background Live Streams - Full Page Coverage */}
       {liveChannels.length > 0 && (
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 gap-2 scale-110">
-            {[...Array(16)].map((_, index) => {
+          <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-4 p-8 scale-105">
+            {[...Array(4)].map((_, index) => {
               const channel = liveChannels[index % liveChannels.length]
               if (!channel) return null
               return (

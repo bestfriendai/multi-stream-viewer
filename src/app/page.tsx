@@ -28,7 +28,7 @@ const FollowingRecommended = dynamic(() => import('@/components/FollowingRecomme
 import StreamStatusBar from '@/components/StreamStatusBar'
 import LandingPage from '@/components/LandingPage'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import EnhancedAddStreamDialog from '@/components/EnhancedAddStreamDialog'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
@@ -42,7 +42,6 @@ export default function Home() {
   const [showAddStream, setShowAddStream] = useState(false)
   const [showMobileView, setShowMobileView] = useState(false)
   const [showMobileStreamViewer, setShowMobileStreamViewer] = useState(false)
-  const [channelInput, setChannelInput] = useState('')
   const [activeTab, setActiveTab] = useState('streams')
   const { addStream, setGridLayout, streams, gridLayout } = useStreamStore()
   const { trackChatToggle, trackFeatureUsage, trackStreamAdded } = useAnalytics()
@@ -89,20 +88,6 @@ export default function Home() {
   //     setShowMobileView(true)
   //   }
   // }, [streams])
-  
-  const handleAddStream = async (input: string) => {
-    const success = await addStream(input)
-    if (success) {
-      // Track stream addition
-      const platform = input.includes('youtube') || input.includes('youtu.be') ? 'youtube' : 'twitch'
-      const channelName = input.split('/').pop() || input
-      trackStreamAdded(channelName, platform)
-      
-      setChannelInput('')
-      setShowAddStream(false)
-    }
-    return success
-  }
   
   const faqItems = [
     {
@@ -323,45 +308,11 @@ export default function Home() {
       {/* Mobile Swipe Controls - Only show when explicitly enabled */}
       {showMobileView && <MobileSwipeControls onClose={() => setShowMobileView(false)} />}
       
-      {/* Mobile Add Stream Dialog */}
-      <Dialog open={showAddStream} onOpenChange={setShowAddStream}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add Stream</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={(e) => {
-            e.preventDefault()
-            if (channelInput.trim()) {
-              handleAddStream(channelInput.trim())
-            }
-          }} className="space-y-4">
-            <input
-              type="text"
-              value={channelInput}
-              onChange={(e) => setChannelInput(e.target.value)}
-              placeholder="Enter channel name or URL"
-              className="w-full px-3 py-2 border rounded-md"
-              autoFocus
-            />
-            <div className="text-xs text-muted-foreground space-y-1">
-              <p>Supported formats:</p>
-              <ul className="list-disc list-inside space-y-0.5 ml-2">
-                <li>Twitch: username or twitch.tv/username</li>
-                <li>YouTube: youtube.com/watch?v=VIDEO_ID</li>
-                <li>Rumble: rumble.com/v1234-title.html</li>
-              </ul>
-            </div>
-            <div className="flex gap-2">
-              <button type="submit" className="px-4 py-2 bg-primary text-primary-foreground rounded-md">
-                Add
-              </button>
-              <button type="button" onClick={() => setShowAddStream(false)} className="px-4 py-2 border rounded-md">
-                Cancel
-              </button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
+      {/* Enhanced Add Stream Dialog */}
+      <EnhancedAddStreamDialog 
+        open={showAddStream} 
+        onOpenChange={setShowAddStream} 
+      />
     </div>
   );
 }

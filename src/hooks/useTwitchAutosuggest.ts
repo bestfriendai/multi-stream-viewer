@@ -23,15 +23,20 @@ export interface SearchResponse {
   count: number
 }
 
-export function useTwitchAutosuggest() {
+interface UseTwitchAutosuggestOptions {
+  enabled?: boolean
+}
+
+export function useTwitchAutosuggest(query: string = '', options: UseTwitchAutosuggestOptions = {}) {
+  const { enabled = true } = options
   const [suggestions, setSuggestions] = useState<TwitchChannel[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   // Create debounced search function
   const debouncedSearch = useCallback(
-    debounce(async (query: string) => {
-      if (query.trim().length < 2) {
+    debounce(async (searchQuery: string) => {
+      if (searchQuery.trim().length < 2) {
         setSuggestions([])
         return
       }
@@ -45,7 +50,7 @@ export function useTwitchAutosuggest() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ query, limit: 8 }),
+          body: JSON.stringify({ query: searchQuery, limit: 8 }),
         })
 
         if (!response.ok) {
@@ -64,14 +69,24 @@ export function useTwitchAutosuggest() {
     []
   )
 
-  const searchChannels = useCallback((query: string) => {
-    if (query.trim().length < 2) {
+  // Effect to trigger search when query changes
+  useEffect(() => {
+    if (enabled && query.trim().length >= 2) {
+      debouncedSearch(query)
+    } else {
+      setSuggestions([])
+      setIsLoading(false)
+    }
+  }, [query, enabled, debouncedSearch])
+
+  const searchChannels = useCallback((searchQuery: string) => {
+    if (searchQuery.trim().length < 2) {
       setSuggestions([])
       setIsLoading(false)
       return
     }
 
-    debouncedSearch(query)
+    debouncedSearch(searchQuery)
   }, [debouncedSearch])
 
   const clearSuggestions = useCallback(() => {
@@ -88,6 +103,7 @@ export function useTwitchAutosuggest() {
 
   return {
     suggestions,
+    loading: isLoading,
     isLoading,
     error,
     searchChannels,
