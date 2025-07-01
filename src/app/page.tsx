@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
+import MobileHeader from '@/components/MobileHeader'
+import MobileStreamViewer from '@/components/MobileStreamViewer'
 import StreamGrid from '@/components/StreamGrid'
 import StreamChat from '@/components/StreamChat'
 import MobileNav from '@/components/MobileNav'
@@ -35,6 +37,7 @@ export default function Home() {
   const [showChat, setShowChat] = useState(false)
   const [showAddStream, setShowAddStream] = useState(false)
   const [showMobileView, setShowMobileView] = useState(false)
+  const [showMobileStreamViewer, setShowMobileStreamViewer] = useState(false)
   const [channelInput, setChannelInput] = useState('')
   const [activeTab, setActiveTab] = useState('streams')
   const { addStream, setGridLayout, streams } = useStreamStore()
@@ -119,7 +122,21 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen bg-background">
       <SEOSchema faqs={faqItems} type="WebApplication" />
-      <Header onToggleChat={() => setShowChat(!showChat)} showChat={showChat} />
+      
+      {/* Desktop Header */}
+      <div className="hidden md:block">
+        <Header onToggleChat={() => setShowChat(!showChat)} showChat={showChat} />
+      </div>
+      
+      {/* Mobile Header */}
+      <div className="md:hidden">
+        <MobileHeader 
+          onAddStream={() => {
+            setShowAddStream(true)
+            trackFeatureUsage('add_stream_mobile_header')
+          }}
+        />
+      </div>
       
       {/* Main Content with Tabs */}
       <div className={cn(
@@ -218,9 +235,15 @@ export default function Home() {
         showChat={showChat}
         streamCount={streams.length}
         onToggleSwipeView={() => {
-          setShowMobileView(true)
-          trackFeatureUsage('swipe_view_mobile')
+          setShowMobileStreamViewer(true)
+          trackFeatureUsage('mobile_stream_viewer')
         }}
+      />
+      
+      {/* Mobile Stream Viewer */}
+      <MobileStreamViewer 
+        show={showMobileStreamViewer} 
+        onClose={() => setShowMobileStreamViewer(false)} 
       />
       
       {/* Mobile Swipe Controls - Only show when explicitly enabled */}
