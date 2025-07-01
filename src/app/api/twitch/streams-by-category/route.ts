@@ -5,6 +5,7 @@ import { twitchCache } from '@/lib/twitch/cache';
 // Popular game categories with their Twitch IDs
 const GAME_CATEGORIES = {
   'Just Chatting': '509658',
+  'IRL': '509672',
   'League of Legends': '21779',
   'VALORANT': '516575',
   'Fortnite': '33214',
@@ -31,9 +32,19 @@ const GAME_CATEGORIES = {
   'Music': '26936',
   'Art': '509660',
   'Sports': '518203',
+  'Travel & Outdoors': '509667',
+  'Food & Drink': '509667',
+  'Fitness & Health': '509671',
+  'Science & Technology': '509670',
+  'Animals, Aquariums, and Zoos': '272263',
+  'Beauty & Body Art': '509669',
+  'ASMR': '509659',
+  'Pools, Hot Tubs, and Beaches': '116747788',
   'Slots': '498566',
   'Chess': '743',
-  'Poker': '488190'
+  'Poker': '488190',
+  'Virtual Casino': '29452',
+  'Retro Gaming': '27284'
 };
 
 export async function POST(request: NextRequest) {

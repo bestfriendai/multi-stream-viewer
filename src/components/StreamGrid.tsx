@@ -65,9 +65,10 @@ const StreamGrid: React.FC = React.memo(() => {
   return (
     <div
       className={cn(
-        'stream-grid grid h-full w-full animate-fade-in',
+        'stream-grid grid w-full animate-fade-in',
         responsiveGridClass,
-        'touch-pan-y touch-pan-x'
+        'touch-pan-y touch-pan-x',
+        'min-h-full'
       )}
       data-count={streams.length}
       role="grid"

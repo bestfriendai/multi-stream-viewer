@@ -109,7 +109,7 @@ export default function Home() {
             <TabsContent value="streams" className="flex-1 overflow-hidden m-0 flex flex-col">
               <ErrorBoundary>
                 <StreamStatusBar />
-                <div className="flex-1 overflow-hidden">
+                <div className="flex-1 overflow-auto">
                   <StreamGrid />
                 </div>
               </ErrorBoundary>
