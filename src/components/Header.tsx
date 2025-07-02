@@ -16,7 +16,8 @@ import {
   Share2,
   BookmarkPlus,
   MoreVertical,
-  LogIn
+  LogIn,
+  X
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from './theme-toggle'
@@ -54,6 +55,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
   const [showAddStream, setShowAddStream] = useState(false)
   const [showDiscovery, setShowDiscovery] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
+  const [showClearConfirm, setShowClearConfirm] = useState(false)
   
   const { 
     streams, 
@@ -146,6 +148,18 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               <EnhancedLayoutSelector />
               <SavedLayoutsDialog />
               <ShareDialog />
+
+              {streams.length > 0 && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowClearConfirm(true)}
+                  className="h-9 text-destructive border-destructive/30 hover:bg-destructive/10 hover:border-destructive/50"
+                >
+                  <X className="h-4 w-4" />
+                  <span className="ml-2">Clear ({streams.length})</span>
+                </Button>
+              )}
 
               <Separator orientation="vertical" className="h-6" />
 
@@ -349,6 +363,39 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
           </DialogHeader>
           <div className="overflow-auto max-h-[85vh]">
             <LiveDiscovery />
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Clear Streams Confirmation Dialog */}
+      <Dialog open={showClearConfirm} onOpenChange={setShowClearConfirm}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Clear All Streams</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-muted-foreground">
+              Are you sure you want to remove all {streams.length} stream{streams.length !== 1 ? 's' : ''}? This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <Button
+                variant="outline"
+                onClick={() => setShowClearConfirm(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  clearAllStreams()
+                  setShowClearConfirm(false)
+                  trackFeatureUsage('clear_all_streams_confirmed')
+                }}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Clear All
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

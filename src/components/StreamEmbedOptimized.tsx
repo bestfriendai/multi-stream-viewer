@@ -114,6 +114,7 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
     }
   }, [cleanup])
   
+  // Separate effect for initial setup - only runs when stream details change
   useEffect(() => {
     if (!embedRef.current) return
     
@@ -190,7 +191,7 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
     return () => {
       cancelled = true
     }
-  }, [stream.channelName, stream.channelId, stream.platform, cleanup])
+  }, [stream.channelName, stream.channelId, stream.platform]) // Removed cleanup dependency to prevent unnecessary re-renders
   
   // Handle mute state changes
   useEffect(() => {

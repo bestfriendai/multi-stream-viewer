@@ -211,14 +211,14 @@ const StreamGrid: React.FC = React.memo(() => {
         <AnimatePresence mode="popLayout">
           {streams.map((stream, index) => (
             <motion.div
-              key={stream.id}
-              layout
-              layoutId={`stream-${stream.id}`}
+              key={`stream-${stream.id}`} // More stable key
+              layout="position" // Only animate position changes, not size
+              layoutId={`stream-card-${stream.id}`} // Unique layoutId
               variants={streamCardVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
-{...(!isMobile && { whileHover: "hover" })}
+              {...(!isMobile && { whileHover: "hover" })}
               whileTap="tap"
               onTap={() => isMobile && setActiveStream(stream.id)}
               className={cn(
@@ -246,11 +246,14 @@ const StreamGrid: React.FC = React.memo(() => {
               role="gridcell"
               aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}`}
             >
-              <StreamEmbedOptimized stream={stream} />
+              {/* Stable wrapper to prevent embed re-mounting */}
+              <div key={`embed-${stream.id}`} className="absolute inset-0">
+                <StreamEmbedOptimized stream={stream} />
+              </div>
               
               {/* Mobile stream indicator */}
               {isMobile && streams.length > 2 && (
-                <div className="absolute bottom-4 left-4 bg-black/80 text-white px-3 py-1 rounded-full text-sm font-medium">
+                <div className="absolute bottom-4 left-4 bg-black/80 text-white px-3 py-1 rounded-full text-sm font-medium z-10">
                   {index + 1} / {streams.length}
                 </div>
               )}
