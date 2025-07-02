@@ -13,13 +13,13 @@ const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: bool
   if (count === 0) return { cols: 1, rows: 1, class: 'grid-cols-1' }
   if (count === 1) return { cols: 1, rows: 1, class: 'grid-cols-1' }
   
-  // Mobile-optimized layouts
+  // Mobile-optimized layouts - Bigger boxes inspired by Twitch mobile
   if (isMobile) {
+    if (count === 1) return { cols: 1, rows: 1, class: 'mobile-grid-single' }
     if (count === 2) return { cols: 1, rows: 2, class: 'mobile-grid-1x2' }
-    if (count === 3) return { cols: 1, rows: 3, class: 'mobile-grid-1x3' }
+    if (count === 3) return { cols: 1, rows: 3, class: 'mobile-grid-scroll' }
     if (count === 4) return { cols: 2, rows: 2, class: 'mobile-grid-2x2' }
-    if (count <= 6) return { cols: 2, rows: 3, class: 'mobile-grid-2x3' }
-    // For more streams on mobile, use scrollable single column
+    // For more streams on mobile, use scrollable single column for better viewing
     return { cols: 1, rows: count, class: 'mobile-grid-scroll' }
   }
   
@@ -206,12 +206,13 @@ const StreamGrid: React.FC = React.memo(() => {
                 'border border-border/20',
                 'will-change-transform',
                 'isolate',
-                // Mobile-specific styling
+                // Mobile-specific styling - Bigger boxes like Twitch mobile
                 isMobile ? [
                   'flex-shrink-0 snap-start',
-                  streams.length > 2 ? 'w-[85vw] mr-4' : 'flex-1',
-                  'rounded-lg',
-                  'min-h-[60vh]'
+                  streams.length > 2 ? 'w-[90vw] mr-4' : 'flex-1',
+                  'rounded-xl',
+                  'min-h-[70vh]', // Increased from 60vh to 70vh for bigger boxes
+                  'shadow-xl' // Add more prominent shadow
                 ] : [
                   'rounded-xl'
                 ],

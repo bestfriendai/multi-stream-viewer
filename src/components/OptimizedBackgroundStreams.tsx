@@ -55,7 +55,7 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
   if (channels.length === 0) return null
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
       <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-4 p-8 scale-105">
         {[...Array(4)].map((_, index) => {
           const channel = channels[index % channels.length]
@@ -106,7 +106,7 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
           )
         })}
       </div>
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/70 to-background/85" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/85 to-background/95" />
     </div>
   )
 }

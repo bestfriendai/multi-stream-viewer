@@ -104,13 +104,13 @@ export default function MobileNav({
           <span className="text-xs font-medium">Discover</span>
         </Button>
 
-        {/* Layout Dropdown */}
+        {/* Layout Dropdown - More prominent */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
               size="lg"
-              className="flex flex-col gap-1.5 h-auto py-4 min-h-[56px] rounded-xl transition-all active:scale-95 hover:bg-primary/10 hover:text-primary"
+              className="flex flex-col gap-1.5 h-auto py-4 min-h-[64px] rounded-xl transition-all active:scale-95 hover:bg-primary/10 hover:text-primary relative"
             >
               <div className="relative">
                 <LayoutGrid size={22} />
@@ -126,7 +126,7 @@ export default function MobileNav({
               <span className="text-xs font-medium">Layout</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="center" side="top" className="mb-2 w-48">
+          <DropdownMenuContent align="center" side="top" className="mb-2 w-56">
             <div className="p-2 text-xs text-muted-foreground border-b">
               Choose Layout ({activeStreams} streams)
             </div>
@@ -138,7 +138,7 @@ export default function MobileNav({
                   trackFeatureUsage(`layout_${option.value}_mobile`)
                 }}
                 className={cn(
-                  "text-base py-3",
+                  "text-base py-4 min-h-[48px]", // Increased touch target
                   gridLayout === option.value && "bg-accent text-accent-foreground"
                 )}
               >

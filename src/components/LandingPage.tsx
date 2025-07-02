@@ -201,7 +201,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       <OptimizedBackgroundStreams channels={liveChannels} />
       
       {/* Enhanced Hero Section */}
-      <section className="relative overflow-hidden py-20 lg:py-32">
+      <section className="relative overflow-hidden py-20 lg:py-32 z-10">
         {/* Animated Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background/90" />
@@ -256,12 +256,11 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             </motion.h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-4">
-              <strong>STREAMYYY</strong> is the best multi-stream platform - Better than MultiTwitch, Multistre.am, and TwitchTheater. 
-              Watch up to 16 live streams simultaneously from Twitch, YouTube, Kick, and more.
+              <strong>STREAMYYY</strong> is the ultimate multi-stream platform for watching up to 16 live streams simultaneously from Twitch, YouTube, Kick, and more.
             </p>
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-              The ultimate MultiTwitch alternative with superior performance, more features, and mobile support. 
-              Join millions who've switched from MultiTwitch.tv to STREAMYYY for the most powerful multistream viewing experience.
+              Experience seamless multi-stream viewing with superior performance, advanced features, and mobile support. 
+              Join thousands of viewers who choose STREAMYYY for the most powerful multistream viewing experience.
             </p>
             
             {/* CTA Buttons */}
@@ -301,7 +300,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       </section>
 
       {/* Interactive Demo Section with Live Streams */}
-      <section id="demo" className="py-24 bg-gradient-to-b from-background via-muted/10 to-muted/20 relative">
+      <section id="demo" className="py-24 bg-gradient-to-b from-background via-muted/10 to-muted/20 relative z-10">
         <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
         <div className="container mx-auto px-4 relative">
           <motion.div 
@@ -440,7 +439,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       </section>
 
       {/* How It Works - Enhanced */}
-      <section className="py-24 relative overflow-hidden">
+      <section className="py-24 relative overflow-hidden z-10">
         <div className="absolute inset-0">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
@@ -508,7 +507,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       </section>
 
       {/* Features Grid - Enhanced */}
-      <section className="py-24 bg-gradient-to-b from-muted/30 via-muted/20 to-background relative">
+      <section className="py-24 bg-gradient-to-b from-muted/30 via-muted/20 to-background relative z-10">
         <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
         <div className="container mx-auto px-4 relative">
           <motion.div 
@@ -520,8 +519,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               <Sparkles className="w-3 h-3 mr-1" />
               Features
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Why STREAMYYY is the Best</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Industry-leading features that make STREAMYYY the premier multi-stream platform. No competitors offer this level of sophistication and ease of use.</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Why Choose STREAMYYY</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Industry-leading features that make STREAMYYY the premier multi-stream platform with unmatched performance and ease of use.</p>
           </motion.div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -557,7 +556,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       </section>
 
       {/* Use Cases */}
-      <section className="py-24">
+      <section className="py-24 relative z-10">
         <div className="container mx-auto px-4">
           <motion.div 
             className="text-center mb-16"
@@ -596,7 +595,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
 
       {/* Live Streamers Section - Enhanced */}
       {liveChannels.length > 0 && (
-        <section className="py-24 border-t bg-gradient-to-b from-background via-muted/10 to-muted/20 relative">
+        <section className="py-24 border-t bg-gradient-to-b from-background via-muted/10 to-muted/20 relative z-10">
           <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
           <div className="container mx-auto px-4 relative">
             <motion.div 
@@ -687,7 +686,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       )}
 
       {/* Final CTA Section */}
-      <section className="py-32 bg-gradient-to-b from-background via-primary/5 to-purple-500/10 relative overflow-hidden">
+      <section className="py-32 bg-gradient-to-b from-background via-primary/5 to-purple-500/10 relative overflow-hidden z-10">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-32" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" />
@@ -711,8 +710,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               </h2>
             </motion.div>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              Join thousands of viewers who've switched to STREAMYYY - the gold standard for multi-stream viewing.
-              Experience why professional streamers, esports fans, and content creators choose STREAMYYY over any other platform.
+              Join thousands of viewers who trust STREAMYYY for the ultimate multi-stream viewing experience.
+              Discover why professional streamers, esports fans, and content creators choose STREAMYYY for their streaming needs.
             </p>
             
             <motion.div 

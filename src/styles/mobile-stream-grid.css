@@ -1,8 +1,12 @@
 /* Mobile-optimized stream grid styles */
 .mobile-stream-grid {
-  /* Smooth scrolling for mobile */
+  /* Smooth scrolling for mobile with momentum */
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  /* Add momentum scrolling for iOS */
+  overscroll-behavior: contain;
+  /* Improve touch scrolling performance */
+  touch-action: pan-y;
 }
 
 /* Hide scrollbar but maintain functionality */
@@ -15,12 +19,21 @@
   display: none;
 }
 
-/* Mobile grid layouts */
+/* Mobile grid layouts - Twitch-inspired bigger boxes */
+.mobile-grid-single {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  gap: 1rem;
+  height: 100vh;
+  padding: 1rem;
+}
+
 .mobile-grid-1x2 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.5rem; /* Increased gap for better separation */
   height: 100vh;
   padding: 1rem;
 }
@@ -55,10 +68,13 @@
 .mobile-grid-scroll {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 1.5rem; /* Increased gap */
   padding: 1rem;
   height: auto;
   min-height: 100vh;
+  /* Better scrolling experience */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Mobile stream controls */
@@ -67,18 +83,19 @@
     position: relative;
   }
   
-  /* Enhanced touch targets for mobile */
+  /* Enhanced touch targets for mobile - Twitch-inspired */
   .stream-controls {
-    padding: 12px;
-    min-height: 44px;
-    min-width: 44px;
+    padding: 16px; /* Increased from 12px */
+    min-height: 48px; /* Increased from 44px */
+    min-width: 48px; /* Increased from 44px */
   }
   
   /* Larger touch-friendly buttons */
   .mobile-stream-grid .stream-embed-container button {
-    min-height: 44px;
-    min-width: 44px;
-    padding: 12px;
+    min-height: 48px; /* Increased from 44px */
+    min-width: 48px; /* Increased from 44px */
+    padding: 16px; /* Increased from 12px */
+    border-radius: 8px; /* More rounded like Twitch */
   }
   
   /* Better spacing for mobile layout */

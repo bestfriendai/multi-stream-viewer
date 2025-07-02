@@ -233,8 +233,8 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
   
   return (
     <div className="absolute inset-0 bg-black overflow-hidden group">
-      {/* Stream Controls */}
-      <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between p-2 bg-gradient-to-b from-black/80 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 pointer-events-auto md:pointer-events-none md:group-hover:pointer-events-auto">
+      {/* Stream Controls - More prominent on mobile */}
+      <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between p-3 md:p-2 bg-gradient-to-b from-black/90 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 pointer-events-auto md:pointer-events-none md:group-hover:pointer-events-auto">
         <div className="flex items-center gap-2">
           <span className="text-white text-sm font-medium flex items-center gap-1.5">
             {stream.platform === 'youtube' && <Youtube className="w-4 h-4" />}
@@ -251,29 +251,29 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
           )}
         </div>
         
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2 md:gap-1">
           <button
             onClick={handleMuteToggle}
-            className="p-1.5 rounded-md bg-black/50 hover:bg-black/70 text-white transition-colors"
+            className="p-3 md:p-1.5 rounded-lg md:rounded-md bg-black/60 hover:bg-black/80 text-white transition-colors min-h-[48px] md:min-h-auto min-w-[48px] md:min-w-auto flex items-center justify-center active:scale-95"
             aria-label={stream.muted ? "Unmute" : "Mute"}
           >
-            {stream.muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            {stream.muted ? <VolumeX className="w-5 h-5 md:w-4 md:h-4" /> : <Volume2 className="w-5 h-5 md:w-4 md:h-4" />}
           </button>
           
           <button
             onClick={handleMaximize}
-            className="p-1.5 rounded-md bg-black/50 hover:bg-black/70 text-white transition-colors"
+            className="p-3 md:p-1.5 rounded-lg md:rounded-md bg-black/60 hover:bg-black/80 text-white transition-colors min-h-[48px] md:min-h-auto min-w-[48px] md:min-w-auto flex items-center justify-center active:scale-95"
             aria-label="Toggle primary stream"
           >
-            <Maximize2 className="w-4 h-4" />
+            <Maximize2 className="w-5 h-5 md:w-4 md:h-4" />
           </button>
           
           <button
             onClick={handleRemove}
-            className="p-1.5 rounded-md bg-black/50 hover:bg-black/70 text-white transition-colors"
+            className="p-3 md:p-1.5 rounded-lg md:rounded-md bg-black/60 hover:bg-black/80 text-white transition-colors min-h-[48px] md:min-h-auto min-w-[48px] md:min-w-auto flex items-center justify-center active:scale-95"
             aria-label="Remove stream"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5 md:w-4 md:h-4" />
           </button>
         </div>
       </div>

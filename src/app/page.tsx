@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Header from '@/components/Header'
 import MobileHeader from '@/components/MobileHeader'
 import EnhancedMobileStreamViewer from '@/components/EnhancedMobileStreamViewer'
@@ -216,10 +216,10 @@ export default function Home() {
       <div className={cn(
         "flex-1 flex",
         "pb-16 md:pb-0", // Add padding for mobile nav
-        "overflow-hidden md:overflow-hidden", // Hidden on desktop, auto on mobile
+        "overflow-auto md:overflow-hidden", // Allow scrolling on mobile, hidden on desktop
         "md:h-full" // Full height on desktop
       )}>
-        <main className="flex-1 overflow-hidden">
+        <main className="flex-1 overflow-auto md:overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
             <div className="border-b px-4">
               <TabsList className="h-12 bg-transparent">
@@ -251,7 +251,7 @@ export default function Home() {
               </TabsList>
             </div>
             
-            <TabsContent value="streams" className="flex-1 m-0 flex flex-col overflow-y-auto md:overflow-hidden">
+            <TabsContent value="streams" className="flex-1 m-0 flex flex-col overflow-auto md:overflow-hidden">
               <ErrorBoundary>
                 {streams.length === 0 ? (
                   <LandingPage onAddStream={() => setShowAddStream(true)} />
