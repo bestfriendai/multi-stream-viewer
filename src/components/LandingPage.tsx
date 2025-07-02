@@ -249,11 +249,11 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       <section className="relative overflow-hidden py-20 lg:py-32">
         {/* Animated Background Effects */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/85 to-background/90 backdrop-blur-sm" />
           <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-32" />
-          <div className="absolute top-20 right-10 w-72 h-72 bg-primary/30 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse animation-delay-2000" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-full blur-3xl animate-spin-slow" />
+          <div className="absolute top-20 right-10 w-72 h-72 bg-primary/40 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse animation-delay-2000" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/15 to-purple-500/15 rounded-full blur-3xl animate-spin-slow" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">

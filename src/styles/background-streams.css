@@ -1,0 +1,76 @@
+/* Background Streams Optimization */
+
+/* GPU acceleration for better performance */
+.optimized-background-streams {
+  will-change: opacity;
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth transitions for stream loading */
+.stream-embed-container {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.stream-embed-container.loading {
+  opacity: 0.3;
+}
+
+.stream-embed-container.loaded {
+  opacity: 0.9;
+}
+
+/* Optimize iframe rendering */
+.background-stream-iframe {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Preload hint for better performance */
+.preload-hint {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Smooth fade-in for thumbnails */
+.thumbnail-fade-in {
+  animation: fadeInSmooth 0.5s ease-out forwards;
+}
+
+@keyframes fadeInSmooth {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+
+/* Optimize for mobile scrolling */
+@media (max-width: 768px) {
+  .optimized-background-streams {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .optimized-background-streams,
+  .stream-embed-container,
+  .thumbnail-fade-in {
+    animation: none;
+    transition: none;
+  }
+}
