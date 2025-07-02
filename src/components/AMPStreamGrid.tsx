@@ -94,12 +94,13 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
         initial="hidden"
         animate="visible"
         className={cn(
-          'stream-grid grid w-full h-full gap-2 p-2',
-          'amp-mosaic-grid', // Always use mosaic layout
+          'stream-grid grid w-full h-full gap-3 p-4',
+          layoutClass, // Use dynamic layout based on live count
           'touch-pan-y touch-pan-x',
           'relative'
         )}
         data-count={sortedStreams.length}
+        data-live-count={liveCount}
         role="grid"
         aria-label={`AMP stream grid with ${sortedStreams.length} stream${sortedStreams.length === 1 ? '' : 's'}`}
       >
@@ -122,7 +123,8 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
                   'border border-border/20',
                   'will-change-transform',
                   'isolate',
-                  isLive && 'ring-2 ring-red-500 ring-opacity-50'
+                  isLive && 'ring-2 ring-red-500 ring-opacity-50 live-stream',
+                  !isLive && 'opacity-90'
                 )}
                 style={{
                   contain: 'layout style paint',
@@ -136,15 +138,24 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
                 
                 {/* Live indicator overlay */}
                 {isLive && (
-                  <div className="absolute top-2 left-2 z-10">
-                    <div className="flex items-center gap-2 px-3 py-1 bg-red-600 rounded-full shadow-lg">
-                      <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                      <span className="text-white text-xs font-bold">LIVE</span>
+                  <div className="absolute top-3 left-3 z-10">
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-red-600 rounded-full shadow-lg backdrop-blur-sm">
+                      <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />
+                      <span className="text-white text-sm font-bold">LIVE</span>
                       {viewerCount && (
-                        <span className="text-white text-xs">
-                          {viewerCount.toLocaleString()}
+                        <span className="text-white text-sm font-medium">
+                          • {viewerCount.toLocaleString()} viewers
                         </span>
                       )}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Offline overlay */}
+                {!isLive && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="text-white/70 text-sm font-medium px-3 py-1.5 bg-black/50 rounded-lg backdrop-blur-sm">
+                      OFFLINE
                     </div>
                   </div>
                 )}

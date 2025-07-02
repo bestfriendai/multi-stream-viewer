@@ -98,3 +98,48 @@ html {
 .live-indicator {
   animation: live-pulse 2s infinite;
 }
+
+/* Slow Spin Animation */
+@keyframes spin-slow {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* Gradient X Animation */
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 4s ease infinite;
+}
+
+/* Background Grid 16px */
+.bg-grid-16 {
+  background-size: 16px 16px;
+}
+
+.bg-grid-white\/\[0\.01\] {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+}
+
+/* Animation Delay 1000ms */
+.animation-delay-1000 {
+  animation-delay: 1s;
+}

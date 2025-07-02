@@ -1,57 +1,124 @@
 /* AMP Page Specific Styles */
 
 /* Default Mosaic Grid Layout - Always use mosaic for AMP */
-.amp-mosaic-grid,
-.amp-single-live-grid,
-.amp-two-live-grid,
-.amp-three-live-grid {
+.amp-mosaic-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-auto-rows: 1fr;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: minmax(0, 1fr);
   width: 100%;
   max-width: 100%;
   aspect-ratio: 16/9;
 }
 
-/* All layouts use same mosaic pattern */
-.amp-mosaic-grid > div:nth-child(1),
-.amp-single-live-grid > div:nth-child(1),
-.amp-two-live-grid > div:nth-child(1),
-.amp-three-live-grid > div:nth-child(1) {
-  grid-column: span 4;
-  grid-row: span 3;
+/* First stream (primary) - takes up most space */
+.amp-mosaic-grid > div:nth-child(1) {
+  grid-column: span 8;
+  grid-row: span 4;
 }
 
-.amp-mosaic-grid > div:nth-child(2),
-.amp-single-live-grid > div:nth-child(2),
-.amp-two-live-grid > div:nth-child(2),
-.amp-three-live-grid > div:nth-child(2) {
-  grid-column: span 2;
+/* Second stream - medium size */
+.amp-mosaic-grid > div:nth-child(2) {
+  grid-column: span 4;
   grid-row: span 2;
 }
 
-.amp-mosaic-grid > div:nth-child(3),
+/* Third stream - medium size */
+.amp-mosaic-grid > div:nth-child(3) {
+  grid-column: span 4;
+  grid-row: span 2;
+}
+
+/* Fourth stream - smaller */
+.amp-mosaic-grid > div:nth-child(4) {
+  grid-column: span 6;
+  grid-row: span 2;
+}
+
+/* Fifth stream - smaller */
+.amp-mosaic-grid > div:nth-child(5) {
+  grid-column: span 6;
+  grid-row: span 2;
+}
+
+/* When only one stream is live - make it full size */
+.amp-single-live-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: minmax(0, 1fr);
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16/9;
+}
+
+.amp-single-live-grid > div:nth-child(1) {
+  grid-column: span 12;
+  grid-row: span 4;
+}
+
+.amp-single-live-grid > div:nth-child(2),
 .amp-single-live-grid > div:nth-child(3),
-.amp-two-live-grid > div:nth-child(3),
-.amp-three-live-grid > div:nth-child(3) {
-  grid-column: span 2;
+.amp-single-live-grid > div:nth-child(4),
+.amp-single-live-grid > div:nth-child(5) {
+  grid-column: span 3;
   grid-row: span 1;
 }
 
-.amp-mosaic-grid > div:nth-child(4),
-.amp-single-live-grid > div:nth-child(4),
+/* When two streams are live - split them prominently */
+.amp-two-live-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: minmax(0, 1fr);
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16/9;
+}
+
+.amp-two-live-grid > div:nth-child(1) {
+  grid-column: span 7;
+  grid-row: span 4;
+}
+
+.amp-two-live-grid > div:nth-child(2) {
+  grid-column: span 5;
+  grid-row: span 4;
+}
+
+.amp-two-live-grid > div:nth-child(3),
 .amp-two-live-grid > div:nth-child(4),
-.amp-three-live-grid > div:nth-child(4) {
-  grid-column: span 3;
+.amp-two-live-grid > div:nth-child(5) {
+  grid-column: span 4;
+  grid-row: span 1;
+}
+
+/* When three streams are live */
+.amp-three-live-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: minmax(0, 1fr);
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16/9;
+}
+
+.amp-three-live-grid > div:nth-child(1) {
+  grid-column: span 7;
+  grid-row: span 3;
+}
+
+.amp-three-live-grid > div:nth-child(2) {
+  grid-column: span 5;
+  grid-row: span 3;
+}
+
+.amp-three-live-grid > div:nth-child(3) {
+  grid-column: span 12;
   grid-row: span 2;
 }
 
-.amp-mosaic-grid > div:nth-child(5),
-.amp-single-live-grid > div:nth-child(5),
-.amp-two-live-grid > div:nth-child(5),
+.amp-three-live-grid > div:nth-child(4),
 .amp-three-live-grid > div:nth-child(5) {
-  grid-column: span 3;
-  grid-row: span 2;
+  grid-column: span 6;
+  grid-row: span 1;
 }
 
 /* Stream containers fill their grid areas */
@@ -86,9 +153,26 @@
 /* Larger stream cards */
 @media (min-width: 768px) {
   .amp-stream-container .stream-grid {
-    height: calc(100vh - 200px);
-    max-height: calc(100vw - 32px); /* Ensure grid doesn't exceed viewport width */
+    height: calc(100vh - 120px);
+    max-height: 90vh;
   }
+}
+
+/* Extra emphasis for live streams */
+.amp-mosaic-grid > div.live-stream,
+.amp-single-live-grid > div.live-stream,
+.amp-two-live-grid > div.live-stream,
+.amp-three-live-grid > div.live-stream {
+  z-index: 10;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.amp-mosaic-grid > div.live-stream:hover,
+.amp-single-live-grid > div.live-stream:hover,
+.amp-two-live-grid > div.live-stream:hover,
+.amp-three-live-grid > div.live-stream:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 /* Live stream emphasis */
@@ -117,7 +201,8 @@
   .amp-two-live-grid,
   .amp-three-live-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(5, 200px);
+    grid-template-rows: auto;
+    aspect-ratio: unset;
   }
   
   .amp-mosaic-grid > div,
@@ -126,12 +211,15 @@
   .amp-three-live-grid > div {
     grid-column: span 1 !important;
     grid-row: span 1 !important;
+    aspect-ratio: 16/9;
+    height: auto;
   }
   
   /* Make first (live) stream bigger on mobile */
+  .amp-mosaic-grid > div:nth-child(1),
   .amp-single-live-grid > div:nth-child(1),
   .amp-two-live-grid > div:nth-child(1),
   .amp-three-live-grid > div:nth-child(1) {
-    grid-row: span 2 !important;
+    aspect-ratio: 16/10;
   }
 }

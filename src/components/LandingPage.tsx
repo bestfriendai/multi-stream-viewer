@@ -204,9 +204,11 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       <section className="relative overflow-hidden py-20 lg:py-32">
         {/* Animated Background Effects */}
         <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background/90" />
           <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-32" />
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-3xl animate-pulse animation-delay-2000" />
+          <div className="absolute top-20 right-10 w-72 h-72 bg-primary/30 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse animation-delay-2000" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-full blur-3xl animate-spin-slow" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
@@ -218,28 +220,40 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           >
             {/* Logo Animation */}
             <motion.div 
-              className="flex justify-center mb-8"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", duration: 0.8 }}
+              className="flex justify-center mb-12"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", duration: 1, bounce: 0.5 }}
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 blur-2xl opacity-50 animate-pulse" />
-                <div className="relative bg-gradient-to-br from-primary/10 to-primary/5 p-6 rounded-2xl border border-primary/20">
-                  <Sparkles className="w-24 h-24 text-primary" />
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-60 group-hover:opacity-80 transition-opacity animate-pulse" />
+                <div className="relative bg-gradient-to-br from-primary/20 to-purple-500/10 p-8 rounded-3xl border-2 border-primary/30 backdrop-blur-sm">
+                  <Sparkles className="w-28 h-28 text-primary drop-shadow-2xl" />
+                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full animate-pulse" />
+                  <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-blue-500 rounded-full animate-pulse animation-delay-1000" />
                 </div>
               </div>
             </motion.div>
             
-            <h1 className="text-5xl md:text-7xl font-bold">
-              <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <motion.h1 
+              className="text-5xl md:text-7xl font-bold"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+            >
+              <span className="inline-block bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
                 Multi-Stream
               </span>
               <br />
-              <span className="text-3xl md:text-5xl text-muted-foreground">
+              <motion.span 
+                className="text-3xl md:text-5xl text-muted-foreground"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+              >
                 Viewing Perfected
-              </span>
-            </h1>
+              </motion.span>
+            </motion.h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
               Watch up to 16 live streams simultaneously from Twitch, YouTube, and more. 
@@ -248,54 +262,80 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-              <Button 
-                size="lg" 
-                onClick={onAddStream}
-                className="gap-3 text-lg px-8 py-6 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <PlayCircle className="w-6 h-6" />
-                Start Watching Now
-              </Button>
+                <Button 
+                  size="lg" 
+                  onClick={onAddStream}
+                  className="gap-3 text-lg px-10 py-7 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-2xl hover:shadow-primary/25 transition-all duration-300 relative group"
+                >
+                  <PlayCircle className="w-6 h-6 group-hover:animate-pulse" />
+                  Start Watching Now
+                  <div className="absolute inset-0 rounded-md bg-white/20 scale-0 group-hover:scale-100 transition-transform duration-500" />
+                </Button>
+              </motion.div>
               
-              <Button 
-                size="lg" 
-                variant="outline"
-                onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
-                className="gap-3 text-lg px-8 py-6 border-2"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                See It In Action
-                <ArrowRight className="w-5 h-5" />
-              </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="gap-3 text-lg px-10 py-7 border-2 hover:bg-primary/10 backdrop-blur-sm group"
+                >
+                  See It In Action
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Interactive Demo Section with Live Streams */}
-      <section id="demo" className="py-20 bg-gradient-to-b from-background to-muted/20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">See It In Action</h2>
-            <p className="text-xl text-muted-foreground">
-              {loading ? "Loading live streams..." : "Experience multi-stream viewing with real live streams"}
+      <section id="demo" className="py-24 bg-gradient-to-b from-background via-muted/10 to-muted/20 relative">
+        <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
+        <div className="container mx-auto px-4 relative">
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Badge className="mb-4 px-4 py-1.5" variant="outline">
+              <Eye className="w-3 h-3 mr-1" />
+              Live Demo
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">See It In Action</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              {loading ? "Loading live streams..." : "Experience multi-stream viewing with real live streams from popular creators"}
             </p>
-          </div>
+          </motion.div>
           
           <div className="max-w-6xl mx-auto">
-            <Card className="p-8 bg-gradient-to-br from-card to-card/50 border-2">
+            <Card className="p-8 bg-gradient-to-br from-card via-card/80 to-card/50 border-2 shadow-2xl backdrop-blur-sm">
               {/* Demo Controls */}
-              <div className="flex justify-center gap-2 mb-6">
+              <div className="flex flex-wrap justify-center gap-3 mb-8">
                 {demoLayouts.map((layout, index) => (
-                  <Button
+                  <motion.div
                     key={layout.name}
-                    variant={activeDemo === index ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setActiveDemo(index)}
-                    className="gap-2"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    <layout.icon className="w-4 h-4" />
-                    {layout.name}
-                  </Button>
+                    <Button
+                      variant={activeDemo === index ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setActiveDemo(index)}
+                      className="gap-2 px-5 py-2.5 transition-all duration-300"
+                    >
+                      <layout.icon className="w-4 h-4" />
+                      {layout.name}
+                    </Button>
+                  </motion.div>
                 ))}
               </div>
               
@@ -396,9 +436,23 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       </section>
 
       {/* How It Works - Enhanced */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">Simple as 1-2-3</h2>
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+        </div>
+        <div className="container mx-auto px-4 relative">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-center mb-12"
+          >
+            <Badge className="mb-4 px-4 py-1.5" variant="outline">
+              <Zap className="w-3 h-3 mr-1" />
+              Quick Start
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold">Simple as 1-2-3</h2>
+          </motion.div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
@@ -450,12 +504,21 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       </section>
 
       {/* Features Grid - Enhanced */}
-      <section className="py-20 bg-gradient-to-b from-muted/30 to-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Everything You Need</h2>
-            <p className="text-xl text-muted-foreground">Powerful features that make multi-streaming effortless</p>
-          </div>
+      <section className="py-24 bg-gradient-to-b from-muted/30 via-muted/20 to-background relative">
+        <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
+        <div className="container mx-auto px-4 relative">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+          >
+            <Badge className="mb-4 px-4 py-1.5" variant="outline">
+              <Sparkles className="w-3 h-3 mr-1" />
+              Features
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Everything You Need</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Powerful features that make multi-streaming effortless</p>
+          </motion.div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {features.map((feature, index) => (
@@ -468,18 +531,20 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 onHoverEnd={() => setHoveredFeature(null)}
               >
                 <Card className={cn(
-                  "p-6 h-full transition-all duration-300",
-                  hoveredFeature === index && "shadow-2xl scale-105"
+                  "p-8 h-full transition-all duration-500 relative overflow-hidden group",
+                  hoveredFeature === index && "shadow-2xl scale-105 border-primary/50"
                 )}>
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className={cn(
-                    "w-14 h-14 rounded-xl bg-gradient-to-r flex items-center justify-center mb-4 transition-transform",
+                    "w-16 h-16 rounded-2xl bg-gradient-to-r flex items-center justify-center mb-6 transition-all duration-500 relative z-10 shadow-lg",
                     feature.gradient,
-                    hoveredFeature === index && "scale-110 rotate-3"
+                    hoveredFeature === index && "scale-110 rotate-3 shadow-2xl"
                   )}>
-                    <feature.icon className="w-7 h-7 text-white" />
+                    <feature.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-muted-foreground">{feature.description}</p>
+                  <h3 className="text-xl font-semibold mb-3 relative z-10">{feature.title}</h3>
+                  <p className="text-muted-foreground relative z-10 leading-relaxed">{feature.description}</p>
+                  <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-gradient-to-r opacity-10 rounded-full blur-2xl transition-all duration-500 group-hover:scale-150" />
                 </Card>
               </motion.div>
             ))}
@@ -488,12 +553,20 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       </section>
 
       {/* Use Cases */}
-      <section className="py-20">
+      <section className="py-24">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Perfect For</h2>
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+          >
+            <Badge className="mb-4 px-4 py-1.5" variant="outline">
+              <Users className="w-3 h-3 mr-1" />
+              Use Cases
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Perfect For</h2>
             <p className="text-xl text-muted-foreground">Whatever you're watching, we've got you covered</p>
-          </div>
+          </motion.div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {useCases.map((useCase, index) => (
@@ -503,11 +576,13 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="p-6 h-full text-center hover:shadow-lg transition-shadow">
-                  <useCase.icon className="w-12 h-12 mx-auto mb-4 text-primary" />
-                  <h3 className="font-semibold mb-2">{useCase.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-3">{useCase.description}</p>
-                  <p className="text-xs text-primary">{useCase.example}</p>
+                <Card className="p-8 h-full text-center hover:shadow-2xl transition-all duration-300 group hover:scale-105 hover:border-primary/30">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <useCase.icon className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-lg mb-3">{useCase.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-3 leading-relaxed">{useCase.description}</p>
+                  <p className="text-xs text-primary font-medium">{useCase.example}</p>
                 </Card>
               </motion.div>
             ))}
@@ -517,18 +592,26 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
 
       {/* Live Streamers Section - Enhanced */}
       {liveChannels.length > 0 && (
-        <section className="py-20 border-t bg-gradient-to-b from-background to-muted/20">
-          <div className="container mx-auto px-4">
-            <div className="mb-12">
-              <h2 className="text-3xl font-bold flex items-center gap-3 mb-2">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-red-600 blur-xl opacity-50 animate-pulse" />
-                  <div className="w-4 h-4 bg-red-600 rounded-full relative" />
-                </div>
-                Popular Streams Live Now
+        <section className="py-24 border-t bg-gradient-to-b from-background via-muted/10 to-muted/20 relative">
+          <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
+          <div className="container mx-auto px-4 relative">
+            <motion.div 
+              className="mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+            >
+              <div className="flex items-center justify-center mb-8">
+                <Badge className="px-6 py-2 text-base" variant="destructive">
+                  <div className="w-3 h-3 bg-white rounded-full animate-pulse mr-2" />
+                  LIVE NOW
+                </Badge>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
+                Popular Streams
+                <span className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent"> Live Now</span>
               </h2>
-              <p className="text-muted-foreground">Click any stream to add it instantly</p>
-            </div>
+              <p className="text-xl text-muted-foreground text-center">Click any stream to add it instantly</p>
+            </motion.div>
             
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
               {liveChannels.slice(0, 12).map((channel, index) => (
@@ -600,31 +683,48 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       )}
 
       {/* Final CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10">
-        <div className="container mx-auto px-4 text-center">
+      <section className="py-32 bg-gradient-to-b from-background via-primary/5 to-purple-500/10 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-32" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" />
+        </div>
+        <div className="container mx-auto px-4 text-center relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="max-w-3xl mx-auto space-y-8"
+            className="max-w-4xl mx-auto space-y-8"
           >
-            <h2 className="text-4xl md:text-5xl font-bold">
-              Ready to Transform Your
-              <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent"> Viewing Experience?</span>
-            </h2>
-            <p className="text-xl text-muted-foreground">
-              Join thousands of viewers who've discovered the better way to watch streams.
+            <motion.div
+              initial={{ scale: 0.8 }}
+              whileInView={{ scale: 1 }}
+              transition={{ type: "spring", duration: 0.8 }}
+            >
+              <h2 className="text-5xl md:text-6xl font-bold leading-tight">
+                Ready to Transform Your
+                <span className="block mt-2 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
+                  Viewing Experience?
+                </span>
+              </h2>
+            </motion.div>
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
+              Join thousands of viewers who've discovered the better way to watch multiple streams.
             </p>
             
-            <div className="pt-4">
+            <motion.div 
+              className="pt-8"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Button 
                 size="lg" 
                 onClick={onAddStream}
-                className="gap-3 text-lg px-10 py-6 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+                className="gap-3 text-xl px-12 py-8 bg-gradient-to-r from-primary via-purple-600 to-pink-600 hover:from-primary/90 hover:via-purple-600/90 hover:to-pink-600/90 shadow-2xl hover:shadow-primary/30 transition-all duration-300 relative group"
               >
-                <Zap className="w-6 h-6" />
+                <Zap className="w-7 h-7 group-hover:animate-pulse" />
                 Start Streaming Now
+                <div className="absolute inset-0 rounded-md bg-white/10 scale-0 group-hover:scale-100 transition-transform duration-500" />
               </Button>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
