@@ -11,7 +11,32 @@ import '@/styles/mobile-stream-grid.css'
 // Enhanced mobile-first grid configuration
 const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: boolean) => {
   if (count === 0) return { cols: 1, rows: 1, class: 'grid-cols-1' }
-  if (count === 1) return { cols: 1, rows: 1, class: 'grid-cols-1' }
+  
+  // For single streams, still respect layout preferences for consistency
+  if (count === 1) {
+    // Handle specific layout requests for single stream
+    switch (gridLayout) {
+      case 'grid-2x2':
+      case '2x2':
+        return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
+      case 'grid-3x3':
+      case '3x3':
+        return { cols: 3, rows: 3, class: 'grid-cols-3 grid-rows-3' }
+      case 'grid-4x4':
+      case '4x4':
+        return { cols: 4, rows: 4, class: 'grid-cols-4 grid-rows-4' }
+      case 'mosaic':
+        return { cols: 2, rows: 1, class: 'grid-cols-2 grid-rows-1' }
+      case 'focus':
+        return { cols: 0, rows: 0, class: 'focus-layout' }
+      case 'pip':
+        return { cols: 0, rows: 0, class: 'pip-layout' }
+      case 'custom':
+        return { cols: 0, rows: 0, class: 'custom-layout' }
+      default:
+        return { cols: 1, rows: 1, class: 'grid-cols-1' }
+    }
+  }
   
   // Mobile-optimized layouts - Bigger boxes inspired by Twitch mobile
   if (isMobile) {
@@ -23,16 +48,36 @@ const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: bool
     return { cols: 1, rows: count, class: 'mobile-grid-scroll' }
   }
   
-  // Desktop layouts
-  if (count === 2) return {
-    cols: 2,
-    rows: 1,
-    class: gridLayout === '2x1' ? 'grid-cols-2' : 'grid-cols-2 grid-rows-1'
+  // Handle specific layout requests first
+  switch (gridLayout) {
+    case 'grid-2x2':
+    case '2x2':
+      return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
+    case 'grid-3x3':
+    case '3x3':
+      return { cols: 3, rows: 3, class: 'grid-cols-3 grid-rows-3' }
+    case 'grid-4x4':
+    case '4x4':
+      return { cols: 4, rows: 4, class: 'grid-cols-4 grid-rows-4' }
+    case 'mosaic':
+      // Adaptive mosaic layout based on count
+      if (count <= 2) return { cols: 2, rows: 1, class: 'grid-cols-2 grid-rows-1' }
+      if (count <= 4) return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
+      if (count <= 6) return { cols: 3, rows: 2, class: 'grid-cols-3 grid-rows-2' }
+      if (count <= 9) return { cols: 3, rows: 3, class: 'grid-cols-3 grid-rows-3' }
+      return { cols: 4, rows: Math.ceil(count / 4), class: 'grid-cols-4' }
+    case 'focus':
+      return { cols: 0, rows: 0, class: 'focus-layout' }
+    case 'pip':
+      return { cols: 0, rows: 0, class: 'pip-layout' }
+    case 'custom':
+      return { cols: 0, rows: 0, class: 'custom-layout' }
   }
   
+  // Default responsive layouts based on stream count
+  if (count === 2) return { cols: 2, rows: 1, class: 'grid-cols-2 grid-rows-1' }
   if (count === 3) return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
   if (count === 4) return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
-  
   if (count <= 6) return { cols: 3, rows: 2, class: 'grid-cols-3 grid-rows-2' }
   if (count <= 9) return { cols: 3, rows: 3, class: 'grid-cols-3 grid-rows-3' }
   if (count <= 12) return { cols: 4, rows: 3, class: 'grid-cols-4 grid-rows-3' }
@@ -191,14 +236,14 @@ const StreamGrid: React.FC = React.memo(() => {
         <AnimatePresence mode="popLayout">
           {streams.map((stream, index) => (
             <motion.div
-              key={stream.id}
-              layout
-              layoutId={`stream-${stream.id}`}
+              key={`stream-${stream.id}`} // More stable key
+              layout="position" // Only animate position changes, not size
+              layoutId={`stream-card-${stream.id}`} // Unique layoutId
               variants={streamCardVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
-{...(!isMobile && { whileHover: "hover" })}
+              {...(!isMobile && { whileHover: "hover" })}
               whileTap="tap"
               onTap={() => isMobile && setActiveStream(stream.id)}
               className={cn(
@@ -227,11 +272,14 @@ const StreamGrid: React.FC = React.memo(() => {
               role="gridcell"
               aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}`}
             >
-              <StreamEmbedOptimized stream={stream} />
+              {/* Stable wrapper to prevent embed re-mounting */}
+              <div key={`embed-${stream.id}`} className="absolute inset-0">
+                <StreamEmbedOptimized stream={stream} />
+              </div>
               
               {/* Mobile stream indicator */}
               {isMobile && streams.length > 2 && (
-                <div className="absolute bottom-4 left-4 bg-black/80 text-white px-3 py-1 rounded-full text-sm font-medium">
+                <div className="absolute bottom-4 left-4 bg-black/80 text-white px-3 py-1 rounded-full text-sm font-medium z-10">
                   {index + 1} / {streams.length}
                 </div>
               )}

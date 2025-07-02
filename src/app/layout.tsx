@@ -5,13 +5,10 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import GoogleAnalyticsSimple from "@/components/GoogleAnalyticsSimple";
-import AnalyticsPageTracker from "@/components/AnalyticsPageTracker";
-import SessionTracker from "@/components/SessionTracker";
-import MobileAnalyticsTracker from "@/components/MobileAnalyticsTracker";
-import GADebugPanel from "@/components/GADebugPanel";
 import Footer from "@/components/Footer"
 import CookieConsent from "@/components/CookieConsent";
+import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -254,23 +251,22 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AnalyticsPageTracker />
-        <SessionTracker />
-        <MobileAnalyticsTracker />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="flex flex-col min-h-screen">
-            {children}
-            <Footer />
-          </div>
-          <Toaster />
-          <GADebugPanel />
-          <CookieConsent />
-        </ThemeProvider>
+        <ClerkProvider>
+          <GoogleAnalytics />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="flex flex-col min-h-screen">
+              {children}
+              <Footer />
+            </div>
+            <Toaster />
+            <CookieConsent />
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

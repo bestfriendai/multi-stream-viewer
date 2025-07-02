@@ -168,8 +168,8 @@ export default function AmpSummerPage() {
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl" />
         
-        <div className="relative container mx-auto px-4 py-4">
-          <div className="text-center space-y-4">
+        <div className="relative container mx-auto px-4 py-6">
+          <div className="text-center space-y-6">
             {/* Title with animation */}
             <div className="flex items-center justify-center gap-3">
               <Zap className="w-6 h-6 text-yellow-500 animate-pulse" />
@@ -185,24 +185,24 @@ export default function AmpSummerPage() {
             </p>
             
             {/* Streamer avatars */}
-            <div className="flex items-center justify-center gap-3 pt-2">
+            <div className="flex items-center justify-center gap-4 pt-4">
               {AMP_STREAMERS.map((streamer, index) => (
                 <div 
                   key={streamer.name}
                   className="relative group"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-yellow-500/50 group-hover:border-yellow-500 transition-all duration-300 amp-avatar-container">
+                  <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-yellow-500/50 group-hover:border-yellow-500 transition-all duration-300 amp-avatar-container">
                     <TwitchAvatarImage
                       username={streamer.name}
                       name={streamer.displayName}
                       platform={streamer.platform}
                       size={64}
-                      className="w-full h-full"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <Badge 
-                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-black text-white border-yellow-500 text-xs whitespace-nowrap"
+                    className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-black/80 text-white border-yellow-500/50 text-xs whitespace-nowrap px-2 py-1"
                   >
                     {streamer.displayName}
                   </Badge>

@@ -205,7 +205,7 @@ export default function BlogPost({ title, author, date, readTime, category, imag
                         className="my-8 rounded-xl overflow-hidden shadow-2xl"
                       >
                         <Image
-                          src={props.src || ''}
+                          src={typeof props.src === 'string' ? props.src : ''}
                           alt={props.alt || ''}
                           width={1200}
                           height={600}

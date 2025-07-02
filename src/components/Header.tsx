@@ -15,16 +15,24 @@ import {
   Keyboard,
   Share2,
   BookmarkPlus,
-  MoreVertical
+  MoreVertical,
+  LogIn,
+  X
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from './theme-toggle'
 import SavedLayoutsDialog from './SavedLayoutsDialog'
 import ShareDialog from './ShareDialog'
 import EnhancedLayoutSelector from './EnhancedLayoutSelector'
-import EnhancedAddStreamDialog from './EnhancedAddStreamDialog'
+const EnhancedAddStreamDialog = dynamic(() => import('./EnhancedAddStreamDialog'), {
+  loading: () => <div className="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg h-32" />
+})
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import LiveDiscovery from './LiveDiscovery'
+import dynamic from 'next/dynamic'
+
+const LiveDiscovery = dynamic(() => import('./LiveDiscovery'), {
+  loading: () => <div className="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg h-96" />
+})
 import StreamyyyLogo from './StreamyyyLogo'
 import {
   DropdownMenu,
@@ -36,16 +44,18 @@ import {
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
+import { UserButton, SignInButton, SignUpButton, useUser } from "@clerk/nextjs"
 
 interface HeaderProps {
   onToggleChat: () => void
   showChat: boolean
 }
 
-export default function Header({ onToggleChat, showChat }: HeaderProps) {
+const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProps) {
   const [showAddStream, setShowAddStream] = useState(false)
   const [showDiscovery, setShowDiscovery] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
+  const [showClearConfirm, setShowClearConfirm] = useState(false)
   
   const { 
     streams, 
@@ -53,6 +63,10 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
   } = useStreamStore()
   
   const { trackFeatureUsage, trackMenuItemClick } = useAnalytics()
+  const { isSignedIn, user, isLoaded } = useUser()
+  
+  // Debug logging
+  console.log('Header - Clerk state:', { isLoaded, isSignedIn, user: user?.id })
   
   
   return (
@@ -135,6 +149,18 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
               <SavedLayoutsDialog />
               <ShareDialog />
 
+              {streams.length > 0 && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowClearConfirm(true)}
+                  className="h-9 text-destructive border-destructive/30 hover:bg-destructive/10 hover:border-destructive/50"
+                >
+                  <X className="h-4 w-4" />
+                  <span className="ml-2">Clear ({streams.length})</span>
+                </Button>
+              )}
+
               <Separator orientation="vertical" className="h-6" />
 
               <Button
@@ -148,6 +174,36 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
               </Button>
 
               <ThemeToggle />
+
+              <Separator orientation="vertical" className="h-6" />
+
+              {isSignedIn ? (
+                <UserButton afterSignOutUrl="/" />
+              ) : (
+                <div className="flex gap-2">
+                  <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-9"
+                      onClick={() => console.log('Sign In button clicked')}
+                    >
+                      <LogIn className="h-4 w-4" />
+                      <span className="ml-2">Sign In</span>
+                    </Button>
+                  </SignInButton>
+                  <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
+                    <Button 
+                      variant="default" 
+                      size="sm" 
+                      className="h-9"
+                      onClick={() => console.log('Sign Up button clicked')}
+                    >
+                      <span>Sign Up</span>
+                    </Button>
+                  </SignUpButton>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -258,8 +314,35 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
                 )}
 
                 {/* Theme Toggle */}
-                <div className="pt-4 border-t border-border flex justify-center">
+                <div className="pt-4 border-t border-border flex justify-center gap-3">
                   <ThemeToggle />
+                  {isSignedIn ? (
+                    <UserButton afterSignOutUrl="/" />
+                  ) : (
+                    <div className="flex gap-2">
+                      <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="h-9"
+                          onClick={() => console.log('Mobile Sign In button clicked')}
+                        >
+                          <LogIn className="h-4 w-4" />
+                          <span className="ml-2">Sign In</span>
+                        </Button>
+                      </SignInButton>
+                      <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
+                        <Button 
+                          variant="default" 
+                          size="sm" 
+                          className="h-9"
+                          onClick={() => console.log('Mobile Sign Up button clicked')}
+                        >
+                          <span>Sign Up</span>
+                        </Button>
+                      </SignUpButton>
+                    </div>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -284,6 +367,41 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
         </DialogContent>
       </Dialog>
 
+      {/* Clear Streams Confirmation Dialog */}
+      <Dialog open={showClearConfirm} onOpenChange={setShowClearConfirm}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Clear All Streams</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-muted-foreground">
+              Are you sure you want to remove all {streams.length} stream{streams.length !== 1 ? 's' : ''}? This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <Button
+                variant="outline"
+                onClick={() => setShowClearConfirm(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  clearAllStreams()
+                  setShowClearConfirm(false)
+                  trackFeatureUsage('clear_all_streams_confirmed')
+                }}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Clear All
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
     </div>
   )
-}
+})
+
+export default Header

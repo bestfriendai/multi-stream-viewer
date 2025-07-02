@@ -78,21 +78,18 @@ const knownProfileImages: Record<string, string> = {
 
 export async function getTwitchProfileImage(username: string): Promise<string> {
   const normalizedUsername = username.toLowerCase()
-  console.log(`getTwitchProfileImage called for: ${normalizedUsername}`)
 
   // Check cache first
   const cached = profileImageCache.get(normalizedUsername)
   const expiry = cacheExpiry.get(normalizedUsername)
 
   if (cached && expiry && Date.now() < expiry) {
-    console.log(`Using cached image for ${normalizedUsername}: ${cached}`)
     return cached
   }
 
   // Check known profile images first - this is our most reliable method
   if (knownProfileImages[normalizedUsername]) {
     const knownUrl = knownProfileImages[normalizedUsername]
-    console.log(`✅ Using known profile image for ${normalizedUsername}: ${knownUrl}`)
     profileImageCache.set(normalizedUsername, knownUrl)
     cacheExpiry.set(normalizedUsername, Date.now() + CACHE_DURATION)
     return knownUrl
@@ -109,14 +106,11 @@ export async function getTwitchProfileImage(username: string): Promise<string> {
       `https://static-cdn.jtvnw.net/jtv_user_pictures/${normalizedUsername}-profile_image-70x70.jpeg`
     ]
 
-    console.log(`Trying ${urlPatterns.length} URL patterns for ${normalizedUsername}`)
 
     // Test each pattern
     for (const url of urlPatterns) {
-      console.log(`Testing URL: ${url}`)
       const exists = await checkImageExists(url)
       if (exists) {
-        console.log(`Found working URL: ${url}`)
         profileImageCache.set(normalizedUsername, url)
         cacheExpiry.set(normalizedUsername, Date.now() + CACHE_DURATION)
         return url
@@ -126,7 +120,6 @@ export async function getTwitchProfileImage(username: string): Promise<string> {
     // Method 2: Try using TwitchTracker API (they have a basic API)
     const trackerUrl = await getTwitchImageFromTracker(normalizedUsername)
     if (trackerUrl) {
-      console.log(`Got image from tracker: ${trackerUrl}`)
       profileImageCache.set(normalizedUsername, trackerUrl)
       cacheExpiry.set(normalizedUsername, Date.now() + CACHE_DURATION)
       return trackerUrl
@@ -135,7 +128,6 @@ export async function getTwitchProfileImage(username: string): Promise<string> {
     // Method 3: Use a proxy service to get the actual profile image
     const proxyUrl = await getTwitchImageViaProxy(normalizedUsername)
     if (proxyUrl) {
-      console.log(`Got image from proxy: ${proxyUrl}`)
       profileImageCache.set(normalizedUsername, proxyUrl)
       cacheExpiry.set(normalizedUsername, Date.now() + CACHE_DURATION)
       return proxyUrl
@@ -146,7 +138,6 @@ export async function getTwitchProfileImage(username: string): Promise<string> {
   }
 
   // Fallback: Generate a consistent avatar using UI Avatars
-  console.log(`⚠️ No profile image found for ${normalizedUsername}, using fallback`)
   const fallbackUrl = generateFallbackAvatar(username)
   profileImageCache.set(normalizedUsername, fallbackUrl)
   cacheExpiry.set(normalizedUsername, Date.now() + CACHE_DURATION)
@@ -195,7 +186,6 @@ async function getTwitchImageViaProxy(username: string): Promise<string | null> 
 
   for (const serviceUrl of proxyServices) {
     try {
-      console.log(`Trying proxy service: ${serviceUrl}`)
       const response = await fetch(serviceUrl, {
         headers: {
           'Accept': 'application/json',

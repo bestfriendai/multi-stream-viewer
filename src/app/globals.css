@@ -87,12 +87,47 @@
   --sidebar-border: oklch(0 0 0 / 5%);
   --sidebar-ring: oklch(0.5 0.2 265);
   
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 2px 8px 0 rgb(0 0 0 / 0.08);
-  --shadow-md: 0 4px 12px 0 rgb(0 0 0 / 0.12);
-  --shadow-lg: 0 8px 24px 0 rgb(0 0 0 / 0.16);
-  --shadow-xl: 0 16px 48px 0 rgb(0 0 0 / 0.24);
+  /* Enhanced Elevation System */
+  --elevation-0: 0px;
+  --elevation-1: 0 1px 2px oklch(0% 0 0 / 0.04);
+  --elevation-2: 0 2px 8px oklch(0% 0 0 / 0.08);
+  --elevation-3: 0 8px 24px oklch(0% 0 0 / 0.12);
+  --elevation-4: 0 16px 48px oklch(0% 0 0 / 0.16);
+  --elevation-5: 0 24px 64px oklch(0% 0 0 / 0.20);
+
+  /* Spatial Depth Layers */
+  --depth-background: -1;
+  --depth-content: 0;
+  --depth-elevated: 1;
+  --depth-overlay: 2;
+  --depth-modal: 3;
+
+  /* Refined Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Semantic Colors for Streams */
+  --color-stream-live: oklch(65% 0.15 140);
+  --color-stream-offline: oklch(50% 0.01 0);
+  --color-stream-replay: oklch(70% 0.1 250);
+
+  /* Interactive States */
+  --color-hover: oklch(from var(--primary) l c h / 0.1);
+  --color-active: oklch(from var(--primary) l c h / 0.2);
+  --color-focus: oklch(from var(--primary) l c h / 0.3);
+
+  /* Legacy Shadows (kept for compatibility) */
+  --shadow-sm: var(--elevation-1);
+  --shadow: var(--elevation-2);
+  --shadow-md: var(--elevation-3);
+  --shadow-lg: var(--elevation-4);
+  --shadow-xl: var(--elevation-5);
 }
 
 .dark {
@@ -696,10 +731,37 @@ body.force-desktop-mode .stream-grid {
   }
 }
 
-/* Ensure minimum touch target size */
-button, .clickable {
+/* Enhanced Touch Target System */
+.touch-target,
+button:not(.no-touch-target),
+[role="button"]:not(.no-touch-target),
+.clickable {
   min-width: 44px;
   min-height: 44px;
+  position: relative;
+}
+
+/* Touch target expansion for smaller elements */
+.touch-target-expand::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 44px;
+  min-height: 44px;
+  z-index: -1;
+}
+
+/* Fluid Typography Scale */
+:root {
+  --text-xs: clamp(0.75rem, 2vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 2.5vw, 1rem);
+  --text-base: clamp(1rem, 3vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 3.5vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 4vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 5vw, 2rem);
+  --text-3xl: clamp(2rem, 6vw, 2.5rem);
 }
 
 /* Accessibility Enhancements */
@@ -828,4 +890,166 @@ button, .clickable {
   .text-muted-foreground {
     color: hsl(var(--foreground) / 0.9);
   }
+}
+
+/* Layout-specific styles */
+.focus-layout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.pip-layout {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.pip-layout .pip-overlay {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  height: 200px;
+  z-index: 10;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--elevation-4);
+}
+
+.custom-layout {
+  width: 100%;
+  height: 100%;
+}
+
+/* Improved touch targets for mobile */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+.touch-target-expand {
+  position: relative;
+}
+
+.touch-target-expand::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+/* Layout transition animations */
+.layout-transition {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Enhanced focus visible states */
+.focus-visible-enhanced:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px oklch(from var(--primary) l c h / 0.1);
+}
+
+/* Enhanced scrollbar styling */
+.scrollbar-hide {
+  /* IE and Edge */
+  -ms-overflow-style: none;
+  /* Firefox */
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  /* Chrome, Safari and Opera */
+  display: none;
+}
+
+/* New hero animations */
+@keyframes animate-bounce-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+}
+
+@keyframes animate-float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-15px) translateX(5px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-5px) translateX(-3px) rotate(-1deg);
+  }
+}
+
+@keyframes animate-float-delayed {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) translateX(-4px) rotate(-0.5deg);
+  }
+  50% {
+    transform: translateY(-18px) translateX(6px) rotate(1.5deg);
+  }
+  75% {
+    transform: translateY(-3px) translateX(-2px) rotate(-0.8deg);
+  }
+}
+
+@keyframes animate-spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animate-gradient-x {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
+
+.animate-bounce-slow {
+  animation: animate-bounce-slow 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: animate-float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: animate-float-delayed 8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-spin-slow {
+  animation: animate-spin-slow 20s linear infinite;
+}
+
+.animate-gradient-x {
+  animation: animate-gradient-x 3s ease infinite;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
 }

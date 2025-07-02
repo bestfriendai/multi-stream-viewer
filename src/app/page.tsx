@@ -38,6 +38,9 @@ import { Badge } from '@/components/ui/badge'
 import { Grid3x3, Compass, Zap, Heart } from 'lucide-react'
 import MobileGestureOverlay from '@/components/MobileGestureOverlay'
 import { useStreamGestures } from '@/hooks/useMobileGestures'
+import BentoStreamGrid from '@/components/BentoStreamGrid'
+import GestureStreamViewer from '@/components/GestureStreamViewer'
+import EnhancedMobileLayout from '@/components/EnhancedMobileLayout'
 
 export default function Home() {
   const [showChat, setShowChat] = useState(false)
@@ -259,12 +262,21 @@ export default function Home() {
                   <>
                     <StreamStatusBar />
                     <div className="flex-1 overflow-y-auto md:overflow-auto">
-                      {/* Use ResizableStreamGrid for custom layouts, regular StreamGrid for others */}
-                      {gridLayout === 'custom' ? (
-                        <ResizableStreamGrid layoutType={gridLayout} />
-                      ) : (
-                        <StreamGrid />
-                      )}
+                      {/* Route to appropriate component based on layout */}
+                      {(() => {
+                        switch (gridLayout) {
+                          case 'custom':
+                            return <BentoStreamGrid />
+                          case 'focus':
+                            return <GestureStreamViewer />
+                          case 'pip':
+                            return <EnhancedMobileLayout />
+                          case 'mosaic':
+                            return <BentoStreamGrid />
+                          default:
+                            return <StreamGrid />
+                        }
+                      })()}
                     </div>
                   </>
                 )}

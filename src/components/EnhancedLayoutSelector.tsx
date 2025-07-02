@@ -35,14 +35,14 @@ interface LayoutOption {
 
 const layoutOptions: LayoutOption[] = [
   {
-    id: 'grid-2x2',
+    id: '2x2',
     name: '2×2 Grid',
     icon: Grid2x2,
     description: 'Perfect for 4 streams',
     gridClass: 'grid-cols-2 grid-rows-2'
   },
   {
-    id: 'grid-3x3',
+    id: '3x3',
     name: '3×3 Grid',
     icon: Grid3x3,
     description: 'Classic multi-stream layout',
@@ -112,6 +112,14 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
   const handleLayoutChange = (layoutId: string) => {
     setGridLayout(layoutId as any)
     setIsOpen(false)
+    
+    // Track analytics for layout changes
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'layout_changed', {
+        layout_id: layoutId,
+        stream_count: streams.length
+      })
+    }
   }
 
   if (mobile) {
