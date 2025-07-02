@@ -61,7 +61,10 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
   } = useStreamStore()
   
   const { trackFeatureUsage, trackMenuItemClick } = useAnalytics()
-  const { isSignedIn, user } = useUser()
+  const { isSignedIn, user, isLoaded } = useUser()
+  
+  // Debug logging
+  console.log('Header - Clerk state:', { isLoaded, isSignedIn, user: user?.id })
   
   
   return (
@@ -164,21 +167,23 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 <UserButton afterSignOutUrl="/" />
               ) : (
                 <div className="flex gap-2">
-                  <SignInButton mode="redirect">
+                  <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
                     <Button 
                       variant="outline" 
                       size="sm" 
                       className="h-9"
+                      onClick={() => console.log('Sign In button clicked')}
                     >
                       <LogIn className="h-4 w-4" />
                       <span className="ml-2">Sign In</span>
                     </Button>
                   </SignInButton>
-                  <SignUpButton mode="redirect">
+                  <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
                     <Button 
                       variant="default" 
                       size="sm" 
                       className="h-9"
+                      onClick={() => console.log('Sign Up button clicked')}
                     >
                       <span>Sign Up</span>
                     </Button>
@@ -301,21 +306,23 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     <UserButton afterSignOutUrl="/" />
                   ) : (
                     <div className="flex gap-2">
-                      <SignInButton mode="redirect">
+                      <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
                         <Button 
                           variant="outline" 
                           size="sm" 
                           className="h-9"
+                          onClick={() => console.log('Mobile Sign In button clicked')}
                         >
                           <LogIn className="h-4 w-4" />
                           <span className="ml-2">Sign In</span>
                         </Button>
                       </SignInButton>
-                      <SignUpButton mode="redirect">
+                      <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
                         <Button 
                           variant="default" 
                           size="sm" 
                           className="h-9"
+                          onClick={() => console.log('Mobile Sign Up button clicked')}
                         >
                           <span>Sign Up</span>
                         </Button>
