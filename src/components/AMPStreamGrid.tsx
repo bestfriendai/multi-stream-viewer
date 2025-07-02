@@ -95,7 +95,7 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
         animate="visible"
         className={cn(
           'stream-grid grid w-full h-full gap-2 p-2',
-          layoutClass,
+          'amp-mosaic-grid', // Always use mosaic layout
           'touch-pan-y touch-pan-x',
           'relative'
         )}
