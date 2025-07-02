@@ -78,6 +78,11 @@ export default function Footer() {
                   Live Chat Integration
                 </Link>
               </li>
+              <li>
+                <Link href="/blog" className="hover:text-primary transition-colors">
+                  Streaming Blog
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -34,12 +34,9 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
     
     // Only load streams on desktop
     if (window.innerWidth >= 768) {
-      const timer = setTimeout(() => {
-        setShouldLoadStreams(true)
-      }, 500) // Start loading after 500ms
+      setShouldLoadStreams(true) // Load immediately without delay
       
       return () => {
-        clearTimeout(timer)
         window.removeEventListener('resize', checkMobile)
       }
     }
@@ -47,20 +44,12 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Load streams one by one with delay
+  // Load all streams immediately
   useEffect(() => {
     if (!shouldLoadStreams || channels.length === 0) return
 
-    const loadStream = (index: number) => {
-      if (index < 4 && index < channels.length) {
-        setTimeout(() => {
-          setLoadedStreams(prev => [...prev, index])
-          loadStream(index + 1)
-        }, 300) // 300ms delay between each stream
-      }
-    }
-
-    loadStream(0)
+    // Load all 4 streams at once
+    setLoadedStreams([0, 1, 2, 3])
   }, [shouldLoadStreams, channels.length])
 
   if (channels.length === 0) return null
@@ -80,9 +69,9 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
             <motion.div 
               key={`bg-${channel.channelName}-${index}`} 
               className="relative overflow-hidden rounded-lg"
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0.7, scale: 1 }}
               animate={{ opacity: 0.7, scale: 1 }}
-              transition={{ delay: index * 0.15, duration: 0.6 }}
+              transition={{ duration: 0 }}
             >
               <div className="aspect-video relative bg-black">
                 {/* Thumbnail placeholder - always show on mobile, show on desktop until loaded */}

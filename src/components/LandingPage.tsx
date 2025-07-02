@@ -242,7 +242,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               transition={{ delay: 0.3, duration: 0.8 }}
             >
               <span className="inline-block bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
-                Multi-Stream
+                STREAMYYY
               </span>
               <br />
               <motion.span 
@@ -251,13 +251,17 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
               >
-                Viewing Perfected
+                The Best Multi-Stream Platform
               </motion.span>
             </motion.h1>
             
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-              Watch up to 16 live streams simultaneously from Twitch, YouTube, and more. 
-              The ultimate streaming experience with zero compromises.
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-4">
+              <strong>STREAMYYY</strong> is the best multi-stream platform - Better than MultiTwitch, Multistre.am, and TwitchTheater. 
+              Watch up to 16 live streams simultaneously from Twitch, YouTube, Kick, and more.
+            </p>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+              The ultimate MultiTwitch alternative with superior performance, more features, and mobile support. 
+              Join millions who've switched from MultiTwitch.tv to STREAMYYY for the most powerful multistream viewing experience.
             </p>
             
             {/* CTA Buttons */}
@@ -516,8 +520,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               <Sparkles className="w-3 h-3 mr-1" />
               Features
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Everything You Need</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Powerful features that make multi-streaming effortless</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Why STREAMYYY is the Best</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Industry-leading features that make STREAMYYY the premier multi-stream platform. No competitors offer this level of sophistication and ease of use.</p>
           </motion.div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -707,7 +711,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               </h2>
             </motion.div>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              Join thousands of viewers who've discovered the better way to watch multiple streams.
+              Join thousands of viewers who've switched to STREAMYYY - the gold standard for multi-stream viewing.
+              Experience why professional streamers, esports fans, and content creators choose STREAMYYY over any other platform.
             </p>
             
             <motion.div 
