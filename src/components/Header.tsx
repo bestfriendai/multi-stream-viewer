@@ -43,8 +43,7 @@ import {
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
-import { UserButton, useUser } from "@clerk/nextjs"
-import { useRouter } from 'next/navigation'
+import { UserButton, useUser, useClerk } from "@clerk/nextjs"
 
 interface HeaderProps {
   onToggleChat: () => void
@@ -63,7 +62,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
   
   const { trackFeatureUsage, trackMenuItemClick } = useAnalytics()
   const { isSignedIn, user } = useUser()
-  const router = useRouter()
+  const { openSignIn, openSignUp } = useClerk()
   
   
   return (
@@ -170,7 +169,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     variant="outline" 
                     size="sm" 
                     className="h-9"
-                    onClick={() => router.push('/sign-in')}
+                    onClick={() => openSignIn()}
                   >
                     <LogIn className="h-4 w-4" />
                     <span className="ml-2">Sign In</span>
@@ -179,7 +178,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     variant="default" 
                     size="sm" 
                     className="h-9"
-                    onClick={() => router.push('/sign-up')}
+                    onClick={() => openSignUp()}
                   >
                     <span>Sign Up</span>
                   </Button>
@@ -305,7 +304,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                         variant="outline" 
                         size="sm" 
                         className="h-9"
-                        onClick={() => router.push('/sign-in')}
+                        onClick={() => openSignIn()}
                       >
                         <LogIn className="h-4 w-4" />
                         <span className="ml-2">Sign In</span>
@@ -314,7 +313,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                         variant="default" 
                         size="sm" 
                         className="h-9"
-                        onClick={() => router.push('/sign-up')}
+                        onClick={() => openSignUp()}
                       >
                         <span>Sign Up</span>
                       </Button>

@@ -1,17 +1,26 @@
 'use client';
 
-import { useUser } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
+import { useUser, useClerk } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 
 export default function DashboardPage() {
   const { isLoaded, isSignedIn, user } = useUser();
+  const { openSignIn } = useClerk();
 
   if (!isLoaded) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
   if (!isSignedIn) {
-    redirect("/sign-in");
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <h1 className="text-2xl font-semibold">Dashboard Access Required</h1>
+          <p className="text-muted-foreground">Please sign in to access your dashboard.</p>
+          <Button onClick={() => openSignIn()}>Sign In</Button>
+        </div>
+      </div>
+    );
   }
 
   return (
