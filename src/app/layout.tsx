@@ -8,6 +8,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import Footer from "@/components/Footer"
 import CookieConsent from "@/components/CookieConsent";
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -250,7 +251,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ClerkProvider>
+        <ClerkProvider 
+          appearance={{
+            baseTheme: dark,
+            elements: {
+              formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground",
+              card: "bg-background",
+              headerTitle: "text-foreground",
+              headerSubtitle: "text-muted-foreground",
+              socialButtonsBlockButton: "bg-muted hover:bg-muted/80 text-foreground border-border",
+              formFieldLabel: "text-foreground",
+              formFieldInput: "bg-background border-input",
+              footerActionLink: "text-primary hover:text-primary/90"
+            }
+          }}
+        >
           <GoogleAnalytics />
           <ThemeProvider
             attribute="class"
