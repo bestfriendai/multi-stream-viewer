@@ -1,0 +1,63 @@
+/* AMP Page Specific Styles */
+
+/* Mosaic Grid Layout for 5 streams */
+.amp-mosaic-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+}
+
+.amp-mosaic-grid > div:nth-child(1) {
+  grid-column: span 3;
+  grid-row: span 2;
+}
+
+.amp-mosaic-grid > div:nth-child(2) {
+  grid-column: span 3;
+  grid-row: span 2;
+}
+
+.amp-mosaic-grid > div:nth-child(3) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.amp-mosaic-grid > div:nth-child(4) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.amp-mosaic-grid > div:nth-child(5) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+/* Hide Twitch player controls on AMP page */
+.amp-stream-container iframe {
+  pointer-events: none;
+}
+
+/* Allow interaction on hover for volume control */
+.amp-stream-container .stream-embed-container:hover iframe {
+  pointer-events: auto;
+}
+
+/* Larger stream cards */
+@media (min-width: 768px) {
+  .amp-stream-container .stream-grid {
+    height: calc(100vh - 200px);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+  .amp-mosaic-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, 200px);
+  }
+  
+  .amp-mosaic-grid > div {
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
+  }
+}

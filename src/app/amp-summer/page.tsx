@@ -13,6 +13,7 @@ import { Zap, Users } from 'lucide-react'
 import TwitchAvatarImage from '@/components/TwitchAvatarImage'
 import Script from 'next/script'
 import './amp-summer.css'
+import '@/styles/amp.css'
 
 const AMP_STREAMERS = [
   { 
@@ -253,7 +254,7 @@ export default function AmpSummerPage() {
                 {streams.length} Active Streams
               </Badge>
               <Badge variant="outline">
-                2x2 Layout
+                Mosaic Layout
               </Badge>
             </div>
             

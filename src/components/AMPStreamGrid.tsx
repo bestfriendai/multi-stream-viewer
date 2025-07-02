@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import StreamEmbedOptimized from './StreamEmbedOptimized'
+import AMPStreamEmbed from './AMPStreamEmbed'
 import type { Stream } from '@/types/stream'
 
 interface AMPStreamGridProps {
@@ -76,10 +76,9 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
         initial="hidden"
         animate="visible"
         className={cn(
-          'stream-grid grid w-full',
-          'grid-cols-2 grid-rows-2',
+          'stream-grid grid w-full h-full gap-2 p-2',
+          streams.length <= 4 ? 'grid-cols-2 grid-rows-2' : 'amp-mosaic-grid',
           'touch-pan-y touch-pan-x',
-          'min-h-full',
           'relative'
         )}
         data-count={sortedStreams.length}
@@ -115,7 +114,7 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
                 role="gridcell"
                 aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}${isLive ? ' - LIVE' : ''}`}
               >
-                <StreamEmbedOptimized stream={stream} />
+                <AMPStreamEmbed stream={stream} />
                 
                 {/* Live indicator overlay */}
                 {isLive && (
