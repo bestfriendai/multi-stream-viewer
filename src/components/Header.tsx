@@ -23,9 +23,15 @@ import { ThemeToggle } from './theme-toggle'
 import SavedLayoutsDialog from './SavedLayoutsDialog'
 import ShareDialog from './ShareDialog'
 import EnhancedLayoutSelector from './EnhancedLayoutSelector'
-import EnhancedAddStreamDialog from './EnhancedAddStreamDialog'
+const EnhancedAddStreamDialog = dynamic(() => import('./EnhancedAddStreamDialog'), {
+  loading: () => <div className="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg h-32" />
+})
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import LiveDiscovery from './LiveDiscovery'
+import dynamic from 'next/dynamic'
+
+const LiveDiscovery = dynamic(() => import('./LiveDiscovery'), {
+  loading: () => <div className="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg h-96" />
+})
 import StreamyyyLogo from './StreamyyyLogo'
 import {
   DropdownMenu,
@@ -37,14 +43,14 @@ import {
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
-import { UserButton, SignInButton, useUser } from "@clerk/nextjs"
+import { UserButton, SignInButton, SignUpButton, useUser } from "@clerk/nextjs"
 
 interface HeaderProps {
   onToggleChat: () => void
   showChat: boolean
 }
 
-export default function Header({ onToggleChat, showChat }: HeaderProps) {
+const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProps) {
   const [showAddStream, setShowAddStream] = useState(false)
   const [showDiscovery, setShowDiscovery] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
@@ -157,12 +163,19 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
               {isSignedIn ? (
                 <UserButton afterSignOutUrl="/" />
               ) : (
-                <SignInButton mode="modal">
-                  <Button variant="outline" size="sm" className="h-9">
-                    <LogIn className="h-4 w-4" />
-                    <span className="ml-2">Sign In</span>
-                  </Button>
-                </SignInButton>
+                <div className="flex gap-2">
+                  <SignInButton mode="modal">
+                    <Button variant="outline" size="sm" className="h-9">
+                      <LogIn className="h-4 w-4" />
+                      <span className="ml-2">Sign In</span>
+                    </Button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <Button variant="default" size="sm" className="h-9">
+                      <span>Sign Up</span>
+                    </Button>
+                  </SignUpButton>
+                </div>
               )}
             </div>
           </div>
@@ -279,12 +292,19 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
                   {isSignedIn ? (
                     <UserButton afterSignOutUrl="/" />
                   ) : (
-                    <SignInButton mode="modal">
-                      <Button variant="outline" size="sm" className="h-9">
-                        <LogIn className="h-4 w-4" />
-                        <span className="ml-2">Sign In</span>
-                      </Button>
-                    </SignInButton>
+                    <div className="flex gap-2">
+                      <SignInButton mode="modal">
+                        <Button variant="outline" size="sm" className="h-9">
+                          <LogIn className="h-4 w-4" />
+                          <span className="ml-2">Sign In</span>
+                        </Button>
+                      </SignInButton>
+                      <SignUpButton mode="modal">
+                        <Button variant="default" size="sm" className="h-9">
+                          <span>Sign Up</span>
+                        </Button>
+                      </SignUpButton>
+                    </div>
                   )}
                 </div>
               </div>
@@ -312,4 +332,6 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
 
     </div>
   )
-}
+})
+
+export default Header

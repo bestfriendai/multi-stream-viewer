@@ -130,10 +130,8 @@ export default function LiveDiscovery() {
     const success = await addStream(stream.name)
     if (success) {
       // Show success feedback
-      console.log(`Added ${stream.name} to streams`)
     } else {
       // Show error feedback
-      console.log(`Failed to add ${stream.name} - may already be added or invalid`)
     }
   }
 

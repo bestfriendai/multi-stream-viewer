@@ -330,7 +330,6 @@ export async function getRealTwitchLiveStreams(limit: number = 20): Promise<Arra
   isLive: boolean
   uniqueId?: string
 }>> {
-  console.log('📋 Loading top Twitch streamers by category...')
 
   const allStreamers: Array<{
     name: string
@@ -362,7 +361,6 @@ export async function getRealTwitchLiveStreams(limit: number = 20): Promise<Arra
     .sort((a, b) => b.viewers - a.viewers)
     .slice(0, limit)
 
-  console.log(`✅ Loaded ${topStreamers.length} top Twitch streamers`)
   return topStreamers
 }
 
@@ -599,7 +597,6 @@ export async function getTopLiveStreams(limit: number = 20): Promise<Array<{
   profileImage?: string
 }>> {
   try {
-    console.log('🏆 Loading top Twitch streamers...')
 
     // Fetch real data from Twitch API
     const response = await fetch('/api/twitch/top-streams', {
@@ -625,8 +622,7 @@ export async function getTopLiveStreams(limit: number = 20): Promise<Array<{
       profileImage: stream.thumbnail_url?.replace('{width}', '300').replace('{height}', '300')
     }))
 
-    console.log(`✅ Loaded ${topStreamers.length} top Twitch streamers`)
-    return topStreamers
+      return topStreamers
 
   } catch (error) {
     console.error('Error loading top streams:', error)
@@ -645,7 +641,6 @@ export async function getTrendingStreams(): Promise<Array<{
   uniqueId?: string
 }>> {
   try {
-    console.log('📈 Loading trending Twitch streamers...')
 
     // Fetch real trending data from Twitch API - get top streams by different categories
     const response = await fetch('/api/twitch/trending', {
@@ -672,7 +667,6 @@ export async function getTrendingStreams(): Promise<Array<{
       uniqueId: `twitch-${stream.user_login}-${index}`
     }))
 
-    console.log(`✅ Loaded ${trendingStreams.length} trending Twitch streamers`)
     return trendingStreams
 
   } catch (error) {

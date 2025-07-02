@@ -5,11 +5,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import GoogleAnalyticsSimple from "@/components/GoogleAnalyticsSimple";
-import AnalyticsPageTracker from "@/components/AnalyticsPageTracker";
-import SessionTracker from "@/components/SessionTracker";
-import MobileAnalyticsTracker from "@/components/MobileAnalyticsTracker";
-import GADebugPanel from "@/components/GADebugPanel";
 import Footer from "@/components/Footer"
 import CookieConsent from "@/components/CookieConsent";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -256,9 +251,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ClerkProvider>
-          <AnalyticsPageTracker />
-          <SessionTracker />
-          <MobileAnalyticsTracker />
+          <GoogleAnalytics />
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -270,7 +263,6 @@ export default function RootLayout({
               <Footer />
             </div>
             <Toaster />
-            <GADebugPanel />
             <CookieConsent />
           </ThemeProvider>
         </ClerkProvider>

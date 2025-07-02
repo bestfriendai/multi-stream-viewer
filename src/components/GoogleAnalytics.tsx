@@ -42,14 +42,12 @@ export default function GoogleAnalytics() {
     // Debug: Check if GA is loaded
     const checkGA = () => {
       if (window.gtag) {
-        console.log('✅ Google Analytics loaded successfully')
         // Send initial test event
         window.gtag('event', 'page_view', {
           event_category: 'Debug',
           event_label: 'GA_Loaded'
         })
       } else {
-        console.log('❌ Google Analytics not loaded yet')
       }
     }
     
@@ -64,17 +62,14 @@ export default function GoogleAnalytics() {
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
         strategy="afterInteractive"
         onLoad={() => {
-          console.log('✅ Google Analytics script loaded')
         }}
         onError={(e) => {
-          console.error('❌ Google Analytics script failed to load:', e)
         }}
       />
       <Script
         id="google-analytics"
         strategy="afterInteractive"
         onLoad={() => {
-          console.log('✅ Google Analytics config loaded')
         }}
         dangerouslySetInnerHTML={{
           __html: `
@@ -86,7 +81,6 @@ export default function GoogleAnalytics() {
               page_location: window.location.href,
               debug_mode: true
             });
-            console.log('🚀 Google Analytics initialized with ID: ${GA_TRACKING_ID}');
           `,
         }}
       />
