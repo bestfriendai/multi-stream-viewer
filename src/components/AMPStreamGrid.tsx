@@ -47,9 +47,9 @@ const streamCardVariants = {
 }
 
 const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveStatusMap }) => {
-  // Sort streams by live status
-  const sortedStreams = useMemo(() => {
-    return [...streams].sort((a, b) => {
+  // Sort streams by live status and determine layout
+  const { sortedStreams, liveCount, layoutClass } = useMemo(() => {
+    const sorted = [...streams].sort((a, b) => {
       const aLive = liveStatusMap.get(a.channelName)?.isLive || false
       const bLive = liveStatusMap.get(b.channelName)?.isLive || false
       
@@ -67,6 +67,24 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
       // Keep original order for offline streams
       return 0
     })
+    
+    const liveStreamCount = sorted.filter(s => liveStatusMap.get(s.channelName)?.isLive).length
+    
+    // Determine layout based on live count
+    let layout = 'amp-mosaic-grid'
+    if (liveStreamCount === 1) {
+      layout = 'amp-single-live-grid'
+    } else if (liveStreamCount === 2) {
+      layout = 'amp-two-live-grid'
+    } else if (liveStreamCount === 3) {
+      layout = 'amp-three-live-grid'
+    }
+    
+    return { 
+      sortedStreams: sorted, 
+      liveCount: liveStreamCount,
+      layoutClass: layout
+    }
   }, [streams, liveStatusMap])
   
   return (
@@ -77,7 +95,7 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
         animate="visible"
         className={cn(
           'stream-grid grid w-full h-full gap-2 p-2',
-          streams.length <= 4 ? 'grid-cols-2 grid-rows-2' : 'amp-mosaic-grid',
+          layoutClass,
           'touch-pan-y touch-pan-x',
           'relative'
         )}

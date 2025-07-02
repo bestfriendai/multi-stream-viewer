@@ -101,6 +101,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/about" className="hover:text-primary transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
                 <Link href="/feedback" className="hover:text-primary transition-colors">
                   Send Feedback
                 </Link>

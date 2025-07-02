@@ -268,8 +268,9 @@ export default function PrivacyPolicyPage() {
             <ul className="list-disc pl-6 mb-4">
               <li><strong>Essential Cookies:</strong> Required for basic site functionality</li>
               <li><strong>Preference Cookies:</strong> Remember your settings and choices</li>
-              <li><strong>Analytics Cookies:</strong> Help us understand how you use our service</li>
+              <li><strong>Analytics Cookies:</strong> Help us understand how you use our service (Google Analytics)</li>
               <li><strong>Performance Cookies:</strong> Improve site performance and user experience</li>
+              <li><strong>Advertising Cookies:</strong> Used to show relevant advertisements (Google AdSense)</li>
             </ul>
 
             <h3 className="text-xl font-medium mt-6 mb-3">Managing Cookies</h3>
@@ -281,6 +282,46 @@ export default function PrivacyPolicyPage() {
               For more detailed information about our cookie practices, please see our 
               <Link href="/cookie-policy" className="text-primary hover:underline"> Cookie Policy</Link>.
             </p>
+          </section>
+
+          {/* Advertising */}
+          <section id="advertising" className="mb-12">
+            <h2 className="text-2xl font-semibold mb-4">Advertising and Third-Party Services</h2>
+            
+            <h3 className="text-xl font-medium mt-6 mb-3">Google AdSense</h3>
+            <p className="mb-4">
+              We use Google AdSense to display advertisements on our website. Google AdSense uses cookies and web beacons 
+              to collect information about your visits to our website and other websites to provide targeted advertisements 
+              for goods and services that may be of interest to you.
+            </p>
+            <p className="mb-4">
+              The information collected may include:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>IP address</li>
+              <li>Browser and device information</li>
+              <li>Pages visited and time spent</li>
+              <li>Referring website</li>
+              <li>Geographic location (country/city level)</li>
+            </ul>
+            
+            <h3 className="text-xl font-medium mt-6 mb-3">Your Choices Regarding Advertising</h3>
+            <p className="mb-4">
+              You can opt out of personalized advertising by:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Visiting <a href="https://www.google.com/settings/ads" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Google Ads Settings</a></li>
+              <li>Using the <a href="https://optout.networkadvertising.org/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">NAI opt-out tool</a></li>
+              <li>Installing browser extensions that block tracking</li>
+              <li>Using our cookie consent tool to reject advertising cookies</li>
+            </ul>
+            
+            <div className="p-4 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg border-l-4 border-yellow-500">
+              <p className="text-sm mb-0">
+                <strong>Note:</strong> Opting out of personalized ads doesn't mean you won't see ads - 
+                you'll still see generic advertisements that are not based on your interests.
+              </p>
+            </div>
           </section>
 
           {/* International Transfers */}
