@@ -967,3 +967,89 @@ button:not(.no-touch-target),
   /* Chrome, Safari and Opera */
   display: none;
 }
+
+/* New hero animations */
+@keyframes animate-bounce-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+}
+
+@keyframes animate-float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-15px) translateX(5px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-5px) translateX(-3px) rotate(-1deg);
+  }
+}
+
+@keyframes animate-float-delayed {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) translateX(-4px) rotate(-0.5deg);
+  }
+  50% {
+    transform: translateY(-18px) translateX(6px) rotate(1.5deg);
+  }
+  75% {
+    transform: translateY(-3px) translateX(-2px) rotate(-0.8deg);
+  }
+}
+
+@keyframes animate-spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animate-gradient-x {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
+
+.animate-bounce-slow {
+  animation: animate-bounce-slow 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: animate-float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: animate-float-delayed 8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-spin-slow {
+  animation: animate-spin-slow 20s linear infinite;
+}
+
+.animate-gradient-x {
+  animation: animate-gradient-x 3s ease infinite;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}

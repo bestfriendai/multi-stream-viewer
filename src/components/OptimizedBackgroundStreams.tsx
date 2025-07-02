@@ -165,7 +165,7 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
           )
         })}
       </div>
-      <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/40 to-background/60" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-background/20 to-background/40" />
     </div>
   )
 }

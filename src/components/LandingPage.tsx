@@ -246,14 +246,19 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       <OptimizedBackgroundStreams channels={liveChannels} />
       
       {/* Enhanced Hero Section */}
-      <section className="relative overflow-hidden py-20 lg:py-32">
-        {/* Animated Background Effects */}
+      <section className="relative overflow-hidden py-20 lg:py-32 min-h-screen flex items-center">
+        {/* Subtle Background Effects */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/85 to-background/90 backdrop-blur-sm" />
-          <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-32" />
-          <div className="absolute top-20 right-10 w-72 h-72 bg-primary/40 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse animation-delay-2000" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/15 to-purple-500/15 rounded-full blur-3xl animate-spin-slow" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/30 to-background/60 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+          <div className="absolute top-20 right-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl animate-pulse animation-delay-2000" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary/5 to-purple-500/5 rounded-full blur-3xl animate-spin-slow" />
+          
+          {/* Floating video frames effect */}
+          <div className="absolute top-16 left-16 w-32 h-20 border-2 border-white/20 rounded-lg backdrop-blur-sm animate-bounce-slow" />
+          <div className="absolute bottom-32 right-24 w-40 h-24 border-2 border-primary/30 rounded-lg backdrop-blur-sm animate-float" />
+          <div className="absolute top-1/3 right-16 w-36 h-22 border-2 border-purple-400/20 rounded-lg backdrop-blur-sm animate-float-delayed" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
@@ -261,9 +266,9 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center space-y-8 max-w-4xl mx-auto"
+            className="text-center space-y-8 max-w-5xl mx-auto"
           >
-            {/* Logo Animation */}
+            {/* Enhanced Logo Animation with Glass Effect */}
             <motion.div 
               className="flex justify-center mb-12"
               initial={{ scale: 0, rotate: -180 }}
@@ -271,91 +276,124 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               transition={{ type: "spring", duration: 1, bounce: 0.5 }}
             >
               <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-60 group-hover:opacity-80 transition-opacity animate-pulse" />
-                <div className="relative bg-gradient-to-br from-primary/20 to-purple-500/10 p-8 rounded-3xl border-2 border-primary/30 backdrop-blur-sm">
-                  <Sparkles className="w-28 h-28 text-primary drop-shadow-2xl" />
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full animate-pulse" />
-                  <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-blue-500 rounded-full animate-pulse animation-delay-1000" />
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 rounded-3xl blur-3xl opacity-40 group-hover:opacity-60 transition-opacity animate-pulse" />
+                <div className="relative bg-black/30 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl">
+                  <Sparkles className="w-28 h-28 text-white drop-shadow-2xl" />
+                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full animate-pulse shadow-lg" />
+                  <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-blue-500 rounded-full animate-pulse animation-delay-1000 shadow-lg" />
                 </div>
               </div>
             </motion.div>
             
             <motion.h1 
-              className="text-5xl md:text-7xl font-bold"
+              className="text-5xl md:text-8xl font-black tracking-tight"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              <span className="inline-block bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
-                STREAMYYY
-              </span>
+              <div className="relative">
+                <span className="inline-block bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent drop-shadow-2xl">
+                  STREAMYYY
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent opacity-70 blur-sm">
+                  STREAMYYY
+                </div>
+              </div>
               <br />
-              <motion.span 
-                className="text-3xl md:text-5xl text-muted-foreground"
+              <motion.div 
+                className="text-2xl md:text-4xl font-semibold mt-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
               >
-                The Best Multi-Stream Platform
-              </motion.span>
+                <div className="relative bg-black/40 backdrop-blur-sm rounded-2xl px-8 py-4 border border-white/20 inline-block">
+                  <span className="text-white drop-shadow-lg">
+                    The Best Multi-Stream Platform
+                  </span>
+                </div>
+              </motion.div>
             </motion.h1>
             
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              Watch multiple streams at once. Simple, fast, and free.
-            </p>
+            <motion.div 
+              className="relative"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.8 }}
+            >
+              <div className="bg-black/50 backdrop-blur-md rounded-3xl px-8 py-6 border border-white/20 shadow-2xl inline-block max-w-4xl">
+                <p className="text-xl md:text-2xl text-white font-medium leading-relaxed">
+                  Watch multiple streams at once. Simple, fast, and free.
+                </p>
+              </div>
+            </motion.div>
             
-            {/* Trust Indicators */}
-            <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-muted-foreground mb-8">
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-green-500" />
-                <span>Enterprise Security</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Wifi className="w-4 h-4 text-blue-500" />
-                <span>99.9% Uptime</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-yellow-500" />
-                <span>Industry Leading</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Rocket className="w-4 h-4 text-purple-500" />
-                <span>Zero Lag Guarantee</span>
-              </div>
-            </div>
+            {/* Enhanced Trust Indicators */}
+            <motion.div 
+              className="flex flex-wrap justify-center items-center gap-4 mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9, duration: 0.8 }}
+            >
+              {[
+                { icon: Shield, text: "Enterprise Security", color: "text-green-400" },
+                { icon: Wifi, text: "99.9% Uptime", color: "text-blue-400" },
+                { icon: Trophy, text: "Industry Leading", color: "text-yellow-400" },
+                { icon: Rocket, text: "Zero Lag Guarantee", color: "text-purple-400" }
+              ].map((item, index) => (
+                <motion.div 
+                  key={item.text}
+                  className="flex items-center gap-2 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20 hover:bg-black/40 transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.9 + index * 0.1 }}
+                >
+                  <item.icon className={`w-4 h-4 ${item.color} drop-shadow-lg`} />
+                  <span className="text-white font-medium text-sm">{item.text}</span>
+                </motion.div>
+              ))}
+            </motion.div>
             
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+            {/* Enhanced CTA Buttons */}
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-6 justify-center pt-8"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 0.8 }}
+            >
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.08, rotateY: 5 }}
                 whileTap={{ scale: 0.95 }}
+                className="relative group"
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-600 to-pink-600 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity animate-pulse" />
                 <Button 
                   size="lg" 
                   onClick={onAddStream}
-                  className="gap-3 text-lg px-10 py-7 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-2xl hover:shadow-primary/25 transition-all duration-300 relative group"
+                  className="relative gap-4 text-xl px-12 py-8 bg-gradient-to-r from-primary via-purple-600 to-pink-600 hover:from-primary/90 hover:via-purple-600/90 hover:to-pink-600/90 shadow-2xl border-2 border-white/20 backdrop-blur-sm font-bold tracking-wide group"
                 >
-                  <PlayCircle className="w-6 h-6 group-hover:animate-pulse" />
+                  <PlayCircle className="w-7 h-7 group-hover:animate-spin transition-transform" />
                   Start Watching Now
-                  <div className="absolute inset-0 rounded-md bg-white/20 scale-0 group-hover:scale-100 transition-transform duration-500" />
+                  <Sparkles className="w-5 h-5 group-hover:animate-bounce" />
                 </Button>
               </motion.div>
               
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.08, rotateY: -5 }}
                 whileTap={{ scale: 0.95 }}
+                className="relative group"
               >
                 <Button 
                   size="lg" 
                   variant="outline"
                   onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="gap-3 text-lg px-10 py-7 border-2 hover:bg-primary/10 backdrop-blur-sm group"
+                  className="gap-4 text-xl px-12 py-8 border-2 border-white/40 hover:border-white/60 bg-black/30 hover:bg-black/50 backdrop-blur-md text-white hover:text-white shadow-2xl font-semibold tracking-wide group transition-all duration-300"
                 >
                   See It In Action
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
                 </Button>
               </motion.div>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
