@@ -43,7 +43,7 @@ import {
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
-import { UserButton, useUser, useClerk } from "@clerk/nextjs"
+import { UserButton, SignInButton, SignUpButton, useUser } from "@clerk/nextjs"
 
 interface HeaderProps {
   onToggleChat: () => void
@@ -62,7 +62,6 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
   
   const { trackFeatureUsage, trackMenuItemClick } = useAnalytics()
   const { isSignedIn, user } = useUser()
-  const { openSignIn, openSignUp } = useClerk()
   
   
   return (
@@ -165,23 +164,25 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 <UserButton afterSignOutUrl="/" />
               ) : (
                 <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="h-9"
-                    onClick={() => openSignIn()}
-                  >
-                    <LogIn className="h-4 w-4" />
-                    <span className="ml-2">Sign In</span>
-                  </Button>
-                  <Button 
-                    variant="default" 
-                    size="sm" 
-                    className="h-9"
-                    onClick={() => openSignUp()}
-                  >
-                    <span>Sign Up</span>
-                  </Button>
+                  <SignInButton mode="redirect">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-9"
+                    >
+                      <LogIn className="h-4 w-4" />
+                      <span className="ml-2">Sign In</span>
+                    </Button>
+                  </SignInButton>
+                  <SignUpButton mode="redirect">
+                    <Button 
+                      variant="default" 
+                      size="sm" 
+                      className="h-9"
+                    >
+                      <span>Sign Up</span>
+                    </Button>
+                  </SignUpButton>
                 </div>
               )}
             </div>
@@ -300,23 +301,25 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     <UserButton afterSignOutUrl="/" />
                   ) : (
                     <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="h-9"
-                        onClick={() => openSignIn()}
-                      >
-                        <LogIn className="h-4 w-4" />
-                        <span className="ml-2">Sign In</span>
-                      </Button>
-                      <Button 
-                        variant="default" 
-                        size="sm" 
-                        className="h-9"
-                        onClick={() => openSignUp()}
-                      >
-                        <span>Sign Up</span>
-                      </Button>
+                      <SignInButton mode="redirect">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="h-9"
+                        >
+                          <LogIn className="h-4 w-4" />
+                          <span className="ml-2">Sign In</span>
+                        </Button>
+                      </SignInButton>
+                      <SignUpButton mode="redirect">
+                        <Button 
+                          variant="default" 
+                          size="sm" 
+                          className="h-9"
+                        >
+                          <span>Sign Up</span>
+                        </Button>
+                      </SignUpButton>
                     </div>
                   )}
                 </div>
