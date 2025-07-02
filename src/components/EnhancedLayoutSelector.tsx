@@ -112,6 +112,14 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
   const handleLayoutChange = (layoutId: string) => {
     setGridLayout(layoutId as any)
     setIsOpen(false)
+    
+    // Track analytics for layout changes
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'layout_changed', {
+        layout_id: layoutId,
+        stream_count: streams.length
+      })
+    }
   }
 
   if (mobile) {

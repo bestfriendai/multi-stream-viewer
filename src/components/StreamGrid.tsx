@@ -23,16 +23,36 @@ const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: bool
     return { cols: 1, rows: count, class: 'mobile-grid-scroll' }
   }
   
-  // Desktop layouts
-  if (count === 2) return {
-    cols: 2,
-    rows: 1,
-    class: gridLayout === '2x1' ? 'grid-cols-2' : 'grid-cols-2 grid-rows-1'
+  // Handle specific layout requests first
+  switch (gridLayout) {
+    case 'grid-2x2':
+    case '2x2':
+      return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
+    case 'grid-3x3':
+    case '3x3':
+      return { cols: 3, rows: 3, class: 'grid-cols-3 grid-rows-3' }
+    case 'grid-4x4':
+    case '4x4':
+      return { cols: 4, rows: 4, class: 'grid-cols-4 grid-rows-4' }
+    case 'mosaic':
+      // Adaptive mosaic layout based on count
+      if (count <= 2) return { cols: 2, rows: 1, class: 'grid-cols-2 grid-rows-1' }
+      if (count <= 4) return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
+      if (count <= 6) return { cols: 3, rows: 2, class: 'grid-cols-3 grid-rows-2' }
+      if (count <= 9) return { cols: 3, rows: 3, class: 'grid-cols-3 grid-rows-3' }
+      return { cols: 4, rows: Math.ceil(count / 4), class: 'grid-cols-4' }
+    case 'focus':
+      return { cols: 0, rows: 0, class: 'focus-layout' }
+    case 'pip':
+      return { cols: 0, rows: 0, class: 'pip-layout' }
+    case 'custom':
+      return { cols: 0, rows: 0, class: 'custom-layout' }
   }
   
+  // Default responsive layouts based on stream count
+  if (count === 2) return { cols: 2, rows: 1, class: 'grid-cols-2 grid-rows-1' }
   if (count === 3) return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
   if (count === 4) return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
-  
   if (count <= 6) return { cols: 3, rows: 2, class: 'grid-cols-3 grid-rows-2' }
   if (count <= 9) return { cols: 3, rows: 3, class: 'grid-cols-3 grid-rows-3' }
   if (count <= 12) return { cols: 4, rows: 3, class: 'grid-cols-4 grid-rows-3' }
