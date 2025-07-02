@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const blogContent = {
   title: 'Best Cameras for Streaming in 2025: Pro Streamer Recommendations',
   author: 'STREAMYYY Team',
-  date: '2025-01-01',
+  date: '2025-07-01',
   readTime: '15 min read',
   category: 'Equipment',
   image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1200&h=800&fit=crop',
@@ -60,7 +60,7 @@ The immortal classic that refuses to age. Despite being nearly a decade old, the
 
 **Perfect for:** New streamers, backup cameras, multi-cam setups
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/WCNn7g9ZzoQ" title="Logitech C920 Review" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/P8sfEh_cGHc" title="Logitech C920 vs C922 - Best Budget Webcam" frameborder="0" allowfullscreen></iframe>
 
 ### Razer Kiyo Pro - $99
 Razer's entry into streaming cameras brings gaming aesthetics and solid performance.
@@ -126,7 +126,7 @@ Logitech's flagship webcam brings 4K streaming to the mainstream.
 - Can run hot during extended use
 - Requires USB 3.0 for 4K
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rcNQFxlUEC0" title="Logitech Brio Review" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/sJu1KN5dKWo" title="Logitech Brio 4K Webcam Review" frameborder="0" allowfullscreen></iframe>
 
 ### Obsbot Tiny 2 - $329
 AI-powered tracking takes center stage with this innovative webcam.
@@ -180,7 +180,7 @@ Canon's entry into creator-focused cameras offers incredible value.
 - No in-body stabilization
 - Limited lens selection for RF-S
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/uW2JqWVoQqo" title="Canon R50 Streaming Setup" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hXYIIri5kJ8" title="Best Camera for Live Streaming - Sony vs Canon" frameborder="0" allowfullscreen></iframe>
 
 ### Panasonic Lumix GH6 - $1,697
 The streaming powerhouse with unlimited recording and professional features.
@@ -248,7 +248,7 @@ Cinema camera meets streaming powerhouse.
 - **Manfrotto PIXI** ($25) - Compact tripod
 - **SmallRig Desk Mount** ($89) - Professional arm system
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LCuqYmOPHuc" title="Streaming Lighting Setup" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xJAfLdKAxLc" title="Perfect Lighting Setup for Streaming" frameborder="0" allowfullscreen></iframe>
 
 ## Camera Settings for Optimal Streaming
 
@@ -317,7 +317,7 @@ Viewers forgive poor video but not poor audio. Don't rely on camera microphones 
 - 4K for screen recording
 - Gesture controls for hands-free operation
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/KOA_Z1DqUqw" title="Best Streaming Cameras 2025" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fj8BGQYP5o0" title="Best Streaming Cameras 2025 - Complete Guide" frameborder="0" allowfullscreen></iframe>
 
 ## Final Thoughts
 

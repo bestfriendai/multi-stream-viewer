@@ -42,7 +42,7 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
           layout: 'video',
           theme: 'dark',
           allowfullscreen: true,
-          controls: false // Keep controls hidden for cleaner look
+          controls: true // Enable controls for user interaction
         })
         
         embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
@@ -90,11 +90,11 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
       <div className="stream-embed-container relative w-full h-full bg-black group">
         <div ref={embedRef} className="absolute inset-0 w-full h-full" />
         
-        {/* Mute/Unmute Control Overlay */}
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+        {/* Mute/Unmute Control Overlay - Always visible for AMP */}
+        <div className="absolute top-2 right-2 opacity-80 hover:opacity-100 transition-opacity duration-200 z-10">
           <button
             onClick={handleMuteToggle}
-            className="p-2 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all duration-150 border border-white/20"
+            className="p-2 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all duration-150 border border-white/20 shadow-lg"
             title={stream.muted ? 'Unmute' : 'Mute'}
           >
             {stream.muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
@@ -118,11 +118,11 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
           />
         </div>
         
-        {/* Mute/Unmute Control Overlay */}
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+        {/* Mute/Unmute Control Overlay - Always visible for AMP */}
+        <div className="absolute top-2 right-2 opacity-80 hover:opacity-100 transition-opacity duration-200 z-10">
           <button
             onClick={handleMuteToggle}
-            className="p-2 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all duration-150 border border-white/20"
+            className="p-2 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all duration-150 border border-white/20 shadow-lg"
             title={stream.muted ? 'Unmute' : 'Mute'}
           >
             {stream.muted ? <VolumeX size={16} /> : <Volume2 size={16} />}

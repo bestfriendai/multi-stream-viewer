@@ -1,22 +1,35 @@
 'use client'
 
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
+import type { PanInfo } from 'framer-motion'
 import { useStreamStore } from '@/store/streamStore'
 import { cn } from '@/lib/utils'
 import StreamEmbedOptimized from './StreamEmbedOptimized'
+import '@/styles/mobile-stream-grid.css'
 
-// Memoized grid configuration function with improved case 3 handling
-const calculateGridConfig = (count: number, gridLayout?: string) => {
+// Enhanced mobile-first grid configuration
+const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: boolean) => {
   if (count === 0) return { cols: 1, rows: 1, class: 'grid-cols-1' }
   if (count === 1) return { cols: 1, rows: 1, class: 'grid-cols-1' }
+  
+  // Mobile-optimized layouts
+  if (isMobile) {
+    if (count === 2) return { cols: 1, rows: 2, class: 'mobile-grid-1x2' }
+    if (count === 3) return { cols: 1, rows: 3, class: 'mobile-grid-1x3' }
+    if (count === 4) return { cols: 2, rows: 2, class: 'mobile-grid-2x2' }
+    if (count <= 6) return { cols: 2, rows: 3, class: 'mobile-grid-2x3' }
+    // For more streams on mobile, use scrollable single column
+    return { cols: 1, rows: count, class: 'mobile-grid-scroll' }
+  }
+  
+  // Desktop layouts
   if (count === 2) return {
     cols: 2,
     rows: 1,
     class: gridLayout === '2x1' ? 'grid-cols-2' : 'grid-cols-2 grid-rows-1'
   }
   
-  // Fix case 3 handling - ensure proper 2x2 grid with 3 items
   if (count === 3) return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
   if (count === 4) return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
   
@@ -25,7 +38,6 @@ const calculateGridConfig = (count: number, gridLayout?: string) => {
   if (count <= 12) return { cols: 4, rows: 3, class: 'grid-cols-4 grid-rows-3' }
   if (count <= 16) return { cols: 4, rows: 4, class: 'grid-cols-4 grid-rows-4' }
   
-  // For more than 16 streams, use a 4-column layout with more rows
   return { cols: 4, rows: Math.ceil(count / 4), class: 'grid-cols-4' }
 }
 
@@ -111,14 +123,41 @@ const emptyStateVariants = {
 }
 
 const StreamGrid: React.FC = React.memo(() => {
-  const { streams, gridLayout, primaryStreamId } = useStreamStore()
+  const { streams, gridLayout, primaryStreamId, setActiveStream } = useStreamStore()
+  const [isMobile, setIsMobile] = useState(false)
+  const [currentMobileIndex, setCurrentMobileIndex] = useState(0)
+  
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
   
   const gridConfig = useMemo(() => {
     if (gridLayout === 'custom' && primaryStreamId) {
       return { cols: 0, rows: 0, class: 'stream-grid-focus' }
     }
-    return calculateGridConfig(streams.length, gridLayout)
-  }, [streams.length, gridLayout, primaryStreamId])
+    return calculateGridConfig(streams.length, gridLayout, isMobile)
+  }, [streams.length, gridLayout, primaryStreamId, isMobile])
+
+  // Mobile swipe navigation
+  const handlePanEnd = (event: any, info: PanInfo) => {
+    if (!isMobile || streams.length <= 2) return
+    
+    const threshold = 50
+    if (Math.abs(info.offset.x) > threshold) {
+      if (info.offset.x > 0 && currentMobileIndex > 0) {
+        setCurrentMobileIndex(currentMobileIndex - 1)
+      } else if (info.offset.x < 0 && currentMobileIndex < streams.length - 1) {
+        setCurrentMobileIndex(currentMobileIndex + 1)
+      }
+    }
+  }
 
   const responsiveGridClass = useMemo(() =>
     getResponsiveClasses(gridConfig.class),
@@ -131,14 +170,21 @@ const StreamGrid: React.FC = React.memo(() => {
         variants={gridVariants}
         initial="hidden"
         animate="visible"
+        onPanEnd={handlePanEnd}
         className={cn(
-          'stream-grid grid w-full',
-          responsiveGridClass,
-          'touch-pan-y touch-pan-x',
+          'stream-grid w-full',
+          isMobile && streams.length > 2 ? 'flex overflow-x-auto snap-x snap-mandatory scrollbar-hide' : `grid ${responsiveGridClass}`,
+          'touch-pan-y',
+          isMobile ? 'touch-pan-x' : '',
           'min-h-full',
-          'relative'
+          'relative',
+          // Mobile-specific classes
+          isMobile && 'mobile-stream-grid',
+          // Custom CSS classes for mobile layouts
+          isMobile && gridConfig.class.startsWith('mobile-') && gridConfig.class
         )}
         data-count={streams.length}
+        data-mobile={isMobile}
         role="grid"
         aria-label={`Stream grid with ${streams.length} stream${streams.length === 1 ? '' : 's'}`}
       >
@@ -152,14 +198,25 @@ const StreamGrid: React.FC = React.memo(() => {
               initial="hidden"
               animate="visible"
               exit="exit"
-              whileHover="hover"
+{...(!isMobile && { whileHover: "hover" })}
               whileTap="tap"
+              onTap={() => isMobile && setActiveStream(stream.id)}
               className={cn(
-                'relative bg-black rounded-xl overflow-hidden shadow-lg',
+                'relative bg-black overflow-hidden shadow-lg',
                 'border border-border/20',
                 'will-change-transform',
                 'isolate',
-                primaryStreamId === stream.id && gridLayout === 'custom' && 'primary-stream'
+                // Mobile-specific styling
+                isMobile ? [
+                  'flex-shrink-0 snap-start',
+                  streams.length > 2 ? 'w-[85vw] mr-4' : 'flex-1',
+                  'rounded-lg',
+                  'min-h-[60vh]'
+                ] : [
+                  'rounded-xl'
+                ],
+                // Desktop styling
+                !isMobile && primaryStreamId === stream.id && gridLayout === 'custom' && 'primary-stream'
               )}
               style={{
                 contain: 'layout style paint',
@@ -170,6 +227,13 @@ const StreamGrid: React.FC = React.memo(() => {
               aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}`}
             >
               <StreamEmbedOptimized stream={stream} />
+              
+              {/* Mobile stream indicator */}
+              {isMobile && streams.length > 2 && (
+                <div className="absolute bottom-4 left-4 bg-black/80 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  {index + 1} / {streams.length}
+                </div>
+              )}
             </motion.div>
           ))}
         </AnimatePresence>

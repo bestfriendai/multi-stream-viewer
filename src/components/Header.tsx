@@ -45,6 +45,7 @@ interface HeaderProps {
 export default function Header({ onToggleChat, showChat }: HeaderProps) {
   const [showAddStream, setShowAddStream] = useState(false)
   const [showDiscovery, setShowDiscovery] = useState(false)
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
   
   const { 
     streams, 
@@ -56,154 +57,215 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
   
   return (
     <div>
-      <header className="bg-background/80 backdrop-blur-md sticky top-0 z-40 border-b">
-        <div className="container mx-auto px-3 sm:px-4">
-          <div className="h-14 flex items-center justify-between gap-4">
+      <header className="bg-background/95 backdrop-blur-md sticky top-0 z-50 border-b border-border/50 shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="h-16 flex items-center justify-between">
             {/* Logo */}
-            <div>
-              <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
-                <StreamyyyLogo size="sm" variant="gradient" />
-              </Link>
-            </div>
+            <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
+              <StreamyyyLogo size="sm" variant="gradient" />
+            </Link>
 
-            {/* Main Actions - Center */}
-            <div className="flex items-center gap-2 flex-1 justify-center">
+            {/* Mobile Primary Actions */}
+            <div className="flex items-center gap-2 md:hidden">
               <Button
                 onClick={() => setShowAddStream(true)}
                 size="sm"
-                className="h-8"
+                className="h-9 px-3"
                 disabled={streams.length >= 16}
               >
                 <Plus className="h-4 w-4" />
-                <span className="ml-1.5 hidden sm:inline">Add Stream</span>
+                <span className="ml-1.5">Add</span>
               </Button>
 
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="h-8"
+                className="h-9 px-3"
                 onClick={() => setShowDiscovery(true)}
               >
                 <Compass className="h-4 w-4" />
-                <span className="ml-1.5 hidden sm:inline">Discover</span>
               </Button>
 
-              {/* AMP Summer */}
-              <Link href="/amp-summer" className="hidden sm:block">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-9 w-9 p-0"
+                onClick={() => setShowMobileMenu(true)}
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            </div>
+
+            {/* Desktop Actions */}
+            <div className="hidden md:flex items-center gap-3">
+              <Button
+                onClick={() => setShowAddStream(true)}
+                size="sm"
+                className="h-9"
+                disabled={streams.length >= 16}
+              >
+                <Plus className="h-4 w-4" />
+                <span className="ml-2">Add Stream</span>
+              </Button>
+
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="h-9"
+                onClick={() => setShowDiscovery(true)}
+              >
+                <Compass className="h-4 w-4" />
+                <span className="ml-2">Discover</span>
+              </Button>
+
+              <Link href="/amp-summer">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-8 border-yellow-500/30 hover:border-yellow-500/50 hover:bg-yellow-500/10"
+                  className="h-9 border-yellow-500/30 hover:border-yellow-500/50 hover:bg-yellow-500/10"
                 >
                   <Zap className="h-4 w-4 text-yellow-600" />
-                  <span className="ml-1.5 font-medium">AMP</span>
+                  <span className="ml-2 font-medium">AMP Summer</span>
                 </Button>
               </Link>
-            </div>
 
-            {/* Right Actions */}
-            <div className="flex items-center gap-2 flex-shrink-0">
-              {/* Desktop Actions */}
-              <div className="hidden md:flex items-center gap-2">
-                <EnhancedLayoutSelector />
-                
-                <SavedLayoutsDialog />
-                
-                <ShareDialog />
-                
-                <Separator orientation="vertical" className="h-6" />
-                
-                <Button
-                  variant={showChat ? "default" : "ghost"}
-                  size="sm"
-                  onClick={onToggleChat}
-                  className="h-8"
-                >
-                  <MessageSquare className="h-4 w-4" />
-                  <span className="ml-1.5">Chat</span>
-                </Button>
-              </div>
+              <Separator orientation="vertical" className="h-6" />
 
-              {/* Mobile Menu */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild className="md:hidden">
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Menu className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={onToggleChat}>
-                    <MessageSquare className="mr-2 h-4 w-4" />
-                    {showChat ? 'Hide' : 'Show'} Chat
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuSeparator />
-                  
-                  <DropdownMenuItem asChild>
-                    <Link href="/amp-summer">
-                      <Zap className="mr-2 h-4 w-4 text-yellow-600" />
-                      AMP Summer
-                    </Link>
-                  </DropdownMenuItem>
-                  
-                  {streams.length > 0 && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem 
-                        onClick={clearAllStreams}
-                        className="text-destructive focus:text-destructive"
-                      >
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Clear All
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <EnhancedLayoutSelector />
+              <SavedLayoutsDialog />
+              <ShareDialog />
+
+              <Separator orientation="vertical" className="h-6" />
+
+              <Button
+                variant={showChat ? "default" : "ghost"}
+                size="sm"
+                onClick={onToggleChat}
+                className="h-9"
+              >
+                <MessageSquare className="h-4 w-4" />
+                <span className="ml-2">Chat</span>
+              </Button>
 
               <ThemeToggle />
-              
-              {/* More Options */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Options</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  
-                  <DropdownMenuItem
-                    onClick={() => {
-                      alert(
-                        'Keyboard Shortcuts:\n\n' +
-                        '1-9: Switch to stream\n' +
-                        'Space/M: Mute/unmute\n' +
-                        '←→: Navigate streams\n' +
-                        'C: Toggle chat\n' +
-                        'F: Fullscreen\n' +
-                        'Ctrl+X: Clear all\n' +
-                        '?: Show help'
-                      )
-                    }}
-                  >
-                    <Keyboard className="mr-2 h-4 w-4" />
-                    Shortcuts
-                    <DropdownMenuShortcut>?</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuSeparator />
-                  
-                  <DropdownMenuItem className="text-xs text-muted-foreground">
-                    {streams.length} / 16 streams
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
           </div>
         </div>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {showMobileMenu && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 z-50 md:hidden"
+              onClick={() => setShowMobileMenu(false)}
+            />
+            
+            {/* Mobile Menu Panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-background border-l border-border z-50 md:hidden"
+            >
+              <div className="flex items-center justify-between p-4 border-b border-border">
+                <h2 className="text-lg font-semibold">Menu</h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="h-8 w-8 p-0"
+                >
+                  ×
+                </Button>
+              </div>
+
+              <div className="p-4 space-y-4">
+                {/* Stream Count */}
+                <div className="bg-muted/50 rounded-lg p-3">
+                  <div className="text-sm text-muted-foreground">Active Streams</div>
+                  <div className="text-2xl font-bold">{streams.length} / 16</div>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="space-y-2">
+                  <Button
+                    onClick={() => {
+                      onToggleChat()
+                      setShowMobileMenu(false)
+                    }}
+                    variant={showChat ? "default" : "outline"}
+                    className="w-full justify-start h-12"
+                  >
+                    <MessageSquare className="mr-3 h-5 w-5" />
+                    {showChat ? 'Hide Chat' : 'Show Chat'}
+                  </Button>
+
+                  <Link href="/amp-summer" className="block">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start h-12 border-yellow-500/30 hover:border-yellow-500/50 hover:bg-yellow-500/10"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      <Zap className="mr-3 h-5 w-5 text-yellow-600" />
+                      AMP Summer
+                    </Button>
+                  </Link>
+
+                  <Link href="/blog" className="block">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start h-12"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      <BookmarkPlus className="mr-3 h-5 w-5" />
+                      Blog
+                    </Button>
+                  </Link>
+                </div>
+
+                {/* Layout Controls */}
+                <div className="pt-4 border-t border-border">
+                  <div className="text-sm font-medium mb-3">Layout & Controls</div>
+                  <div className="space-y-2">
+                    <EnhancedLayoutSelector mobile />
+                    <SavedLayoutsDialog mobile />
+                    <ShareDialog mobile />
+                  </div>
+                </div>
+
+                {/* Stream Management */}
+                {streams.length > 0 && (
+                  <div className="pt-4 border-t border-border">
+                    <Button
+                      onClick={() => {
+                        clearAllStreams()
+                        setShowMobileMenu(false)
+                      }}
+                      variant="destructive"
+                      className="w-full justify-start h-12"
+                    >
+                      <Trash2 className="mr-3 h-5 w-5" />
+                      Clear All Streams
+                    </Button>
+                  </div>
+                )}
+
+                {/* Theme Toggle */}
+                <div className="pt-4 border-t border-border flex justify-center">
+                  <ThemeToggle />
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Dialogs */}
       <EnhancedAddStreamDialog 

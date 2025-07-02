@@ -99,7 +99,11 @@ const itemVariants: Variants = {
   }
 }
 
-export default function EnhancedLayoutSelector() {
+interface EnhancedLayoutSelectorProps {
+  mobile?: boolean
+}
+
+export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayoutSelectorProps) {
   const { gridLayout, setGridLayout, streams } = useStreamStore()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -108,6 +112,53 @@ export default function EnhancedLayoutSelector() {
   const handleLayoutChange = (layoutId: string) => {
     setGridLayout(layoutId as any)
     setIsOpen(false)
+  }
+
+  if (mobile) {
+    return (
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+        <DropdownMenuTrigger asChild>
+          <Button 
+            variant="outline" 
+            className="w-full justify-start h-12"
+          >
+            <currentLayout.icon className="mr-3 h-5 w-5" />
+            Layout: {currentLayout.name}
+          </Button>
+        </DropdownMenuTrigger>
+        
+        <DropdownMenuContent 
+          align="end" 
+          className="w-64 p-2"
+          sideOffset={8}
+        >
+          <DropdownMenuLabel className="text-xs uppercase tracking-wide text-muted-foreground">
+            Layout Options
+          </DropdownMenuLabel>
+          
+          {layoutOptions.map((layout) => {
+            const Icon = layout.icon
+            const isActive = gridLayout === layout.id
+            const isDisabled = layout.isPro && streams.length === 0
+            
+            return (
+              <DropdownMenuItem
+                key={layout.id}
+                onClick={() => handleLayoutChange(layout.id)}
+                disabled={isDisabled || false}
+                className={`gap-3 p-3 cursor-pointer ${isActive ? 'bg-primary/10' : ''}`}
+              >
+                <Icon size={20} />
+                <div>
+                  <div className="font-medium">{layout.name}</div>
+                  <div className="text-xs text-muted-foreground">{layout.description}</div>
+                </div>
+              </DropdownMenuItem>
+            )
+          })}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    )
   }
 
   return (
@@ -121,7 +172,7 @@ export default function EnhancedLayoutSelector() {
           <Button 
             variant="outline" 
             size="sm" 
-            className="h-8 gap-2"
+            className="h-9 gap-2"
           >
             <currentLayout.icon size={16} />
             <span className="hidden sm:inline">{currentLayout.name}</span>

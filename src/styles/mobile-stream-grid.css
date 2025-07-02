@@ -1,0 +1,195 @@
+/* Mobile-optimized stream grid styles */
+.mobile-stream-grid {
+  /* Smooth scrolling for mobile */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar but maintain functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile grid layouts */
+.mobile-grid-1x2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1rem;
+  height: 100vh;
+  padding: 1rem;
+}
+
+.mobile-grid-1x3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.75rem;
+  height: 100vh;
+  padding: 0.75rem;
+}
+
+.mobile-grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.75rem;
+  height: 100vh;
+  padding: 0.75rem;
+}
+
+.mobile-grid-2x3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.5rem;
+  height: 100vh;
+  padding: 0.5rem;
+}
+
+.mobile-grid-scroll {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  height: auto;
+  min-height: 100vh;
+}
+
+/* Mobile stream controls */
+@media (max-width: 768px) {
+  .stream-embed-container {
+    position: relative;
+  }
+  
+  /* Enhanced touch targets for mobile */
+  .stream-controls {
+    padding: 12px;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Larger touch-friendly buttons */
+  .mobile-stream-grid .stream-embed-container button {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px;
+  }
+  
+  /* Better spacing for mobile layout */
+  .mobile-stream-grid .stream-embed-container .controls-overlay {
+    padding: 16px;
+    gap: 12px;
+  }
+  
+  /* Improved visibility on mobile */
+  .mobile-stream-grid .stream-embed-container .mute-button {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Mobile-specific animations */
+  .mobile-stream-grid .stream-card {
+    transition: transform 0.2s ease-out;
+  }
+  
+  .mobile-stream-grid .stream-card:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Mobile landscape optimizations */
+@media (max-width: 768px) and (orientation: landscape) {
+  .mobile-grid-1x2 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+  
+  .mobile-grid-1x3 {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+  }
+  
+  .mobile-grid-2x2 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .mobile-stream-grid.tablet-mode {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+  
+  .mobile-stream-grid.tablet-mode .stream-card {
+    border-radius: 12px;
+  }
+}
+
+/* Pull-to-refresh indicator */
+.mobile-pull-refresh {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  color: white;
+  font-size: 18px;
+  transition: top 0.3s ease;
+}
+
+.mobile-pull-refresh.active {
+  top: 20px;
+}
+
+/* Swipe indicators */
+.mobile-swipe-indicator {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.mobile-swipe-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transition: background 0.3s ease;
+}
+
+.mobile-swipe-dot.active {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Mobile fullscreen improvements */
+@media (max-width: 768px) {
+  .stream-fullscreen {
+    padding: 0;
+    border-radius: 0;
+  }
+  
+  .stream-fullscreen .stream-controls {
+    position: absolute;
+    top: env(safe-area-inset-top, 20px);
+    right: env(safe-area-inset-right, 20px);
+    z-index: 50;
+  }
+}

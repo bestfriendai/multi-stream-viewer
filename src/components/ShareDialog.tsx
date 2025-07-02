@@ -9,7 +9,11 @@ import { useStreamStore } from '@/store/streamStore'
 import { generateShareableLink } from '@/lib/shareableLinks'
 import { toast } from 'sonner'
 
-export default function ShareDialog() {
+interface ShareDialogProps {
+  mobile?: boolean
+}
+
+export default function ShareDialog({ mobile = false }: ShareDialogProps) {
   const [copied, setCopied] = useState(false)
   const { streams, gridLayout } = useStreamStore()
   
@@ -42,13 +46,22 @@ export default function ShareDialog() {
     }
   }
   
+  const trigger = mobile ? (
+    <Button variant="outline" className="w-full justify-start h-12" disabled={streams.length === 0}>
+      <Share2 className="mr-3 h-5 w-5" />
+      Share Streams
+    </Button>
+  ) : (
+    <Button variant="outline" size="sm" className="h-9" disabled={streams.length === 0}>
+      <Share2 size={16} className="mr-2" />
+      Share
+    </Button>
+  )
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" disabled={streams.length === 0}>
-          <Share2 size={16} className="mr-2" />
-          Share
-        </Button>
+        {trigger}
       </DialogTrigger>
       
       <DialogContent>

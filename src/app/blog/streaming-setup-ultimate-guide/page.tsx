@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const blogContent = {
   title: 'The Ultimate Streaming Setup Guide: Build Your Dream Studio',
   author: 'STREAMYYY Team',
-  date: '2024-12-30',
+  date: '2025-07-01',
   readTime: '20 min read',
   category: 'Setup Guide',
   image: 'https://images.unsplash.com/photo-1598743400863-0201c7e1445b?w=1200&h=800&fit=crop',

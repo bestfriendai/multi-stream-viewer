@@ -36,6 +36,8 @@ import { loadFromQueryParams } from '@/lib/shareableLinks'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Grid3x3, Compass, Zap, Heart } from 'lucide-react'
+import MobileGestureOverlay from '@/components/MobileGestureOverlay'
+import { useStreamGestures } from '@/hooks/useMobileGestures'
 
 export default function Home() {
   const [showChat, setShowChat] = useState(false)
@@ -43,8 +45,31 @@ export default function Home() {
   const [showMobileView, setShowMobileView] = useState(false)
   const [showMobileStreamViewer, setShowMobileStreamViewer] = useState(false)
   const [activeTab, setActiveTab] = useState('streams')
+  const [showGestureHints, setShowGestureHints] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const { addStream, setGridLayout, streams, gridLayout } = useStreamStore()
   const { trackChatToggle, trackFeatureUsage, trackStreamAdded } = useAnalytics()
+  
+  // Mobile gesture support
+  const streamGestures = useStreamGestures()
+  
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
+      
+      // Show gesture hints on first mobile visit with streams
+      if (mobile && streams.length > 0 && !localStorage.getItem('gesture-hints-shown')) {
+        setShowGestureHints(true)
+        localStorage.setItem('gesture-hints-shown', 'true')
+      }
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [streams.length])
   
   // Enable keyboard shortcuts
   useKeyboardShortcuts()
@@ -134,7 +159,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <div className="flex flex-col h-screen bg-background" {...(isMobile ? streamGestures.handlers : {})}>
       <SEOSchema faqs={faqItems} type="WebApplication" />
       <SEOContent 
         keywords={[
@@ -313,6 +338,14 @@ export default function Home() {
         open={showAddStream} 
         onOpenChange={setShowAddStream} 
       />
+      
+      {/* Mobile Gesture Overlay */}
+      {isMobile && (
+        <MobileGestureOverlay 
+          showHints={showGestureHints}
+          onDismissHints={() => setShowGestureHints(false)}
+        />
+      )}
     </div>
   );
 }

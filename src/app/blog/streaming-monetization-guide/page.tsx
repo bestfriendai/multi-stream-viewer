@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const blogContent = {
   title: 'Streaming Monetization: Turn Your Passion into Profit',
   author: 'STREAMYYY Team',
-  date: '2024-12-25',
+  date: '2025-07-01',
   readTime: '18 min read',
   category: 'Monetization',
   image: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=1200&h=800&fit=crop',

@@ -11,7 +11,11 @@ import { getSavedLayouts, saveLayout, deleteLayout, DEFAULT_PRESETS } from '@/li
 import type { SavedLayout } from '@/lib/savedLayouts'
 import { toast } from 'sonner'
 
-export default function SavedLayoutsDialog() {
+interface SavedLayoutsDialogProps {
+  mobile?: boolean
+}
+
+export default function SavedLayoutsDialog({ mobile = false }: SavedLayoutsDialogProps) {
   const [layouts, setLayouts] = useState<SavedLayout[]>([])
   const [newLayoutName, setNewLayoutName] = useState('')
   const [showSaveForm, setShowSaveForm] = useState(false)
@@ -62,13 +66,22 @@ export default function SavedLayoutsDialog() {
   
   const allLayouts = [...DEFAULT_PRESETS, ...layouts]
   
+  const trigger = mobile ? (
+    <Button variant="outline" className="w-full justify-start h-12">
+      <Bookmark className="mr-3 h-5 w-5" />
+      Saved Layouts
+    </Button>
+  ) : (
+    <Button variant="outline" size="sm" className="h-9">
+      <Bookmark size={16} className="mr-2" />
+      Layouts
+    </Button>
+  )
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Bookmark size={16} className="mr-2" />
-          Layouts
-        </Button>
+        {trigger}
       </DialogTrigger>
       
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">

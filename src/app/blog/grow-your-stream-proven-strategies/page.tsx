@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const blogContent = {
   title: 'How to Grow Your Stream: 10 Proven Strategies for 2025',
   author: 'STREAMYYY Team',
-  date: '2024-12-28',
+  date: '2025-07-01',
   readTime: '10 min read',
   category: 'Growth',
   image: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=800&fit=crop',

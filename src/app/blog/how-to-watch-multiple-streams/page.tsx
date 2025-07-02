@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const blogContent = {
   title: 'How to Watch Multiple Streams at Once: The Ultimate MultiStream Guide',
   author: 'STREAMYYY Team',
-  date: '2025-01-02',
+  date: '2025-07-01',
   readTime: '8 min read',
   category: 'Tutorials',
   image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&h=800&fit=crop',
