@@ -135,19 +135,51 @@
   height: 100%;
 }
 
-/* Hide Twitch player controls on AMP page */
-.amp-stream-container iframe {
-  pointer-events: none;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+/* AMP Stream Controls */
+.amp-stream-container .stream-embed-container {
+  position: relative;
 }
 
-/* Allow interaction on hover for volume control */
-.amp-stream-container .stream-embed-container:hover iframe {
-  pointer-events: auto;
+/* Show controls on hover and touch devices */
+@media (hover: hover) {
+  .amp-stream-container .group:hover .opacity-0 {
+    opacity: 1 !important;
+  }
+}
+
+/* Always show controls on touch devices */
+@media (hover: none) {
+  .amp-stream-container .opacity-0 {
+    opacity: 1 !important;
+  }
+}
+
+/* Ensure mute button is always accessible */
+.amp-stream-container button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Make mute controls more visible on mobile */
+@media (max-width: 767px) {
+  .amp-stream-container .group .opacity-0 {
+    opacity: 0.7 !important;
+  }
+  
+  .amp-stream-container .group:hover .opacity-0,
+  .amp-stream-container .group:active .opacity-0 {
+    opacity: 1 !important;
+  }
+  
+  /* Larger touch targets on mobile */
+  .amp-stream-container button {
+    padding: 12px;
+  }
 }
 
 /* Larger stream cards */
