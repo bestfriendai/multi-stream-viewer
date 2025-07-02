@@ -35,14 +35,14 @@ interface LayoutOption {
 
 const layoutOptions: LayoutOption[] = [
   {
-    id: 'grid-2x2',
+    id: '2x2',
     name: '2×2 Grid',
     icon: Grid2x2,
     description: 'Perfect for 4 streams',
     gridClass: 'grid-cols-2 grid-rows-2'
   },
   {
-    id: 'grid-3x3',
+    id: '3x3',
     name: '3×3 Grid',
     icon: Grid3x3,
     description: 'Classic multi-stream layout',

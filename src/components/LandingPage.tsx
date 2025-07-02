@@ -51,66 +51,45 @@ interface LandingPageProps {
 const features = [
   {
     icon: Monitor,
-    title: "16 Simultaneous Streams",
-    description: "Watch up to 16 live streams at once in perfectly optimized layouts with zero lag",
+    title: "Multiple Streams",
+    description: "Watch up to 16 streams at once",
     gradient: "from-blue-500 to-cyan-500",
-    stats: "16x Streams"
+    stats: "16 Streams"
   },
   {
     icon: Globe,
-    title: "Universal Platform Support",
-    description: "Seamlessly mix Twitch, YouTube, Kick, Rumble, and more platforms",
+    title: "All Platforms",
+    description: "Twitch, YouTube, Kick, and more",
     gradient: "from-purple-500 to-pink-500",
     stats: "5+ Platforms"
   },
   {
     icon: MessageSquare,
-    title: "Unified Chat Experience",
-    description: "Follow conversations from all streams in one integrated AI-powered chat panel",
+    title: "Unified Chat",
+    description: "All chat in one place",
     gradient: "from-green-500 to-emerald-500",
     stats: "Real-time"
   },
   {
     icon: Layout,
-    title: "Smart Layout System",
-    description: "AI-powered auto-adjusting grids, custom layouts, and picture-in-picture modes",
+    title: "Smart Layouts",
+    description: "Auto-adjusting grids and custom layouts",
     gradient: "from-orange-500 to-red-500",
-    stats: "∞ Layouts"
+    stats: "Multiple"
   },
   {
     icon: SmartphoneIcon,
-    title: "Mobile Excellence",
-    description: "Native mobile app experience with gesture controls and offline support",
+    title: "Mobile Friendly",
+    description: "Works great on phones and tablets",
     gradient: "from-indigo-500 to-purple-500",
-    stats: "Touch-First"
+    stats: "Responsive"
   },
   {
     icon: Zap,
-    title: "Lightning Performance",
-    description: "Hardware-accelerated streaming with ML optimization and 99.9% uptime",
+    title: "Fast Performance",
+    description: "No lag, no buffering",
     gradient: "from-yellow-500 to-orange-500",
-    stats: "< 50ms"
-  },
-  {
-    icon: Shield,
-    title: "Enterprise Security",
-    description: "Bank-grade encryption with privacy-first design and GDPR compliance",
-    gradient: "from-red-500 to-rose-500",
-    stats: "100% Secure"
-  },
-  {
-    icon: Command,
-    title: "Power User Tools",
-    description: "Keyboard shortcuts, command palette, and advanced controls for pros",
-    gradient: "from-gray-500 to-slate-600",
-    stats: "⌘K Ready"
-  },
-  {
-    icon: BarChart3,
-    title: "Analytics Dashboard",
-    description: "Track viewing time, favorite streamers, and discover trending content",
-    gradient: "from-emerald-500 to-teal-500",
-    stats: "Deep Insights"
+    stats: "Instant"
   }
 ]
 
@@ -242,21 +221,21 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
 
   const testimonials = [
     {
-      quote: "STREAMYYY revolutionized how I watch esports. Being able to see all POVs during tournaments is incredible.",
+      quote: "Perfect for watching multiple streams during tournaments.",
       author: "ProGamer_2024",
-      role: "Esports Enthusiast",
+      role: "Esports Fan",
       rating: 5
     },
     {
-      quote: "As a content creator, this platform helps me monitor competitors while streaming. The mobile app is flawless.",
+      quote: "Great for monitoring competitors while streaming.",
       author: "StreamMaster",
       role: "Content Creator",
       rating: 5
     },
     {
-      quote: "Finally found a MultiTwitch alternative that actually works! The chat integration is genius.",
+      quote: "Finally, a multi-stream viewer that just works!",
       author: "ChatModerator",
-      role: "Twitch Moderator",
+      role: "Viewer",
       rating: 5
     }
   ]
@@ -321,13 +300,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               </motion.span>
             </motion.h1>
             
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-4">
-              <strong className="text-primary">STREAMYYY</strong> is the #1 multi-stream platform - Better than MultiTwitch, Multistre.am, and TwitchTheater. 
-              Watch up to 16 live streams simultaneously with AI-powered layouts and zero buffering.
-            </p>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              The ultimate MultiTwitch alternative trusted by <span className="text-primary font-semibold">2+ million users</span>. 
-              Experience next-generation streaming with enterprise-grade performance and mobile-first design.
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
+              Watch multiple streams at once. Simple, fast, and free.
             </p>
             
             {/* Trust Indicators */}
@@ -650,8 +624,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               <Sparkles className="w-3 h-3 mr-1" />
               Features
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Why STREAMYYY is the Best</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Industry-leading features that make STREAMYYY the premier multi-stream platform. No competitors offer this level of sophistication and ease of use.</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Features</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Everything you need for multi-stream viewing.</p>
           </motion.div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -945,15 +919,14 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               transition={{ type: "spring", duration: 0.8 }}
             >
               <h2 className="text-5xl md:text-6xl font-bold leading-tight">
-                Ready to Transform Your
+                Ready to Start
                 <span className="block mt-2 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
-                  Viewing Experience?
+                  Multi-Streaming?
                 </span>
               </h2>
             </motion.div>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              Join thousands of viewers who've switched to STREAMYYY - the gold standard for multi-stream viewing.
-              Experience why professional streamers, esports fans, and content creators choose STREAMYYY over any other platform.
+              Join thousands of viewers using the best multi-stream platform.
             </p>
             
             <motion.div 

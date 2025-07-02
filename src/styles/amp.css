@@ -232,9 +232,11 @@
   .amp-single-live-grid,
   .amp-two-live-grid,
   .amp-three-live-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
     aspect-ratio: unset;
+    gap: 0.5rem;
+    padding: 0.5rem;
   }
   
   .amp-mosaic-grid > div,
@@ -245,13 +247,21 @@
     grid-row: span 1 !important;
     aspect-ratio: 16/9;
     height: auto;
+    min-height: 120px;
   }
   
-  /* Make first (live) stream bigger on mobile */
+  /* Make first (live) stream bigger on mobile - span both columns */
   .amp-mosaic-grid > div:nth-child(1),
-  .amp-single-live-grid > div:nth-child(1),
+  .amp-single-live-grid > div:nth-child(1) {
+    grid-column: span 2 !important;
+    aspect-ratio: 16/9;
+    min-height: 200px;
+  }
+  
+  /* For two live streams, keep them side by side */
   .amp-two-live-grid > div:nth-child(1),
-  .amp-three-live-grid > div:nth-child(1) {
-    aspect-ratio: 16/10;
+  .amp-two-live-grid > div:nth-child(2) {
+    grid-column: span 1 !important;
+    min-height: 150px;
   }
 }

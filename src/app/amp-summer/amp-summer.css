@@ -2,13 +2,13 @@
 @media (max-width: 768px) {
   /* Reduce hero section height on mobile */
   .amp-hero-section {
-    padding: 1rem 0 !important;
+    padding: 1.5rem 0 !important;
   }
   
   /* Smaller avatars on mobile to save space */
   .amp-avatar-container {
-    width: 3rem !important;
-    height: 3rem !important;
+    width: 3.5rem !important;
+    height: 3.5rem !important;
   }
   
   /* Ensure stream grid uses maximum available space */
