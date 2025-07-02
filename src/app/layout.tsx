@@ -10,7 +10,8 @@ import AnalyticsPageTracker from "@/components/AnalyticsPageTracker";
 import SessionTracker from "@/components/SessionTracker";
 import MobileAnalyticsTracker from "@/components/MobileAnalyticsTracker";
 import GADebugPanel from "@/components/GADebugPanel";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer"
+import CookieConsent from "@/components/CookieConsent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -198,7 +199,29 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="manifest" href="/manifest.json" />
         
-        {/* Google AdSense */}
+        {/* Google Consent Mode - Must be before GTM/Analytics */}
+        <Script
+          id="google-consent-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              
+              // Default consent state (denied until user accepts)
+              gtag('consent', 'default', {
+                'ad_storage': 'denied',
+                'analytics_storage': 'denied',
+                'functionality_storage': 'granted',
+                'personalization_storage': 'denied',
+                'security_storage': 'granted',
+                'wait_for_update': 2000 // Wait up to 2 seconds for consent
+              });
+            `
+          }}
+        />
+        
+        {/* Google AdSense - Will respect consent mode */}
         <script 
           async 
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4679934692726562"
@@ -242,6 +265,7 @@ export default function RootLayout({
           </div>
           <Toaster />
           <GADebugPanel />
+          <CookieConsent />
         </ThemeProvider>
       </body>
     </html>
