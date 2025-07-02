@@ -15,7 +15,8 @@ import {
   Keyboard,
   Share2,
   BookmarkPlus,
-  MoreVertical
+  MoreVertical,
+  LogIn
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from './theme-toggle'
@@ -36,6 +37,7 @@ import {
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
+import { UserButton, SignInButton, useUser } from "@clerk/nextjs"
 
 interface HeaderProps {
   onToggleChat: () => void
@@ -53,6 +55,7 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
   } = useStreamStore()
   
   const { trackFeatureUsage, trackMenuItemClick } = useAnalytics()
+  const { isSignedIn, user } = useUser()
   
   
   return (
@@ -148,6 +151,19 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
               </Button>
 
               <ThemeToggle />
+
+              <Separator orientation="vertical" className="h-6" />
+
+              {isSignedIn ? (
+                <UserButton afterSignOutUrl="/" />
+              ) : (
+                <SignInButton mode="modal">
+                  <Button variant="outline" size="sm" className="h-9">
+                    <LogIn className="h-4 w-4" />
+                    <span className="ml-2">Sign In</span>
+                  </Button>
+                </SignInButton>
+              )}
             </div>
           </div>
         </div>
@@ -258,8 +274,18 @@ export default function Header({ onToggleChat, showChat }: HeaderProps) {
                 )}
 
                 {/* Theme Toggle */}
-                <div className="pt-4 border-t border-border flex justify-center">
+                <div className="pt-4 border-t border-border flex justify-center gap-3">
                   <ThemeToggle />
+                  {isSignedIn ? (
+                    <UserButton afterSignOutUrl="/" />
+                  ) : (
+                    <SignInButton mode="modal">
+                      <Button variant="outline" size="sm" className="h-9">
+                        <LogIn className="h-4 w-4" />
+                        <span className="ml-2">Sign In</span>
+                      </Button>
+                    </SignInButton>
+                  )}
                 </div>
               </div>
             </motion.div>

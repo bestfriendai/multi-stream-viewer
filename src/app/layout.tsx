@@ -12,6 +12,7 @@ import MobileAnalyticsTracker from "@/components/MobileAnalyticsTracker";
 import GADebugPanel from "@/components/GADebugPanel";
 import Footer from "@/components/Footer"
 import CookieConsent from "@/components/CookieConsent";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -254,23 +255,25 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AnalyticsPageTracker />
-        <SessionTracker />
-        <MobileAnalyticsTracker />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="flex flex-col min-h-screen">
-            {children}
-            <Footer />
-          </div>
-          <Toaster />
-          <GADebugPanel />
-          <CookieConsent />
-        </ThemeProvider>
+        <ClerkProvider>
+          <AnalyticsPageTracker />
+          <SessionTracker />
+          <MobileAnalyticsTracker />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="flex flex-col min-h-screen">
+              {children}
+              <Footer />
+            </div>
+            <Toaster />
+            <GADebugPanel />
+            <CookieConsent />
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
