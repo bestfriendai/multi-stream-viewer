@@ -4,8 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import { 
   ChevronLeft, ChevronRight, Volume2, VolumeX, 
-  MessageSquare, Maximize2, Grid, Layers, 
-  Play, Pause, RefreshCw
+  MessageSquare, Maximize2, Grid
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -30,7 +29,7 @@ interface MobileSwipeControlsProps {
 export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProps) {
   const [currentStreamIndex, setCurrentStreamIndex] = useState(0)
   const [showControls, setShowControls] = useState(true)
-  const [isFullscreen, setIsFullscreen] = useState(false)
+  const [, setIsFullscreen] = useState(false)
   const [swipeGesture, setSwipeGesture] = useState<SwipeGesture | null>(null)
   const [volumeSliderVisible, setVolumeSliderVisible] = useState(false)
   const [currentVolume, setCurrentVolume] = useState(100)
@@ -131,7 +130,7 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
     }
   }
   
-  const handleTouchEnd = (e: React.TouchEvent) => {
+  const handleTouchEnd = () => {
     if (!swipeGesture) return
     
     const deltaX = swipeGesture.currentX - swipeGesture.startX
@@ -176,7 +175,7 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
     }
     
     // Double tap detection
-    const lastTap = (window as any).lastTap || 0
+    const lastTap = (window as Window & { lastTap?: number }).lastTap || 0
     const currentTime = Date.now()
     const tapLength = currentTime - lastTap
     
@@ -185,7 +184,7 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
       toggleFullscreen()
     }
     
-    (window as any).lastTap = currentTime
+    (window as Window & { lastTap?: number }).lastTap = currentTime
     
     setSwipeGesture(null)
   }

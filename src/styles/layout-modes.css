@@ -1,0 +1,357 @@
+/* Enhanced Layout Modes CSS - 2025 */
+
+/* ===== MOSAIC MODE ===== */
+.mosaic-grid {
+  display: grid !important;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mosaic-grid .stream-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.mosaic-grid .stream-card:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.02);
+  z-index: 10;
+}
+
+/* Mosaic responsive adjustments */
+@media (max-width: 768px) {
+  .mosaic-grid {
+    gap: 0.25rem;
+    padding: 0.25rem;
+  }
+  
+  .mosaic-grid.grid-cols-3,
+  .mosaic-grid.grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ===== FOCUS MODE ===== */
+.focus-layout {
+  display: grid !important;
+  grid-template-columns: 1fr 200px;
+  grid-template-rows: 1fr;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.focus-layout .primary-stream {
+  grid-column: 1;
+  grid-row: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  border: 2px solid rgba(147, 51, 234, 0.5);
+  box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+  position: relative;
+}
+
+.focus-layout .secondary-streams {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.focus-layout .secondary-stream {
+  aspect-ratio: 16/9;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.focus-layout .secondary-stream:hover {
+  border-color: rgba(147, 51, 234, 0.5);
+  transform: scale(1.05);
+}
+
+.focus-layout .secondary-stream.active {
+  border-color: rgba(147, 51, 234, 0.8);
+  box-shadow: 0 0 10px rgba(147, 51, 234, 0.4);
+}
+
+/* Focus mode mobile adjustments */
+@media (max-width: 768px) {
+  .focus-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+  
+  .focus-layout .secondary-streams {
+    grid-column: 1;
+    grid-row: 2;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.5rem 0;
+  }
+  
+  .focus-layout .secondary-stream {
+    flex-shrink: 0;
+    width: 120px;
+    height: 68px;
+  }
+}
+
+/* ===== PICTURE-IN-PICTURE MODE ===== */
+.pip-layout {
+  position: relative !important;
+  display: block !important;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.pip-layout .main-stream {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background: #000;
+}
+
+.pip-layout .pip-streams {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 20;
+  max-height: calc(100% - 2rem);
+  overflow-y: auto;
+}
+
+.pip-layout .pip-stream {
+  width: 200px;
+  height: 112px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.pip-layout .pip-stream:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.pip-layout .pip-stream.dragging {
+  transform: scale(1.1);
+  z-index: 30;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* PiP positioning variants */
+.pip-layout.pip-top-left .pip-streams {
+  top: 1rem;
+  left: 1rem;
+  right: auto;
+}
+
+.pip-layout.pip-top-right .pip-streams {
+  top: 1rem;
+  right: 1rem;
+  left: auto;
+}
+
+.pip-layout.pip-bottom-left .pip-streams {
+  bottom: 1rem;
+  left: 1rem;
+  top: auto;
+  right: auto;
+}
+
+.pip-layout.pip-bottom-right .pip-streams {
+  bottom: 1rem;
+  right: 1rem;
+  top: auto;
+  left: auto;
+}
+
+/* PiP mobile adjustments */
+@media (max-width: 768px) {
+  .pip-layout .pip-streams {
+    flex-direction: row;
+    bottom: 1rem;
+    top: auto;
+    left: 1rem;
+    right: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  
+  .pip-layout .pip-stream {
+    width: 120px;
+    height: 68px;
+    flex-shrink: 0;
+  }
+}
+
+/* ===== ENHANCED GRID LAYOUTS ===== */
+.stream-grid-focus {
+  display: grid !important;
+  width: 100%;
+  height: 100%;
+}
+
+/* Custom grid classes for better control */
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.grid-rows-1 { grid-template-rows: repeat(1, minmax(0, 1fr)); }
+.grid-rows-2 { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.grid-rows-3 { grid-template-rows: repeat(3, minmax(0, 1fr)); }
+.grid-rows-4 { grid-template-rows: repeat(4, minmax(0, 1fr)); }
+
+/* ===== LAYOUT TRANSITIONS ===== */
+.layout-transition {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.layout-transition .stream-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== MOBILE SWIPE ENHANCEMENTS ===== */
+.mobile-swipe-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-x;
+}
+
+.mobile-swipe-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-swipe-item {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.mobile-swipe-indicators {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 20;
+}
+
+.mobile-swipe-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.mobile-swipe-dot.active {
+  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.2);
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+@media (prefers-reduced-motion: reduce) {
+  .mosaic-grid,
+  .focus-layout,
+  .pip-layout,
+  .layout-transition,
+  .mobile-swipe-wrapper {
+    transition: none !important;
+  }
+  
+  .stream-card,
+  .secondary-stream,
+  .pip-stream {
+    transition: none !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .focus-layout .primary-stream {
+    border-color: #fff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+  
+  .pip-layout .pip-stream {
+    border-color: #fff;
+  }
+  
+  .mosaic-grid .stream-card {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* ===== LOADING STATES ===== */
+.layout-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.layout-loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: loading-shimmer 1.5s infinite;
+  z-index: 1;
+}
+
+@keyframes loading-shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}

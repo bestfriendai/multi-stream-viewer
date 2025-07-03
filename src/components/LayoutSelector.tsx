@@ -9,7 +9,9 @@ import {
   LayoutGrid,
   PictureInPicture2,
   Columns,
-  Rows
+  Rows,
+  Focus,
+  Layers3
 } from 'lucide-react'
 import {
   Tooltip,
@@ -62,11 +64,25 @@ const layoutOptions = [
     grid: [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
   },
   { 
-    value: 'custom', 
-    label: 'Focus View', 
-    icon: PictureInPicture2,
-    description: '1 main + 3 side',
+    value: 'mosaic', 
+    label: 'Mosaic', 
+    icon: Layers3,
+    description: 'Adaptive grid',
+    grid: [[1, 2], [3, 4]]
+  },
+  { 
+    value: 'focus', 
+    label: 'Focus Mode', 
+    icon: Focus,
+    description: '1 main + thumbnails',
     grid: [[1, 1, 2], [1, 1, 3], [1, 1, 4]]
+  },
+  { 
+    value: 'pip', 
+    label: 'Picture-in-Picture', 
+    icon: PictureInPicture2,
+    description: '1 main + floating',
+    grid: [[1, 1, 1], [1, 1, 1], [1, 1, 2]]
   }
 ] as const
 
@@ -129,7 +145,7 @@ export default function LayoutSelector() {
                           key={i} 
                           className={cn(
                             "bg-primary/50 rounded-sm",
-                            option.value === 'custom' && i === 0 && "col-span-2 row-span-3"
+                            (option.value === 'focus' || option.value === 'pip') && i === 0 && "col-span-2 row-span-3"
                           )}
                         />
                       ))}

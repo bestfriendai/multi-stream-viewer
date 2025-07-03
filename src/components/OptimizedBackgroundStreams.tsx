@@ -128,7 +128,7 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
                       onLoad={() => {
                         setImagesLoaded(prev => new Set(prev).add(index))
                       }}
-                      onError={(e) => {
+                      onError={() => {
                         // Fallback to a default image or gradient
                         console.log(`Thumbnail failed to load for ${channel.channelName}`)
                       }}
@@ -143,7 +143,7 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
                 {/* Actual stream embed - only on desktop */}
                 {shouldLoad && !isMobile && (
                   <iframe
-                    src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false&time=${Date.now()}`}
+                    src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
                     className="absolute inset-0 w-full h-full transition-opacity duration-500 background-stream-iframe"
                     frameBorder="0"
                     scrolling="no"

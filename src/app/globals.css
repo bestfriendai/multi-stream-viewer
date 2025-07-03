@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../styles/layout-modes.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -343,56 +344,56 @@
   grid-auto-rows: minmax(0, 1fr); /* Ensure equal height rows */
 }
 
-/* Desktop grid configurations */
+/* Desktop grid configurations - only apply when no specific layout is set */
 @media (min-width: 768px) {
-  .stream-grid[data-count="1"] {
+  .stream-grid[data-layout="auto"][data-count="1"] {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
   }
   
-  .stream-grid[data-count="2"] {
+  .stream-grid[data-layout="auto"][data-count="2"] {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr;
   }
   
-  .stream-grid[data-count="3"] {
+  .stream-grid[data-layout="auto"][data-count="3"] {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
   }
   
-  .stream-grid[data-count="3"] > *:first-child {
+  .stream-grid[data-layout="auto"][data-count="3"] > *:first-child {
     grid-column: 1 / -1;
   }
   
-  .stream-grid[data-count="4"] {
+  .stream-grid[data-layout="auto"][data-count="4"] {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
   }
   
-  .stream-grid[data-count="5"],
-  .stream-grid[data-count="6"] {
+  .stream-grid[data-layout="auto"][data-count="5"],
+  .stream-grid[data-layout="auto"][data-count="6"] {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
   }
   
-  .stream-grid[data-count="7"],
-  .stream-grid[data-count="8"],
-  .stream-grid[data-count="9"] {
+  .stream-grid[data-layout="auto"][data-count="7"],
+  .stream-grid[data-layout="auto"][data-count="8"],
+  .stream-grid[data-layout="auto"][data-count="9"] {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
   }
   
-  .stream-grid[data-count="10"],
-  .stream-grid[data-count="11"],
-  .stream-grid[data-count="12"] {
+  .stream-grid[data-layout="auto"][data-count="10"],
+  .stream-grid[data-layout="auto"][data-count="11"],
+  .stream-grid[data-layout="auto"][data-count="12"] {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
   }
   
-  .stream-grid[data-count="13"],
-  .stream-grid[data-count="14"],
-  .stream-grid[data-count="15"],
-  .stream-grid[data-count="16"] {
+  .stream-grid[data-layout="auto"][data-count="13"],
+  .stream-grid[data-layout="auto"][data-count="14"],
+  .stream-grid[data-layout="auto"][data-count="15"],
+  .stream-grid[data-layout="auto"][data-count="16"] {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
   }
@@ -920,6 +921,46 @@ button:not(.no-touch-target),
 .custom-layout {
   width: 100%;
   height: 100%;
+}
+
+/* Mosaic layout - force grid display even on mobile */
+.mosaic-grid {
+  display: grid !important;
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+  padding: 1rem;
+  min-height: calc(100vh - 120px);
+}
+
+/* Override mobile flex layout for mosaic */
+.stream-grid.mosaic-grid {
+  display: grid !important;
+  flex-direction: unset !important;
+}
+
+.mosaic-grid > div {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  min-height: 150px !important;
+  max-height: none !important;
+  flex-shrink: unset !important;
+  flex-grow: unset !important;
+}
+
+/* Ensure mosaic works on all screen sizes */
+@media (max-width: 768px) {
+  .stream-grid.mosaic-grid {
+    display: grid !important;
+    flex-direction: unset !important;
+    padding: 0.5rem !important;
+    gap: 0.5rem !important;
+  }
+  
+  .mosaic-grid > div {
+    min-height: 120px !important;
+  }
 }
 
 /* Improved touch targets for mobile */

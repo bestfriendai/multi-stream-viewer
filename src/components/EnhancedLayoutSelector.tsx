@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import { useStreamStore } from '@/store/streamStore'
 import { Button } from '@/components/ui/button'
@@ -22,11 +22,13 @@ import {
   MoreHorizontal,
   Sparkles
 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+import type { GridLayout } from '@/types/stream'
 
 interface LayoutOption {
-  id: string
+  id: GridLayout
   name: string
-  icon: React.ComponentType<any>
+  icon: LucideIcon
   description: string
   gridClass: string
   isNew?: boolean
@@ -34,6 +36,27 @@ interface LayoutOption {
 }
 
 const layoutOptions: LayoutOption[] = [
+  {
+    id: '1x1',
+    name: '1×1 Stacked',
+    icon: Grid2x2,
+    description: 'Full-width stacked streams',
+    gridClass: 'grid-cols-1'
+  },
+  {
+    id: '2x1',
+    name: '2×1 Side by Side',
+    icon: Grid2x2,
+    description: 'Horizontal layout',
+    gridClass: 'grid-cols-2'
+  },
+  {
+    id: '1x2',
+    name: '1×2 Vertical',
+    icon: Grid2x2,
+    description: 'Vertical stacked layout',
+    gridClass: 'grid-cols-1'
+  },
   {
     id: '2x2',
     name: '2×2 Grid',
@@ -47,6 +70,13 @@ const layoutOptions: LayoutOption[] = [
     icon: Grid3x3,
     description: 'Classic multi-stream layout',
     gridClass: 'grid-cols-3 grid-rows-3'
+  },
+  {
+    id: '4x4',
+    name: '4×4 Grid',
+    icon: LayoutGrid,
+    description: 'Large grid layout',
+    gridClass: 'grid-cols-4 grid-rows-4'
   },
   {
     id: 'mosaic',
@@ -109,13 +139,13 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
 
   const currentLayout = layoutOptions.find(layout => layout.id === gridLayout) || layoutOptions[0]!
 
-  const handleLayoutChange = (layoutId: string) => {
-    setGridLayout(layoutId as any)
+  const handleLayoutChange = (layoutId: GridLayout) => {
+    setGridLayout(layoutId)
     setIsOpen(false)
     
     // Track analytics for layout changes
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'layout_changed', {
+    if (typeof window !== 'undefined' && 'gtag' in window) {
+      (window as { gtag: (command: string, eventName: string, parameters: Record<string, unknown>) => void }).gtag('event', 'layout_changed', {
         layout_id: layoutId,
         stream_count: streams.length
       })
