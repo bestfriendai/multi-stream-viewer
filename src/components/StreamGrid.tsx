@@ -160,15 +160,7 @@ const StreamGrid: React.FC = React.memo(() => {
   }, [])
   
   const gridConfig = useMemo(() => {
-    const config = calculateGridConfig(streams.length, gridLayout, isMobile)
-    console.log('Grid config:', { 
-      streamsLength: streams.length, 
-      gridLayout, 
-      primaryStreamId, 
-      isMobile,
-      config 
-    })
-    return config
+    return calculateGridConfig(streams.length, gridLayout, isMobile)
   }, [streams.length, gridLayout, primaryStreamId, isMobile])
 
   // Mobile swipe navigation with improved gesture handling
@@ -191,7 +183,6 @@ const StreamGrid: React.FC = React.memo(() => {
   const handleStreamClick = (streamId: string) => {
     if (gridLayout === 'focus' || gridLayout === 'pip') {
       setPrimaryStream(streamId)
-      console.log('Setting primary stream to:', streamId)
     } else if (isMobile) {
       setActiveStream(streamId)
     }
