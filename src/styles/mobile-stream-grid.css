@@ -19,50 +19,75 @@
   display: none;
 }
 
-/* Mobile grid layouts - Twitch-inspired bigger boxes */
+/* Mobile grid layouts - Responsive with aspect ratios */
 .mobile-grid-single {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  gap: 1rem;
-  height: 100vh;
-  padding: 1rem;
+  grid-auto-rows: auto;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  min-height: 100vh;
+  padding: clamp(0.5rem, 2vw, 1rem);
+}
+
+.mobile-grid-single .stream-card {
+  aspect-ratio: 16/9;
+  width: 100%;
 }
 
 .mobile-grid-1x2 {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 1.5rem; /* Increased gap for better separation */
-  height: 100vh;
-  padding: 1rem;
+  grid-auto-rows: auto;
+  gap: clamp(0.75rem, 3vw, 1.5rem);
+  min-height: 100vh;
+  padding: clamp(0.5rem, 2vw, 1rem);
+}
+
+.mobile-grid-1x2 .stream-card {
+  aspect-ratio: 16/9;
+  width: 100%;
 }
 
 .mobile-grid-1x3 {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, 1fr);
-  gap: 0.75rem;
-  height: 100vh;
-  padding: 0.75rem;
+  grid-auto-rows: auto;
+  gap: clamp(0.5rem, 2vw, 0.75rem);
+  min-height: 100vh;
+  padding: clamp(0.5rem, 1.5vw, 0.75rem);
+}
+
+.mobile-grid-1x3 .stream-card {
+  aspect-ratio: 16/9;
+  width: 100%;
 }
 
 .mobile-grid-2x2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 0.75rem;
-  height: 100vh;
-  padding: 0.75rem;
+  grid-auto-rows: auto;
+  gap: clamp(0.5rem, 2vw, 0.75rem);
+  min-height: 100vh;
+  padding: clamp(0.5rem, 1.5vw, 0.75rem);
+}
+
+.mobile-grid-2x2 .stream-card {
+  aspect-ratio: 16/9;
+  width: 100%;
 }
 
 .mobile-grid-2x3 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, 1fr);
-  gap: 0.5rem;
-  height: 100vh;
-  padding: 0.5rem;
+  grid-auto-rows: auto;
+  gap: clamp(0.25rem, 1.5vw, 0.5rem);
+  min-height: 100vh;
+  padding: clamp(0.25rem, 1vw, 0.5rem);
+}
+
+.mobile-grid-2x3 .stream-card {
+  aspect-ratio: 16/9;
+  width: 100%;
 }
 
 .mobile-grid-scroll {
@@ -83,19 +108,30 @@
     position: relative;
   }
   
-  /* Enhanced touch targets for mobile - Twitch-inspired */
+  /* Enhanced touch targets for mobile - 48px minimum */
   .stream-controls {
-    padding: 16px; /* Increased from 12px */
-    min-height: 48px; /* Increased from 44px */
-    min-width: 48px; /* Increased from 44px */
+    padding: clamp(12px, 4vw, 20px);
+    min-height: 48px;
+    min-width: 48px;
   }
   
-  /* Larger touch-friendly buttons */
-  .mobile-stream-grid .stream-embed-container button {
-    min-height: 48px; /* Increased from 44px */
-    min-width: 48px; /* Increased from 44px */
-    padding: 16px; /* Increased from 12px */
-    border-radius: 8px; /* More rounded like Twitch */
+  /* Larger touch-friendly buttons with better spacing */
+  .mobile-stream-grid .stream-embed-container button,
+  .stream-embed-container button {
+    min-height: 48px;
+    min-width: 48px;
+    padding: clamp(12px, 3vw, 16px);
+    border-radius: clamp(6px, 2vw, 10px);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Increase tap area with invisible padding */
+  .mobile-stream-grid .stream-embed-container button::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    z-index: -1;
   }
   
   /* Better spacing for mobile layout */

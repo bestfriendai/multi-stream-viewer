@@ -450,9 +450,9 @@ const StreamGrid: React.FC = React.memo(() => {
               className={cn(
                 'stream-card relative bg-black overflow-hidden shadow-lg',
                 'border border-border/20 rounded-xl',
-                'will-change-transform isolate',
-                'min-h-[200px] cursor-pointer',
-                isMobile && 'min-h-[250px]'
+                'will-change-transform isolate cursor-pointer',
+                !isMobile && 'min-h-[200px]', // Only apply min-height on desktop
+                isMobile && 'aspect-video' // Use aspect ratio on mobile
               )}
               style={{
                 contain: 'layout style paint',
