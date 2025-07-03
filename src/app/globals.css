@@ -226,6 +226,46 @@
   * {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
+  
+  /* Force proper iframe sizing on mobile */
+  iframe {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Stream embed specific fixes */
+  .aspect-video iframe,
+  .aspect-video > div {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+  }
+
+  /* Specific fixes for Twitch embeds on mobile */
+  .stream-embed-container {
+    overflow: hidden;
+  }
+
+  .stream-embed-container iframe,
+  .stream-embed-container > div,
+  .stream-embed-container > div > div,
+  .stream-embed-container div[data-a-target="video-player"] {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    border-radius: 0 !important;
+    object-fit: cover !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+
+  /* Force proper aspect ratio for mobile stream containers */
+  .aspect-video .stream-embed-container > div {
+    position: absolute !important;
+    inset: 0 !important;
+  }
 }
 
 /* Reduce motion for accessibility */

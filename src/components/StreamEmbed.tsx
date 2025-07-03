@@ -7,6 +7,7 @@ import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from
 import { useSingleChannelStatus } from '@/hooks/useTwitchStatus'
 import LiveIndicator from './LiveIndicator'
 import { haptic } from '@/lib/haptics'
+import { cn } from '@/lib/utils'
 
 interface StreamEmbedProps {
   stream: Stream
@@ -57,23 +58,34 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       
       script.onload = () => {
         if (window.Twitch && embedRef.current) {
-          const isMobile = window.innerWidth < 768
+          const isMobileDevice = window.innerWidth < 768
           const embed = new window.Twitch.Embed(embedRef.current, {
             width: '100%',
             height: '100%',
             channel: stream.channelName,
-            parent: [window.location.hostname, 'localhost', 'streamyyy.com'],
+            parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'ampsummer.com'],
             autoplay: true,
             muted: stream.muted,
             layout: 'video',
             theme: 'dark',
             allowfullscreen: true,
             // Mobile-specific optimizations
-            ...(isMobile && {
+            ...(isMobileDevice && {
               quality: 'auto',
               controls: true
             })
           })
+          
+          // Additional mobile iframe styling after embed creation
+          setTimeout(() => {
+            if (embedRef.current && isMobileDevice) {
+              const iframe = embedRef.current.querySelector('iframe')
+              if (iframe) {
+                iframe.style.objectFit = 'cover'
+                iframe.style.objectPosition = 'center'
+              }
+            }
+          }, 100)
           
           embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
             playerRef.current = embed.getPlayer()
@@ -101,7 +113,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       iframe.style.left = '0'
       iframe.style.width = '100%'
       iframe.style.height = '100%'
-      iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=${stream.muted ? 1 : 0}&enablejsapi=1&modestbranding=1&rel=0&playsinline=1`
+      iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=${stream.muted ? 1 : 0}&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}`
       iframe.setAttribute('frameborder', '0')
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
       iframe.setAttribute('allowfullscreen', 'true')
@@ -183,9 +195,20 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
   
   return (
     <div className="relative w-full h-full group rounded-2xl overflow-hidden bg-black transform-gpu">
-      {/* Responsive aspect ratio container for mobile */}
-      <div className="w-full h-full md:h-full" style={{ aspectRatio: isMobile ? '16/9' : 'auto' }}>
-        <div ref={embedRef} className="absolute inset-0 w-full h-full rounded-2xl" />
+      {/* Properly sized embed container */}
+      <div 
+        className={cn(
+          "w-full h-full rounded-2xl overflow-hidden relative stream-embed-container",
+          isMobile ? "aspect-video" : "" // Force 16:9 on mobile
+        )}
+      >
+        <div 
+          ref={embedRef} 
+          className={cn(
+            "w-full h-full",
+            isMobile && "absolute inset-0"
+          )} 
+        />
       </div>
       
       {/* Stream Controls with improved mobile touch targets */}

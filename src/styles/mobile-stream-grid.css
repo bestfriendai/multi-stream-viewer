@@ -108,6 +108,35 @@
     position: relative;
   }
   
+  /* Force Twitch and YouTube iframes to fill container properly */
+  .stream-embed-container iframe,
+  .stream-embed-container div[data-a-target="video-player"],
+  .stream-embed-container > div,
+  .stream-embed-container > div > div {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+  
+  /* Ensure stream cards maintain aspect ratio */
+  .stream-card {
+    aspect-ratio: 16/9 !important;
+    width: 100%;
+    height: auto !important;
+  }
+  
+  /* Fix Twitch embed container */
+  .stream-embed-container > div {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
   /* Enhanced touch targets for mobile - 48px minimum */
   .stream-controls {
     padding: clamp(12px, 4vw, 20px);

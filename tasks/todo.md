@@ -1,78 +1,151 @@
-# Multi-Stream Viewer Layout Fixes - Todo
+# Multi-Stream Viewer - Todo List
 
-## ✅ Completed Tasks
+## ✅ Previously Completed Tasks
+- Fixed Background Video Refreshing Issue
+- Fixed Layout Switching System  
+- Fixed Layout Rendering Issues (mosaic, focus, custom)
+- Fixed Footer Positioning
+- Fixed AMP Summer Page Layout (2 live streams)
+- Fixed Mute/Unmute Stream Reloads
+- Fixed Mosaic Layout Implementation
+- Fixed Focus Mode Routing
+- Fixed Live Indicator Blocking Mute Controls
+- Fixed Chat Auto-Selection
 
-### 1. Fixed Background Video Refreshing Issue
-- **Problem**: Videos in landing page background kept refreshing due to `&time=${Date.now()}` parameter
-- **Solution**: Removed timestamp parameter from iframe sources in `OptimizedBackgroundStreams.tsx`
-- **Status**: ✅ COMPLETED
-- **Files Modified**: `src/components/OptimizedBackgroundStreams.tsx`
+## 🚀 Mobile UI Improvements - App-Like Experience
 
-### 2. Fixed Layout Switching System
-- **Problem**: Layout switching wasn't working properly due to value mismatches and incomplete logic
-- **Solution**: Updated `calculateGridConfig` function in `StreamGrid.tsx` with proper layout handling
-- **Status**: ✅ COMPLETED 
-- **Files Modified**: `src/components/StreamGrid.tsx`
+### Phase 1: Fix Stream Resizing Issues (HIGH PRIORITY)
 
-#### Layout Fixes Implemented:
-- ✅ **1x1 Layout**: Now correctly shows streams stacked vertically at full width
-- ✅ **2x1 Layout**: Side by side layout (2 columns, multiple rows as needed)
-- ✅ **1x2 Layout**: Stacked layout (1 column, max 2 rows)
-- ✅ **2x2 Layout**: Standard 2x2 grid
-- ✅ **3x3 Layout**: Standard 3x3 grid  
-- ✅ **4x4 Layout**: Standard 4x4 grid
-- ✅ **Mosaic Layout**: Adaptive layout that adjusts based on stream count
-  - 1 stream: 1x1
-  - 2 streams: 2x1
-  - 3-4 streams: 2x2
-  - 5-6 streams: 3x2
-  - 7-9 streams: 3x3
-  - 10-12 streams: 4x3
-  - 13-16 streams: 4x4
-- ✅ **Custom/Focus/PIP**: Special layouts preserved
+#### Immediate Fixes Needed:
+- [ ] Replace fixed heights with aspect-ratio containers in StreamEmbed
+- [ ] Create responsive MobileStreamEmbed component with proper 16:9 ratio
+- [ ] Fix grid layouts to use viewport units (vw/vh) instead of fixed pixels
+- [ ] Implement CSS container queries for dynamic resizing
+- [ ] Remove min-height constraints causing black bars
+- [ ] Add ResizeObserver for dynamic viewport adjustments
 
-## 🔄 Tasks in Progress
+#### Code Changes Required:
+```css
+/* New responsive stream container */
+.stream-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  container-type: inline-size;
+  overflow: hidden;
+}
+```
 
-### 3. Testing Layout Switching
-- **Status**: 🔄 IN PROGRESS
-- **Next Steps**: 
-  - Start development server
-  - Add multiple test streams
-  - Test each layout option systematically
-  - Verify 1x1 shows full-width stacked streams
-  - Verify mosaic adapts correctly to stream count
-  - Ensure layout changes are immediate without stream reloads
+### Phase 2: Native App-Like UI (HIGH PRIORITY)
 
-## 📋 Testing Checklist
+#### Navigation & Gestures:
+- [ ] Implement bottom sheet pattern for modals/menus
+- [ ] Add swipe-from-edge navigation gestures  
+- [ ] Create smooth spring animations (Framer Motion)
+- [ ] Enhanced haptic feedback for all interactions
+- [ ] Pull-to-refresh with elastic bounce effect
+- [ ] Edge swipe for back navigation
 
-### Layout Testing (when streams are added):
-- [ ] **1x1 (Single)**: Each stream full width, stacked vertically
-- [ ] **2x1 (Side by Side)**: 2 streams horizontal
-- [ ] **1x2 (Stacked)**: 2 streams vertical
-- [ ] **2x2 Grid**: 4 streams in 2x2 layout
-- [ ] **3x3 Grid**: 9 streams in 3x3 layout
-- [ ] **4x4 Grid**: 16 streams in 4x4 layout
-- [ ] **Mosaic**: Adaptive layout based on stream count
-- [ ] **Focus View**: Custom layout with main + side streams
+#### Visual Polish:
+- [ ] Reduce padding/margins (8px mobile vs 16px desktop)
+- [ ] Implement fluid typography using clamp()
+- [ ] Add backdrop blur effects (backdrop-filter)
+- [ ] Create skeleton loaders for streams
+- [ ] 60fps animations with will-change CSS
 
-### Additional Tests:
-- [ ] Layout switching is immediate (no stream reloads)
-- [ ] Background videos no longer refresh unnecessarily
-- [ ] Mobile layouts work correctly
-- [ ] All layout transitions are smooth
+#### Touch Optimization:
+- [ ] Increase ALL touch targets to 48x48px minimum
+- [ ] Add invisible tap areas around small buttons
+- [ ] Implement proper touch-action CSS
+- [ ] Visual feedback on tap (scale/opacity)
+- [ ] Bottom-third UI for one-handed use
 
-## 🐛 Known Issues
-- None currently identified
+### Phase 3: Performance & PWA (MEDIUM PRIORITY)
 
-## 📝 Notes
-- Fixed TypeScript errors in StreamGrid.tsx
-- Maintained backward compatibility with existing layout values
-- Enhanced mosaic layout logic for better stream count adaptation
-- Preserved mobile-specific layout handling
+#### Rendering Performance:
+- [ ] Intersection Observer for off-screen streams
+- [ ] Virtual scrolling for 10+ streams
+- [ ] Hardware acceleration (transform3d)
+- [ ] React.memo for stream components
+- [ ] Debounced resize handlers
 
-## 🎯 Success Criteria
-1. Background videos stop refreshing when not needed
-2. 1x1 layout shows streams stacked vertically at full width
-3. All layout options work correctly with immediate switching
-4. Mosaic layout adapts intelligently based on stream count
-5. No stream reloads when switching layouts
+#### Progressive Web App:
+- [ ] App manifest with icons
+- [ ] Service worker for offline
+- [ ] "Add to Home Screen" prompt
+- [ ] Status bar theming
+- [ ] Splash screens
+
+### Phase 4: Enhanced Mobile Layouts (MEDIUM PRIORITY)
+
+#### Smart Layout System:
+- [ ] Auto-layout based on stream count
+- [ ] Orientation-aware layouts
+- [ ] Layout presets with previews
+- [ ] Remembered layout preferences
+- [ ] Quick gesture switching
+
+#### Immersive Modes:
+- [ ] True fullscreen with gestures
+- [ ] Theater mode (minimal UI)
+- [ ] PiP for background viewing
+- [ ] Split view (stream + chat)
+- [ ] Focus mode with thumbnails
+
+## 📱 Mobile-Specific Bug Fixes
+
+### Current Issues to Fix:
+1. **Stream Aspect Ratios** - Black bars on various devices
+2. **Touch Targets** - Buttons too small on mobile
+3. **Layout Switching** - Not smooth on mobile
+4. **Scroll Performance** - Janky with multiple streams
+5. **Control Overlaps** - UI elements overlapping
+
+### Device Testing Checklist:
+- [ ] iPhone SE (375x667)
+- [ ] iPhone 14 (390x844)  
+- [ ] iPhone 14 Pro Max (430x932)
+- [ ] Pixel 7 (412x915)
+- [ ] iPad Mini (768x1024)
+- [ ] Galaxy S23 (360x780)
+
+## 🎯 Success Metrics
+
+- Streams maintain perfect 16:9 ratio
+- All animations run at 60fps
+- Touch targets minimum 48px
+- First paint under 1 second
+- Smooth momentum scrolling
+- "Feels like native app" feedback
+
+## 📝 Implementation Notes
+
+### Today's Focus:
+1. Fix aspect ratio with CSS aspect-ratio property
+2. Replace min-height with dynamic sizing
+3. Test on real devices with BrowserStack
+
+### Tomorrow:
+1. Implement bottom sheet component
+2. Add spring animations to all transitions
+3. Enhance touch feedback
+
+### This Week:
+1. Complete all Phase 1 & 2 items
+2. Start PWA implementation
+3. User testing sessions
+
+## Review Section
+
+### Changes Made:
+- Created comprehensive mobile improvement plan
+- Documented all current mobile issues
+- Prioritized fixes based on user impact
+- Added specific implementation details
+- Set clear success metrics
+
+### Next Steps:
+1. Start with aspect ratio fixes (immediate impact)
+2. Move to touch target improvements
+3. Then implement app-like animations
+4. Finally, add PWA features
