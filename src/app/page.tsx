@@ -272,7 +272,7 @@ export default function Home() {
                           case 'pip':
                             return <EnhancedMobileLayout />
                           case 'mosaic':
-                            return <BentoStreamGrid />
+                            return <StreamGrid />
                           default:
                             return <StreamGrid />
                         }

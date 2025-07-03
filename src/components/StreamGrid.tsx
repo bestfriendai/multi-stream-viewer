@@ -390,8 +390,29 @@ const StreamGrid: React.FC = React.memo(() => {
     )
   }
 
+  // Get mosaic-specific classes based on stream count
+  const getMosaicClasses = () => {
+    const count = streams.length
+    const classes = ['mosaic-grid']
+    
+    if (count <= 4) {
+      classes.push(`grid-cols-${count}`)
+    } else {
+      classes.push('grid-cols-4')
+    }
+    
+    // Add special pattern classes
+    if (count === 3) classes.push('mosaic-3-streams')
+    if (count === 5) classes.push('mosaic-5-streams')
+    if (count === 6) classes.push('mosaic-6-streams')
+    
+    return classes.join(' ')
+  }
+
   // Render Standard Grid Layout
   const renderGridLayout = () => {
+    const isMosaicLayout = gridLayout === 'mosaic'
+    
     return (
       <motion.div
         variants={gridVariants}
@@ -399,11 +420,11 @@ const StreamGrid: React.FC = React.memo(() => {
         animate="visible"
         onPanEnd={handlePanEnd}
         className={cn(
-          'stream-grid w-full grid',
-          gridConfig.class,
+          'stream-grid w-full',
+          isMosaicLayout ? getMosaicClasses() : `grid ${gridConfig.class}`,
           'touch-pan-y',
           isMobile ? 'touch-pan-x' : '',
-          'min-h-full relative gap-2 p-2',
+          isMosaicLayout ? 'h-full' : 'min-h-full relative gap-2 p-2',
           isMobile && 'mobile-stream-grid',
           'layout-transition'
         )}
