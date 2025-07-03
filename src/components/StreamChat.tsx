@@ -24,7 +24,14 @@ interface StreamChatProps {
 export default function StreamChat({ show, onClose }: StreamChatProps) {
   const { streams } = useStreamStore()
   const twitchStreams = streams.filter(s => s.platform === 'twitch')
-  const [selectedStreamId, setSelectedStreamId] = useState(twitchStreams[0]?.id || '')
+  
+  // Initialize with unmuted stream if available, otherwise first stream
+  const getInitialStreamId = () => {
+    const unmutedStream = twitchStreams.find(s => !s.muted)
+    return unmutedStream?.id || twitchStreams[0]?.id || ''
+  }
+  
+  const [selectedStreamId, setSelectedStreamId] = useState(getInitialStreamId())
   const [isMobile, setIsMobile] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -47,34 +54,58 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
     refreshInterval: 60000
   })
   
-  // Auto-select unmuted stream, or stream with most viewers if all are muted
+  // Auto-select unmuted stream immediately when stream is unmuted
   useEffect(() => {
-    // First, check for unmuted stream
+    if (!show) return
+    
+    // Always prioritize unmuted streams
     const unmutedStream = twitchStreams.find(s => !s.muted)
     
-    if (unmutedStream) {
-      // If there's an unmuted stream, select it
-      if (unmutedStream.id !== selectedStreamId) {
-        setSelectedStreamId(unmutedStream.id)
-      }
-    } else if (show && status.size > 0) {
-      // If all streams are muted, select the one with most viewers
-      let maxViewers = 0
-      let maxViewerStreamId = twitchStreams[0]?.id || ''
-      
-      twitchStreams.forEach(stream => {
-        const streamStatus = status.get(stream.channelName)
-        if (streamStatus && streamStatus.isLive && streamStatus.viewerCount > maxViewers) {
-          maxViewers = streamStatus.viewerCount
-          maxViewerStreamId = stream.id
+    if (unmutedStream && unmutedStream.id !== selectedStreamId) {
+      // Immediately switch to unmuted stream
+      setSelectedStreamId(unmutedStream.id)
+      return
+    }
+    
+    // If no unmuted stream and we don't have a valid selection, pick best option
+    if (!twitchStreams.find(s => s.id === selectedStreamId)) {
+      if (status.size > 0) {
+        // Select stream with most viewers if available
+        let maxViewers = 0
+        let maxViewerStreamId = twitchStreams[0]?.id || ''
+        
+        twitchStreams.forEach(stream => {
+          const streamStatus = status.get(stream.channelName)
+          if (streamStatus && streamStatus.isLive && streamStatus.viewerCount > maxViewers) {
+            maxViewers = streamStatus.viewerCount
+            maxViewerStreamId = stream.id
+          }
+        })
+        
+        if (maxViewerStreamId) {
+          setSelectedStreamId(maxViewerStreamId)
         }
-      })
-      
-      if (maxViewerStreamId && maxViewerStreamId !== selectedStreamId) {
-        setSelectedStreamId(maxViewerStreamId)
+      } else if (twitchStreams[0]) {
+        // Fallback to first stream
+        setSelectedStreamId(twitchStreams[0].id)
       }
     }
-  }, [show, status, twitchStreams]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [show, twitchStreams, selectedStreamId, status])
+  
+  // Reinitialize selected stream when twitch streams change (streams added/removed)
+  useEffect(() => {
+    if (twitchStreams.length > 0) {
+      const currentSelected = twitchStreams.find(s => s.id === selectedStreamId)
+      
+      // If current selection is no longer valid, or if we should prefer an unmuted stream
+      if (!currentSelected) {
+        const newId = getInitialStreamId()
+        if (newId !== selectedStreamId) {
+          setSelectedStreamId(newId)
+        }
+      }
+    }
+  }, [twitchStreams.length, streams]) // eslint-disable-line react-hooks/exhaustive-deps
   
   if (!show) return null
 
