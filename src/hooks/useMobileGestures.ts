@@ -17,10 +17,14 @@ interface UseMobileGesturesOptions {
   onPullToRefresh?: () => void
   onDoubleTap?: () => void
   onLongPress?: () => void
+  onPinch?: (scale: number) => void
+  onEdgeSwipe?: (edge: 'left' | 'right') => void
   swipeThreshold?: number
   velocityThreshold?: number
   pullThreshold?: number
   longPressDelay?: number
+  enableHaptics?: boolean
+  edgeSwipeWidth?: number
 }
 
 export const useMobileGestures = (options: UseMobileGesturesOptions = {}) => {

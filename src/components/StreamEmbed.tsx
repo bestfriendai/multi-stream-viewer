@@ -6,6 +6,7 @@ import type { Stream } from '@/types/stream'
 import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from 'lucide-react'
 import { useSingleChannelStatus } from '@/hooks/useTwitchStatus'
 import LiveIndicator from './LiveIndicator'
+import { haptic } from '@/lib/haptics'
 
 interface StreamEmbedProps {
   stream: Stream
@@ -208,7 +209,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
             <button
               onClick={(e) => {
                 handleMuteToggle(e)
-                if ('vibrate' in navigator) navigator.vibrate(10)
+                haptic.light()
               }}
               className="p-2 sm:p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 active:bg-white/30 text-white transition-all duration-150 border border-white/20 transform active:scale-95 min-w-[40px] min-h-[40px]"
               title={stream.muted ? 'Unmute' : 'Mute'}
@@ -219,7 +220,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
             <button
               onClick={(e) => {
                 handleFullscreen(e)
-                if ('vibrate' in navigator) navigator.vibrate(10)
+                haptic.light()
               }}
               className="p-2 sm:p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 active:bg-white/30 text-white transition-all duration-150 border border-white/20 transform active:scale-95 min-w-[40px] min-h-[40px]"
               title="Fullscreen"
@@ -231,7 +232,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
               <button
                 onClick={(e) => {
                   handleMaximize(e)
-                  if ('vibrate' in navigator) navigator.vibrate(10)
+                  haptic.medium()
                 }}
                 className="p-2 sm:p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 active:bg-white/30 text-white transition-all duration-150 border border-white/20 transform active:scale-95 min-w-[40px] min-h-[40px]"
                 title="Set as primary"
@@ -243,7 +244,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
             <button
               onClick={(e) => {
                 handleClose(e)
-                if ('vibrate' in navigator) navigator.vibrate(20)
+                haptic.heavy()
               }}
               className="p-2 sm:p-2 rounded-full bg-red-500/20 backdrop-blur-md hover:bg-red-500/30 active:bg-red-500/40 text-white transition-all duration-150 border border-red-500/30 transform active:scale-95 min-w-[40px] min-h-[40px]"
               title="Remove stream"
