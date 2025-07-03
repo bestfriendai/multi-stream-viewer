@@ -268,7 +268,7 @@ export default function Home() {
                           case 'custom':
                             return <BentoStreamGrid />
                           case 'focus':
-                            return <GestureStreamViewer />
+                            return <StreamGrid />
                           case 'pip':
                             return <EnhancedMobileLayout />
                           case 'mosaic':
