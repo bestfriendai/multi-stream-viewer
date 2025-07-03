@@ -198,14 +198,28 @@ const StreamGrid: React.FC = React.memo(() => {
   // Render Focus Mode Layout
   const renderFocusLayout = () => {
     console.log('🎯 renderFocusLayout called with', { primaryStreamId, streamCount: streams.length })
+    
+    // If no primaryStreamId is set, set the first stream as primary
+    if (!primaryStreamId && streams.length > 0) {
+      console.log('🎯 No primaryStreamId set, setting first stream as primary')
+      setPrimaryStream(streams[0]!.id)
+    }
+    
     const primaryStream = streams.find(s => s.id === primaryStreamId) || streams[0]
     const secondaryStreams = streams.filter(s => s.id !== primaryStream?.id)
 
     console.log('🎯 Focus layout streams:', { primaryStream: primaryStream?.channelName, secondaryCount: secondaryStreams.length })
 
-    if (!primaryStream) {
-      console.log('🎯 No primary stream found, returning null')
-      return null
+    if (!primaryStream || streams.length === 0) {
+      console.log('🎯 No streams available, showing empty state')
+      return (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50">
+            <h2 className="text-2xl font-semibold mb-2">Focus Mode</h2>
+            <p className="text-muted-foreground">Add streams to use focus mode</p>
+          </div>
+        </div>
+      )
     }
 
     return (
@@ -256,14 +270,28 @@ const StreamGrid: React.FC = React.memo(() => {
   // Render Picture-in-Picture Layout
   const renderPipLayout = () => {
     console.log('📺 renderPipLayout called with', { primaryStreamId, streamCount: streams.length })
+    
+    // If no primaryStreamId is set, set the first stream as primary
+    if (!primaryStreamId && streams.length > 0) {
+      console.log('📺 No primaryStreamId set, setting first stream as primary')
+      setPrimaryStream(streams[0]!.id)
+    }
+    
     const mainStream = streams.find(s => s.id === primaryStreamId) || streams[0]
     const pipStreams = streams.filter(s => s.id !== mainStream?.id)
 
     console.log('📺 PiP layout streams:', { mainStream: mainStream?.channelName, pipCount: pipStreams.length })
 
-    if (!mainStream) {
-      console.log('📺 No main stream found, returning null')
-      return null
+    if (!mainStream || streams.length === 0) {
+      console.log('📺 No streams available, showing empty state')
+      return (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50">
+            <h2 className="text-2xl font-semibold mb-2">Picture-in-Picture Mode</h2>
+            <p className="text-muted-foreground">Add streams to use PiP mode</p>
+          </div>
+        </div>
+      )
     }
 
     return (

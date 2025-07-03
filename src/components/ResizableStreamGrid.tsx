@@ -208,7 +208,11 @@ export default function ResizableStreamGrid({ layoutType = 'custom' }: Resizable
       >
         {config.streams.map((streamConfig, index) => {
           const stream = streamsToRender[index]
-          if (!stream) return null
+          console.log('⚙️ Rendering stream panel:', { streamConfig, stream: stream?.channelName, index })
+          if (!stream) {
+            console.log('⚙️ No stream found for index', index, 'in', streamsToRender.length, 'streams')
+            return null
+          }
 
           return (
             <React.Fragment key={streamConfig.id}>
