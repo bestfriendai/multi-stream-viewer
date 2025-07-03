@@ -19,33 +19,113 @@ interface LayoutConfig {
   nested?: LayoutConfig[]
 }
 
-const defaultLayoutConfigs: Record<string, LayoutConfig> = {
-  'grid-2x2': {
+const generateLayoutConfig = (streamCount: number): LayoutConfig => {
+  if (streamCount === 0) {
+    return { direction: 'horizontal', streams: [] }
+  }
+  
+  if (streamCount === 1) {
+    return {
+      direction: 'horizontal',
+      streams: [{ id: '0', size: 100 }]
+    }
+  }
+  
+  if (streamCount === 2) {
+    return {
+      direction: 'horizontal',
+      streams: [
+        { id: '0', size: 50, minSize: 20, maxSize: 80 },
+        { id: '1', size: 50, minSize: 20, maxSize: 80 }
+      ]
+    }
+  }
+  
+  if (streamCount === 3) {
+    return {
+      direction: 'horizontal',
+      streams: [
+        { id: '0', size: 50, minSize: 30, maxSize: 70 }
+      ],
+      nested: [
+        {
+          direction: 'vertical',
+          streams: [
+            { id: '1', size: 50, minSize: 20, maxSize: 80 },
+            { id: '2', size: 50, minSize: 20, maxSize: 80 }
+          ]
+        }
+      ]
+    }
+  }
+  
+  if (streamCount === 4) {
+    return {
+      direction: 'vertical',
+      streams: [],
+      nested: [
+        {
+          direction: 'horizontal',
+          streams: [
+            { id: '0', size: 50, minSize: 20, maxSize: 80 },
+            { id: '1', size: 50, minSize: 20, maxSize: 80 }
+          ]
+        },
+        {
+          direction: 'horizontal', 
+          streams: [
+            { id: '2', size: 50, minSize: 20, maxSize: 80 },
+            { id: '3', size: 50, minSize: 20, maxSize: 80 }
+          ]
+        }
+      ]
+    }
+  }
+  
+  // For more than 4 streams, create a dynamic grid
+  const cols = Math.ceil(Math.sqrt(streamCount))
+  const rows = Math.ceil(streamCount / cols)
+  const sizePerStream = 100 / Math.max(cols, rows)
+  
+  const streams = Array.from({ length: streamCount }, (_, i) => ({
+    id: i.toString(),
+    size: sizePerStream,
+    minSize: 10,
+    maxSize: 80
+  }))
+  
+  if (rows === 1) {
+    return { direction: 'horizontal', streams }
+  }
+  
+  // Create nested layout for grid
+  const nested = Array.from({ length: rows }, (_, rowIndex) => {
+    const startIndex = rowIndex * cols
+    const endIndex = Math.min(startIndex + cols, streamCount)
+    const rowStreams = streams.slice(startIndex, endIndex)
+    
+    return {
+      direction: 'horizontal' as const,
+      streams: rowStreams.map((stream, colIndex) => ({
+        id: (startIndex + colIndex).toString(),
+        size: 100 / rowStreams.length,
+        minSize: 10,
+        maxSize: 90
+      }))
+    }
+  })
+  
+  return {
     direction: 'vertical',
     streams: [],
-    nested: [
-      {
-        direction: 'horizontal',
-        streams: [
-          { id: '0', size: 50 },
-          { id: '1', size: 50 }
-        ]
-      },
-      {
-        direction: 'horizontal', 
-        streams: [
-          { id: '2', size: 50 },
-          { id: '3', size: 50 }
-        ]
-      }
-    ]
-  },
-  'focus': {
+    nested
+  }
+}
+
+const defaultLayoutConfigs: Record<string, LayoutConfig> = {
+  'custom': {
     direction: 'horizontal',
-    streams: [
-      { id: 'main', size: 75, minSize: 60, maxSize: 85 },
-      { id: 'sidebar', size: 25, minSize: 15, maxSize: 40 }
-    ]
+    streams: []
   }
 }
 
@@ -76,8 +156,11 @@ export default function ResizableStreamGrid({ layoutType = 'custom' }: Resizable
   const [panelSizes, setPanelSizes] = useState<Record<string, number>>({})
 
   const layoutConfig = useMemo(() => {
-    return defaultLayoutConfigs[layoutType || 'grid-2x2'] || defaultLayoutConfigs['grid-2x2']
-  }, [layoutType])
+    if (layoutType === 'custom' && streams.length > 0) {
+      return generateLayoutConfig(streams.length)
+    }
+    return defaultLayoutConfigs[layoutType || 'custom'] || generateLayoutConfig(streams.length)
+  }, [layoutType, streams.length])
 
   const renderResizableLayout = (config: LayoutConfig, streamsToRender: any[], level = 0) => {
     if (config.nested) {

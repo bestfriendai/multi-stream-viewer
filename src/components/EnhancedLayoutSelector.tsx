@@ -23,6 +23,7 @@ import {
   Rows,
   Focus,
   Layers3,
+  Move,
   Sparkles
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -103,6 +104,14 @@ const layoutOptions: LayoutOption[] = [
     description: '1 main + floating',
     gridClass: 'pip-layout',
     isNew: true
+  },
+  {
+    id: 'custom',
+    name: 'Custom Layout',
+    icon: Move,
+    description: 'Resizable streams',
+    gridClass: 'custom-layout',
+    isPro: true
   }
 ]
 

@@ -6,6 +6,7 @@ import type { PanInfo } from 'framer-motion'
 import { useStreamStore } from '@/store/streamStore'
 import { cn } from '@/lib/utils'
 import StreamEmbedOptimized from './StreamEmbedOptimized'
+import ResizableStreamGrid from './ResizableStreamGrid'
 import '@/styles/mobile-stream-grid.css'
 import '@/styles/layout-modes.css'
 
@@ -44,14 +45,15 @@ const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: bool
       return { cols: 4, rows: 4, class: 'grid-cols-4 grid-rows-4' }
     
     case 'mosaic':
-      if (count === 1) return { cols: 1, rows: 1, class: 'mosaic-grid grid-cols-1 grid-rows-1' }
-      if (count === 2) return { cols: 2, rows: 1, class: 'mosaic-grid grid-cols-2 grid-rows-1' }
-      if (count === 3) return { cols: 3, rows: 1, class: 'mosaic-grid grid-cols-3 grid-rows-1' }
-      if (count === 4) return { cols: 2, rows: 2, class: 'mosaic-grid grid-cols-2 grid-rows-2' }
-      if (count <= 6) return { cols: 3, rows: 2, class: 'mosaic-grid grid-cols-3 grid-rows-2' }
-      if (count <= 9) return { cols: 3, rows: 3, class: 'mosaic-grid grid-cols-3 grid-rows-3' }
-      if (count <= 12) return { cols: 4, rows: 3, class: 'mosaic-grid grid-cols-4 grid-rows-3' }
-      if (count <= 16) return { cols: 4, rows: 4, class: 'mosaic-grid grid-cols-4 grid-rows-4' }
+      if (count === 1) return { cols: 1, rows: 1, class: 'mosaic-grid grid-cols-1' }
+      if (count === 2) return { cols: 2, rows: 1, class: 'mosaic-grid grid-cols-2' }
+      if (count === 3) return { cols: 2, rows: 2, class: 'mosaic-grid grid-cols-2 mosaic-3-streams' }
+      if (count === 4) return { cols: 2, rows: 2, class: 'mosaic-grid grid-cols-2' }
+      if (count === 5) return { cols: 3, rows: 2, class: 'mosaic-grid grid-cols-3 mosaic-5-streams' }
+      if (count === 6) return { cols: 3, rows: 2, class: 'mosaic-grid grid-cols-3 mosaic-6-streams' }
+      if (count <= 9) return { cols: 3, rows: 3, class: 'mosaic-grid grid-cols-3' }
+      if (count <= 12) return { cols: 4, rows: 3, class: 'mosaic-grid grid-cols-4' }
+      if (count <= 16) return { cols: 4, rows: 4, class: 'mosaic-grid grid-cols-4' }
       return { cols: 4, rows: Math.ceil(count / 4), class: 'mosaic-grid grid-cols-4' }
     
     case 'focus':
@@ -59,6 +61,9 @@ const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: bool
     
     case 'pip':
       return { cols: 0, rows: 0, class: 'pip-layout' }
+    
+    case 'custom':
+      return { cols: 0, rows: 0, class: 'custom-layout' }
     
   }
   
@@ -184,8 +189,9 @@ const StreamGrid: React.FC = React.memo(() => {
 
   // Handle primary stream selection for focus mode
   const handleStreamClick = (streamId: string) => {
-    if (gridLayout === 'focus') {
+    if (gridLayout === 'focus' || gridLayout === 'pip') {
       setPrimaryStream(streamId)
+      console.log('Setting primary stream to:', streamId)
     } else if (isMobile) {
       setActiveStream(streamId)
     }
@@ -222,7 +228,7 @@ const StreamGrid: React.FC = React.memo(() => {
                   layoutId={`stream-card-${stream.id}`}
                   className={cn(
                     'secondary-stream',
-                    primaryStreamId === stream.id && 'active'
+                    primaryStream?.id === stream.id && 'active'
                   )}
                   variants={streamCardVariants}
                   initial="hidden"
@@ -386,7 +392,7 @@ const StreamGrid: React.FC = React.memo(() => {
                 'stream-card relative bg-black overflow-hidden shadow-lg',
                 'border border-border/20 rounded-xl',
                 'will-change-transform isolate',
-                'min-h-[200px]',
+                'min-h-[200px] cursor-pointer',
                 isMobile && 'min-h-[250px]'
               )}
               style={{
@@ -445,7 +451,9 @@ const StreamGrid: React.FC = React.memo(() => {
   return (
     <LayoutGroup>
       {/* Render appropriate layout based on mode */}
-      {isMobile && streams.length > 2 ? (
+      {gridLayout === 'custom' ? (
+        <ResizableStreamGrid layoutType={gridLayout} />
+      ) : isMobile && streams.length > 2 ? (
         renderMobileSwipeLayout()
       ) : gridLayout === 'focus' ? (
         renderFocusLayout()
