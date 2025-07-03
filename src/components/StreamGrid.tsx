@@ -14,11 +14,11 @@ import '@/styles/layout-modes.css'
 const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: boolean) => {
   if (count === 0) return { cols: 1, rows: 1, class: 'grid-cols-1' }
   
-  // Mobile-optimized layouts - Bigger boxes inspired by Twitch mobile
+  // Mobile-optimized layouts - Bigger boxes with proper heights
   if (isMobile) {
     if (count === 1) return { cols: 1, rows: 1, class: 'mobile-grid-single' }
     if (count === 2) return { cols: 1, rows: 2, class: 'mobile-grid-1x2' }
-    if (count === 3) return { cols: 1, rows: 3, class: 'mobile-grid-scroll' }
+    if (count === 3) return { cols: 1, rows: 3, class: 'mobile-grid-1x3' }
     if (count === 4) return { cols: 2, rows: 2, class: 'mobile-grid-2x2' }
     // For more streams on mobile, use scrollable single column for better viewing
     return { cols: 1, rows: count, class: 'mobile-grid-scroll' }
