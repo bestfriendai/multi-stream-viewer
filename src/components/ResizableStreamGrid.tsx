@@ -155,11 +155,17 @@ export default function ResizableStreamGrid({ layoutType = 'custom' }: Resizable
   const { streams, gridLayout } = useStreamStore()
   const [panelSizes, setPanelSizes] = useState<Record<string, number>>({})
 
+  console.log('⚙️ ResizableStreamGrid rendering:', { layoutType, gridLayout, streamCount: streams.length })
+
   const layoutConfig = useMemo(() => {
     if (layoutType === 'custom' && streams.length > 0) {
-      return generateLayoutConfig(streams.length)
+      const config = generateLayoutConfig(streams.length)
+      console.log('⚙️ Generated custom layout config:', config)
+      return config
     }
-    return defaultLayoutConfigs[layoutType || 'custom'] || generateLayoutConfig(streams.length)
+    const fallback = defaultLayoutConfigs[layoutType || 'custom'] || generateLayoutConfig(streams.length)
+    console.log('⚙️ Using fallback layout config:', fallback)
+    return fallback
   }, [layoutType, streams.length])
 
   const renderResizableLayout = (config: LayoutConfig, streamsToRender: any[], level = 0) => {

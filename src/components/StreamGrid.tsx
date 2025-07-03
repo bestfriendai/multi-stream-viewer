@@ -160,7 +160,14 @@ const StreamGrid: React.FC = React.memo(() => {
   }, [])
   
   const gridConfig = useMemo(() => {
-    return calculateGridConfig(streams.length, gridLayout, isMobile)
+    const config = calculateGridConfig(streams.length, gridLayout, isMobile)
+    console.log('🔧 Grid config calculated:', {
+      layout: gridLayout,
+      streamCount: streams.length,
+      config,
+      timestamp: new Date().toLocaleTimeString()
+    })
+    return config
   }, [streams.length, gridLayout, primaryStreamId, isMobile])
 
   // Mobile swipe navigation with improved gesture handling
@@ -190,10 +197,16 @@ const StreamGrid: React.FC = React.memo(() => {
 
   // Render Focus Mode Layout
   const renderFocusLayout = () => {
+    console.log('🎯 renderFocusLayout called with', { primaryStreamId, streamCount: streams.length })
     const primaryStream = streams.find(s => s.id === primaryStreamId) || streams[0]
     const secondaryStreams = streams.filter(s => s.id !== primaryStream?.id)
 
-    if (!primaryStream) return null
+    console.log('🎯 Focus layout streams:', { primaryStream: primaryStream?.channelName, secondaryCount: secondaryStreams.length })
+
+    if (!primaryStream) {
+      console.log('🎯 No primary stream found, returning null')
+      return null
+    }
 
     return (
       <div className={cn('focus-layout', isMobile && 'mobile-focus')}>
@@ -242,10 +255,16 @@ const StreamGrid: React.FC = React.memo(() => {
 
   // Render Picture-in-Picture Layout
   const renderPipLayout = () => {
+    console.log('📺 renderPipLayout called with', { primaryStreamId, streamCount: streams.length })
     const mainStream = streams.find(s => s.id === primaryStreamId) || streams[0]
     const pipStreams = streams.filter(s => s.id !== mainStream?.id)
 
-    if (!mainStream) return null
+    console.log('📺 PiP layout streams:', { mainStream: mainStream?.channelName, pipCount: pipStreams.length })
+
+    if (!mainStream) {
+      console.log('📺 No main stream found, returning null')
+      return null
+    }
 
     return (
       <div className={cn('pip-layout', `pip-${pipPosition}`)}>
@@ -441,18 +460,38 @@ const StreamGrid: React.FC = React.memo(() => {
 
   return (
     <LayoutGroup>
-      {/* Render appropriate layout based on mode */}
-      {gridLayout === 'custom' ? (
-        <ResizableStreamGrid layoutType={gridLayout} />
-      ) : isMobile && streams.length > 2 ? (
-        renderMobileSwipeLayout()
-      ) : gridLayout === 'focus' ? (
-        renderFocusLayout()
-      ) : gridLayout === 'pip' ? (
-        renderPipLayout()
-      ) : (
-        renderGridLayout()
-      )}
+      {/* Render appropriate layout based mode */}
+      {(() => {
+        console.log('🎯 StreamGrid: Deciding render method for layout:', gridLayout)
+        
+        if (gridLayout === 'custom') {
+          console.log('🎯 Rendering custom layout')
+          return <ResizableStreamGrid layoutType={gridLayout} />
+        }
+        
+        if (isMobile && streams.length > 2) {
+          console.log('🎯 Rendering mobile swipe layout')
+          return renderMobileSwipeLayout()
+        }
+        
+        if (gridLayout === 'focus') {
+          console.log('🎯 Rendering focus layout')
+          return renderFocusLayout()
+        }
+        
+        if (gridLayout === 'pip') {
+          console.log('🎯 Rendering pip layout')
+          return renderPipLayout()
+        }
+        
+        if (gridLayout === 'mosaic') {
+          console.log('🎯 Rendering mosaic layout (special grid)')
+          return renderGridLayout() // Mosaic uses special CSS classes in renderGridLayout
+        }
+        
+        console.log('🎯 Rendering standard grid layout')
+        return renderGridLayout()
+      })()}
     </LayoutGroup>
   )
 })

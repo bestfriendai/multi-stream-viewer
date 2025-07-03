@@ -144,6 +144,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
   const currentLayout = layoutOptions.find(layout => layout.id === gridLayout) || layoutOptions[0]!
 
   const handleLayoutChange = (layoutId: GridLayout) => {
+    console.log('🎛️ Layout selector: Changing from', gridLayout, 'to', layoutId)
     setGridLayout(layoutId)
     setIsOpen(false)
     
