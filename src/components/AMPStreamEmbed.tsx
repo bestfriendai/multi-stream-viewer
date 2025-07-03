@@ -85,7 +85,7 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
         <div ref={embedRef} className="absolute inset-0 w-full h-full" />
         
         {/* Mute/Unmute Control Overlay - Always visible for AMP */}
-        <div className="absolute top-2 right-2 opacity-80 hover:opacity-100 transition-opacity duration-200 z-10">
+        <div className="absolute top-2 right-2 opacity-80 hover:opacity-100 transition-opacity duration-200 z-20">
           <button
             onClick={handleMuteToggle}
             className="p-2 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all duration-150 border border-white/20 shadow-lg"
@@ -113,7 +113,7 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
         </div>
         
         {/* Mute/Unmute Control Overlay - Always visible for AMP */}
-        <div className="absolute top-2 right-2 opacity-80 hover:opacity-100 transition-opacity duration-200 z-10">
+        <div className="absolute top-2 right-2 opacity-80 hover:opacity-100 transition-opacity duration-200 z-20">
           <button
             onClick={handleMuteToggle}
             className="p-2 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all duration-150 border border-white/20 shadow-lg"

@@ -138,7 +138,7 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
                 
                 {/* Live indicator overlay */}
                 {isLive && (
-                  <div className="absolute top-3 left-3 z-10">
+                  <div className="absolute bottom-3 left-3 z-10">
                     <div className="flex items-center gap-2 px-3 py-1.5 bg-red-600 rounded-full shadow-lg backdrop-blur-sm">
                       <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />
                       <span className="text-white text-sm font-bold">LIVE</span>
