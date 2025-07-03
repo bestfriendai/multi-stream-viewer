@@ -74,12 +74,12 @@
 }
 
 .amp-two-live-grid > div:nth-child(1) {
-  grid-column: span 7;
+  grid-column: span 6;
   grid-row: span 4;
 }
 
 .amp-two-live-grid > div:nth-child(2) {
-  grid-column: span 5;
+  grid-column: span 6;
   grid-row: span 4;
 }
 

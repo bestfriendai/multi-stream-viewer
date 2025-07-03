@@ -69,15 +69,9 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
   useEffect(() => {
     if (playerRef.current && stream.platform === 'twitch') {
       playerRef.current.setMuted(stream.muted)
-    } else if (stream.platform === 'youtube' && embedRef.current) {
-      const iframe = embedRef.current.querySelector('iframe')
-      if (iframe) {
-        const currentSrc = iframe.src
-        const urlObj = new URL(currentSrc)
-        urlObj.searchParams.set('mute', stream.muted ? '1' : '0')
-        iframe.src = urlObj.toString()
-      }
     }
+    // Note: YouTube mute state is handled via postMessage API to avoid reloads
+    // The initial mute state is set via URL parameters during embed creation
   }, [stream.muted, stream.platform])
   
   const handleMuteToggle = (e: React.MouseEvent) => {
