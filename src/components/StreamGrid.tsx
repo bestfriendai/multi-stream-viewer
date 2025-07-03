@@ -6,7 +6,6 @@ import type { PanInfo } from 'framer-motion'
 import { useStreamStore } from '@/store/streamStore'
 import { cn } from '@/lib/utils'
 import StreamEmbedOptimized from './StreamEmbedOptimized'
-import ResizableStreamGrid from './ResizableStreamGrid'
 import '@/styles/mobile-stream-grid.css'
 import '@/styles/layout-modes.css'
 
@@ -35,15 +34,12 @@ const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: bool
     case '1x2':
       return { cols: 1, rows: Math.min(count, 2), class: 'grid-cols-1' }
     
-    case 'grid-2x2':
     case '2x2':
       return { cols: 2, rows: 2, class: 'grid-cols-2 grid-rows-2' }
     
-    case 'grid-3x3':
     case '3x3':
       return { cols: 3, rows: 3, class: 'grid-cols-3 grid-rows-3' }
     
-    case 'grid-4x4':
     case '4x4':
       return { cols: 4, rows: 4, class: 'grid-cols-4 grid-rows-4' }
     
@@ -64,8 +60,6 @@ const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: bool
     case 'pip':
       return { cols: 0, rows: 0, class: 'pip-layout' }
     
-    case 'custom':
-      return { cols: 0, rows: 0, class: 'focus-layout' }
   }
   
   // Default responsive layouts based on stream count
@@ -190,7 +184,7 @@ const StreamGrid: React.FC = React.memo(() => {
 
   // Handle primary stream selection for focus mode
   const handleStreamClick = (streamId: string) => {
-    if (gridLayout === 'focus' || gridLayout === 'custom') {
+    if (gridLayout === 'focus') {
       setPrimaryStream(streamId)
     } else if (isMobile) {
       setActiveStream(streamId)
@@ -451,9 +445,7 @@ const StreamGrid: React.FC = React.memo(() => {
   return (
     <LayoutGroup>
       {/* Render appropriate layout based on mode */}
-      {gridLayout === 'custom' ? (
-        <ResizableStreamGrid layoutType={gridLayout} />
-      ) : isMobile && streams.length > 2 ? (
+      {isMobile && streams.length > 2 ? (
         renderMobileSwipeLayout()
       ) : gridLayout === 'focus' ? (
         renderFocusLayout()

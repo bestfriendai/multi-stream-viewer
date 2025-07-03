@@ -14,12 +14,15 @@ import {
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu'
 import { 
-  Grid3x3, 
-  Grid2x2, 
+  Square,
+  Grid2x2,
+  Grid3x3,
   LayoutGrid,
-  Maximize2,
-  PictureInPicture,
-  MoreHorizontal,
+  PictureInPicture2,
+  Columns,
+  Rows,
+  Focus,
+  Layers3,
   Sparkles
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -38,76 +41,68 @@ interface LayoutOption {
 const layoutOptions: LayoutOption[] = [
   {
     id: '1x1',
-    name: '1×1 Stacked',
-    icon: Grid2x2,
-    description: 'Full-width stacked streams',
+    name: 'Single',
+    icon: Square,
+    description: '1 stream',
     gridClass: 'grid-cols-1'
   },
   {
     id: '2x1',
-    name: '2×1 Side by Side',
-    icon: Grid2x2,
-    description: 'Horizontal layout',
+    name: 'Side by Side',
+    icon: Columns,
+    description: '2 streams horizontal',
     gridClass: 'grid-cols-2'
   },
   {
     id: '1x2',
-    name: '1×2 Vertical',
-    icon: Grid2x2,
-    description: 'Vertical stacked layout',
+    name: 'Stacked',
+    icon: Rows,
+    description: '2 streams vertical',
     gridClass: 'grid-cols-1'
   },
   {
     id: '2x2',
     name: '2×2 Grid',
     icon: Grid2x2,
-    description: 'Perfect for 4 streams',
+    description: '4 streams',
     gridClass: 'grid-cols-2 grid-rows-2'
   },
   {
     id: '3x3',
     name: '3×3 Grid',
     icon: Grid3x3,
-    description: 'Classic multi-stream layout',
+    description: '9 streams',
     gridClass: 'grid-cols-3 grid-rows-3'
   },
   {
     id: '4x4',
     name: '4×4 Grid',
     icon: LayoutGrid,
-    description: 'Large grid layout',
+    description: '16 streams',
     gridClass: 'grid-cols-4 grid-rows-4'
   },
   {
     id: 'mosaic',
     name: 'Mosaic',
-    icon: LayoutGrid,
-    description: 'Adaptive smart layout',
+    icon: Layers3,
+    description: 'Adaptive grid',
     gridClass: 'mosaic-layout',
     isNew: true
   },
   {
     id: 'focus',
     name: 'Focus Mode',
-    icon: Maximize2,
-    description: 'Main stream with sidebar',
+    icon: Focus,
+    description: '1 main + thumbnails',
     gridClass: 'focus-layout'
   },
   {
     id: 'pip',
     name: 'Picture-in-Picture',
-    icon: PictureInPicture,
-    description: 'Floating overlay streams',
+    icon: PictureInPicture2,
+    description: '1 main + floating',
     gridClass: 'pip-layout',
     isNew: true
-  },
-  {
-    id: 'custom',
-    name: 'Custom Layout',
-    icon: MoreHorizontal,
-    description: 'Resizable panels',
-    gridClass: 'custom-layout',
-    isPro: true
   }
 ]
 
