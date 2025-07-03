@@ -2,10 +2,7 @@
  * Haptic feedback utilities for mobile app-like experience
  */
 
-interface HapticPattern {
-  duration: number
-  intensity?: number
-}
+// Removed unused interface
 
 export class HapticFeedback {
   private static isSupported = typeof navigator !== 'undefined' && 'vibrate' in navigator

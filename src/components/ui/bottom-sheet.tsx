@@ -31,8 +31,11 @@ export function BottomSheet({
   
   // Convert snap points to actual pixel values
   const getSnapHeight = (snapIndex: number) => {
+    if (typeof window === 'undefined') return 0
     const vh = window.innerHeight
-    return vh - (vh * snapPoints[snapIndex] / 100)
+    const snapPoint = snapPoints[snapIndex]
+    if (snapPoint === undefined) return 0
+    return vh - (vh * snapPoint / 100)
   }
 
   useEffect(() => {
@@ -50,9 +53,11 @@ export function BottomSheet({
     }
   }, [isOpen])
 
-  const handleDragEnd = (event: any, info: any) => {
-    const velocity = info.velocity.y
-    const offset = info.offset.y
+  const handleDragEnd = (_event: unknown, info: any) => {
+    if (!info) return
+    
+    const velocity = info.velocity?.y || 0
+    const offset = info.offset?.y || 0
     
     // Close if dragged down significantly or with high velocity
     if (offset > 100 || velocity > 500) {
@@ -99,11 +104,14 @@ export function BottomSheet({
             ref={sheetRef}
             drag="y"
             dragControls={dragControls}
-            dragConstraints={{ top: -window.innerHeight * 0.9, bottom: 0 }}
-            dragElastic={0.1}
+            dragConstraints={{ 
+              top: typeof window !== 'undefined' ? -window.innerHeight * 0.9 : -800, 
+              bottom: 0 
+            }}
+            dragElastic={0.2}
             onDragEnd={handleDragEnd}
             initial={{ y: '100%' }}
-            animate={{ y: `-${snapPoints[initialSnap]}%` }}
+            animate={{ y: `-${snapPoints[initialSnap] || 60}%` }}
             exit={{ y: '100%' }}
             transition={{ 
               type: 'spring', 

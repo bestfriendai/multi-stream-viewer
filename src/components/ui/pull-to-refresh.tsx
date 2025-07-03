@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useRef, useState, useCallback } from 'react'
-import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion'
+import { motion, useMotionValue, useTransform, type PanInfo } from 'framer-motion'
 import { RefreshCw } from 'lucide-react'
 import { haptic } from '@/lib/haptics'
 
@@ -39,10 +39,10 @@ export function PullToRefresh({
     return true
   }, [disabled, isRefreshing])
 
-  const handleDrag = useCallback((_: any, info: PanInfo) => {
-    if (disabled || isRefreshing) return
+  const handleDrag = useCallback((_: unknown, info: PanInfo) => {
+    if (disabled || isRefreshing || !info) return
     
-    const pullDistance = Math.max(0, Math.min(info.offset.y, maxPull))
+    const pullDistance = Math.max(0, Math.min(info.offset?.y || 0, maxPull))
     y.set(pullDistance)
     
     // Trigger haptic feedback when crossing threshold
@@ -54,10 +54,10 @@ export function PullToRefresh({
     }
   }, [disabled, isRefreshing, y, threshold, maxPull, isTriggered])
 
-  const handleDragEnd = useCallback(async (_: any, info: PanInfo) => {
-    if (disabled || isRefreshing) return
+  const handleDragEnd = useCallback(async (_: unknown, info: PanInfo) => {
+    if (disabled || isRefreshing || !info) return
     
-    const pullDistance = info.offset.y
+    const pullDistance = info.offset?.y || 0
     
     if (pullDistance >= threshold) {
       setIsRefreshing(true)
