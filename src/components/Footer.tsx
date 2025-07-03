@@ -1,13 +1,24 @@
+'use client'
+
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import StreamyyyLogo from './StreamyyyLogo';
 import { Github, Twitter, MessageCircle, Mail } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  
+  // Hide footer on main stream viewer page to prevent scrolling interference
+  const isMainStreamPage = pathname === '/';
+  
+  if (isMainStreamPage) {
+    return null;
+  }
 
   return (
-    <footer className="border-t border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <footer className="border-t border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mt-auto">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
