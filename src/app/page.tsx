@@ -35,6 +35,7 @@ import EnhancedAddStreamDialog from '@/components/EnhancedAddStreamDialog'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { useStreamPreload } from '@/hooks/useStreamPreload'
 import { loadFromQueryParams } from '@/lib/shareableLinks'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -80,6 +81,9 @@ export default function Home() {
   
   // Enable keyboard shortcuts
   useKeyboardShortcuts()
+  
+  // Preload streaming resources for faster loading
+  useStreamPreload()
   
   // Track homepage visit
   useEffect(() => {
