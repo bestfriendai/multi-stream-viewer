@@ -6,6 +6,7 @@ import type { Stream } from '@/types/stream'
 import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from 'lucide-react'
 import { useSingleChannelStatus } from '@/hooks/useTwitchStatus'
 import LiveIndicator from './LiveIndicator'
+import { cn } from '@/lib/utils'
 
 interface StreamEmbedProps {
   stream: Stream
@@ -167,12 +168,25 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
         iframe.width = '100%'
         iframe.height = '100%'
         iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%'
-        iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=${stream.muted ? 1 : 0}&enablejsapi=1&modestbranding=1&rel=0&playsinline=1`
+        iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=1&enablejsapi=1&modestbranding=1&rel=0&playsinline=1`
         iframe.setAttribute('frameborder', '0')
         iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
         iframe.setAttribute('allowfullscreen', 'true')
         
         embedRef.current.appendChild(iframe)
+
+        // Set initial mute state after iframe loads
+        iframe.onload = () => {
+          setTimeout(() => {
+            if (iframe.contentWindow) {
+              const command = stream.muted ? 'mute' : 'unMute'
+              iframe.contentWindow.postMessage(
+                JSON.stringify({ event: 'command', func: command }),
+                'https://www.youtube.com'
+              )
+            }
+          }, 1000) // Wait for YouTube player to initialize
+        }
       } else if (stream.platform === 'rumble' && embedRef.current) {
         const iframe = document.createElement('iframe')
         iframe.width = '100%'
@@ -232,6 +246,9 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
   // Show viewer count for live streams
   const viewerCount = twitchStatus?.isLive ? twitchStatus.viewerCount : 0
   
+  // Detect mobile device
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+
   return (
     <div className="absolute inset-0 bg-black overflow-hidden group">
       {/* Stream Controls - More prominent on mobile */}
@@ -242,10 +259,10 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
             {stream.platform === 'twitch' && <Twitch className="w-4 h-4" />}
             {stream.channelName}
           </span>
-          
+
           {stream.platform === 'twitch' && twitchStatus?.isLive && (
-            <LiveIndicator 
-              isLive={true} 
+            <LiveIndicator
+              isLive={true}
               viewerCount={viewerCount}
               size="sm"
             />
@@ -290,16 +307,24 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
       )}
       
       {/* Embed Container */}
-      <div ref={embedRef} className="absolute inset-0 w-full h-full" />
+      <div
+        ref={embedRef}
+        className={cn(
+          "absolute inset-0 w-full h-full stream-embed-container",
+          isMobile ? "mobile-stream-embed" : ""
+        )}
+      />
     </div>
   )
 }, (prevProps, nextProps) => {
   // Custom comparison to prevent unnecessary re-renders
+  // Include muted state to ensure re-render on mute changes
   return (
     prevProps.stream.id === nextProps.stream.id &&
-    prevProps.stream.muted === nextProps.stream.muted &&
     prevProps.stream.channelName === nextProps.stream.channelName &&
-    prevProps.stream.platform === nextProps.stream.platform
+    prevProps.stream.platform === nextProps.stream.platform &&
+    prevProps.stream.channelId === nextProps.stream.channelId &&
+    prevProps.stream.muted === nextProps.stream.muted
   )
 })
 

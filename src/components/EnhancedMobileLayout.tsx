@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { useGesture } from '@use-gesture/react'
-import { 
-  Menu, 
-  ChevronDown, 
+import {
+  Menu,
+  ChevronDown,
   ChevronUp,
   Grid3X3,
   Maximize2,
@@ -13,7 +13,9 @@ import {
   Settings,
   Smartphone,
   Tablet,
-  Monitor
+  Monitor,
+  Volume2,
+  VolumeX
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useStreamStore } from '@/store/streamStore'
@@ -36,7 +38,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
   className,
   children
 }) => {
-  const { streams } = useStreamStore()
+  const { streams, toggleStreamMute } = useStreamStore()
   const { trackFeatureUsage } = useAnalytics()
   
   const [viewMode, setViewMode] = useState<ViewMode>('stack')
@@ -142,7 +144,19 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
               size="sm"
               variant="secondary"
               className="h-8 w-8 p-0 bg-black/50 hover:bg-black/70 text-white border-0"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation()
+                toggleStreamMute(stream.id)
+              }}
+            >
+              {stream.muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+            </Button>
+            <Button
+              size="sm"
+              variant="secondary"
+              className="h-8 w-8 p-0 bg-black/50 hover:bg-black/70 text-white border-0"
+              onClick={(e) => {
+                e.stopPropagation()
                 setCurrentStreamIndex(index)
                 setViewMode('focus')
               }}
@@ -192,7 +206,22 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
           <div className="w-full h-full">
             <StreamEmbedOptimized stream={stream} />
           </div>
-          
+
+          {/* Mute button */}
+          <div className="absolute top-2 right-2">
+            <Button
+              size="sm"
+              variant="secondary"
+              className="h-8 w-8 p-0 bg-black/50 hover:bg-black/70 text-white border-0"
+              onClick={(e) => {
+                e.stopPropagation()
+                toggleStreamMute(stream.id)
+              }}
+            >
+              {stream.muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+            </Button>
+          </div>
+
           <div className="absolute bottom-1 left-1 right-1">
             <div className="bg-black/70 text-white text-xs p-1 rounded">
               <div className="truncate">{stream.channelName}</div>

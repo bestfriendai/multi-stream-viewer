@@ -255,7 +255,12 @@
   .stream-embed-container iframe,
   .stream-embed-container div[data-a-target="video-player"],
   .stream-embed-container > div,
-  .stream-embed-container > div > div {
+  .stream-embed-container > div > div,
+  .stream-embed-container > div > div > div,
+  .mobile-stream-embed iframe,
+  .mobile-stream-embed > div,
+  .mobile-stream-embed > div > div,
+  .mobile-stream-embed > div > div > div {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
@@ -267,6 +272,10 @@
     border-radius: 0 !important;
     transform: scale(1) !important;
     transform-origin: center center !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
   }
 
   /* Ensure proper stream card sizing on mobile */
@@ -282,10 +291,13 @@
   }
 
   /* Force proper scaling of stream content on mobile */
-  .stream-embed-container {
+  .stream-embed-container,
+  .mobile-stream-embed {
     width: 100% !important;
     height: 100% !important;
-    position: relative !important;
+    position: absolute !important;
+    inset: 0 !important;
+    overflow: hidden !important;
   }
 
   /* Ensure Twitch embeds scale properly */
@@ -372,10 +384,26 @@
     object-fit: cover;
   }
   
-  /* Fix Twitch embed container */
-  .stream-embed-container > div {
+  /* Fix Twitch embed container and all nested elements */
+  .stream-embed-container > div,
+  .stream-embed-container > div > div,
+  .stream-embed-container > div > div > div,
+  .stream-embed-container > div > div > div > div {
     width: 100% !important;
     height: 100% !important;
+    position: absolute !important;
+    inset: 0 !important;
+  }
+
+  /* Ensure video elements scale to fill container */
+  .stream-embed-container video,
+  .mobile-stream-embed video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    position: absolute !important;
+    inset: 0 !important;
   }
   
   /* Enhanced touch targets for mobile - 48px minimum */
@@ -447,10 +475,33 @@
     .mobile-stream-embed {
       position: absolute;
       inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 100% !important;
+      height: 100% !important;
       background: black;
+      overflow: hidden;
+    }
+
+    /* Ensure mobile stream embed children fill container */
+    .mobile-stream-embed > *,
+    .mobile-stream-embed > * > *,
+    .mobile-stream-embed > * > * > * {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    /* Force all nested divs in mobile embeds to fill space */
+    .mobile-stream-embed div,
+    .mobile-stream-embed iframe,
+    .mobile-stream-embed video {
+      width: 100% !important;
+      height: 100% !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      object-fit: cover !important;
+      object-position: center !important;
     }
     
     /* Center and scale video content for square containers */

@@ -40,12 +40,11 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
   enablePinchZoom = true,
   onStreamChange
 }) => {
-  const { streams } = useStreamStore()
+  const { streams, toggleStreamMute } = useStreamStore()
   const { trackFeatureUsage } = useAnalytics()
-  
+
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [isMuted, setIsMuted] = useState(false)
   const [showControls, setShowControls] = useState(true)
   const [isZoomed, setIsZoomed] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(1)
@@ -197,7 +196,9 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
           break
         case ' ':
           event.preventDefault()
-          setIsMuted(!isMuted)
+          if (currentStream) {
+            toggleStreamMute(currentStream.id)
+          }
           break
         case 'f':
           toggleFullscreen()
@@ -226,7 +227,7 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [currentIndex, streams.length, isMuted, isFullscreen, isZoomed])
+  }, [currentIndex, streams.length, isFullscreen, isZoomed, toggleStreamMute])
 
   // Control functions
   const toggleFullscreen = useCallback(() => {
@@ -389,10 +390,14 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => setIsMuted(!isMuted)}
+                onClick={() => {
+                  if (currentStream) {
+                    toggleStreamMute(currentStream.id)
+                  }
+                }}
                 className="h-10 w-10 p-0 text-white hover:bg-white/20 touch-target"
               >
-                {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                {currentStream?.muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
               </Button>
 
               <Button

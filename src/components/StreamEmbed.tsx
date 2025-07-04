@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, memo } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import type { Stream } from '@/types/stream'
 import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from 'lucide-react'
@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-export default function StreamEmbed({ stream }: StreamEmbedProps) {
+const StreamEmbed = memo(function StreamEmbed({ stream }: StreamEmbedProps) {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const [isMobile, setIsMobile] = useState(false)
@@ -118,8 +118,12 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       iframe.setAttribute('frameborder', '0')
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
       iframe.setAttribute('allowfullscreen', 'true')
+      iframe.id = `youtube-player-${stream.id}`
       
       embedRef.current.appendChild(iframe)
+      
+      // Store iframe reference for mute control
+      playerRef.current = iframe
     } else if (stream.platform === 'rumble') {
       // Rumble embed
       const iframe = document.createElement('iframe')
@@ -149,21 +153,26 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
     if (stream.platform === 'twitch' && playerRef.current) {
       // Small delay to ensure player is fully initialized
       const timer = setTimeout(() => {
-        if (playerRef.current) {
+        if (playerRef.current && playerRef.current.setMuted) {
           playerRef.current.setMuted(stream.muted)
         }
       }, 100)
       
       return () => clearTimeout(timer)
-    } else if (stream.platform === 'youtube' && embedRef.current) {
-      // For YouTube, we need to use postMessage API
-      const iframe = embedRef.current.querySelector('iframe')
+    } else if (stream.platform === 'youtube' && playerRef.current) {
+      // For YouTube, use the stored iframe reference
+      const iframe = playerRef.current as HTMLIFrameElement
       if (iframe && iframe.contentWindow) {
-        const command = stream.muted ? 'mute' : 'unMute'
-        iframe.contentWindow.postMessage(
-          JSON.stringify({ event: 'command', func: command, args: '' }),
-          '*'
-        )
+        // Add a small delay to ensure YouTube player is ready
+        const timer = setTimeout(() => {
+          const command = stream.muted ? 'mute' : 'unMute'
+          iframe.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func: command, args: '' }),
+            '*'
+          )
+        }, 100)
+        
+        return () => clearTimeout(timer)
       }
     }
     return undefined
@@ -339,4 +348,18 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       )}
     </div>
   )
-}
+}, (prevProps, nextProps) => {
+  // Custom comparison to prevent unnecessary re-renders
+  // Include muted state to ensure re-render on mute changes
+  return (
+    prevProps.stream.id === nextProps.stream.id &&
+    prevProps.stream.channelName === nextProps.stream.channelName &&
+    prevProps.stream.platform === nextProps.stream.platform &&
+    prevProps.stream.channelId === nextProps.stream.channelId &&
+    prevProps.stream.muted === nextProps.stream.muted
+  )
+})
+
+StreamEmbed.displayName = 'StreamEmbed'
+
+export default StreamEmbed

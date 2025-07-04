@@ -254,7 +254,12 @@
   .stream-embed-container iframe,
   .stream-embed-container > div,
   .stream-embed-container > div > div,
-  .stream-embed-container div[data-a-target="video-player"] {
+  .stream-embed-container > div > div > div,
+  .stream-embed-container div[data-a-target="video-player"],
+  .mobile-stream-embed iframe,
+  .mobile-stream-embed > div,
+  .mobile-stream-embed > div > div,
+  .mobile-stream-embed > div > div > div {
     width: 100% !important;
     height: 100% !important;
     border: none !important;
@@ -263,6 +268,21 @@
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+  }
+
+  /* Ensure video elements scale properly */
+  .stream-embed-container video,
+  .mobile-stream-embed video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    position: absolute !important;
+    inset: 0 !important;
   }
 
   /* Force proper aspect ratio for mobile stream containers */
