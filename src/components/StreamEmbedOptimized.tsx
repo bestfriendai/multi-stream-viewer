@@ -235,7 +235,7 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
   return (
     <div className="absolute inset-0 bg-black overflow-hidden group">
       {/* Stream Controls - More prominent on mobile */}
-      <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between p-3 md:p-2 bg-gradient-to-b from-black/90 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 pointer-events-auto md:pointer-events-none md:group-hover:pointer-events-auto">
+      <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between p-3 md:p-2 bg-gradient-to-b from-black/60 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 pointer-events-auto md:pointer-events-none md:group-hover:pointer-events-auto" style={{ height: '60px' }}>
         <div className="flex items-center gap-2">
           <span className="text-white text-sm font-medium flex items-center gap-1.5">
             {stream.platform === 'youtube' && <Youtube className="w-4 h-4" />}

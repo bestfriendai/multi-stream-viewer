@@ -118,6 +118,19 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 </Button>
               </motion.div>
 
+              {/* Mobile Layout Selector - Show when streams exist */}
+              {streams.length > 0 && (
+                <motion.div 
+                  whileHover={{ scale: 1.05 }} 
+                  whileTap={{ scale: 0.95 }}
+                  className="flex-shrink-0"
+                >
+                  <div className="h-10 flex items-center">
+                    <EnhancedLayoutSelector mobile />
+                  </div>
+                </motion.div>
+              )}
+
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button 
                   variant="outline" 

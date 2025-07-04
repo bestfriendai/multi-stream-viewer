@@ -37,13 +37,12 @@ export default function MobileNav({
   
   const activeStreams = streams.filter(stream => stream.isActive).length
   
+  // Note: Mobile devices now use EnhancedMobileLayout with its own view mode system
+  // This dropdown is for compatibility and will trigger the mobile layout's built-in selector
   const layoutOptions = [
-    { value: '1x1', label: '1x1', icon: '◻' },
-    { value: '2x1', label: '2x1', icon: '◻◻' },
-    { value: '2x2', label: '2x2', icon: '⊞' },
-    { value: '3x3', label: '3x3', icon: '⊟' },
-    { value: '4x4', label: '4x4', icon: '⊞' },
-    { value: 'custom', label: 'Focus', icon: '◧' }
+    { value: 'mobile-stack', label: 'Stack View', icon: '☰', description: 'Vertical stacked layout' },
+    { value: 'mobile-grid', label: 'Grid View', icon: '⊞', description: 'Square grid layout' },
+    { value: 'mobile-swipe', label: 'Swipe View', icon: '⇄', description: 'Full screen swipe navigation' }
   ] as const
   
   return (
@@ -128,47 +127,42 @@ export default function MobileNav({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="center" side="top" className="mb-2 w-56">
             <div className="p-2 text-xs text-muted-foreground border-b">
-              Choose Layout ({activeStreams} streams)
+              Mobile Layout Options ({activeStreams} streams)
+            </div>
+            <div className="p-2 text-xs text-muted-foreground">
+              📱 Use the floating controls in the stream view to switch between Stack, Grid, and Swipe modes
             </div>
             {layoutOptions.map((option) => (
               <DropdownMenuItem
                 key={option.value}
                 onClick={() => {
-                  setGridLayout(option.value)
-                  trackFeatureUsage(`layout_${option.value}_mobile`)
+                  // These are informational - actual mode switching happens in EnhancedMobileLayout
+                  trackFeatureUsage(`mobile_layout_info_${option.value}`)
                 }}
-                className={cn(
-                  "text-base py-4 min-h-[48px]", // Increased touch target
-                  gridLayout === option.value && "bg-accent text-accent-foreground"
-                )}
+                className="text-base py-4 min-h-[48px] cursor-default"
+                disabled
               >
                 <span className="font-mono mr-3 text-lg">{option.icon}</span>
                 <div className="flex flex-col">
-                  <span>{option.label}</span>
-                  {gridLayout === option.value && (
-                    <span className="text-xs text-muted-foreground">Current</span>
-                  )}
+                  <span className="text-muted-foreground">{option.label}</span>
+                  <span className="text-xs text-muted-foreground">{option.description}</span>
                 </div>
               </DropdownMenuItem>
             ))}
-            {streams.length > 0 && onToggleSwipeView && (
-              <>
-                <div className="border-t my-1" />
-                <DropdownMenuItem
-                  onClick={() => {
-                    onToggleSwipeView()
-                    trackFeatureUsage('swipe_view_mobile')
-                  }}
-                  className="text-base py-3"
-                >
-                  <Layers className="mr-3 h-5 w-5" />
-                  <div className="flex flex-col">
-                    <span>Swipe View</span>
-                    <span className="text-xs text-muted-foreground">Full screen navigation</span>
-                  </div>
-                </DropdownMenuItem>
-              </>
-            )}
+            <div className="border-t my-1" />
+            <DropdownMenuItem
+              onClick={() => {
+                // Close the dropdown and let user know about the new system
+                trackFeatureUsage('mobile_layout_help')
+              }}
+              className="text-base py-3"
+            >
+              <Layers className="mr-3 h-5 w-5" />
+              <div className="flex flex-col">
+                <span>Enhanced Mobile Layouts</span>
+                <span className="text-xs text-muted-foreground">Look for floating controls in stream view</span>
+              </div>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 

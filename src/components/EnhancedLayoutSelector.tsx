@@ -144,15 +144,21 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
   const currentLayout = layoutOptions.find(layout => layout.id === gridLayout) || layoutOptions[0]!
 
   const handleLayoutChange = (layoutId: GridLayout) => {
-    console.log('🎛️ Layout selector: Changing from', gridLayout, 'to', layoutId)
+    console.log('🎛️ Layout selector: Changing from', gridLayout, 'to', layoutId, '| Mobile:', mobile, '| Streams:', streams.length)
     setGridLayout(layoutId)
     setIsOpen(false)
+    
+    // Add haptic feedback on mobile
+    if (mobile && 'vibrate' in navigator) {
+      navigator.vibrate(50)
+    }
     
     // Track analytics for layout changes
     if (typeof window !== 'undefined' && 'gtag' in window) {
       (window as { gtag: (command: string, eventName: string, parameters: Record<string, unknown>) => void }).gtag('event', 'layout_changed', {
         layout_id: layoutId,
-        stream_count: streams.length
+        stream_count: streams.length,
+        is_mobile: mobile
       })
     }
   }
@@ -163,42 +169,50 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
         <DropdownMenuTrigger asChild>
           <Button 
             variant="outline" 
-            className="w-full justify-start h-12"
+            size="sm"
+            className="h-10 px-3 touch-manipulation border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm min-w-[44px] transition-all duration-300"
           >
-            <currentLayout.icon className="mr-3 h-5 w-5" />
-            Layout: {currentLayout.name}
+            <currentLayout.icon className="h-4 w-4" />
+            <span className="ml-1.5 hidden xs:inline text-sm">
+              {currentLayout.name}
+            </span>
           </Button>
         </DropdownMenuTrigger>
         
         <DropdownMenuContent 
           align="end" 
-          className="w-64 p-2"
+          className="w-72 p-3"
           sideOffset={8}
         >
-          <DropdownMenuLabel className="text-xs uppercase tracking-wide text-muted-foreground">
+          <DropdownMenuLabel className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
             Layout Options
           </DropdownMenuLabel>
           
-          {layoutOptions.map((layout) => {
-            const Icon = layout.icon
-            const isActive = gridLayout === layout.id
-            const isDisabled = layout.isPro && streams.length === 0
-            
-            return (
-              <DropdownMenuItem
-                key={layout.id}
-                onClick={() => handleLayoutChange(layout.id)}
-                disabled={isDisabled || false}
-                className={`gap-3 p-3 cursor-pointer ${isActive ? 'bg-primary/10' : ''}`}
-              >
-                <Icon size={20} />
-                <div>
-                  <div className="font-medium">{layout.name}</div>
-                  <div className="text-xs text-muted-foreground">{layout.description}</div>
-                </div>
-              </DropdownMenuItem>
-            )
-          })}
+          <div className="grid grid-cols-2 gap-2">
+            {layoutOptions.slice(0, 8).map((layout) => {
+              const Icon = layout.icon
+              const isActive = gridLayout === layout.id
+              const isDisabled = layout.isPro && streams.length === 0
+              
+              return (
+                <DropdownMenuItem
+                  key={layout.id}
+                  onClick={() => handleLayoutChange(layout.id)}
+                  disabled={isDisabled || false}
+                  className={`
+                    gap-2 p-4 cursor-pointer rounded-lg min-h-[72px] touch-manipulation
+                    ${isActive ? 'bg-primary/10 border border-primary/20' : 'hover:bg-accent/50'}
+                    ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
+                  `}
+                >
+                  <div className="flex flex-col items-center text-center gap-1 w-full">
+                    <Icon size={20} />
+                    <div className="font-medium text-xs">{layout.name}</div>
+                  </div>
+                </DropdownMenuItem>
+              )
+            })}
+          </div>
         </DropdownMenuContent>
       </DropdownMenu>
     )

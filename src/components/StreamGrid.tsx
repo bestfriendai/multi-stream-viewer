@@ -14,7 +14,7 @@ import '@/styles/layout-modes.css'
 const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: boolean) => {
   if (count === 0) return { cols: 1, rows: 1, class: 'grid-cols-1' }
   
-  // Mobile-optimized layouts - Square boxes for better screen utilization
+  // Mobile-optimized layouts - Better screen utilization and sizing
   if (isMobile) {
     if (count === 1) return { cols: 1, rows: 1, class: 'mobile-grid-single' }
     if (count === 2) return { cols: 1, rows: 2, class: 'mobile-grid-1x2' }
@@ -23,7 +23,7 @@ const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: bool
     if (count <= 6) return { cols: 2, rows: 3, class: 'mobile-grid-2x3-square' }
     if (count <= 9) return { cols: 3, rows: 3, class: 'mobile-grid-3x3-square' }
     if (count <= 16) return { cols: 4, rows: 4, class: 'mobile-grid-4x4-square' }
-    // For 17+ streams, use scrollable 4-column grid with square boxes
+    // For 17+ streams, use scrollable 4-column grid with optimized sizing
     return { cols: 4, rows: Math.ceil(count / 4), class: 'mobile-grid-4-col-square' }
   }
   
@@ -154,7 +154,9 @@ const StreamGrid: React.FC = React.memo(() => {
   // Mobile detection
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
+      const isMobileDevice = window.innerWidth < 768
+      console.log('📱 Mobile detection:', { width: window.innerWidth, isMobile: isMobileDevice })
+      setIsMobile(isMobileDevice)
     }
     
     checkMobile()
@@ -436,9 +438,8 @@ const StreamGrid: React.FC = React.memo(() => {
           'stream-grid w-full',
           isMosaicLayout ? getMosaicClasses() : `grid ${gridConfig.class}`,
           'touch-pan-y',
-          isMobile ? 'touch-pan-x' : '',
-          isMosaicLayout ? 'h-full' : 'min-h-full relative gap-2 p-2',
-          isMobile && 'mobile-stream-grid',
+          isMobile ? 'touch-pan-x mobile-stream-grid' : '',
+          isMosaicLayout ? 'h-full' : !isMobile ? 'min-h-full relative gap-2 p-2' : '',
           'layout-transition'
         )}
         data-count={streams.length}
@@ -465,7 +466,7 @@ const StreamGrid: React.FC = React.memo(() => {
                 'border border-border/20 rounded-xl',
                 'will-change-transform isolate cursor-pointer',
                 !isMobile && 'min-h-[200px]', // Only apply min-height on desktop
-                isMobile && 'aspect-video' // Use aspect ratio on mobile
+                isMobile && 'mobile-stream-card' // Use mobile-specific classes
               )}
               style={{
                 contain: 'layout style paint',
@@ -533,10 +534,8 @@ const StreamGrid: React.FC = React.memo(() => {
           return <ResizableStreamGrid layoutType={gridLayout} />
         }
         
-        if (isMobile && streams.length > 2) {
-          console.log('🎯 Rendering mobile swipe layout')
-          return renderMobileSwipeLayout()
-        }
+        // Mobile swipe layout is handled by EnhancedMobileLayout component now
+        // Removed carousel check as it's not a valid gridLayout value
         
         if (gridLayout === 'focus') {
           console.log('🎯 Rendering focus layout')

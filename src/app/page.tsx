@@ -281,8 +281,14 @@ export default function Home() {
                   <>
                     <StreamStatusBar />
                     <div className="flex-1 overflow-y-auto md:overflow-auto p-0">
-                      {/* Route to appropriate component based on layout */}
+                      {/* Route to appropriate component based on device and layout */}
                       {(() => {
+                        // Use EnhancedMobileLayout for mobile devices
+                        if (isMobile) {
+                          return <EnhancedMobileLayout />
+                        }
+                        
+                        // Desktop routing
                         switch (gridLayout) {
                           case 'custom':
                             return <BentoStreamGrid />

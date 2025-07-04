@@ -115,12 +115,13 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
           transition={{ delay: index * 0.1 }}
           className={cn(
             "relative bg-card rounded-xl overflow-hidden border border-border/50",
-            "touch-target shadow-sm hover:shadow-md transition-shadow"
+            "touch-target shadow-sm hover:shadow-md transition-shadow stream-card"
           )}
-          style={{ 
+          style={{
             aspectRatio: '16/9',
-            minHeight: '200px',
-            maxHeight: '300px'
+            minHeight: '180px',
+            maxHeight: '220px',
+            height: 'auto'
           }}
         >
           <div className="w-full h-full">
@@ -165,10 +166,10 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
   const MobileGridLayout = () => (
     <div className={cn(
       "grid gap-3 p-4",
-      orientation === 'portrait' 
-        ? "grid-cols-1" 
-        : streams.length <= 2 
-          ? "grid-cols-2" 
+      orientation === 'portrait'
+        ? "grid-cols-1"
+        : streams.length <= 2
+          ? "grid-cols-2"
           : "grid-cols-3"
     )}>
       {streams.map((stream, index) => (
@@ -177,8 +178,12 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: index * 0.05 }}
-          className="relative bg-card rounded-lg overflow-hidden border border-border/50 touch-target"
-          style={{ aspectRatio: '16/9' }}
+          className="relative bg-card rounded-lg overflow-hidden border border-border/50 touch-target stream-card"
+          style={{
+            aspectRatio: '16/9',
+            minHeight: orientation === 'portrait' ? '160px' : '120px',
+            maxHeight: orientation === 'portrait' ? '200px' : '160px'
+          }}
           onClick={() => {
             setCurrentStreamIndex(index)
             setViewMode('focus')
