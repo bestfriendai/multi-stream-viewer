@@ -92,7 +92,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               <Link href="/" className="relative group flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-300 -z-10" />
                 <div className="relative p-2.5 rounded-xl bg-gradient-to-br from-background/90 to-background/70 border border-border/40 group-hover:border-primary/50 transition-all duration-300 backdrop-blur-sm shadow-lg group-hover:shadow-xl">
-                  <StreamyyyLogo size="lg" variant="gradient" useForHeader={true} iconOnly={true} />
+                  <StreamyyyLogo size="xl" variant="gradient" useForHeader={true} iconOnly={true} />
                 </div>
               </Link>
             </motion.div>
@@ -210,18 +210,6 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                   </motion.div>
                 </Link>
 
-                <Link href="/blog">
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-3"
-                    >
-                      <BookmarkPlus className="h-4 w-4" />
-                      <span className="ml-1.5">Blog</span>
-                    </Button>
-                  </motion.div>
-                </Link>
               </motion.div>
 
               {/* Controls Group */}
@@ -406,16 +394,6 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     </Button>
                   </Link>
 
-                  <Link href="/blog" className="block">
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start h-12"
-                      onClick={() => setShowMobileMenu(false)}
-                    >
-                      <BookmarkPlus className="mr-3 h-5 w-5" />
-                      Blog
-                    </Button>
-                  </Link>
                 </motion.div>
 
                 {/* Layout Controls */}

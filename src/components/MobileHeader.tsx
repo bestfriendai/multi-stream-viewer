@@ -78,7 +78,7 @@ export default function MobileHeader({
           {/* Left Section */}
           <div className="flex items-center gap-2">
             <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
-              <StreamyyyLogo size="lg" variant="gradient" useForHeader={true} iconOnly={true} />
+              <StreamyyyLogo size="xl" variant="gradient" useForHeader={true} iconOnly={true} />
             </Link>
             
             {activeStreams.length > 0 && (

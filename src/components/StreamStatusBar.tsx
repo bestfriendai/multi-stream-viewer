@@ -11,12 +11,38 @@ import { cn } from '@/lib/utils'
 export default function StreamStatusBar() {
   const { streams } = useStreamStore()
   const [enableStatus, setEnableStatus] = useState(false)
+  const [totalTwitchStreams, setTotalTwitchStreams] = useState<number | null>(null)
   
   // Delay enabling status check to prevent immediate API calls
   useEffect(() => {
     const timer = setTimeout(() => setEnableStatus(true), 3000) // Increased delay
     return () => clearTimeout(timer)
   }, [])
+
+  // Fetch total Twitch streams count
+  useEffect(() => {
+    if (!enableStatus) return
+    
+    const fetchTotalStreams = async () => {
+      try {
+        const response = await fetch('/api/twitch/total-streams')
+        if (response.ok) {
+          const data = await response.json()
+          if (data.success && data.totalStreams) {
+            setTotalTwitchStreams(data.totalStreams)
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch total Twitch streams:', error)
+      }
+    }
+
+    fetchTotalStreams()
+    // Refresh every 10 minutes
+    const interval = setInterval(fetchTotalStreams, 600000)
+    
+    return () => clearInterval(interval)
+  }, [enableStatus])
   
   // Get all Twitch channel names
   const twitchChannels = streams
@@ -49,17 +75,33 @@ export default function StreamStatusBar() {
     >
       <div className="flex items-center justify-between text-sm">
         <div className="flex items-center gap-4">
-          <motion.div 
-            className="flex items-center gap-2"
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            <Eye className="w-4 h-4 text-muted-foreground" />
-            <span className="text-muted-foreground font-medium">
-              {streams.length} stream{streams.length !== 1 ? 's' : ''}
-            </span>
-          </motion.div>
+          <AnimatePresence>
+            {!loading && liveCount > 0 ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="flex items-center gap-2"
+              >
+                <LiveIndicator isLive={true} showViewers={false} size="sm" />
+                <span className="text-muted-foreground font-medium">
+                  Watching {liveCount} live{liveCount !== 1 ? 's' : ''}
+                </span>
+              </motion.div>
+            ) : (
+              <motion.div 
+                className="flex items-center gap-2"
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                <Eye className="w-4 h-4 text-muted-foreground" />
+                <span className="text-muted-foreground font-medium">
+                  {streams.length} stream{streams.length !== 1 ? 's' : ''}
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
           
           <AnimatePresence>
             {!loading && liveCount > 0 && (
@@ -69,13 +111,6 @@ export default function StreamStatusBar() {
                 exit={{ opacity: 0, scale: 0.8 }}
                 className="flex items-center gap-4"
               >
-                <div className="w-px h-4 bg-border" />
-                <div className="flex items-center gap-2">
-                  <LiveIndicator isLive={true} showViewers={false} size="sm" />
-                  <span className="text-muted-foreground font-medium">
-                    {liveCount} live
-                  </span>
-                </div>
                 
                 {totalViewers > 0 && (
                   <>
@@ -89,6 +124,23 @@ export default function StreamStatusBar() {
                       <Users className="w-4 h-4 text-muted-foreground" />
                       <span className="text-muted-foreground font-medium">
                         {totalViewers.toLocaleString()} viewers
+                      </span>
+                    </motion.div>
+                  </>
+                )}
+
+                {totalTwitchStreams && (
+                  <>
+                    <div className="w-px h-4 bg-border" />
+                    <motion.div 
+                      className="flex items-center gap-2"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <Activity className="w-4 h-4 text-purple-500" />
+                      <span className="text-muted-foreground font-medium text-xs">
+                        {totalTwitchStreams.toLocaleString()}+ live on Twitch
                       </span>
                     </motion.div>
                   </>

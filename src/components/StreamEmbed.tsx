@@ -228,16 +228,21 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
             )}
           </div>
           
-          <div className="flex gap-0.5 sm:gap-1">
+          <div className="flex gap-1.5 sm:gap-2">
             <button
               onClick={(e) => {
                 handleMuteToggle(e)
                 haptic.light()
               }}
-              className="p-2 sm:p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 active:bg-white/30 text-white transition-all duration-150 border border-white/20 transform active:scale-95 min-w-[40px] min-h-[40px]"
+              className={cn(
+                "p-2.5 sm:p-3 rounded-xl bg-gradient-to-br shadow-lg border transition-all duration-200 transform active:scale-95 min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px]",
+                stream.muted 
+                  ? "from-red-500/30 to-red-600/30 border-red-400/40 hover:from-red-500/40 hover:to-red-600/40 text-red-100"
+                  : "from-blue-500/30 to-blue-600/30 border-blue-400/40 hover:from-blue-500/40 hover:to-blue-600/40 text-blue-100"
+              )}
               title={stream.muted ? 'Unmute' : 'Mute'}
             >
-              {stream.muted ? <VolumeX size={14} className="sm:w-4 sm:h-4" /> : <Volume2 size={14} className="sm:w-4 sm:h-4" />}
+              {stream.muted ? <VolumeX size={16} className="sm:w-5 sm:h-5" /> : <Volume2 size={16} className="sm:w-5 sm:h-5" />}
             </button>
             
             <button
@@ -245,10 +250,10 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
                 handleFullscreen(e)
                 haptic.light()
               }}
-              className="p-2 sm:p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 active:bg-white/30 text-white transition-all duration-150 border border-white/20 transform active:scale-95 min-w-[40px] min-h-[40px]"
+              className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-green-500/30 to-green-600/30 border border-green-400/40 hover:from-green-500/40 hover:to-green-600/40 text-green-100 shadow-lg transition-all duration-200 transform active:scale-95 min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px]"
               title="Fullscreen"
             >
-              <Maximize size={14} className="sm:w-4 sm:h-4" />
+              <Maximize size={16} className="sm:w-5 sm:h-5" />
             </button>
             
             {primaryStreamId !== stream.id && (
@@ -257,10 +262,10 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
                   handleMaximize(e)
                   haptic.medium()
                 }}
-                className="p-2 sm:p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 active:bg-white/30 text-white transition-all duration-150 border border-white/20 transform active:scale-95 min-w-[40px] min-h-[40px]"
+                className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-purple-500/30 to-purple-600/30 border border-purple-400/40 hover:from-purple-500/40 hover:to-purple-600/40 text-purple-100 shadow-lg transition-all duration-200 transform active:scale-95 min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px]"
                 title="Set as primary"
               >
-                <Maximize2 size={14} className="sm:w-4 sm:h-4" />
+                <Maximize2 size={16} className="sm:w-5 sm:h-5" />
               </button>
             )}
             
@@ -269,10 +274,10 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
                 handleClose(e)
                 haptic.heavy()
               }}
-              className="p-2 sm:p-2 rounded-full bg-red-500/20 backdrop-blur-md hover:bg-red-500/30 active:bg-red-500/40 text-white transition-all duration-150 border border-red-500/30 transform active:scale-95 min-w-[40px] min-h-[40px]"
+              className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-red-500/40 to-red-600/40 border border-red-400/50 hover:from-red-500/50 hover:to-red-600/50 text-red-100 shadow-lg transition-all duration-200 transform active:scale-95 min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px]"
               title="Remove stream"
             >
-              <X size={14} className="sm:w-4 sm:h-4" />
+              <X size={16} className="sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
