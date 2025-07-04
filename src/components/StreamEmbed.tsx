@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, memo } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import type { Stream } from '@/types/stream'
 import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from 'lucide-react'
@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-const StreamEmbed = memo(function StreamEmbed({ stream }: StreamEmbedProps) {
+export default function StreamEmbed({ stream }: StreamEmbedProps) {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const [isMobile, setIsMobile] = useState(false)
@@ -66,7 +66,7 @@ const StreamEmbed = memo(function StreamEmbed({ stream }: StreamEmbedProps) {
             channel: stream.channelName,
             parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'ampsummer.com'],
             autoplay: true,
-            muted: stream.muted,
+            muted: false, // Start unmuted, we'll control via API
             layout: 'video',
             theme: 'dark',
             allowfullscreen: true,
@@ -90,8 +90,9 @@ const StreamEmbed = memo(function StreamEmbed({ stream }: StreamEmbedProps) {
           
           embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
             playerRef.current = embed.getPlayer()
-            if (stream.muted) {
-              playerRef.current.setMuted(true)
+            // Set initial mute state
+            if (playerRef.current && playerRef.current.setMuted) {
+              playerRef.current.setMuted(stream.muted)
             }
           })
         }
@@ -114,7 +115,8 @@ const StreamEmbed = memo(function StreamEmbed({ stream }: StreamEmbedProps) {
       iframe.style.left = '0'
       iframe.style.width = '100%'
       iframe.style.height = '100%'
-      iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=${stream.muted ? 1 : 0}&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}&widget_referrer=${window.location.href}`
+      // Always start YouTube with mute=0 to allow unmuting later, we'll control mute via postMessage
+      iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=0&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}&widget_referrer=${window.location.href}`
       iframe.setAttribute('frameborder', '0')
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
       iframe.setAttribute('allowfullscreen', 'true')
@@ -124,6 +126,18 @@ const StreamEmbed = memo(function StreamEmbed({ stream }: StreamEmbedProps) {
       
       // Store iframe reference for mute control
       playerRef.current = iframe
+      
+      // Set initial mute state after iframe loads
+      iframe.onload = () => {
+        setTimeout(() => {
+          if (stream.muted && iframe.contentWindow) {
+            iframe.contentWindow.postMessage(
+              JSON.stringify({ event: 'command', func: 'mute', args: '' }),
+              '*'
+            )
+          }
+        }, 1000) // Wait for YouTube player to initialize
+      }
     } else if (stream.platform === 'rumble') {
       // Rumble embed
       const iframe = document.createElement('iframe')
@@ -348,18 +362,4 @@ const StreamEmbed = memo(function StreamEmbed({ stream }: StreamEmbedProps) {
       )}
     </div>
   )
-}, (prevProps, nextProps) => {
-  // Custom comparison to prevent unnecessary re-renders
-  // Include muted state to ensure re-render on mute changes
-  return (
-    prevProps.stream.id === nextProps.stream.id &&
-    prevProps.stream.channelName === nextProps.stream.channelName &&
-    prevProps.stream.platform === nextProps.stream.platform &&
-    prevProps.stream.channelId === nextProps.stream.channelId &&
-    prevProps.stream.muted === nextProps.stream.muted
-  )
-})
-
-StreamEmbed.displayName = 'StreamEmbed'
-
-export default StreamEmbed
+}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useCallback, memo } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import type { Stream } from '@/types/stream'
 import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from 'lucide-react'
@@ -66,7 +66,7 @@ class TwitchScriptManager {
   }
 }
 
-const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
+export default function StreamEmbedOptimized({ stream }: StreamEmbedProps) {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const embedInstanceRef = useRef<any>(null)
@@ -141,7 +141,7 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
             channel: stream.channelName,
             parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'www.streamyyy.com'],
             autoplay: true,
-            muted: stream.muted,
+            muted: false, // Start unmuted, we'll control via API
             layout: 'video',
             theme: 'dark',
             allowfullscreen: true,
@@ -154,8 +154,8 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
             embedInstanceRef.current.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
               if (!cancelled && isMountedRef.current) {
                 playerRef.current = embedInstanceRef.current.getPlayer()
-                if (stream.muted && playerRef.current?.setMuted) {
-                  playerRef.current.setMuted(true)
+                if (playerRef.current?.setMuted) {
+                  playerRef.current.setMuted(stream.muted)
                 }
               }
             })
@@ -168,7 +168,7 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
         iframe.width = '100%'
         iframe.height = '100%'
         iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%'
-        iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=1&enablejsapi=1&modestbranding=1&rel=0&playsinline=1`
+        iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=0&enablejsapi=1&modestbranding=1&rel=0&playsinline=1`
         iframe.setAttribute('frameborder', '0')
         iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
         iframe.setAttribute('allowfullscreen', 'true')
@@ -316,18 +316,4 @@ const StreamEmbedOptimized = memo(({ stream }: StreamEmbedProps) => {
       />
     </div>
   )
-}, (prevProps, nextProps) => {
-  // Custom comparison to prevent unnecessary re-renders
-  // Include muted state to ensure re-render on mute changes
-  return (
-    prevProps.stream.id === nextProps.stream.id &&
-    prevProps.stream.channelName === nextProps.stream.channelName &&
-    prevProps.stream.platform === nextProps.stream.platform &&
-    prevProps.stream.channelId === nextProps.stream.channelId &&
-    prevProps.stream.muted === nextProps.stream.muted
-  )
-})
-
-StreamEmbedOptimized.displayName = 'StreamEmbedOptimized'
-
-export default StreamEmbedOptimized
+}
