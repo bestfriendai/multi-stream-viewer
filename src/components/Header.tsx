@@ -97,17 +97,17 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               </Link>
             </motion.div>
 
-            {/* Enhanced Mobile Actions */}
-            <div className="flex items-center gap-2 md:hidden">
+            {/* Enhanced Mobile Actions - More responsive */}
+            <div className="flex items-center gap-1.5 sm:gap-2 md:hidden">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   onClick={() => setShowAddStream(true)}
                   size="sm"
-                  className="h-9 px-3 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg border-0"
+                  className="h-10 px-3 sm:px-4 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg border-0 min-w-[44px] touch-manipulation"
                   disabled={streams.length >= 16}
                 >
                   <Plus className="h-4 w-4" />
-                  <span className="ml-1.5">Add</span>
+                  <span className="ml-1.5 hidden xs:inline">Add</span>
                 </Button>
               </motion.div>
 
@@ -115,10 +115,11 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="h-9 px-3 border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm"
+                  className="h-10 w-10 sm:px-3 sm:w-auto border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm min-w-[44px] touch-manipulation"
                   onClick={() => setShowDiscovery(true)}
                 >
                   <Compass className="h-4 w-4" />
+                  <span className="ml-1.5 hidden sm:inline">Discover</span>
                 </Button>
               </motion.div>
 
@@ -126,7 +127,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-9 w-9 p-0 hover:bg-muted/60 rounded-lg"
+                  className="h-10 w-10 p-0 hover:bg-muted/60 rounded-lg min-w-[44px] touch-manipulation"
                   onClick={() => setShowMobileMenu(true)}
                 >
                   <Menu className="h-4 w-4" />

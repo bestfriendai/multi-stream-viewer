@@ -232,8 +232,9 @@ export default function Home() {
       )}>
         <main className="flex-1 overflow-auto md:overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-            <div className="border-b px-4 py-0">
-              <TabsList className="h-10 bg-transparent">
+            {streams.length > 0 && (
+              <div className="border-b px-4 py-0">
+                <TabsList className="h-10 bg-transparent">
                 <TabsTrigger value="streams" className="gap-2">
                   <Grid3x3 size={16} />
                   <span className="hidden sm:inline">Streams</span>
@@ -260,7 +261,8 @@ export default function Home() {
                   <span className="hidden sm:inline">Features</span>
                 </TabsTrigger>
               </TabsList>
-            </div>
+              </div>
+            )}
             
             <TabsContent value="streams" className="flex-1 m-0 p-0 flex flex-col overflow-auto md:overflow-hidden">
               <ErrorBoundary>

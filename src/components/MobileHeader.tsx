@@ -74,7 +74,7 @@ export default function MobileHeader({
     <header className="bg-background/95 backdrop-blur-md sticky top-0 z-40 border-b md:hidden">
       <div className="px-4">
         {/* Main Header Row */}
-        <div className="h-14 flex items-center justify-between">
+        <div className="h-16 flex items-center justify-between">
           {/* Left Section */}
           <div className="flex items-center gap-2">
             <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
@@ -89,14 +89,14 @@ export default function MobileHeader({
             )}
           </div>
 
-          {/* Right Section */}
-          <div className="flex items-center gap-1">
+          {/* Right Section - Improved touch targets */}
+          <div className="flex items-center gap-1.5">
             {/* Quick Search Toggle */}
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="h-8 w-8 p-0"
+              className="h-10 w-10 p-0 min-w-[44px] touch-manipulation hover:bg-muted/60"
             >
               {isSearchOpen ? <X size={18} /> : <Search size={18} />}
             </Button>
@@ -106,7 +106,7 @@ export default function MobileHeader({
               variant="ghost"
               size="sm"
               onClick={onAddStream}
-              className="h-8 w-8 p-0"
+              className="h-10 w-10 p-0 min-w-[44px] touch-manipulation hover:bg-primary/10 text-primary"
               disabled={streams.length >= 16}
             >
               <Plus size={18} />
@@ -118,7 +118,7 @@ export default function MobileHeader({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 w-8 p-0"
+                  className="h-10 w-10 p-0 min-w-[44px] touch-manipulation hover:bg-muted/60"
                 >
                   <MoreHorizontal size={18} />
                 </Button>
