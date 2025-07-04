@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { muteManager, useMuteState } from '@/lib/muteManager'
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -31,8 +32,24 @@ interface MobileStreamViewerProps {
   onClose: () => void
 }
 
+// Mute button component that uses reactive state
+function MuteButton({ streamId }: { streamId: string }) {
+  const [isMuted, toggleMute] = useMuteState(streamId)
+  
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={toggleMute}
+      className="text-white hover:bg-white/20"
+    >
+      {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+    </Button>
+  )
+}
+
 export default function MobileStreamViewer({ show, onClose }: MobileStreamViewerProps) {
-  const { streams, toggleStreamMute } = useStreamStore()
+  const { streams } = useStreamStore()
   const { trackMobileGesture, trackStreamClicked, trackStreamFullscreen } = useAnalytics()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -218,14 +235,7 @@ export default function MobileStreamViewer({ show, onClose }: MobileStreamViewer
 
         {/* Additional Controls */}
         <div className="flex items-center justify-center gap-4 mt-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => currentStream && toggleStreamMute(currentStream.id)}
-            className="text-white hover:bg-white/20"
-          >
-            {currentStream?.muted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-          </Button>
+          {currentStream && <MuteButton streamId={currentStream.id} />}
           
           <Button
             variant="ghost"

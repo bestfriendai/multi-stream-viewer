@@ -17,6 +17,7 @@ import {
   Bookmark,
   Share2
 } from 'lucide-react'
+import { muteManager } from '@/lib/muteManager'
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -204,13 +205,13 @@ export default function EnhancedStreamCard({
                       size="sm"
                       onClick={onToggleMute}
                       className="h-8 w-8 p-0 text-white hover:bg-white/20"
-                      aria-label={stream.muted ? 'Unmute' : 'Mute'}
+                      aria-label={muteManager.getMuteState(stream.id) ? 'Unmute' : 'Mute'}
                     >
-                      {stream.muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                      {muteManager.getMuteState(stream.id) ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    {stream.muted ? 'Unmute' : 'Mute'}
+                    {muteManager.getMuteState(stream.id) ? 'Unmute' : 'Mute'}
                   </TooltipContent>
                 </Tooltip>
 

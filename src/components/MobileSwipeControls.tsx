@@ -6,6 +6,7 @@ import {
   ChevronLeft, ChevronRight, Volume2, VolumeX, 
   MessageSquare, Maximize2, Grid
 } from 'lucide-react'
+import { muteManager } from '@/lib/muteManager'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -333,12 +334,12 @@ export default function MobileSwipeControls({ onClose }: MobileSwipeControlsProp
               onClick={() => {
                 if (currentStream) {
                   toggleStreamMute(currentStream.id)
-                  toast.info(currentStream.muted ? 'Unmuted' : 'Muted')
+                  toast.info(muteManager.getMuteState(currentStream.id) ? 'Unmuted' : 'Muted')
                 }
               }}
               className="p-4 rounded-full bg-white/20"
             >
-              {currentStream?.muted ? (
+              {currentStream && muteManager.getMuteState(currentStream.id) ? (
                 <VolumeX size={28} className="text-white" />
               ) : (
                 <Volume2 size={28} className="text-white" />

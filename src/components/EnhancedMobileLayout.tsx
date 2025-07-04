@@ -17,6 +17,7 @@ import {
   Volume2,
   VolumeX
 } from 'lucide-react'
+import { muteManager } from '@/lib/muteManager'
 import { Button } from '@/components/ui/button'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
@@ -127,7 +128,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
           }}
         >
           <div className="w-full h-full">
-            <StreamEmbedOptimized stream={stream} muted={stream.muted} />
+            <StreamEmbedOptimized stream={stream} />
           </div>
           
           {/* Stream overlay info */}
@@ -149,7 +150,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
                 toggleStreamMute(stream.id)
               }}
             >
-              {stream.muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              {muteManager.getMuteState(stream.id) ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
             </Button>
             <Button
               size="sm"
@@ -204,7 +205,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
           }}
         >
           <div className="w-full h-full">
-            <StreamEmbedOptimized stream={stream} muted={stream.muted} />
+            <StreamEmbedOptimized stream={stream} />
           </div>
 
           {/* Mute button */}
@@ -218,7 +219,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
                 toggleStreamMute(stream.id)
               }}
             >
-              {stream.muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              {muteManager.getMuteState(stream.id) ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
             </Button>
           </div>
 

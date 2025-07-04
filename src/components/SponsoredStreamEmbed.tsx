@@ -7,6 +7,7 @@ import { useStreamStore } from '@/store/streamStore'
 import LiveIndicator from './LiveIndicator'
 import { haptic } from '@/lib/haptics'
 import { cn } from '@/lib/utils'
+import { useMuteState, muteManager } from '@/lib/muteManager'
 
 interface SponsoredStreamEmbedProps {
   stream: {
@@ -28,16 +29,12 @@ declare global {
 const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, className }: SponsoredStreamEmbedProps) {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
-  const [isMobile, setIsMobile] = useState(false)
-  const { toggleStreamMute } = useStreamStore()
   
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  // Use new mute system
+  const [streamMuted, toggleMute] = useMuteState(stream.id)
+  
+  // Stable mobile detection function - no state needed
+  const isMobileDevice = () => window.innerWidth < 768
   
   // Get live status for Twitch streams
   const { status: twitchStatus } = useSingleChannelStatus(
@@ -59,19 +56,19 @@ const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, classN
       
       script.onload = () => {
         if (window.Twitch && embedRef.current) {
-          const isMobileDevice = window.innerWidth < 768
+          const isMobile = isMobileDevice()
           const embed = new window.Twitch.Embed(embedRef.current, {
             width: '100%',
             height: '100%',
             channel: stream.channelName,
             parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'ampsummer.com'],
             autoplay: true, // Autoplay sponsored content
-            muted: stream.muted !== false, // Use stream muted state
+            muted: streamMuted, // Use separate mute state
             layout: 'video',
             theme: 'dark',
             allowfullscreen: true,
             // Mobile-specific optimizations
-            ...(isMobileDevice && {
+            ...(isMobile && {
               quality: 'auto',
               controls: true
             })
@@ -79,7 +76,7 @@ const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, classN
           
           // Additional mobile iframe styling after embed creation
           setTimeout(() => {
-            if (embedRef.current && isMobileDevice) {
+            if (embedRef.current && isMobile) {
               const iframe = embedRef.current.querySelector('iframe')
               if (iframe) {
                 iframe.style.objectFit = 'cover'
@@ -90,9 +87,8 @@ const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, classN
           
           embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
             playerRef.current = embed.getPlayer()
-            if (stream.muted !== false) {
-              playerRef.current.setMuted(true)
-            }
+            // Register player with muteManager
+            muteManager.registerPlayer(stream.id, playerRef.current, 'twitch')
           })
         }
       }
@@ -114,10 +110,19 @@ const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, classN
       iframe.style.left = '0'
       iframe.style.width = '100%'
       iframe.style.height = '100%'
-      iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=${stream.muted !== false ? 1 : 0}&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}`
+      iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=1&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}`
       iframe.setAttribute('frameborder', '0')
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
       iframe.setAttribute('allowfullscreen', 'true')
+      
+      iframe.onload = () => {
+        // Register YouTube iframe with muteManager
+        setTimeout(() => {
+          if (iframe.contentWindow) {
+            muteManager.registerPlayer(stream.id, iframe, 'youtube')
+          }
+        }, 1000)
+      }
       
       embedRef.current.appendChild(iframe)
     }
@@ -126,21 +131,16 @@ const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, classN
       if (embedRef.current) {
         embedRef.current.innerHTML = ''
       }
+      // Cleanup muteManager on unmount
+      muteManager.unregisterPlayer(stream.id)
     }
   }, [stream.channelName, stream.channelId, stream.platform])
   
-  useEffect(() => {
-    if (playerRef.current && stream.platform === 'twitch') {
-      playerRef.current.setMuted(stream.muted !== false)
-    }
-    // Note: YouTube mute state changes via URL parameter changes cause stream reloads
-    // For better UX, we rely on the initial mute state set during embed creation
-    // Users can use YouTube's native controls for mute if needed
-  }, [stream.muted, stream.platform])
+  // mute state changes are now handled by muteManager internally
   
   const handleMuteToggle = (e: React.MouseEvent) => {
     e.stopPropagation()
-    toggleStreamMute(stream.id)
+    toggleMute()
   }
   
   const handleVisitChannel = () => {
@@ -184,13 +184,13 @@ const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, classN
       {/* Properly sized embed container */}
       <div className={cn(
         "w-full h-full rounded-2xl overflow-hidden relative stream-embed-container",
-        isMobile ? "aspect-video" : ""
+        isMobileDevice() ? "aspect-video" : ""
       )}>
         <div 
           ref={embedRef} 
           className={cn(
             "w-full h-full",
-            isMobile && "absolute inset-0"
+            isMobileDevice() && "absolute inset-0"
           )} 
         />
       </div>
@@ -220,13 +220,13 @@ const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, classN
               }}
               className={cn(
                 "p-2.5 sm:p-3 rounded-xl bg-gradient-to-br shadow-lg border transition-all duration-200 transform active:scale-95 min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px]",
-                stream.muted !== false
+                streamMuted
                   ? "from-red-500/30 to-red-600/30 border-red-400/40 hover:from-red-500/40 hover:to-red-600/40 text-red-100"
                   : "from-blue-500/30 to-blue-600/30 border-blue-400/40 hover:from-blue-500/40 hover:to-blue-600/40 text-blue-100"
               )}
-              title={stream.muted !== false ? 'Unmute sponsored stream' : 'Mute sponsored stream'}
+              title={streamMuted ? 'Unmute sponsored stream' : 'Mute sponsored stream'}
             >
-              {stream.muted !== false ? <VolumeX size={16} className="sm:w-5 sm:h-5" /> : <Volume2 size={16} className="sm:w-5 sm:h-5" />}
+              {streamMuted ? <VolumeX size={16} className="sm:w-5 sm:h-5" /> : <Volume2 size={16} className="sm:w-5 sm:h-5" />}
             </button>
             
             <button
@@ -266,8 +266,7 @@ const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, classN
     </div>
   )
 }, (prevProps, nextProps) => {
-  // Custom comparison to prevent unnecessary re-renders
-  // Don't include muted state since we handle that separately in useEffect
+  // Custom comparison to prevent unnecessary re-renders (exclude muted from stream)
   return (
     prevProps.stream.id === nextProps.stream.id &&
     prevProps.stream.channelName === nextProps.stream.channelName &&

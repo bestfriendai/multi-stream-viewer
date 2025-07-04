@@ -67,18 +67,20 @@ export default function Home() {
     const checkMobile = () => {
       const mobile = window.innerWidth < 768
       setIsMobile(mobile)
-      
-      // Show gesture hints on first mobile visit with streams
-      if (mobile && streams.length > 0 && !localStorage.getItem('gesture-hints-shown')) {
-        setShowGestureHints(true)
-        localStorage.setItem('gesture-hints-shown', 'true')
-      }
     }
     
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
-  }, [streams.length])
+  }, [])
+  
+  // Separate effect for gesture hints to avoid re-renders on stream changes
+  useEffect(() => {
+    if (isMobile && streams.length > 0 && !localStorage.getItem('gesture-hints-shown')) {
+      setShowGestureHints(true)
+      localStorage.setItem('gesture-hints-shown', 'true')
+    }
+  }, [isMobile, streams.length])
   
   // Enable keyboard shortcuts
   useKeyboardShortcuts()

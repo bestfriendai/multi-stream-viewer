@@ -9,6 +9,7 @@ import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { cn } from '@/lib/utils'
 import { useTwitchStatus } from '@/hooks/useTwitchStatus'
+import { muteManager, useMuteState } from '@/lib/muteManager'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,31 +22,67 @@ interface StreamChatProps {
   onClose: () => void
 }
 
+// Sound indicator component that uses reactive mute state
+function SoundIndicator({ streamId, showText = true }: { streamId: string, showText?: boolean }) {
+  const [isMuted] = useMuteState(streamId)
+  
+  if (isMuted) return null
+  
+  return (
+    <motion.div
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ scale: 0.8, opacity: 0 }}
+      className={showText ? "flex items-center gap-1 text-green-500" : ""}
+    >
+      <Volume2 className={showText ? "w-3 h-3" : "w-3 h-3 text-primary"} />
+      {showText && <span className="text-xs">Sound</span>}
+    </motion.div>
+  )
+}
+
 export default function StreamChat({ show, onClose }: StreamChatProps) {
   const { streams } = useStreamStore()
   const twitchStreams = streams.filter(s => s.platform === 'twitch')
   
-  // Initialize with unmuted stream if available, otherwise first stream
-  const getInitialStreamId = () => {
-    const unmutedStream = twitchStreams.find(s => !s.muted)
-    return unmutedStream?.id || twitchStreams[0]?.id || ''
-  }
-  
-  const [selectedStreamId, setSelectedStreamId] = useState(getInitialStreamId())
-  const [isMobile, setIsMobile] = useState(false)
+  const [selectedStreamId, setSelectedStreamId] = useState('')
   const [isMinimized, setIsMinimized] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [muteStates, setMuteStates] = useState<Record<string, boolean>>({})
   
-  // Mobile detection
+  // Subscribe to mute state changes for all streams
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
+    const unsubscribes: (() => void)[] = []
     
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+    // Initialize mute states and subscribe to changes
+    twitchStreams.forEach(stream => {
+      // Set initial state
+      setMuteStates(prev => ({
+        ...prev,
+        [stream.id]: muteManager.getMuteState(stream.id)
+      }))
+      
+      // Subscribe to changes
+      const unsubscribe = muteManager.subscribe(stream.id, (muted) => {
+        setMuteStates(prev => ({
+          ...prev,
+          [stream.id]: muted
+        }))
+      })
+      
+      unsubscribes.push(unsubscribe)
+    })
+    
+    return () => {
+      unsubscribes.forEach(unsub => unsub())
+    }
+  }, [twitchStreams.length]) // Only re-run when number of streams changes
+  
+  // Stable mobile detection function
+  const isMobileDevice = () => {
+    if (typeof window === 'undefined') return false
+    return window.innerWidth < 768
+  }
   
   // Get Twitch status for viewer counts
   const twitchChannels = twitchStreams.map(s => s.channelName)
@@ -59,7 +96,8 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
     if (!show) return
     
     // Always prioritize unmuted streams
-    const unmutedStream = twitchStreams.find(s => !s.muted)
+    const unmutedStreamId = Object.entries(muteStates).find(([_, isMuted]) => !isMuted)?.[0]
+    const unmutedStream = unmutedStreamId ? twitchStreams.find(s => s.id === unmutedStreamId) : null
     
     if (unmutedStream && unmutedStream.id !== selectedStreamId) {
       // Immediately switch to unmuted stream
@@ -90,29 +128,26 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
         setSelectedStreamId(twitchStreams[0].id)
       }
     }
-  }, [show, twitchStreams, selectedStreamId, status])
+  }, [show, twitchStreams, selectedStreamId, status, muteStates])
   
   // Reinitialize selected stream when twitch streams change (streams added/removed)
   useEffect(() => {
-    if (twitchStreams.length > 0) {
-      const currentSelected = twitchStreams.find(s => s.id === selectedStreamId)
-      
-      // If current selection is no longer valid, or if we should prefer an unmuted stream
-      if (!currentSelected) {
-        const newId = getInitialStreamId()
-        if (newId !== selectedStreamId) {
-          setSelectedStreamId(newId)
-        }
+    if (twitchStreams.length > 0 && !selectedStreamId) {
+      const unmutedStreamId = Object.entries(muteStates).find(([_, isMuted]) => !isMuted)?.[0]
+      if (unmutedStreamId) {
+        setSelectedStreamId(unmutedStreamId)
+      } else if (twitchStreams[0]) {
+        setSelectedStreamId(twitchStreams[0].id)
       }
     }
-  }, [twitchStreams.length, streams]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [twitchStreams.length, selectedStreamId, muteStates])
   
   if (!show) return null
 
   const selectedStream = twitchStreams.find(s => s.id === selectedStreamId) || twitchStreams[0]
 
   // Mobile Chat: Bottom sheet style
-  if (isMobile) {
+  if (isMobileDevice()) {
     return (
       <AnimatePresence>
         <motion.div
@@ -187,9 +222,9 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
                         streamStatus?.isLive ? "bg-red-500 animate-pulse" : "bg-gray-400"
                       )} />
                       <span className="truncate max-w-[100px]">{stream.channelName}</span>
-                      {!stream.muted && (
-                        <Volume2 className="w-3 h-3" />
-                      )}
+                      <AnimatePresence>
+                        <SoundIndicator streamId={stream.id} showText={false} />
+                      </AnimatePresence>
                       {streamStatus && (
                         <Badge variant="secondary" className="text-xs">
                           {streamStatus.viewerCount > 1000 ? 
@@ -288,8 +323,10 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
                 <div className="flex items-center gap-2 flex-1 truncate">
                   <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                   <span className="truncate">{selectedStream?.channelName}</span>
-                  {selectedStream && !selectedStream.muted && (
-                    <Volume2 className="w-4 h-4 text-primary" />
+                  {selectedStream && (
+                    <AnimatePresence>
+                      <SoundIndicator streamId={selectedStream.id} showText={false} />
+                    </AnimatePresence>
                   )}
                   {selectedStream?.channelName && status.get(selectedStream.channelName) && (
                     <Badge variant="secondary" className="ml-auto mr-2">
@@ -321,9 +358,9 @@ export default function StreamChat({ show, onClose }: StreamChatProps) {
                             streamStatus?.isLive ? "bg-red-500 animate-pulse" : "bg-gray-400"
                           )} />
                           <span className="font-medium">{stream.channelName}</span>
-                          {!stream.muted && (
-                            <Volume2 className="w-3 h-3 text-primary" />
-                          )}
+                          <AnimatePresence>
+                            <SoundIndicator streamId={stream.id} showText={false} />
+                          </AnimatePresence>
                         </div>
                         <div className="flex items-center gap-3">
                           {streamStatus && (

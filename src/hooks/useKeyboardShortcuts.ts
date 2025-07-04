@@ -1,6 +1,7 @@
 import { useHotkeys } from 'react-hotkeys-hook'
 import { useStreamStore } from '@/store/streamStore'
 import { toast } from 'sonner'
+import { muteManager } from '@/lib/muteManager'
 
 export function useKeyboardShortcuts() {
   const { 
@@ -29,7 +30,7 @@ export function useKeyboardShortcuts() {
     e.preventDefault()
     if (activeStreamId) {
       const stream = streams.find(s => s.id === activeStreamId)
-      const wasMuted = stream?.muted
+      const wasMuted = stream ? muteManager.getMuteState(stream.id) : true
       toggleStreamMute(activeStreamId)
       if (stream) {
         toast.success(`${stream.channelName} ${wasMuted ? 'unmuted' : 'muted'}`)
@@ -41,7 +42,7 @@ export function useKeyboardShortcuts() {
   useHotkeys('m', () => {
     if (activeStreamId) {
       const stream = streams.find(s => s.id === activeStreamId)
-      const wasMuted = stream?.muted
+      const wasMuted = stream ? muteManager.getMuteState(stream.id) : true
       toggleStreamMute(activeStreamId)
       if (stream) {
         toast.success(`${stream.channelName} ${wasMuted ? 'unmuted' : 'muted'}`)

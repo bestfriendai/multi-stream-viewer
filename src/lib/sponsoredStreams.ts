@@ -52,7 +52,6 @@ export const createSponsoredStreamObject = (sponsoredStream: SponsoredStream): S
       ...(sponsoredStream.channelId && { channelId: sponsoredStream.channelId }),
       quality: 'auto',
       volume: 50, // Default volume
-      muted: true, // Start muted
       position: sponsoredStream.position || 0,
       isActive: true,
       createdAt: now,

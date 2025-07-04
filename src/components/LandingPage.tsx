@@ -139,19 +139,11 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
     viewerCount: number
   }>>([])
   const [loading, setLoading] = useState(true)
-  const [isMobile, setIsMobile] = useState(false)
   
-  // Check if mobile
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  // Stable mobile detection function
+  const isMobileDevice = () => {
+    return typeof window !== 'undefined' && window.innerWidth < 768
+  }
 
   // Fetch top live streams directly with priority
   useEffect(() => {
@@ -514,7 +506,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                         >
                           {stream ? (
                             <>
-                              {isMobile ? (
+                              {isMobileDevice() ? (
                                 // Mobile: Show thumbnail
                                 <>
                                   <img 
@@ -1030,7 +1022,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                     onClick={() => handleQuickAdd(channel.channelName)}
                   >
                     <div className="aspect-video relative overflow-hidden bg-black">
-                      {isMobile ? (
+                      {isMobileDevice() ? (
                         // Mobile: Show thumbnail only
                         <>
                           <img 

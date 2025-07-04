@@ -7,10 +7,10 @@ import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from
 import { useSingleChannelStatus } from '@/hooks/useTwitchStatus'
 import LiveIndicator from './LiveIndicator'
 import { cn } from '@/lib/utils'
+import { useMuteState, muteManager } from '@/lib/muteManager'
 
 interface StreamEmbedProps {
   stream: Stream
-  muted?: boolean
 }
 
 declare global {
@@ -67,21 +67,20 @@ class TwitchScriptManager {
   }
 }
 
-function StreamEmbedOptimizedInner({ stream, muted }: StreamEmbedProps) {
+function StreamEmbedOptimizedInner({ stream }: StreamEmbedProps) {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const embedInstanceRef = useRef<any>(null)
   const isMountedRef = useRef(true)
   
   const { 
-    toggleStreamMute, 
     removeStream, 
     setPrimaryStream,
     primaryStreamId 
   } = useStreamStore()
   
-  // Get live status for Twitch streams with longer refresh interval
-  const actualMuted = muted !== undefined ? muted : stream.muted
+  // Use new mute system
+  const [streamMuted, toggleMute] = useMuteState(stream.id)
   
   const { status: twitchStatus } = useSingleChannelStatus(
     stream.platform === 'twitch' ? stream.channelName : '',
@@ -115,8 +114,10 @@ function StreamEmbedOptimizedInner({ stream, muted }: StreamEmbedProps) {
     return () => {
       isMountedRef.current = false
       cleanup()
+      // Cleanup muteManager on unmount
+      muteManager.unregisterPlayer(stream.id)
     }
-  }, [cleanup])
+  }, [cleanup, stream.platform, stream.id])
   
   // Separate effect for initial setup - only runs when stream details change
   useEffect(() => {
@@ -136,7 +137,7 @@ function StreamEmbedOptimizedInner({ stream, muted }: StreamEmbedProps) {
           
           if (cancelled || !isMountedRef.current || !window.Twitch?.Embed || !embedRef.current) return
           
-          const isMobile = window.innerWidth < 768
+          const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
           
           embedInstanceRef.current = new window.Twitch.Embed(embedRef.current, {
             width: '100%',
@@ -144,7 +145,7 @@ function StreamEmbedOptimizedInner({ stream, muted }: StreamEmbedProps) {
             channel: stream.channelName,
             parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'www.streamyyy.com'],
             autoplay: true,
-            muted: false, // Start unmuted, we'll control via API
+            muted: true, // Always start muted, we'll control via API
             layout: 'video',
             theme: 'dark',
             allowfullscreen: true,
@@ -157,11 +158,32 @@ function StreamEmbedOptimizedInner({ stream, muted }: StreamEmbedProps) {
             embedInstanceRef.current.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
               if (!cancelled && isMountedRef.current) {
                 playerRef.current = embedInstanceRef.current.getPlayer()
-                if (playerRef.current?.setMuted) {
-                  playerRef.current.setMuted(actualMuted)
+                if (playerRef.current) {
+                  muteManager.registerPlayer(stream.id, playerRef.current, 'twitch')
                 }
               }
             })
+            
+            // Handle offline streams and errors
+            embedInstanceRef.current.addEventListener(window.Twitch.Embed.OFFLINE, () => {
+              console.log(`Stream ${stream.channelName} is offline`)
+            })
+            
+            // Add error handling for player errors
+            setTimeout(() => {
+              if (!cancelled && embedInstanceRef.current?.getPlayer) {
+                const player = embedInstanceRef.current.getPlayer()
+                if (player && player.addEventListener) {
+                  player.addEventListener(window.Twitch.Player.OFFLINE, () => {
+                    console.log(`Player for ${stream.channelName} went offline`)
+                  })
+                  
+                  player.addEventListener(window.Twitch.Player.ERROR, (error: any) => {
+                    console.warn(`Player error for ${stream.channelName}:`, error)
+                  })
+                }
+              }
+            }, 1000) // Wait for player to be ready
           }
         } catch (error) {
           console.error('Error loading Twitch embed:', error)
@@ -171,22 +193,18 @@ function StreamEmbedOptimizedInner({ stream, muted }: StreamEmbedProps) {
         iframe.width = '100%'
         iframe.height = '100%'
         iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%'
-        iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=0&enablejsapi=1&modestbranding=1&rel=0&playsinline=1`
+        iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=1&enablejsapi=1&modestbranding=1&rel=0&playsinline=1`
         iframe.setAttribute('frameborder', '0')
         iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
         iframe.setAttribute('allowfullscreen', 'true')
         
         embedRef.current.appendChild(iframe)
 
-        // Set initial mute state after iframe loads
+        // Register YouTube iframe with muteManager after it loads
         iframe.onload = () => {
           setTimeout(() => {
             if (iframe.contentWindow) {
-              const command = actualMuted ? 'mute' : 'unMute'
-              iframe.contentWindow.postMessage(
-                JSON.stringify({ event: 'command', func: command }),
-                'https://www.youtube.com'
-              )
+              muteManager.registerPlayer(stream.id, iframe, 'youtube')
             }
           }, 1000) // Wait for YouTube player to initialize
         }
@@ -210,27 +228,12 @@ function StreamEmbedOptimizedInner({ stream, muted }: StreamEmbedProps) {
     }
   }, [stream.channelName, stream.channelId, stream.platform]) // Removed cleanup dependency to prevent unnecessary re-renders
   
-  // Handle mute state changes
-  useEffect(() => {
-    if (stream.platform === 'twitch' && playerRef.current?.setMuted) {
-      playerRef.current.setMuted(actualMuted)
-    } else if (stream.platform === 'youtube' && embedRef.current) {
-      // For YouTube, we need to use postMessage to control the player
-      const iframe = embedRef.current.querySelector('iframe')
-      if (iframe && iframe.contentWindow) {
-        const command = stream.muted ? 'mute' : 'unMute'
-        iframe.contentWindow.postMessage(
-          JSON.stringify({ event: 'command', func: command }),
-          'https://www.youtube.com'
-        )
-      }
-    }
-  }, [stream.muted, stream.platform])
+  // mute state changes are now handled by muteManager internally
   
   const handleMuteToggle = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
-    toggleStreamMute(stream.id)
-  }, [stream.id, toggleStreamMute])
+    toggleMute()
+  }, [toggleMute])
   
   const handleRemove = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
@@ -249,8 +252,10 @@ function StreamEmbedOptimizedInner({ stream, muted }: StreamEmbedProps) {
   // Show viewer count for live streams
   const viewerCount = twitchStatus?.isLive ? twitchStatus.viewerCount : 0
   
-  // Detect mobile device
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+  // Stable mobile detection function - no state needed to prevent re-renders
+  const isMobileDevice = () => {
+    return typeof window !== 'undefined' && window.innerWidth < 768
+  }
 
   return (
     <div className="absolute inset-0 bg-black overflow-hidden group">
@@ -276,9 +281,9 @@ function StreamEmbedOptimizedInner({ stream, muted }: StreamEmbedProps) {
           <button
             onClick={handleMuteToggle}
             className="p-3 md:p-1.5 rounded-lg md:rounded-md bg-black/60 hover:bg-black/80 text-white transition-colors min-h-[48px] md:min-h-auto min-w-[48px] md:min-w-auto flex items-center justify-center active:scale-95"
-            aria-label={actualMuted ? "Unmute" : "Mute"}
+            aria-label={streamMuted ? "Unmute" : "Mute"}
           >
-            {actualMuted ? <VolumeX className="w-5 h-5 md:w-4 md:h-4" /> : <Volume2 className="w-5 h-5 md:w-4 md:h-4" />}
+            {streamMuted ? <VolumeX className="w-5 h-5 md:w-4 md:h-4" /> : <Volume2 className="w-5 h-5 md:w-4 md:h-4" />}
           </button>
           
           <button
@@ -314,21 +319,22 @@ function StreamEmbedOptimizedInner({ stream, muted }: StreamEmbedProps) {
         ref={embedRef}
         className={cn(
           "absolute inset-0 w-full h-full stream-embed-container",
-          isMobile ? "mobile-stream-embed" : ""
+          isMobileDevice() ? "mobile-stream-embed" : ""
         )}
       />
     </div>
   )
 }
 
-// Memoize to prevent re-renders on mute changes
+// Memoize to prevent re-renders (exclude muted from stream to prevent unnecessary re-renders)
 const StreamEmbedOptimized = memo(StreamEmbedOptimizedInner, (prevProps, nextProps) => {
   return (
     prevProps.stream.id === nextProps.stream.id &&
     prevProps.stream.channelName === nextProps.stream.channelName &&
     prevProps.stream.platform === nextProps.stream.platform &&
-    prevProps.stream.channelId === nextProps.stream.channelId
-    // Don't include muted - we handle that via useEffect
+    prevProps.stream.channelId === nextProps.stream.channelId &&
+    prevProps.stream.volume === nextProps.stream.volume &&
+    prevProps.stream.quality === nextProps.stream.quality
   )
 })
 

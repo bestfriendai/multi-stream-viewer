@@ -6,6 +6,7 @@ import type { Stream } from '@/types/stream'
 import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users, Play } from 'lucide-react'
 import { useSingleChannelStatus } from '@/hooks/useTwitchStatus'
 import LiveIndicator from './LiveIndicator'
+import { muteManager, useMuteState } from '@/lib/muteManager'
 
 interface StreamEmbedProps {
   stream: Stream
@@ -141,11 +142,13 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
   const [hasError, setHasError] = useState(false)
   
   const { 
-    toggleStreamMute, 
     removeStream, 
     setPrimaryStream,
     primaryStreamId 
   } = useStreamStore()
+  
+  // Use reactive mute state hook
+  const [streamMuted, toggleMute] = useMuteState(stream.id)
   
   // Enhanced lazy loading - high priority streams load immediately
   const shouldLazyLoad = priority !== 'high' && !placeholder
@@ -184,8 +187,12 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
     return () => {
       isMountedRef.current = false
       cleanup()
+      // Cleanup YouTube helper on unmount
+      if (stream.platform === 'youtube') {
+        muteManager.unregisterPlayer(stream.id)
+      }
     }
-  }, [cleanup])
+  }, [cleanup, stream.platform, stream.id])
   
   // Setup embed only when visible
   useEffect(() => {
@@ -208,7 +215,7 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
           
           if (cancelled || !isMountedRef.current || !window.Twitch?.Embed || !embedRef.current) return
           
-          const isMobile = window.innerWidth < 768
+          const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
           
           // Enhanced embed options for better performance
           const embedOptions = {
@@ -223,7 +230,7 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
               'vercel.app'
             ],
             autoplay: true,
-            muted: stream.muted,
+            muted: streamMuted,
             layout: 'video',
             theme: 'dark',
             allowfullscreen: true,
@@ -242,7 +249,7 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
             embedInstanceRef.current.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
               if (!cancelled && isMountedRef.current) {
                 playerRef.current = embedInstanceRef.current.getPlayer()
-                if (stream.muted && playerRef.current?.setMuted) {
+                if (streamMuted && playerRef.current?.setMuted) {
                   playerRef.current.setMuted(true)
                 }
                 setIsLoading(false)
@@ -259,12 +266,20 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
           iframe.height = '100%'
           iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%'
           iframe.loading = priority === 'high' ? 'eager' : 'lazy'
-          iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=${stream.muted ? 1 : 0}&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}`
+          iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=1&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}`
           iframe.setAttribute('frameborder', '0')
           iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
           iframe.setAttribute('allowfullscreen', 'true')
           
-          iframe.onload = () => setIsLoading(false)
+          iframe.onload = () => {
+            setIsLoading(false)
+            // Register YouTube iframe with muteManager
+            setTimeout(() => {
+              if (iframe.contentWindow) {
+                muteManager.registerPlayer(stream.id, iframe, 'youtube')
+              }
+            }, 1000)
+          }
           iframe.onerror = () => {
             setHasError(true)
             setIsLoading(false)
@@ -281,7 +296,11 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
           iframe.setAttribute('frameborder', '0')
           iframe.setAttribute('allowfullscreen', 'true')
           
-          iframe.onload = () => setIsLoading(false)
+          iframe.onload = () => {
+            setIsLoading(false)
+            // Register Rumble iframe with muteManager
+            muteManager.registerPlayer(stream.id, iframe, 'rumble')
+          }
           iframe.onerror = () => {
             setHasError(true)
             setIsLoading(false)
@@ -309,23 +328,19 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
   // Handle mute state changes
   useEffect(() => {
     if (stream.platform === 'twitch' && playerRef.current?.setMuted) {
-      playerRef.current.setMuted(stream.muted)
+      playerRef.current.setMuted(streamMuted)
     } else if (stream.platform === 'youtube' && embedRef.current) {
-      const iframe = embedRef.current.querySelector('iframe')
+      const iframe = embedRef.current.querySelector('iframe') as HTMLIFrameElement
       if (iframe && iframe.contentWindow) {
-        const command = stream.muted ? 'mute' : 'unMute'
-        iframe.contentWindow.postMessage(
-          JSON.stringify({ event: 'command', func: command }),
-          'https://www.youtube.com'
-        )
+        muteManager.registerPlayer(stream.id, iframe, 'youtube')
       }
     }
-  }, [stream.muted, stream.platform])
+  }, [streamMuted, stream.platform, stream.id])
   
   const handleMuteToggle = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
-    toggleStreamMute(stream.id)
-  }, [stream.id, toggleStreamMute])
+    toggleMute()
+  }, [toggleMute])
   
   const handleRemove = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
@@ -405,9 +420,9 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
           <button
             onClick={handleMuteToggle}
             className="p-3 md:p-1.5 rounded-lg md:rounded-md bg-black/60 hover:bg-black/80 text-white transition-colors min-h-[48px] md:min-h-auto min-w-[48px] md:min-w-auto flex items-center justify-center active:scale-95"
-            aria-label={stream.muted ? "Unmute" : "Mute"}
+            aria-label={streamMuted ? "Unmute" : "Mute"}
           >
-            {stream.muted ? <VolumeX className="w-5 h-5 md:w-4 md:h-4" /> : <Volume2 className="w-5 h-5 md:w-4 md:h-4" />}
+            {streamMuted ? <VolumeX className="w-5 h-5 md:w-4 md:h-4" /> : <Volume2 className="w-5 h-5 md:w-4 md:h-4" />}
           </button>
           
           <button
@@ -443,10 +458,9 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
     </div>
   )
 }, (prevProps, nextProps) => {
-  // Custom comparison to prevent unnecessary re-renders
+  // Custom comparison to prevent unnecessary re-renders (exclude muted from stream)
   return (
     prevProps.stream.id === nextProps.stream.id &&
-    prevProps.stream.muted === nextProps.stream.muted &&
     prevProps.stream.channelName === nextProps.stream.channelName &&
     prevProps.stream.platform === nextProps.stream.platform &&
     prevProps.priority === nextProps.priority &&

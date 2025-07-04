@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import type { Stream } from '@/types/stream'
 import { Volume2, VolumeX } from 'lucide-react'
+import { useMuteState, muteManager } from '@/lib/muteManager'
 
 interface AMPStreamEmbedProps {
   stream: Stream
@@ -18,7 +19,9 @@ declare global {
 const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
-  const { toggleStreamMute } = useStreamStore()
+  
+  // Use new mute system
+  const [streamMuted, toggleMute] = useMuteState(stream.id)
   useEffect(() => {
     if (!embedRef.current || stream.platform !== 'twitch') return
     
@@ -38,7 +41,7 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
           channel: stream.channelName,
           parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'ampsummer.com'],
           autoplay: true,
-          muted: stream.muted,
+          muted: true, // Always start muted, control via API
           layout: 'video',
           theme: 'dark',
           allowfullscreen: true,
@@ -47,10 +50,30 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
         
         embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
           playerRef.current = embed.getPlayer()
-          if (stream.muted) {
-            playerRef.current.setMuted(true)
-          }
+          // Register player with muteManager
+          muteManager.registerPlayer(stream.id, playerRef.current, 'twitch')
         })
+        
+        // Handle offline streams and errors
+        embed.addEventListener(window.Twitch.Embed.OFFLINE, () => {
+          console.log(`Stream ${stream.channelName} is offline`)
+        })
+        
+        // Add error handling for player errors
+        setTimeout(() => {
+          if (embed.getPlayer) {
+            const player = embed.getPlayer()
+            if (player && player.addEventListener) {
+              player.addEventListener(window.Twitch.Player.OFFLINE, () => {
+                console.log(`Player for ${stream.channelName} went offline`)
+              })
+              
+              player.addEventListener(window.Twitch.Player.ERROR, (error: any) => {
+                console.warn(`Player error for ${stream.channelName}:`, error)
+              })
+            }
+          }
+        }, 1000) // Wait for player to be ready
       }
     }
     
@@ -63,20 +86,16 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
       if (embedRef.current) {
         embedRef.current.innerHTML = ''
       }
+      // Cleanup muteManager on unmount
+      muteManager.unregisterPlayer(stream.id)
     }
-  }, [stream.channelName, stream.platform])
+  }, [stream.channelName, stream.platform, stream.id])
   
-  useEffect(() => {
-    if (playerRef.current && stream.platform === 'twitch') {
-      playerRef.current.setMuted(stream.muted)
-    }
-    // Note: YouTube mute state is handled via postMessage API to avoid reloads
-    // The initial mute state is set via URL parameters during embed creation
-  }, [stream.muted, stream.platform])
+  // mute state changes are now handled by muteManager internally
   
   const handleMuteToggle = (e: React.MouseEvent) => {
     e.stopPropagation()
-    toggleStreamMute(stream.id)
+    toggleMute()
   }
   
   if (stream.platform === 'twitch') {
@@ -89,9 +108,9 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
           <button
             onClick={handleMuteToggle}
             className="p-2 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all duration-150 border border-white/20 shadow-lg"
-            title={stream.muted ? 'Unmute' : 'Mute'}
+            title={streamMuted ? 'Unmute' : 'Mute'}
           >
-            {stream.muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+            {streamMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
           </button>
         </div>
       </div>
@@ -103,12 +122,18 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
       <div className="stream-embed-container relative w-full h-full bg-black group">
         <div ref={embedRef} className="absolute inset-0 w-full h-full">
           <iframe
-            src={`https://www.youtube.com/embed/${stream.channelName}?autoplay=1&mute=${stream.muted ? 1 : 0}&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1`}
+            src={`https://www.youtube.com/embed/${stream.channelName}?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&rel=0&enablejsapi=1`}
             className="absolute inset-0 w-full h-full"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             title={`${stream.channelName} stream`}
+            onLoad={() => {
+              const iframe = embedRef.current?.querySelector('iframe') as HTMLIFrameElement
+              if (iframe?.contentWindow) {
+                muteManager.registerPlayer(stream.id, iframe, 'youtube')
+              }
+            }}
           />
         </div>
         
@@ -117,9 +142,9 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
           <button
             onClick={handleMuteToggle}
             className="p-2 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all duration-150 border border-white/20 shadow-lg"
-            title={stream.muted ? 'Unmute' : 'Mute'}
+            title={streamMuted ? 'Unmute' : 'Mute'}
           >
-            {stream.muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+            {streamMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
           </button>
         </div>
       </div>

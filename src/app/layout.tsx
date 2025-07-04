@@ -141,7 +141,7 @@ export default function RootLayout({
     "operatingSystem": "Web Browser",
     "softwareVersion": "2.0",
     "datePublished": "2025-01-01",
-    "dateModified": new Date().toISOString(),
+    "dateModified": "2025-01-01T00:00:00Z",
     "screenshot": "https://streamyyy.com/og-image.png",
     "author": {
       "@type": "Organization",
@@ -234,15 +234,22 @@ export default function RootLayout({
         />
         
         {/* Google AdSense - Will respect consent mode */}
-        <script 
-          async 
+        <Script
+          id="google-adsense"
+          strategy="afterInteractive"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4679934692726562"
           crossOrigin="anonymous"
         />
         
         {/* Google tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-BGPSFX3HF1"></script>
-        <script
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-BGPSFX3HF1"
+        />
+        <Script
+          id="google-analytics-config"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];

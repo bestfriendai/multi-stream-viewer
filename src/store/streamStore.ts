@@ -3,6 +3,7 @@ import { devtools, persist, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { parseStreamInput } from '@/lib/streamParser'
 import { filterSponsoredStreams, isSponsoredStream } from '@/lib/sponsoredStreams'
+import { muteManager } from '@/lib/muteManager'
 import type { 
   Stream, 
   StreamStore, 
@@ -41,7 +42,6 @@ const createStream = (input: StreamInput): Stream => {
     ...(input.channelId && { channelId: input.channelId }),
     quality: input.quality || 'auto',
     volume: input.volume || 50,
-    muted: true, // Always start muted to ensure only one unmuted stream
     position: 0, // Will be set by the store
     isActive: true,
     createdAt: now,
@@ -189,6 +189,9 @@ export const useStreamStore = create<StreamStore>()(
               }
             })
             
+            // Clean up mute manager
+            muteManager.unregisterPlayer(streamId)
+            
             // Track analytics
             trackEvent({
               type: 'stream_removed',
@@ -227,26 +230,8 @@ export const useStreamStore = create<StreamStore>()(
           },
           
           toggleStreamMute: (streamId: string) => {
-            set((state) => {
-              const stream = state.streams.find(s => s.id === streamId)
-              if (stream) {
-                const wasStreamMuted = stream.muted
-                
-                // If we're unmuting this stream, mute all other streams first
-                if (wasStreamMuted) {
-                  state.streams.forEach(s => {
-                    if (s.id !== streamId) {
-                      s.muted = true
-                      s.lastUpdated = new Date()
-                    }
-                  })
-                }
-                
-                // Toggle the target stream (now works for sponsored streams too)
-                stream.muted = !stream.muted
-                stream.lastUpdated = new Date()
-              }
-            })
+            // Delegate to muteManager
+            muteManager.toggleMute(streamId)
           },
           
           setActiveStream: (streamId: string) => {
@@ -278,7 +263,7 @@ export const useStreamStore = create<StreamStore>()(
               state.streams = streams.map((stream, index) => ({
                 ...stream,
                 position: index,
-                lastUpdated: new Date(),
+                // Don't update lastUpdated for position changes to prevent re-renders
               })) as Stream[]
             })
           },

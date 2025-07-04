@@ -8,6 +8,7 @@ import { useStreamStore } from '@/store/streamStore'
 import { cn } from '@/lib/utils'
 import StreamEmbedOptimized from './StreamEmbedOptimized'
 import { Button } from '@/components/ui/button'
+import { muteManager, useMuteState } from '@/lib/muteManager'
 import { 
   X, 
   ChevronLeft, 
@@ -25,13 +26,16 @@ interface EnhancedMobileStreamViewerProps {
 }
 
 export default function EnhancedMobileStreamViewer({ show, onClose }: EnhancedMobileStreamViewerProps) {
-  const { streams, toggleStreamMute } = useStreamStore()
+  const { streams } = useStreamStore()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [showControls, setShowControls] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
 
   const currentStream = streams[currentIndex]
+  
+  // Always call the hook, but use a dummy ID if no stream
+  const [currentStreamMuted, toggleCurrentStreamMute] = useMuteState(currentStream?.id || 'dummy-stream-id')
 
   // Enhanced gesture handling
   const bind = useGesture(
@@ -147,7 +151,7 @@ export default function EnhancedMobileStreamViewer({ show, onClose }: EnhancedMo
           <div className="relative w-full h-full">
             <AnimatePresence mode="wait" custom={currentIndex}>
               <motion.div
-                key={currentStream?.id}
+                key={`stream-${currentIndex}`}
                 custom={currentIndex}
                 variants={slideVariants}
                 initial="enter"
@@ -158,7 +162,8 @@ export default function EnhancedMobileStreamViewer({ show, onClose }: EnhancedMo
                 <div className="w-full h-full max-w-none">
                   {currentStream && (
                     <StreamEmbedOptimized 
-                      stream={currentStream} 
+                      stream={currentStream}
+                      key={currentStream.id}
                     />
                   )}
                 </div>
@@ -279,14 +284,10 @@ export default function EnhancedMobileStreamViewer({ show, onClose }: EnhancedMo
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => {
-                        if (currentStream) {
-                          toggleStreamMute(currentStream.id)
-                        }
-                      }}
+                      onClick={toggleCurrentStreamMute}
                       className="text-white hover:bg-white/10 h-12 w-12 p-0"
                     >
-                      {currentStream?.muted ? <VolumeX size={24} /> : <Volume2 size={24} />}
+                      {currentStreamMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
                     </Button>
                   </motion.div>
 

@@ -24,6 +24,7 @@ import StreamEmbedOptimized from './StreamEmbedOptimized'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { Drawer } from 'vaul'
+import { muteManager } from '@/lib/muteManager'
 
 interface GestureStreamViewerProps {
   className?: string
@@ -397,7 +398,7 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
                 }}
                 className="h-10 w-10 p-0 text-white hover:bg-white/20 touch-target"
               >
-                {currentStream?.muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                {currentStream && muteManager.getMuteState(currentStream.id) ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
               </Button>
 
               <Button

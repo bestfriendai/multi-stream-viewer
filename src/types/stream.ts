@@ -21,7 +21,6 @@ export interface Stream {
   readonly channelId?: string; // For YouTube video IDs
   quality: Quality;
   volume: number; // 0-100
-  muted: boolean;
   position: number;
   isActive: boolean;
   readonly createdAt: Date;

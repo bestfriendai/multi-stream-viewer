@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { haptic } from '@/lib/haptics'
 import { useStreamStore } from '@/store/streamStore'
 import { useRouter } from 'next/navigation'
+import { muteManager } from '@/lib/muteManager'
 
 interface MobileFABProps {
   className?: string
@@ -37,7 +38,7 @@ export default function MobileFAB({ className }: MobileFABProps) {
   const handleAutoPlay = () => {
     haptic.medium()
     // Auto-play all muted streams
-    const mutedStreams = streams.filter(s => s.muted)
+    const mutedStreams = streams.filter(s => muteManager.getMuteState(s.id))
     mutedStreams.forEach(stream => {
       // Trigger play action
     })

@@ -21,18 +21,16 @@ interface OptimizedBackgroundStreamsProps {
 export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgroundStreamsProps) {
   const [loadedStreams, setLoadedStreams] = useState<number[]>([])
   const [shouldLoadStreams, setShouldLoadStreams] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set())
 
-  // Check if mobile and visibility
+  // Stable mobile detection function
+  const isMobileDevice = () => {
+    return typeof window !== 'undefined' && window.innerWidth < 768
+  }
+
+  // Check visibility
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
     
     // Use Intersection Observer to detect when the component becomes visible
     const observer = new IntersectionObserver(
@@ -65,7 +63,6 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
     return () => {
       observer.disconnect()
       document.body.removeChild(element)
-      window.removeEventListener('resize', checkMobile)
     }
   }, [])
 
@@ -125,7 +122,7 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
                 )}
                 
                 {/* Mobile thumbnail fallback */}
-                {isMobile && shouldLoad && (
+                {isMobileDevice() && shouldLoad && (
                   <div className="absolute inset-0">
                     <img 
                       src={thumbnailUrl}
@@ -145,7 +142,7 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
                 )}
                 
                 {/* Actual stream embed - only on desktop */}
-                {shouldLoad && !isMobile && (
+                {shouldLoad && !isMobileDevice() && (
                   <iframe
                     src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
                     className="absolute inset-0 w-full h-full transition-opacity duration-500 background-stream-iframe"

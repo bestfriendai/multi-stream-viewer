@@ -9,6 +9,7 @@ import { Volume2, VolumeX, Headphones, Mic, Settings, Music } from 'lucide-react
 import { useStreamStore } from '@/store/streamStore'
 import { useAppStore } from '@/store/appStore'
 import { cn } from '@/lib/utils'
+import { muteManager } from '@/lib/muteManager'
 
 interface AudioChannel {
   streamId: string
@@ -48,7 +49,7 @@ export default function AudioMixer() {
       streamId: stream.id,
       name: stream.channelName,
       volume: stream.volume,
-      isMuted: stream.muted,
+      isMuted: muteManager.getMuteState(stream.id),
       pan: 0,
       eq: {
         bass: 0,
