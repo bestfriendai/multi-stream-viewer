@@ -9,6 +9,7 @@ import Footer from "@/components/Footer"
 import CookieConsent from "@/components/CookieConsent";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import { SupabaseProvider } from "@/contexts/SupabaseContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -252,20 +253,22 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ClerkProvider>
-          <GoogleAnalytics />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <div className="flex flex-col min-h-screen">
-              {children}
-              <Footer />
-            </div>
-            <Toaster />
-            <CookieConsent />
-          </ThemeProvider>
+          <SupabaseProvider>
+            <GoogleAnalytics />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div className="flex flex-col min-h-screen">
+                {children}
+                <Footer />
+              </div>
+              <Toaster />
+              <CookieConsent />
+            </ThemeProvider>
+          </SupabaseProvider>
         </ClerkProvider>
       </body>
     </html>
