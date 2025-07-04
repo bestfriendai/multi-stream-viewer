@@ -223,12 +223,12 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
 
 
   return (
-    <div className="flex-1 overflow-y-auto relative -mt-0">
+    <div className="flex-1 overflow-y-auto relative">
       {/* Optimized Background Live Streams */}
       <OptimizedBackgroundStreams channels={liveChannels} />
       
       {/* Clean Professional Hero Section */}
-      <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20 -mt-0">
+      <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20 -mt-16">
         {/* Clean Professional Background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-muted/30" />
@@ -238,6 +238,25 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
+            {/* Centered Logo above everything */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="flex justify-center mb-12"
+            >
+              <div className="relative">
+                <StreamyyyLogo 
+                  size="xl" 
+                  variant="gradient" 
+                  useForHeader={true} 
+                  iconOnly={true}
+                  showText={false}
+                  className="w-48 sm:w-56 md:w-64 lg:w-72 transition-all duration-300"
+                />
+              </div>
+            </motion.div>
+            
             <div className="grid lg:grid-cols-5 gap-12 items-center">
               {/* Left: Value Proposition */}
               <motion.div 
@@ -246,31 +265,13 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 transition={{ duration: 0.6 }}
                 className="space-y-8 lg:col-span-2"
               >
-                {/* Trust Badge */}
-                {/* Logo above headline */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="flex justify-center mb-8"
-                >
-                  <div className="relative">
-                    <StreamyyyLogo 
-                      size="xl" 
-                      variant="gradient" 
-                      useForHeader={true} 
-                      iconOnly={true}
-                      showText={false}
-                      className="w-32 sm:w-40 md:w-48 lg:w-56 transition-all duration-300"
-                    />
-                  </div>
-                </motion.div>
                 
                 {/* Main Headline */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
+                  className="text-center lg:text-left"
                 >
                   <h1 className="text-5xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-8">
                     <span className="text-foreground">Watch Multiple</span>
