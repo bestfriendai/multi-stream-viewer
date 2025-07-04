@@ -25,10 +25,9 @@ interface EnhancedMobileStreamViewerProps {
 }
 
 export default function EnhancedMobileStreamViewer({ show, onClose }: EnhancedMobileStreamViewerProps) {
-  const { streams } = useStreamStore()
+  const { streams, toggleStreamMute } = useStreamStore()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [isMuted, setIsMuted] = useState(false)
   const [showControls, setShowControls] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -280,10 +279,14 @@ export default function EnhancedMobileStreamViewer({ show, onClose }: EnhancedMo
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => setIsMuted(!isMuted)}
+                      onClick={() => {
+                        if (currentStream) {
+                          toggleStreamMute(currentStream.id)
+                        }
+                      }}
                       className="text-white hover:bg-white/10 h-12 w-12 p-0"
                     >
-                      {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
+                      {currentStream?.muted ? <VolumeX size={24} /> : <Volume2 size={24} />}
                     </Button>
                   </motion.div>
 

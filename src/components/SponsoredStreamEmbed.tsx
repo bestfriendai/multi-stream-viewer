@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, memo } from 'react'
 import { Volume2, VolumeX, Twitch, Star, ExternalLink } from 'lucide-react'
 import { useSingleChannelStatus } from '@/hooks/useTwitchStatus'
 import { useStreamStore } from '@/store/streamStore'
@@ -25,7 +25,7 @@ declare global {
   }
 }
 
-export default function SponsoredStreamEmbed({ stream, className }: SponsoredStreamEmbedProps) {
+const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, className }: SponsoredStreamEmbedProps) {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const [isMobile, setIsMobile] = useState(false)
@@ -265,4 +265,18 @@ export default function SponsoredStreamEmbed({ stream, className }: SponsoredStr
       )}
     </div>
   )
-}
+}, (prevProps, nextProps) => {
+  // Custom comparison to prevent unnecessary re-renders
+  // Don't include muted state since we handle that separately in useEffect
+  return (
+    prevProps.stream.id === nextProps.stream.id &&
+    prevProps.stream.channelName === nextProps.stream.channelName &&
+    prevProps.stream.platform === nextProps.stream.platform &&
+    prevProps.stream.channelId === nextProps.stream.channelId &&
+    prevProps.className === nextProps.className
+  )
+})
+
+SponsoredStreamEmbed.displayName = 'SponsoredStreamEmbed'
+
+export default SponsoredStreamEmbed

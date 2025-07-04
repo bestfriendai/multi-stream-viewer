@@ -127,7 +127,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
           }}
         >
           <div className="w-full h-full">
-            <StreamEmbedOptimized stream={stream} />
+            <StreamEmbedOptimized stream={stream} muted={stream.muted} />
           </div>
           
           {/* Stream overlay info */}
@@ -204,7 +204,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
           }}
         >
           <div className="w-full h-full">
-            <StreamEmbedOptimized stream={stream} />
+            <StreamEmbedOptimized stream={stream} muted={stream.muted} />
           </div>
 
           {/* Mute button */}

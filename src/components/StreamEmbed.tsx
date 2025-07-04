@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 
 interface StreamEmbedProps {
   stream: Stream
+  muted?: boolean
 }
 
 declare global {
@@ -20,11 +21,11 @@ declare global {
   }
 }
 
-function StreamEmbedInner({ stream }: StreamEmbedProps) {
+function StreamEmbedInner({ stream, muted }: StreamEmbedProps) {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const [isMobile, setIsMobile] = useState(false)
-  const currentMutedRef = useRef(stream.muted)
+  const actualMuted = muted !== undefined ? muted : stream.muted
   const { 
     toggleStreamMute, 
     removeStream, 
@@ -67,7 +68,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
             channel: stream.channelName,
             parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'ampsummer.com'],
             autoplay: true,
-            muted: false, // Start unmuted, we'll control via API
+            muted: actualMuted,
             layout: 'video',
             theme: 'dark',
             allowfullscreen: true,
@@ -93,7 +94,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
             playerRef.current = embed.getPlayer()
             // Set initial mute state
             if (playerRef.current && playerRef.current.setMuted) {
-              playerRef.current.setMuted(stream.muted)
+              playerRef.current.setMuted(actualMuted)
             }
           })
         }
@@ -116,8 +117,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
       iframe.style.left = '0'
       iframe.style.width = '100%'
       iframe.style.height = '100%'
-      // Always start YouTube with mute=0 to allow unmuting later, we'll control mute via postMessage
-      iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=0&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}&widget_referrer=${window.location.href}`
+      iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=${actualMuted ? 1 : 0}&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}&widget_referrer=${window.location.href}`
       iframe.setAttribute('frameborder', '0')
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
       iframe.setAttribute('allowfullscreen', 'true')
@@ -131,7 +131,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
       // Set initial mute state after iframe loads
       iframe.onload = () => {
         setTimeout(() => {
-          if (stream.muted && iframe.contentWindow) {
+          if (actualMuted && iframe.contentWindow) {
             iframe.contentWindow.postMessage(
               JSON.stringify({ event: 'command', func: 'mute', args: '' }),
               '*'
@@ -164,15 +164,12 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
   }, [stream.channelName, stream.channelId, stream.platform])
   
   useEffect(() => {
-    // Update the ref
-    currentMutedRef.current = stream.muted
-    
     // Update mute state for different platforms
     if (stream.platform === 'twitch' && playerRef.current) {
       // Small delay to ensure player is fully initialized
       const timer = setTimeout(() => {
         if (playerRef.current && playerRef.current.setMuted) {
-          playerRef.current.setMuted(stream.muted)
+          playerRef.current.setMuted(actualMuted)
         }
       }, 100)
       
@@ -183,7 +180,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
       if (iframe && iframe.contentWindow) {
         // Add a small delay to ensure YouTube player is ready
         const timer = setTimeout(() => {
-          const command = stream.muted ? 'mute' : 'unMute'
+          const command = actualMuted ? 'mute' : 'unMute'
           iframe.contentWindow?.postMessage(
             JSON.stringify({ event: 'command', func: command, args: '' }),
             '*'
@@ -194,7 +191,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
       }
     }
     return undefined
-  }, [stream.muted, stream.platform])
+  }, [actualMuted, stream.platform])
   
   const handleMuteToggle = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -278,7 +275,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
           streamId={stream.id}
           channelName={stream.channelName}
           platform={stream.platform}
-          muted={stream.muted}
+          muted={actualMuted}
           isPrimary={primaryStreamId === stream.id}
           onMuteToggle={() => toggleStreamMute(stream.id)}
           onFullscreen={() => handleFullscreen({ stopPropagation: () => {} } as React.MouseEvent)}
@@ -295,13 +292,13 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
               }}
               className={cn(
                 "p-2.5 sm:p-3 rounded-xl bg-gradient-to-br shadow-lg border transition-all duration-200 transform active:scale-95 min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px]",
-                stream.muted 
+                actualMuted 
                   ? "from-red-500/30 to-red-600/30 border-red-400/40 hover:from-red-500/40 hover:to-red-600/40 text-red-100"
                   : "from-blue-500/30 to-blue-600/30 border-blue-400/40 hover:from-blue-500/40 hover:to-blue-600/40 text-blue-100"
               )}
-              title={stream.muted ? 'Unmute' : 'Mute'}
+              title={actualMuted ? 'Unmute' : 'Mute'}
             >
-              {stream.muted ? <VolumeX size={16} className="sm:w-5 sm:h-5" /> : <Volume2 size={16} className="sm:w-5 sm:h-5" />}
+              {actualMuted ? <VolumeX size={16} className="sm:w-5 sm:h-5" /> : <Volume2 size={16} className="sm:w-5 sm:h-5" />}
             </button>
             
             <button

@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils'
 
 interface StreamEmbedProps {
   stream: Stream
+  muted?: boolean
 }
 
 declare global {
@@ -66,7 +67,7 @@ class TwitchScriptManager {
   }
 }
 
-function StreamEmbedOptimizedInner({ stream }: StreamEmbedProps) {
+function StreamEmbedOptimizedInner({ stream, muted }: StreamEmbedProps) {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const embedInstanceRef = useRef<any>(null)
@@ -80,6 +81,8 @@ function StreamEmbedOptimizedInner({ stream }: StreamEmbedProps) {
   } = useStreamStore()
   
   // Get live status for Twitch streams with longer refresh interval
+  const actualMuted = muted !== undefined ? muted : stream.muted
+  
   const { status: twitchStatus } = useSingleChannelStatus(
     stream.platform === 'twitch' ? stream.channelName : '',
     { 
@@ -155,7 +158,7 @@ function StreamEmbedOptimizedInner({ stream }: StreamEmbedProps) {
               if (!cancelled && isMountedRef.current) {
                 playerRef.current = embedInstanceRef.current.getPlayer()
                 if (playerRef.current?.setMuted) {
-                  playerRef.current.setMuted(stream.muted)
+                  playerRef.current.setMuted(actualMuted)
                 }
               }
             })
@@ -179,7 +182,7 @@ function StreamEmbedOptimizedInner({ stream }: StreamEmbedProps) {
         iframe.onload = () => {
           setTimeout(() => {
             if (iframe.contentWindow) {
-              const command = stream.muted ? 'mute' : 'unMute'
+              const command = actualMuted ? 'mute' : 'unMute'
               iframe.contentWindow.postMessage(
                 JSON.stringify({ event: 'command', func: command }),
                 'https://www.youtube.com'
@@ -210,7 +213,7 @@ function StreamEmbedOptimizedInner({ stream }: StreamEmbedProps) {
   // Handle mute state changes
   useEffect(() => {
     if (stream.platform === 'twitch' && playerRef.current?.setMuted) {
-      playerRef.current.setMuted(stream.muted)
+      playerRef.current.setMuted(actualMuted)
     } else if (stream.platform === 'youtube' && embedRef.current) {
       // For YouTube, we need to use postMessage to control the player
       const iframe = embedRef.current.querySelector('iframe')
@@ -273,9 +276,9 @@ function StreamEmbedOptimizedInner({ stream }: StreamEmbedProps) {
           <button
             onClick={handleMuteToggle}
             className="p-3 md:p-1.5 rounded-lg md:rounded-md bg-black/60 hover:bg-black/80 text-white transition-colors min-h-[48px] md:min-h-auto min-w-[48px] md:min-w-auto flex items-center justify-center active:scale-95"
-            aria-label={stream.muted ? "Unmute" : "Mute"}
+            aria-label={actualMuted ? "Unmute" : "Mute"}
           >
-            {stream.muted ? <VolumeX className="w-5 h-5 md:w-4 md:h-4" /> : <Volume2 className="w-5 h-5 md:w-4 md:h-4" />}
+            {actualMuted ? <VolumeX className="w-5 h-5 md:w-4 md:h-4" /> : <Volume2 className="w-5 h-5 md:w-4 md:h-4" />}
           </button>
           
           <button

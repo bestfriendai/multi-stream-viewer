@@ -259,6 +259,7 @@ const StreamGrid: React.FC = React.memo(() => {
           ) : (
             <StreamEmbed 
               stream={primaryStream} 
+              muted={primaryStream.muted}
             />
           )}
         </motion.div>
@@ -290,6 +291,7 @@ const StreamGrid: React.FC = React.memo(() => {
                   ) : (
                     <StreamEmbed 
                       stream={stream} 
+                      muted={stream.muted}
                     />
                   )}
                   <div className="absolute inset-0 bg-black/20 hover:bg-black/10 transition-colors" />
@@ -346,6 +348,7 @@ const StreamGrid: React.FC = React.memo(() => {
           ) : (
             <StreamEmbed 
               stream={mainStream} 
+              muted={mainStream.muted}
             />
           )}
         </motion.div>
@@ -377,6 +380,7 @@ const StreamGrid: React.FC = React.memo(() => {
                   ) : (
                     <StreamEmbed 
                       stream={stream} 
+                      muted={stream.muted}
                     />
                   )}
                   <div className="absolute inset-0 bg-black/10 hover:bg-transparent transition-colors" />
@@ -420,6 +424,7 @@ const StreamGrid: React.FC = React.memo(() => {
                 ) : (
                   <StreamEmbed 
                     stream={stream} 
+                    muted={stream.muted}
                   />
                 )}
                 
@@ -528,6 +533,7 @@ const StreamGrid: React.FC = React.memo(() => {
               ) : (
                 <StreamEmbed 
                   stream={stream} 
+                  muted={stream.muted}
                 />
               )}
             </motion.div>
