@@ -5,8 +5,7 @@ import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import type { PanInfo } from 'framer-motion'
 import { useStreamStore } from '@/store/streamStore'
 import { cn } from '@/lib/utils'
-import StreamEmbedUltra from './StreamEmbedUltra'
-import { useStreamPriority } from '@/hooks/useStreamPriority'
+import StreamEmbed from './StreamEmbed'
 import ResizableStreamGrid from './ResizableStreamGrid'
 import '@/styles/mobile-stream-grid.css'
 import '@/styles/layout-modes.css'
@@ -145,7 +144,6 @@ const emptyStateVariants = {
 
 const StreamGrid: React.FC = React.memo(() => {
   const { streams, gridLayout, primaryStreamId, setActiveStream, setPrimaryStream } = useStreamStore()
-  const prioritizedStreams = useStreamPriority()
   const [isMobile, setIsMobile] = useState(false)
   const [currentMobileIndex, setCurrentMobileIndex] = useState(0)
   const [pipPosition] = useState('top-right')
@@ -235,9 +233,8 @@ const StreamGrid: React.FC = React.memo(() => {
           animate="visible"
           {...(!isMobile && { whileHover: "hover" })}
         >
-          <StreamEmbedUltra 
+          <StreamEmbed 
             stream={primaryStream} 
-            priority="high" 
           />
         </motion.div>
 
@@ -261,9 +258,8 @@ const StreamGrid: React.FC = React.memo(() => {
                   whileTap="tap"
                   onClick={() => handleStreamClick(stream.id)}
                 >
-                  <StreamEmbedUltra 
+                  <StreamEmbed 
                     stream={stream} 
-                    priority="low" 
                   />
                   <div className="absolute inset-0 bg-black/20 hover:bg-black/10 transition-colors" />
                 </motion.div>
@@ -312,9 +308,8 @@ const StreamGrid: React.FC = React.memo(() => {
           initial="hidden"
           animate="visible"
         >
-          <StreamEmbedUltra 
+          <StreamEmbed 
             stream={mainStream} 
-            priority="high" 
           />
         </motion.div>
 
@@ -338,9 +333,8 @@ const StreamGrid: React.FC = React.memo(() => {
                   dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
                   style={{ zIndex: 20 + index }}
                 >
-                  <StreamEmbedUltra 
+                  <StreamEmbed 
                     stream={stream} 
-                    priority="low" 
                   />
                   <div className="absolute inset-0 bg-black/10 hover:bg-transparent transition-colors" />
                 </motion.div>
@@ -376,9 +370,8 @@ const StreamGrid: React.FC = React.memo(() => {
                 whileTap="tap"
                 onTap={() => setActiveStream(stream.id)}
               >
-                <StreamEmbedUltra 
+                <StreamEmbed 
                   stream={stream} 
-                  priority={stream.id === primaryStreamId ? "high" : "low"} 
                 />
                 
                 {/* Mobile stream indicator */}
@@ -479,9 +472,8 @@ const StreamGrid: React.FC = React.memo(() => {
               role="gridcell"
               aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}`}
             >
-              <StreamEmbedUltra 
+              <StreamEmbed 
                 stream={stream} 
-                priority={prioritizedStreams.find(p => p.id === stream.id)?.priority || "low"} 
               />
             </motion.div>
           ))}
