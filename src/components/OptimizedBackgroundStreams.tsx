@@ -96,7 +96,7 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none optimized-background-streams">
-      <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-4 p-8 scale-105">
+      <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-4 scale-105">
         {[...Array(4)].map((_, index) => {
           const channel = channels[index % channels.length]
           if (!channel) return null
@@ -114,22 +114,26 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
               transition={{ duration: 0 }}
             >
               <div className="aspect-video relative bg-black">
-                {/* Thumbnail placeholder - always show on mobile, show on desktop until loaded */}
-                {(isMobile || !shouldLoad) && (
+                {/* Show black background until streams are loaded */}
+                {!shouldLoad && (
+                  <div className="absolute inset-0 bg-black">
+                    {/* Optional: Show a subtle loading indicator */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-20">
+                      <PlayCircle className="w-12 h-12 text-white/50" />
+                    </div>
+                  </div>
+                )}
+                
+                {/* Mobile thumbnail fallback */}
+                {isMobile && shouldLoad && (
                   <div className="absolute inset-0">
                     <img 
                       src={thumbnailUrl}
                       alt={channel.channelName}
-                      className={`w-full h-full object-cover transition-opacity duration-300 ${
-                        imagesLoaded.has(index) ? 'opacity-70 thumbnail-fade-in' : 'opacity-30'
-                      }`}
+                      className="w-full h-full object-cover opacity-70"
                       loading="lazy"
                       decoding="async"
-                      onLoad={() => {
-                        setImagesLoaded(prev => new Set(prev).add(index))
-                      }}
                       onError={() => {
-                        // Fallback to a default image or gradient
                         console.log(`Thumbnail failed to load for ${channel.channelName}`)
                       }}
                     />

@@ -246,7 +246,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       <OptimizedBackgroundStreams channels={liveChannels} />
       
       {/* Clean Professional Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center bg-gradient-to-b from-background to-muted/20">
+      <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20">
         {/* Clean Professional Background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-muted/30" />
@@ -265,16 +265,6 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 className="space-y-8"
               >
                 {/* Trust Badge */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-full text-sm font-medium border border-green-200 dark:border-green-800"
-                >
-                  <Shield className="w-4 h-4" />
-                  Trusted by 2M+ users worldwide
-                </motion.div>
-
                 {/* Main Headline */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -462,75 +452,6 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Statistics Section - Enhanced */}
-      <section className="py-24 bg-gradient-to-b from-background to-muted/30 relative">
-        <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-16" />
-        <div className="container mx-auto px-4 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              The Numbers Speak for Themselves
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Join millions of users who've made Streamyyy their go-to multi-streaming platform
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="text-center group"
-              >
-                <Card className="p-8 hover:shadow-xl transition-all duration-500 group-hover:scale-105 border-0 bg-gradient-to-br from-background via-background to-muted/20">
-                  <div className="text-5xl lg:text-6xl font-black bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent mb-3">
-                    {stat.value}
-                  </div>
-                  <div className="text-lg font-semibold text-foreground mb-2">{stat.label}</div>
-                  <div className={cn(
-                    "w-12 h-12 mx-auto rounded-xl bg-gradient-to-r flex items-center justify-center",
-                    stat.color
-                  )}>
-                    <stat.icon className="w-6 h-6 text-white" />
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-          
-          {/* Additional Trust Signals */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-center mt-16"
-          >
-            <div className="flex flex-wrap justify-center items-center gap-8 text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Star className="w-5 h-5 text-yellow-400" />
-                <span className="font-semibold">4.9/5</span>
-                <span>User Rating</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-green-500" />
-                <span className="font-semibold">SOC 2</span>
-                <span>Compliant</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-orange-500" />
-                <span className="font-semibold">#1</span>
-                <span>Multi-Stream Platform</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Interactive Demo Section with Live Streams */}
       <section id="demo" className="py-24 bg-gradient-to-b from-background via-muted/10 to-muted/20 relative">
