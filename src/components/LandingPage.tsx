@@ -236,27 +236,26 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(34,197,94,0.05),transparent_50%)]" />
         </div>
         
+        {/* Full Width Headline */}
+        <div className="w-full px-4 relative z-10 mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-center"
+          >
+            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black tracking-tight leading-[0.9] mb-8">
+              <span className="text-foreground block">Watch Multiple</span>
+              <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent block">
+                Live Streams
+              </span>
+              <span className="text-foreground block">At Once</span>
+            </h1>
+          </motion.div>
+        </div>
+        
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
-            {/* Centered Logo above everything */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="flex justify-center mb-12"
-            >
-              <div className="relative">
-                <StreamyyyLogo 
-                  size="xl" 
-                  variant="gradient" 
-                  useForHeader={true} 
-                  iconOnly={true}
-                  showText={false}
-                  className="w-48 sm:w-56 md:w-64 lg:w-72 transition-all duration-300"
-                />
-              </div>
-            </motion.div>
-            
             <div className="grid lg:grid-cols-5 gap-12 items-center">
               {/* Left: Value Proposition */}
               <motion.div 
@@ -265,24 +264,6 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 transition={{ duration: 0.6 }}
                 className="space-y-8 lg:col-span-2"
               >
-                
-                {/* Main Headline */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-center lg:text-left"
-                >
-                  <h1 className="text-5xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-8">
-                    <span className="text-foreground">Watch Multiple</span>
-                    <br />
-                    <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
-                      Live Streams
-                    </span>
-                    <br />
-                    <span className="text-foreground">At Once</span>
-                  </h1>
-                </motion.div>
 
                 {/* Value Proposition */}
                 <motion.div
