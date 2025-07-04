@@ -1,5 +1,8 @@
 import type { Stream } from '@/types/stream'
 
+// Feature flag to enable/disable sponsored streams
+export const SPONSORED_STREAMS_ENABLED = false // Set to true to enable sponsored streams
+
 export interface SponsoredStream {
   id: string
   channelName: string
@@ -12,20 +15,27 @@ export interface SponsoredStream {
 }
 
 // Configuration for sponsored streams
+// DISABLED: Set to empty array to disable sponsored streams feature
 export const SPONSORED_STREAMS: SponsoredStream[] = [
-  {
-    id: 'sponsored_24fpslive',
-    channelName: '24fpslive',
-    platform: 'twitch',
-    isSponsored: true,
-    priority: 1,
-    placement: 'fixed',
-    position: 0 // Always in top-left position
-  }
+  // Disabled for now - uncomment to re-enable:
+  // {
+  //   id: 'sponsored_24fpslive',
+  //   channelName: '24fpslive',
+  //   platform: 'twitch',
+  //   isSponsored: true,
+  //   priority: 1,
+  //   placement: 'fixed',
+  //   position: 0 // Always in top-left position
+  // }
 ]
 
 // Get the current sponsored stream to display
 export const getCurrentSponsoredStream = (): SponsoredStream | null => {
+  // Check if sponsored streams are enabled
+  if (!SPONSORED_STREAMS_ENABLED) {
+    return null
+  }
+  
   // For now, return the first sponsored stream
   // In the future, this could implement rotation logic
   return SPONSORED_STREAMS[0] || null
@@ -58,6 +68,11 @@ export const createSponsoredStreamObject = (sponsoredStream: SponsoredStream): S
 // Inject sponsored stream into the stream array
 export const injectSponsoredStream = (userStreams: Stream[]): Stream[] => {
   try {
+    // Early return if sponsored streams are disabled
+    if (!SPONSORED_STREAMS_ENABLED) {
+      return userStreams
+    }
+    
     const sponsoredStream = getCurrentSponsoredStream()
     
     // Only inject if there are user streams and sponsored stream exists
