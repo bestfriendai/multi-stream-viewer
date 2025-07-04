@@ -25,6 +25,9 @@ const EnhancedDiscovery = dynamic(() => import('@/components/EnhancedDiscovery')
 const FollowingRecommended = dynamic(() => import('@/components/FollowingRecommended'), {
   loading: () => <div className="p-8 text-center">Loading...</div>
 })
+const DiscoverPopup = dynamic(() => import('@/components/DiscoverPopup'), {
+  loading: () => <div className="p-8 text-center">Loading discover...</div>
+})
 import StreamStatusBar from '@/components/StreamStatusBar'
 import LandingPage from '@/components/LandingPage'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -47,6 +50,7 @@ export default function Home() {
   const [showAddStream, setShowAddStream] = useState(false)
   const [showMobileView, setShowMobileView] = useState(false)
   const [showMobileStreamViewer, setShowMobileStreamViewer] = useState(false)
+  const [showDiscoverPopup, setShowDiscoverPopup] = useState(false)
   const [activeTab, setActiveTab] = useState('streams')
   const [showGestureHints, setShowGestureHints] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -325,7 +329,7 @@ export default function Home() {
           trackFeatureUsage('layouts_mobile')
         }}
         onOpenDiscover={() => {
-          setActiveTab('discover')
+          setShowDiscoverPopup(true)
           trackFeatureUsage('discover_mobile')
         }}
         showChat={showChat}
@@ -349,6 +353,12 @@ export default function Home() {
       <EnhancedAddStreamDialog 
         open={showAddStream} 
         onOpenChange={setShowAddStream} 
+      />
+      
+      {/* Discover Popup */}
+      <DiscoverPopup 
+        open={showDiscoverPopup} 
+        onOpenChange={setShowDiscoverPopup} 
       />
       
       {/* Mobile Gesture Overlay */}

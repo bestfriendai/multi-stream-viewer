@@ -27,12 +27,11 @@ import EnhancedLayoutSelector from './EnhancedLayoutSelector'
 const EnhancedAddStreamDialog = dynamic(() => import('./EnhancedAddStreamDialog'), {
   loading: () => <div className="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg h-32" />
 })
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import dynamic from 'next/dynamic'
-
-const LiveDiscovery = dynamic(() => import('./LiveDiscovery'), {
+const DiscoverPopup = dynamic(() => import('./DiscoverPopup'), {
   loading: () => <div className="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg h-96" />
 })
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import dynamic from 'next/dynamic'
 import StreamyyyLogo from './StreamyyyLogo'
 import {
   DropdownMenu,
@@ -356,16 +355,10 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
         onOpenChange={setShowAddStream} 
       />
       
-      <Dialog open={showDiscovery} onOpenChange={setShowDiscovery}>
-        <DialogContent className="max-w-[95vw] sm:max-w-6xl max-h-[90vh] p-0">
-          <DialogHeader className="sr-only">
-            <DialogTitle>Discover Live Streams</DialogTitle>
-          </DialogHeader>
-          <div className="overflow-auto max-h-[85vh]">
-            <LiveDiscovery />
-          </div>
-        </DialogContent>
-      </Dialog>
+      <DiscoverPopup 
+        open={showDiscovery} 
+        onOpenChange={setShowDiscovery} 
+      />
 
       {/* Clear Streams Confirmation Dialog */}
       <Dialog open={showClearConfirm} onOpenChange={setShowClearConfirm}>
