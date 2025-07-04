@@ -155,7 +155,12 @@ const StreamGrid: React.FC = React.memo(() => {
   
   // Get streams with sponsored stream injected
   const streamsWithSponsored = useMemo(() => {
-    return injectSponsoredStream([...streams])
+    try {
+      return injectSponsoredStream([...streams])
+    } catch (error) {
+      console.error('Error injecting sponsored stream:', error)
+      return [...streams] // Fallback to original streams
+    }
   }, [streams])
   
   // Mobile detection
@@ -531,8 +536,8 @@ const StreamGrid: React.FC = React.memo(() => {
     )
   }
 
-  // Main render logic
-  if (getUserStreamCount(streamsWithSponsored) === 0) {
+  // Main render logic - Check original streams, not the ones with sponsored content
+  if (streams.length === 0) {
     return (
       <motion.div
         variants={emptyStateVariants}

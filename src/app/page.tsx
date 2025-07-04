@@ -241,15 +241,15 @@ export default function Home() {
       )}>
         <main className="flex-1 overflow-auto md:overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-            {getUserStreamCount([...streams]) > 0 && (
+            {streams.length > 0 && (
               <div className="border-b px-4 py-0">
                 <TabsList className="h-10 bg-transparent">
                 <TabsTrigger value="streams" className="gap-2">
                   <Grid3x3 size={16} />
                   <span className="hidden sm:inline">Streams</span>
-                  {getUserStreamCount([...streams]) > 0 && (
+                  {streams.length > 0 && (
                     <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-xs">
-                      {getUserStreamCount([...streams])}
+                      {streams.length}
                     </Badge>
                   )}
                 </TabsTrigger>
@@ -275,7 +275,7 @@ export default function Home() {
             
             <TabsContent value="streams" className="flex-1 m-0 p-0 flex flex-col overflow-auto md:overflow-hidden">
               <ErrorBoundary>
-                {getUserStreamCount([...streams]) === 0 ? (
+                {streams.length === 0 ? (
                   <LandingPage onAddStream={() => setShowAddStream(true)} />
                 ) : (
                   <>
@@ -354,7 +354,7 @@ export default function Home() {
           trackFeatureUsage('discover_mobile')
         }}
         showChat={showChat}
-        streamCount={getUserStreamCount([...streams])}
+        streamCount={streams.length}
         onToggleSwipeView={() => {
           setShowMobileStreamViewer(true)
           trackFeatureUsage('mobile_stream_viewer')

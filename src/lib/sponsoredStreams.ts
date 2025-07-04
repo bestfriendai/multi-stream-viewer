@@ -33,33 +33,45 @@ export const getCurrentSponsoredStream = (): SponsoredStream | null => {
 
 // Convert sponsored stream to regular stream format for display
 export const createSponsoredStreamObject = (sponsoredStream: SponsoredStream): Stream => {
-  const now = new Date()
-  return {
-    id: sponsoredStream.id,
-    channelName: sponsoredStream.channelName,
-    platform: sponsoredStream.platform,
-    ...(sponsoredStream.channelId && { channelId: sponsoredStream.channelId }),
-    quality: 'auto',
-    volume: 50, // Default volume
-    muted: true, // Start muted
-    position: sponsoredStream.position || 0,
-    isActive: true,
-    createdAt: now,
-    lastUpdated: now,
-    isSponsored: true // Add this property to identify sponsored streams
+  try {
+    const now = new Date()
+    return {
+      id: sponsoredStream.id,
+      channelName: sponsoredStream.channelName,
+      platform: sponsoredStream.platform,
+      ...(sponsoredStream.channelId && { channelId: sponsoredStream.channelId }),
+      quality: 'auto',
+      volume: 50, // Default volume
+      muted: true, // Start muted
+      position: sponsoredStream.position || 0,
+      isActive: true,
+      createdAt: now,
+      lastUpdated: now,
+      isSponsored: true // Add this property to identify sponsored streams
+    }
+  } catch (error) {
+    console.error('Error creating sponsored stream object:', error)
+    throw error
   }
 }
 
 // Inject sponsored stream into the stream array
 export const injectSponsoredStream = (userStreams: Stream[]): Stream[] => {
-  const sponsoredStream = getCurrentSponsoredStream()
-  
-  // Only inject if there are user streams and sponsored stream exists
-  if (!sponsoredStream || userStreams.length === 0) {
-    return userStreams
-  }
-  
-  const sponsoredStreamObj = createSponsoredStreamObject(sponsoredStream)
+  try {
+    const sponsoredStream = getCurrentSponsoredStream()
+    
+    // Only inject if there are user streams and sponsored stream exists
+    if (!sponsoredStream || userStreams.length === 0) {
+      return userStreams
+    }
+    
+    // Validate userStreams is actually an array
+    if (!Array.isArray(userStreams)) {
+      console.warn('injectSponsoredStream: userStreams is not an array', userStreams)
+      return []
+    }
+    
+    const sponsoredStreamObj = createSponsoredStreamObject(sponsoredStream)
   
   // Handle placement strategy
   if (sponsoredStream.placement === 'fixed') {
@@ -90,7 +102,11 @@ export const injectSponsoredStream = (userStreams: Stream[]): Stream[] => {
     return adjustedStreams
   }
   
-  return userStreams
+    return userStreams
+  } catch (error) {
+    console.error('Error in injectSponsoredStream:', error)
+    return userStreams // Return original streams on error
+  }
 }
 
 // Check if a stream is sponsored
