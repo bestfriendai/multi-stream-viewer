@@ -71,29 +71,88 @@ export default function StreamyyyLogo({
         <defs>
           <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style={{stopColor: '#6366f1', stopOpacity: 1}} />
-            <stop offset="100%" style={{stopColor: '#8b5cf6', stopOpacity: 1}} />
+            <stop offset="50%" style={{stopColor: '#8b5cf6', stopOpacity: 1}} />
+            <stop offset="100%" style={{stopColor: '#ec4899', stopOpacity: 1}} />
+          </linearGradient>
+          <linearGradient id={`${gradientId}-screen`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{stopColor: '#1e293b', stopOpacity: 1}} />
+            <stop offset="100%" style={{stopColor: '#0f172a', stopOpacity: 1}} />
           </linearGradient>
         </defs>
-        {/* Chat bubble background */}
+        
+        {/* TV Screen Frame */}
         <rect 
-          x="4" 
-          y="6" 
-          width="24" 
+          x="3" 
+          y="7" 
+          width="26" 
           height="18" 
-          rx="4" 
-          ry="4" 
-          fill={variant === 'white' ? 'white' : `url(#${gradientId})`}
+          rx="2" 
+          ry="2" 
+          fill={variant === 'white' ? '#f1f5f9' : `url(#${gradientId})`}
+          stroke={variant === 'white' ? '#cbd5e1' : 'none'}
+          strokeWidth="0.5"
         />
-        {/* Play button triangle */}
+        
+        {/* TV Screen */}
+        <rect 
+          x="5" 
+          y="9" 
+          width="22" 
+          height="14" 
+          rx="1" 
+          ry="1" 
+          fill={variant === 'white' ? '#0f172a' : `url(#${gradientId}-screen)`}
+        />
+        
+        {/* Play Button */}
         <polygon 
-          points="13,12 13,20 21,16" 
-          fill={variant === 'white' ? '#6366f1' : 'white'}
+          points="13,13 13,19 20,16" 
+          fill={variant === 'white' ? '#6366f1' : '#ffffff'}
+          opacity="0.9"
         />
-        {/* Chat bubble tail */}
-        <path 
-          d="M8 24 L12 20 L8 20 Z" 
-          fill={variant === 'white' ? 'white' : `url(#${gradientId})`}
+        
+        {/* TV Stand Base */}
+        <rect 
+          x="11" 
+          y="25" 
+          width="10" 
+          height="2" 
+          rx="1" 
+          ry="1" 
+          fill={variant === 'white' ? '#94a3b8' : `url(#${gradientId})`}
+          opacity="0.8"
         />
+        
+        {/* TV Stand */}
+        <rect 
+          x="14" 
+          y="23" 
+          width="4" 
+          height="4" 
+          rx="0.5" 
+          ry="0.5" 
+          fill={variant === 'white' ? '#94a3b8' : `url(#${gradientId})`}
+          opacity="0.8"
+        />
+        
+        {/* Screen Reflection Effect */}
+        <rect 
+          x="5" 
+          y="9" 
+          width="11" 
+          height="7" 
+          rx="1" 
+          ry="1" 
+          fill="url(#reflectionGradient)"
+          opacity="0.1"
+        />
+        
+        <defs>
+          <linearGradient id="reflectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{stopColor: '#ffffff', stopOpacity: 0.3}} />
+            <stop offset="100%" style={{stopColor: '#ffffff', stopOpacity: 0}} />
+          </linearGradient>
+        </defs>
       </svg>
     </div>
   );
@@ -112,10 +171,12 @@ export default function StreamyyyLogo({
       {showText && (
         <span className={cn(
           config.text,
-          'font-bold tracking-tight',
+          'font-black tracking-wide font-mono',
+          'drop-shadow-sm',
+          'hover:tracking-wider transition-all duration-300',
           getTextClasses()
         )}>
-          Streamyyy
+          STREAMYYY
         </span>
       )}
     </div>
@@ -135,7 +196,7 @@ export const StreamyyyText = ({ size = 'md', variant = 'default', className = ''
       case 'white':
         return 'text-white';
       case 'gradient':
-        return 'bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent';
+        return 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 bg-clip-text text-transparent';
       default:
         return 'text-foreground';
     }
@@ -144,11 +205,13 @@ export const StreamyyyText = ({ size = 'md', variant = 'default', className = ''
   return (
     <span className={cn(
       config.text,
-      'font-bold tracking-tight',
+      'font-black tracking-wide font-mono',
+      'drop-shadow-sm',
+      'hover:tracking-wider transition-all duration-300',
       getTextClasses(),
       className
     )}>
-      Streamyyy
+      STREAMYYY
     </span>
   );
 };

@@ -245,161 +245,203 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       {/* Optimized Background Live Streams */}
       <OptimizedBackgroundStreams channels={liveChannels} />
       
-      {/* Enhanced Hero Section */}
-      <section className="relative overflow-hidden py-20 lg:py-32 min-h-screen flex items-center">
-        {/* Subtle Background Effects */}
+      {/* Professional SaaS Hero Section */}
+      <section className="relative py-24 lg:py-32 min-h-[90vh] flex items-center">
+        {/* Clean Professional Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/30 to-background/60 backdrop-blur-[2px]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-          <div className="absolute top-20 right-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl animate-pulse animation-delay-2000" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary/5 to-purple-500/5 rounded-full blur-3xl animate-spin-slow" />
-          
-          {/* Floating video frames effect */}
-          <div className="absolute top-16 left-16 w-32 h-20 border-2 border-white/20 rounded-lg backdrop-blur-sm animate-bounce-slow" />
-          <div className="absolute bottom-32 right-24 w-40 h-24 border-2 border-primary/30 rounded-lg backdrop-blur-sm animate-float" />
-          <div className="absolute top-1/3 right-16 w-36 h-22 border-2 border-purple-400/20 rounded-lg backdrop-blur-sm animate-float-delayed" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background/90" />
+          <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-32" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center space-y-8 max-w-5xl mx-auto"
-          >
-            {/* Enhanced Logo Animation with Glass Effect */}
-            <motion.div 
-              className="flex justify-center mb-12"
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", duration: 1, bounce: 0.5 }}
-            >
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 rounded-3xl blur-3xl opacity-40 group-hover:opacity-60 transition-opacity animate-pulse" />
-                <div className="relative bg-black/30 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl">
-                  <Sparkles className="w-28 h-28 text-white drop-shadow-2xl" />
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full animate-pulse shadow-lg" />
-                  <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-blue-500 rounded-full animate-pulse animation-delay-1000 shadow-lg" />
-                </div>
-              </div>
-            </motion.div>
-            
-            <motion.h1 
-              className="text-5xl md:text-8xl font-black tracking-tight"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-              <div className="relative">
-                <span className="inline-block bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent drop-shadow-2xl">
-                  STREAMYYY
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent opacity-70 blur-sm">
-                  STREAMYYY
-                </div>
-              </div>
-              <br />
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left: Value Proposition */}
               <motion.div 
-                className="text-2xl md:text-4xl font-semibold mt-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="space-y-8"
               >
-                <div className="relative bg-black/40 backdrop-blur-sm rounded-2xl px-8 py-4 border border-white/20 inline-block">
-                  <span className="text-white drop-shadow-lg">
-                    The Best Multi-Stream Platform
-                  </span>
+                {/* Trust Badge */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-full text-sm font-medium border border-green-200 dark:border-green-800"
+                >
+                  <Shield className="w-4 h-4" />
+                  Trusted by 2M+ users worldwide
+                </motion.div>
+
+                {/* Main Headline */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <h1 className="text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6">
+                    <span className="text-foreground">Watch Multiple</span>
+                    <br />
+                    <span className="bg-gradient-to-r from-primary via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                      Live Streams
+                    </span>
+                    <br />
+                    <span className="text-foreground">In One Place</span>
+                  </h1>
+                </motion.div>
+
+                {/* Value Proposition */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="space-y-4"
+                >
+                  <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
+                    The professional multi-stream platform for creators, esports fans, and content enthusiasts. 
+                    No more switching tabs or missing moments.
+                  </p>
+                  
+                  {/* Key Benefits */}
+                  <div className="space-y-3 pt-4">
+                    {[
+                      "Watch up to 16 streams simultaneously",
+                      "Works with Twitch, YouTube, Kick & more",
+                      "Zero setup required - works instantly"
+                    ].map((benefit, index) => (
+                      <motion.div
+                        key={benefit}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4 + index * 0.1 }}
+                        className="flex items-center gap-3"
+                      >
+                        <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                          <div className="w-2 h-2 rounded-full bg-green-600" />
+                        </div>
+                        <span className="text-foreground font-medium">{benefit}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* CTA Buttons */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="flex flex-col sm:flex-row gap-4 pt-6"
+                >
+                  <Button 
+                    size="lg" 
+                    onClick={onAddStream}
+                    className="gap-3 text-lg px-8 py-6 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
+                  >
+                    <PlayCircle className="w-6 h-6" />
+                    Start Free - No Signup Required
+                  </Button>
+                  
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="gap-3 text-lg px-8 py-6 border-2 hover:bg-muted/50 font-medium"
+                  >
+                    Watch Demo
+                    <ArrowRight className="w-5 h-5" />
+                  </Button>
+                </motion.div>
+
+                {/* Trust Indicators */}
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="flex items-center gap-6 pt-8 text-sm text-muted-foreground"
+                >
+                  <div className="flex items-center gap-2">
+                    <Wifi className="w-4 h-4 text-green-500" />
+                    <span>99.9% Uptime</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-blue-500" />
+                    <span>Enterprise Security</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-yellow-500" />
+                    <span>Zero Lag</span>
+                  </div>
+                </motion.div>
+              </motion.div>
+
+              {/* Right: Hero Visual */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="relative"
+              >
+                <div className="relative bg-gradient-to-br from-card to-card/50 rounded-2xl border shadow-2xl p-6">
+                  {/* Demo Grid */}
+                  <div className="aspect-video bg-black/5 dark:bg-black/20 rounded-lg overflow-hidden">
+                    <div className="grid grid-cols-2 grid-rows-2 gap-2 h-full p-2">
+                      {Array.from({ length: 4 }).map((_, i) => {
+                        const stream = demoStreams[i]
+                        return (
+                          <div key={i} className="bg-black rounded-md relative overflow-hidden">
+                            {stream ? (
+                              <>
+                                <img 
+                                  src={`https://static-cdn.jtvnw.net/previews-ttv/live_user_${stream.channelName}-640x360.jpg`}
+                                  alt={stream.channelName}
+                                  className="absolute inset-0 w-full h-full object-cover"
+                                  loading="lazy"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                <div className="absolute bottom-1 left-1 right-1">
+                                  <p className="text-xs text-white font-medium truncate">{stream.channelName}</p>
+                                </div>
+                                <Badge className="absolute top-1 right-1 bg-red-600 text-white border-0 text-xs px-1 py-0">
+                                  LIVE
+                                </Badge>
+                              </>
+                            ) : (
+                              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center">
+                                <PlayCircle className="w-8 h-8 text-white/50" />
+                              </div>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  
+                  {/* Feature Callouts */}
+                  <div className="absolute -right-4 top-8 bg-background border rounded-lg px-3 py-2 shadow-lg">
+                    <div className="flex items-center gap-2 text-sm">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                      <span className="font-medium">Live Sync</span>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute -left-4 bottom-12 bg-background border rounded-lg px-3 py-2 shadow-lg">
+                    <div className="flex items-center gap-2 text-sm">
+                      <MessageSquare className="w-4 h-4 text-blue-500" />
+                      <span className="font-medium">Unified Chat</span>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
-            </motion.h1>
-            
-            <motion.div 
-              className="relative"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
-            >
-              <div className="bg-black/50 backdrop-blur-md rounded-3xl px-8 py-6 border border-white/20 shadow-2xl inline-block max-w-4xl">
-                <p className="text-xl md:text-2xl text-white font-medium leading-relaxed">
-                  Watch multiple streams at once. Simple, fast, and free.
-                </p>
-              </div>
-            </motion.div>
-            
-            {/* Enhanced Trust Indicators */}
-            <motion.div 
-              className="flex flex-wrap justify-center items-center gap-4 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 0.8 }}
-            >
-              {[
-                { icon: Shield, text: "Enterprise Security", color: "text-green-400" },
-                { icon: Wifi, text: "99.9% Uptime", color: "text-blue-400" },
-                { icon: Trophy, text: "Industry Leading", color: "text-yellow-400" },
-                { icon: Rocket, text: "Zero Lag Guarantee", color: "text-purple-400" }
-              ].map((item, index) => (
-                <motion.div 
-                  key={item.text}
-                  className="flex items-center gap-2 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20 hover:bg-black/40 transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.9 + index * 0.1 }}
-                >
-                  <item.icon className={`w-4 h-4 ${item.color} drop-shadow-lg`} />
-                  <span className="text-white font-medium text-sm">{item.text}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-            
-            {/* Enhanced CTA Buttons */}
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-6 justify-center pt-8"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
-            >
-              <motion.div
-                whileHover={{ scale: 1.08, rotateY: 5 }}
-                whileTap={{ scale: 0.95 }}
-                className="relative group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-600 to-pink-600 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity animate-pulse" />
-                <Button 
-                  size="lg" 
-                  onClick={onAddStream}
-                  className="relative gap-4 text-xl px-12 py-8 bg-gradient-to-r from-primary via-purple-600 to-pink-600 hover:from-primary/90 hover:via-purple-600/90 hover:to-pink-600/90 shadow-2xl border-2 border-white/20 backdrop-blur-sm font-bold tracking-wide group"
-                >
-                  <PlayCircle className="w-7 h-7 group-hover:animate-spin transition-transform" />
-                  Start Watching Now
-                  <Sparkles className="w-5 h-5 group-hover:animate-bounce" />
-                </Button>
-              </motion.div>
-              
-              <motion.div
-                whileHover={{ scale: 1.08, rotateY: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="relative group"
-              >
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="gap-4 text-xl px-12 py-8 border-2 border-white/40 hover:border-white/60 bg-black/30 hover:bg-black/50 backdrop-blur-md text-white hover:text-white shadow-2xl font-semibold tracking-wide group transition-all duration-300"
-                >
-                  See It In Action
-                  <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-                </Button>
-              </motion.div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Statistics Section */}
-      <section className="py-20 bg-gradient-to-b from-muted/30 to-background relative">
+      {/* Statistics Section - Enhanced */}
+      <section className="py-24 bg-gradient-to-b from-background to-muted/30 relative">
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-16" />
         <div className="container mx-auto px-4 relative">
           <motion.div
@@ -407,38 +449,64 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             whileInView={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <Badge className="mb-4 px-4 py-1.5" variant="outline">
-              <BarChart3 className="w-3 h-3 mr-1" />
-              Platform Stats
-            </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Trusted by Millions</h2>
-            <p className="text-xl text-muted-foreground">Real numbers from real users around the world</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              The Numbers Speak for Themselves
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Join millions of users who've made Streamyyy their go-to multi-streaming platform
+            </p>
           </motion.div>
           
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1, type: "spring", duration: 0.6 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
                 className="text-center group"
               >
-                <Card className="p-8 hover:shadow-xl transition-all duration-500 group-hover:scale-105 bg-gradient-to-br from-background to-muted/30">
-                  <div className={cn(
-                    "w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r flex items-center justify-center shadow-lg group-hover:shadow-2xl transition-all duration-500",
-                    stat.color
-                  )}>
-                    <stat.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-2">
+                <Card className="p-8 hover:shadow-xl transition-all duration-500 group-hover:scale-105 border-0 bg-gradient-to-br from-background via-background to-muted/20">
+                  <div className="text-5xl lg:text-6xl font-black bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-3">
                     {stat.value}
                   </div>
-                  <div className="text-muted-foreground font-medium">{stat.label}</div>
+                  <div className="text-lg font-semibold text-foreground mb-2">{stat.label}</div>
+                  <div className={cn(
+                    "w-12 h-12 mx-auto rounded-xl bg-gradient-to-r flex items-center justify-center",
+                    stat.color
+                  )}>
+                    <stat.icon className="w-6 h-6 text-white" />
+                  </div>
                 </Card>
               </motion.div>
             ))}
           </div>
+          
+          {/* Additional Trust Signals */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="text-center mt-16"
+          >
+            <div className="flex flex-wrap justify-center items-center gap-8 text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-400" />
+                <span className="font-semibold">4.9/5</span>
+                <span>User Rating</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Shield className="w-5 h-5 text-green-500" />
+                <span className="font-semibold">SOC 2</span>
+                <span>Compliant</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-orange-500" />
+                <span className="font-semibold">#1</span>
+                <span>Multi-Stream Platform</span>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -649,70 +717,120 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Features Grid - Enhanced */}
-      <section className="py-24 bg-gradient-to-b from-muted/30 via-muted/20 to-background relative">
-        <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
+      {/* Benefits Section - SaaS Style */}
+      <section className="py-24 relative">
         <div className="container mx-auto px-4 relative">
           <motion.div 
-            className="text-center mb-16"
+            className="text-center mb-20"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
           >
-            <Badge className="mb-4 px-4 py-1.5" variant="outline">
-              <Sparkles className="w-3 h-3 mr-1" />
-              Features
-            </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Features</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Everything you need for multi-stream viewing.</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Everything You Need to 
+              <span className="block bg-gradient-to-r from-primary via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Stream Smarter
+              </span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Built for creators, streamers, and viewers who demand the best multi-streaming experience
+            </p>
           </motion.div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {features.map((feature, index) => (
+          {/* Primary Benefits Grid */}
+          <div className="grid lg:grid-cols-3 gap-8 mb-16">
+            {[
+              {
+                icon: Monitor,
+                title: "Multi-Stream Viewing",
+                description: "Watch up to 16 streams simultaneously with intelligent layout management",
+                benefit: "Never miss a moment across multiple streams",
+                stats: "16 Streams"
+              },
+              {
+                icon: MessageSquare,
+                title: "Unified Chat System",
+                description: "All your favorite stream chats in one convenient sidebar",
+                benefit: "Stay connected with all communities at once",
+                stats: "Real-time"
+              },
+              {
+                icon: Layout,
+                title: "Smart Layouts",
+                description: "AI-powered layout suggestions and custom grid arrangements",
+                benefit: "Perfect viewing experience every time",
+                stats: "Auto-Adjust"
+              }
+            ].map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                className="group"
+              >
+                <Card className="p-8 h-full border-0 bg-gradient-to-br from-background via-background to-muted/10 hover:shadow-2xl transition-all duration-500 group-hover:scale-[1.02]">
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-primary to-purple-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                      <feature.icon className="w-7 h-7 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="text-xl font-bold text-foreground">{feature.title}</h3>
+                        <Badge variant="secondary" className="text-xs">
+                          {feature.stats}
+                        </Badge>
+                      </div>
+                      <p className="text-muted-foreground leading-relaxed mb-3">
+                        {feature.description}
+                      </p>
+                      <p className="text-sm font-medium text-primary">
+                        → {feature.benefit}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Secondary Features Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Globe,
+                title: "Platform Support",
+                description: "Twitch, YouTube, Kick, and more",
+                gradient: "from-blue-500 to-cyan-500"
+              },
+              {
+                icon: SmartphoneIcon,
+                title: "Mobile Optimized",
+                description: "Perfect experience on any device",
+                gradient: "from-green-500 to-emerald-500"
+              },
+              {
+                icon: Zap,
+                title: "Lightning Fast",
+                description: "Zero buffering, instant loading",
+                gradient: "from-yellow-500 to-orange-500"
+              }
+            ].map((feature, index) => (
               <motion.div
                 key={feature.title}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.1 }}
-                onHoverStart={() => setHoveredFeature(index)}
-                onHoverEnd={() => setHoveredFeature(null)}
+                className="group"
               >
-                <Card className={cn(
-                  "p-8 h-full transition-all duration-500 relative overflow-hidden group cursor-pointer",
-                  hoveredFeature === index && "shadow-2xl scale-105 border-primary/50"
-                )}>
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  {/* Stats Badge */}
-                  <div className="absolute top-4 right-4 z-20">
-                    <Badge className={cn(
-                      "text-xs font-bold bg-gradient-to-r text-white border-0 shadow-lg",
-                      feature.gradient
-                    )}>
-                      {feature.stats}
-                    </Badge>
-                  </div>
-                  
+                <Card className="p-6 border-0 bg-gradient-to-br from-background to-muted/5 hover:shadow-lg transition-all duration-300 group-hover:scale-105">
                   <div className={cn(
-                    "w-16 h-16 rounded-2xl bg-gradient-to-r flex items-center justify-center mb-6 transition-all duration-500 relative z-10 shadow-lg",
-                    feature.gradient,
-                    hoveredFeature === index && "scale-110 rotate-3 shadow-2xl"
+                    "w-12 h-12 rounded-lg bg-gradient-to-r flex items-center justify-center mb-4 group-hover:scale-110 transition-transform",
+                    feature.gradient
                   )}>
-                    <feature.icon className="w-8 h-8 text-white" />
+                    <feature.icon className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 relative z-10 group-hover:text-primary transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-muted-foreground relative z-10 leading-relaxed group-hover:text-foreground/80 transition-colors">
-                    {feature.description}
-                  </p>
-                  
-                  {/* Hover Effect */}
-                  <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-gradient-to-r opacity-10 rounded-full blur-2xl transition-all duration-500 group-hover:scale-150" />
-                  
-                  {/* Interactive Arrow */}
-                  <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-                    <ArrowRight className="w-5 h-5 text-primary" />
-                  </div>
+                  <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground">{feature.description}</p>
                 </Card>
               </motion.div>
             ))}
@@ -939,50 +1057,102 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Final CTA Section */}
-      <section className="py-32 bg-gradient-to-b from-background via-primary/5 to-purple-500/10 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-32" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" />
-        </div>
-        <div className="container mx-auto px-4 text-center relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="max-w-4xl mx-auto space-y-8"
-          >
+      {/* Final CTA Section - Professional */}
+      <section className="py-32 bg-gradient-to-b from-background to-muted/30 relative">
+        <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-16" />
+        <div className="container mx-auto px-4 relative">
+          <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              initial={{ scale: 0.8 }}
-              whileInView={{ scale: 1 }}
-              transition={{ type: "spring", duration: 0.8 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="space-y-8"
             >
-              <h2 className="text-5xl md:text-6xl font-bold leading-tight">
-                Ready to Start
-                <span className="block mt-2 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
-                  Multi-Streaming?
-                </span>
-              </h2>
-            </motion.div>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              Join thousands of viewers using the best multi-stream platform.
-            </p>
-            
-            <motion.div 
-              className="pt-8"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Button 
-                size="lg" 
-                onClick={onAddStream}
-                className="gap-3 text-xl px-12 py-8 bg-gradient-to-r from-primary via-purple-600 to-pink-600 hover:from-primary/90 hover:via-purple-600/90 hover:to-pink-600/90 shadow-2xl hover:shadow-primary/30 transition-all duration-300 relative group"
+              {/* Trust Badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.1 }}
+                className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-full text-sm font-medium border border-green-200 dark:border-green-800"
               >
-                <Zap className="w-7 h-7 group-hover:animate-pulse" />
-                Start Streaming Now
-                <div className="absolute inset-0 rounded-md bg-white/10 scale-0 group-hover:scale-100 transition-transform duration-500" />
-              </Button>
+                <Shield className="w-4 h-4" />
+                No signup required • Start immediately
+              </motion.div>
+
+              {/* Headline */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <h2 className="text-5xl md:text-6xl font-black leading-tight mb-6">
+                  Ready to Transform Your
+                  <span className="block bg-gradient-to-r from-primary via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    Streaming Experience?
+                  </span>
+                </h2>
+              </motion.div>
+              
+              {/* Subheading */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                  Join millions who've upgraded to the professional multi-streaming platform. 
+                  Start watching multiple streams instantly.
+                </p>
+              </motion.div>
+              
+              {/* CTAs */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center pt-8"
+              >
+                <Button 
+                  size="lg" 
+                  onClick={onAddStream}
+                  className="gap-3 text-lg px-10 py-6 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold text-white"
+                >
+                  <PlayCircle className="w-6 h-6" />
+                  Start Free Now
+                </Button>
+                
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="gap-3 text-lg px-10 py-6 border-2 hover:bg-muted/50 font-medium"
+                >
+                  See Live Demo
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+              </motion.div>
+
+              {/* Final Trust Elements */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="flex flex-wrap justify-center items-center gap-8 pt-12 text-sm text-muted-foreground"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full" />
+                  <span>100% Free</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full" />
+                  <span>No Download Required</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full" />
+                  <span>Works Instantly</span>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>

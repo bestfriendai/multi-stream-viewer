@@ -70,20 +70,22 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
   
   return (
     <div>
-      <header className="bg-background/95 backdrop-blur-md sticky top-0 z-50 border-b border-border/50 shadow-sm">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="h-16 flex items-center justify-between">
+      <header className="bg-background/80 backdrop-blur-xl sticky top-0 z-50 border-b border-border/30 shadow-sm glass">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-16 flex items-center justify-between gap-4">
             {/* Logo */}
-            <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
-              <StreamyyyLogo size="sm" variant="gradient" />
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link href="/" className="flex-shrink-0 hover:scale-105 transition-all duration-200">
+                <StreamyyyLogo size="sm" variant="gradient" />
+              </Link>
+            </div>
 
             {/* Mobile Primary Actions */}
-            <div className="flex items-center gap-2 md:hidden">
+            <div className="flex items-center gap-1.5 md:hidden">
               <Button
                 onClick={() => setShowAddStream(true)}
                 size="sm"
-                className="h-9 px-3"
+                className="h-9 px-3 font-medium shadow-sm"
                 disabled={streams.length >= 16}
               >
                 <Plus className="h-4 w-4" />
@@ -93,7 +95,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="h-9 px-3"
+                className="h-9 px-3 border-border/60 hover:border-border/80 shadow-sm"
                 onClick={() => setShowDiscovery(true)}
               >
                 <Compass className="h-4 w-4" />
@@ -102,108 +104,171 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-0"
+                className="h-9 w-9 p-0 hover:bg-muted/60"
                 onClick={() => setShowMobileMenu(true)}
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-4 w-4" />
               </Button>
             </div>
 
             {/* Desktop Actions */}
-            <div className="hidden md:flex items-center gap-3">
-              <Button
-                onClick={() => setShowAddStream(true)}
-                size="sm"
-                className="h-9"
-                disabled={streams.length >= 16}
+            <motion.div 
+              className="hidden md:flex items-center gap-2"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              {/* Primary Actions Group */}
+              <motion.div 
+                className="flex items-center gap-1.5 bg-muted/30 rounded-lg p-1"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
               >
-                <Plus className="h-4 w-4" />
-                <span className="ml-2">Add Stream</span>
-              </Button>
-
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="h-9"
-                onClick={() => setShowDiscovery(true)}
-              >
-                <Compass className="h-4 w-4" />
-                <span className="ml-2">Discover</span>
-              </Button>
-
-              <Link href="/amp-summer">
                 <Button
-                  variant="outline"
+                  onClick={() => setShowAddStream(true)}
                   size="sm"
-                  className="h-9 border-yellow-500/30 hover:border-yellow-500/50 hover:bg-yellow-500/10"
+                  className="h-8 px-3 font-medium shadow-sm"
+                  disabled={streams.length >= 16}
                 >
-                  <Zap className="h-4 w-4 text-yellow-600" />
-                  <span className="ml-2 font-medium">AMP Summer</span>
+                  <Plus className="h-4 w-4" />
+                  <span className="ml-1.5">Add</span>
                 </Button>
-              </Link>
 
-              <Separator orientation="vertical" className="h-6" />
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-8 px-3 hover:bg-background/80"
+                  onClick={() => setShowDiscovery(true)}
+                >
+                  <Compass className="h-4 w-4" />
+                  <span className="ml-1.5">Discover</span>
+                </Button>
 
-              <EnhancedLayoutSelector />
-              <SavedLayoutsDialog />
-              <ShareDialog />
-
-              {streams.length > 0 && (
                 <Button
-                  variant="outline"
+                  variant={showChat ? "default" : "ghost"}
                   size="sm"
-                  onClick={() => setShowClearConfirm(true)}
-                  className="h-9 text-destructive border-destructive/30 hover:bg-destructive/10 hover:border-destructive/50"
+                  onClick={onToggleChat}
+                  className="h-8 px-3"
                 >
-                  <X className="h-4 w-4" />
-                  <span className="ml-2">Clear ({streams.length})</span>
+                  <MessageSquare className="h-4 w-4" />
+                  <span className="ml-1.5">Chat</span>
                 </Button>
-              )}
+              </motion.div>
 
-              <Separator orientation="vertical" className="h-6" />
-
-              <Button
-                variant={showChat ? "default" : "ghost"}
-                size="sm"
-                onClick={onToggleChat}
-                className="h-9"
+              {/* Navigation Links */}
+              <motion.div 
+                className="flex items-center gap-1"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1, duration: 0.3 }}
               >
-                <MessageSquare className="h-4 w-4" />
-                <span className="ml-2">Chat</span>
-              </Button>
-
-              <ThemeToggle />
-
-              <Separator orientation="vertical" className="h-6" />
-
-              {isSignedIn ? (
-                <UserButton afterSignOutUrl="/" />
-              ) : (
-                <div className="flex gap-2">
-                  <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="h-9"
-                      onClick={() => console.log('Sign In button clicked')}
+                <Link href="/amp-summer">
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-3 text-yellow-600 hover:bg-yellow-500/10"
                     >
-                      <LogIn className="h-4 w-4" />
-                      <span className="ml-2">Sign In</span>
+                      <Zap className="h-4 w-4" />
+                      <span className="ml-1.5">AMP</span>
                     </Button>
-                  </SignInButton>
-                  <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
-                    <Button 
-                      variant="default" 
-                      size="sm" 
-                      className="h-9"
-                      onClick={() => console.log('Sign Up button clicked')}
+                  </motion.div>
+                </Link>
+
+                <Link href="/blog">
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-3"
                     >
-                      <span>Sign Up</span>
+                      <BookmarkPlus className="h-4 w-4" />
+                      <span className="ml-1.5">Blog</span>
                     </Button>
-                  </SignUpButton>
-                </div>
-              )}
-            </div>
+                  </motion.div>
+                </Link>
+              </motion.div>
+
+              {/* Controls Group */}
+              <motion.div 
+                className="flex items-center gap-1 bg-muted/30 rounded-lg p-1"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.3 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <EnhancedLayoutSelector />
+                <SavedLayoutsDialog />
+                <ShareDialog />
+                
+                <AnimatePresence>
+                  {streams.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, width: 0 }}
+                      animate={{ opacity: 1, width: "auto" }}
+                      exit={{ opacity: 0, width: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowClearConfirm(true)}
+                        className="h-8 px-3 text-destructive hover:bg-destructive/10"
+                      >
+                        <X className="h-4 w-4" />
+                        <span className="ml-1.5">Clear ({streams.length})</span>
+                      </Button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              <Separator orientation="vertical" className="h-6 opacity-50" />
+
+              {/* User Actions */}
+              <motion.div 
+                className="flex items-center gap-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.3 }}
+              >
+                <ThemeToggle />
+
+                {isSignedIn ? (
+                  <motion.div whileHover={{ scale: 1.05 }}>
+                    <UserButton afterSignOutUrl="/" />
+                  </motion.div>
+                ) : (
+                  <div className="flex gap-1.5">
+                    <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 px-3"
+                          onClick={() => console.log('Sign In button clicked')}
+                        >
+                          <LogIn className="h-4 w-4" />
+                          <span className="ml-1.5">Sign In</span>
+                        </Button>
+                      </motion.div>
+                    </SignInButton>
+                    <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <Button 
+                          variant="default" 
+                          size="sm" 
+                          className="h-8 px-3 shadow-sm"
+                          onClick={() => console.log('Sign Up button clicked')}
+                        >
+                          <span>Sign Up</span>
+                        </Button>
+                      </motion.div>
+                    </SignUpButton>
+                  </div>
+                )}
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </header>
@@ -217,39 +282,71 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 z-50 md:hidden"
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 md:hidden"
               onClick={() => setShowMobileMenu(false)}
             />
             
             {/* Mobile Menu Panel */}
             <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-background border-l border-border z-50 md:hidden"
+              initial={{ x: "100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "100%", opacity: 0 }}
+              transition={{ 
+                type: "spring", 
+                damping: 30, 
+                stiffness: 400,
+                opacity: { duration: 0.2 }
+              }}
+              className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-background/95 backdrop-blur-xl border-l border-border/50 z-50 md:hidden shadow-2xl"
             >
-              <div className="flex items-center justify-between p-4 border-b border-border">
-                <h2 className="text-lg font-semibold">Menu</h2>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowMobileMenu(false)}
-                  className="h-8 w-8 p-0"
-                >
-                  ×
-                </Button>
-              </div>
+              <motion.div 
+                className="flex items-center justify-between p-4 border-b border-border/50"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.3 }}
+              >
+                <h2 className="text-lg font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                  Menu
+                </h2>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="h-8 w-8 p-0 hover:bg-muted/60"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </motion.div>
+              </motion.div>
 
-              <div className="p-4 space-y-4">
+              <motion.div 
+                className="p-4 space-y-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.3 }}
+              >
                 {/* Stream Count */}
-                <div className="bg-muted/50 rounded-lg p-3">
+                <motion.div 
+                  className="bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg p-3 border border-border/30"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.3 }}
+                >
                   <div className="text-sm text-muted-foreground">Active Streams</div>
-                  <div className="text-2xl font-bold">{streams.length} / 16</div>
-                </div>
+                  <div className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                    {streams.length} / 16
+                  </div>
+                </motion.div>
 
                 {/* Quick Actions */}
-                <div className="space-y-2">
+                <motion.div 
+                  className="space-y-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.3 }}
+                >
                   <Button
                     onClick={() => {
                       onToggleChat()
@@ -283,7 +380,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                       Blog
                     </Button>
                   </Link>
-                </div>
+                </motion.div>
 
                 {/* Layout Controls */}
                 <div className="pt-4 border-t border-border">
@@ -343,7 +440,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           </>
         )}
