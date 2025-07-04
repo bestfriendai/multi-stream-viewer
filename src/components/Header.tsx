@@ -92,7 +92,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               <Link href="/" className="relative group flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-300 -z-10" />
                 <div className="relative p-2.5 rounded-xl bg-gradient-to-br from-background/90 to-background/70 border border-border/40 group-hover:border-primary/50 transition-all duration-300 backdrop-blur-sm shadow-lg group-hover:shadow-xl">
-                  <StreamyyyLogo size="sm" variant="gradient" />
+                  <StreamyyyLogo size="sm" variant="gradient" useForHeader={true} />
                 </div>
               </Link>
             </motion.div>

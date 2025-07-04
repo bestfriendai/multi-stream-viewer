@@ -108,7 +108,7 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
         {/* Left Section - Logo and Stream Count */}
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <StreamyyyLogo size="sm" variant="gradient" />
+            <StreamyyyLogo size="sm" variant="gradient" useForHeader={true} />
           </Link>
           
           {activeStreams.length > 0 && (

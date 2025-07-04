@@ -185,7 +185,7 @@ const AdaptiveHeader = React.memo(function AdaptiveHeader({ onToggleChat, showCh
                 }}
                 transition={{ duration: 0.3 }}
               >
-                <StreamyyyLogo size={isCompact ? "sm" : "sm"} variant="gradient" />
+                <StreamyyyLogo size={isCompact ? "sm" : "sm"} variant="gradient" useForHeader={true} />
               </motion.div>
             </Link>
 

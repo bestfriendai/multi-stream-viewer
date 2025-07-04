@@ -23,7 +23,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-2">
-            <StreamyyyLogo size="lg" variant="gradient" className="mb-4" />
+            <StreamyyyLogo size="lg" variant="gradient" className="mb-4" useForHeader={false} />
             <p className="text-muted-foreground mb-4 max-w-md">
               The ultimate multi-stream viewing platform. Watch multiple live streams simultaneously 
               and discover new content across all your favorite streaming platforms.
