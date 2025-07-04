@@ -60,7 +60,7 @@ const features = [
     icon: Globe,
     title: "All Platforms",
     description: "Twitch, YouTube, Kick, and more",
-    gradient: "from-purple-500 to-pink-500",
+    gradient: "from-green-500 to-teal-500",
     stats: "5+ Platforms"
   },
   {
@@ -81,7 +81,7 @@ const features = [
     icon: SmartphoneIcon,
     title: "Mobile Friendly",
     description: "Works great on phones and tablets",
-    gradient: "from-indigo-500 to-purple-500",
+    gradient: "from-blue-500 to-indigo-500",
     stats: "Responsive"
   },
   {
@@ -214,7 +214,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
 
   const stats = [
     { value: "2M+", label: "Active Users", icon: Users, color: "from-blue-500 to-cyan-500" },
-    { value: "50M+", label: "Hours Watched", icon: Eye, color: "from-purple-500 to-pink-500" },
+    { value: "50M+", label: "Hours Watched", icon: Eye, color: "from-green-500 to-teal-500" },
     { value: "99.9%", label: "Uptime", icon: TrendingUp, color: "from-green-500 to-emerald-500" },
     { value: "16x", label: "Max Streams", icon: Monitor, color: "from-orange-500 to-red-500" }
   ]
@@ -245,16 +245,13 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       {/* Optimized Background Live Streams */}
       <OptimizedBackgroundStreams channels={liveChannels} />
       
-      {/* Professional SaaS Hero Section */}
-      <section className="relative py-24 lg:py-32 min-h-[90vh] flex items-center">
-        {/* Enhanced Professional Background */}
+      {/* Clean Professional Hero Section */}
+      <section className="relative min-h-[85vh] flex items-center bg-gradient-to-b from-background to-muted/20">
+        {/* Clean Professional Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-background via-background/98 to-background/95" />
-          <div className="absolute inset-0 bg-gradient-to-t from-muted/10 via-transparent to-transparent" />
-          <div className="absolute inset-0 bg-grid-white/[0.015] bg-grid-32" />
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-primary/8 via-primary/4 to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-purple-500/8 via-purple-500/4 to-transparent rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-cyan-500/3 via-blue-500/3 to-violet-500/3 rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-muted/30" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.05),transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(34,197,94,0.05),transparent_50%)]" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
@@ -287,7 +284,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   <h1 className="text-5xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-8">
                     <span className="text-foreground">Watch Multiple</span>
                     <br />
-                    <span className="bg-gradient-to-r from-primary via-violet-600 to-purple-600 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
                       Live Streams
                     </span>
                     <br />
@@ -344,7 +341,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                     <Button 
                       size="lg" 
                       onClick={onAddStream}
-                      className="gap-3 text-lg px-10 py-7 bg-gradient-to-r from-primary via-violet-600 to-purple-600 hover:from-primary/90 hover:via-violet-600/90 hover:to-purple-600/90 shadow-xl hover:shadow-2xl transition-all duration-500 font-semibold border-0 rounded-xl"
+                      className="gap-3 text-lg px-10 py-7 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 shadow-xl hover:shadow-2xl transition-all duration-500 font-semibold border-0 rounded-xl text-white"
                     >
                       <PlayCircle className="w-6 h-6" />
                       Start Free - No Signup Required
@@ -399,7 +396,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 <div className="relative bg-gradient-to-br from-card via-card/95 to-card/80 rounded-3xl border border-border/50 shadow-2xl hover:shadow-3xl p-8 backdrop-blur-sm transition-all duration-500">
                   {/* Floating Elements */}
                   <div className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full animate-pulse" />
-                  <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-r from-primary to-purple-600 rounded-full blur-sm opacity-60" />
+                  <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-r from-primary to-blue-600 rounded-full blur-sm opacity-60" />
                   {/* Demo Grid */}
                   <div className="aspect-video bg-gradient-to-br from-black/5 via-black/3 to-black/10 dark:from-black/20 dark:via-black/15 dark:to-black/30 rounded-xl overflow-hidden border border-border/20">
                     <div className="grid grid-cols-2 grid-rows-2 gap-3 h-full p-3">
@@ -424,7 +421,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                                 </Badge>
                               </>
                             ) : (
-                              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center">
+                              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center">
                                 <PlayCircle className="w-8 h-8 text-white/50" />
                               </div>
                             )}
@@ -492,7 +489,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 className="text-center group"
               >
                 <Card className="p-8 hover:shadow-xl transition-all duration-500 group-hover:scale-105 border-0 bg-gradient-to-br from-background via-background to-muted/20">
-                  <div className="text-5xl lg:text-6xl font-black bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-3">
+                  <div className="text-5xl lg:text-6xl font-black bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent mb-3">
                     {stat.value}
                   </div>
                   <div className="text-lg font-semibold text-foreground mb-2">{stat.label}</div>
@@ -648,7 +645,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                               </Badge>
                             </>
                           ) : (
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-500/20 flex flex-col items-center justify-center">
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-blue-500/20 flex flex-col items-center justify-center">
                               <PlayCircle className="w-8 h-8 text-white/50" />
                               <div className="text-xs text-white/70 mt-2">
                                 Stream {i + 1}
@@ -679,7 +676,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-muted/5 via-transparent to-background/50" />
           <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-to-br from-blue-500/12 via-blue-500/6 to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-gradient-to-tl from-purple-500/12 via-purple-500/6 to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-gradient-to-tl from-blue-500/12 via-blue-500/6 to-transparent rounded-full blur-3xl" />
           <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-24" />
         </div>
         <div className="container mx-auto px-4 relative">
@@ -709,7 +706,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 title: "Choose Your Layout",
                 description: "Select from pre-made layouts or create your own custom view",
                 icon: Layout,
-                color: "from-purple-500 to-pink-500"
+                color: "from-blue-500 to-cyan-500"
               },
               {
                 step: "3",
@@ -754,7 +751,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Everything You Need to 
-              <span className="block bg-gradient-to-r from-primary via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-primary via-blue-600 to-cyan-600 bg-clip-text text-transparent">
                 Stream Smarter
               </span>
             </h2>
@@ -797,7 +794,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               >
                 <Card className="p-8 h-full border-0 bg-gradient-to-br from-background via-background/98 to-muted/15 hover:shadow-2xl transition-all duration-500 group-hover:scale-[1.02] backdrop-blur-sm">
                   <div className="flex items-start gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-primary via-violet-600 to-purple-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-primary via-blue-600 to-cyan-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                       <feature.icon className="w-7 h-7 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -1041,7 +1038,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   
                   {/* Author */}
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-purple-600 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center">
                       <span className="text-white font-bold text-lg">
                         {testimonial.author[0]}
                       </span>
@@ -1089,8 +1086,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-grid-white/[0.015] bg-grid-16" />
           <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gradient-to-br from-primary/8 via-primary/3 to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gradient-to-tl from-purple-500/8 via-purple-500/3 to-transparent rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[200px] bg-gradient-to-r from-cyan-500/3 via-blue-500/3 to-violet-500/3 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gradient-to-tl from-blue-500/8 via-blue-500/3 to-transparent rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[200px] bg-gradient-to-r from-cyan-500/3 via-blue-500/3 to-blue-600/3 rounded-full blur-3xl" />
         </div>
         <div className="container mx-auto px-4 relative">
           <div className="max-w-4xl mx-auto text-center">
@@ -1118,7 +1115,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               >
                 <h2 className="text-6xl md:text-7xl font-black leading-tight mb-8">
                   Ready to Transform Your
-                  <span className="block bg-gradient-to-r from-primary via-violet-600 to-purple-600 bg-clip-text text-transparent">
+                  <span className="block bg-gradient-to-r from-primary via-blue-600 to-cyan-600 bg-clip-text text-transparent">
                     Streaming Experience?
                   </span>
                 </h2>
@@ -1150,7 +1147,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   <Button 
                     size="lg" 
                     onClick={onAddStream}
-                    className="gap-3 text-xl px-12 py-8 bg-gradient-to-r from-primary via-violet-600 to-purple-600 hover:from-primary/90 hover:via-violet-600/90 hover:to-purple-600/90 shadow-2xl hover:shadow-3xl transition-all duration-500 font-bold text-white border-0 rounded-2xl"
+                    className="gap-3 text-xl px-12 py-8 bg-gradient-to-r from-primary via-blue-600 to-cyan-600 hover:from-primary/90 hover:via-blue-600/90 hover:to-cyan-600/90 shadow-2xl hover:shadow-3xl transition-all duration-500 font-bold text-white border-0 rounded-2xl"
                   >
                     <PlayCircle className="w-7 h-7" />
                     Start Free Now
@@ -1189,7 +1186,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   <span>No Download Required</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full" />
+                  <div className="w-2 h-2 bg-blue-500 rounded-full" />
                   <span>Works Instantly</span>
                 </div>
               </motion.div>

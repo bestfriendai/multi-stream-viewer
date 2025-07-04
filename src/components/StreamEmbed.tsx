@@ -262,7 +262,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
                   handleMaximize(e)
                   haptic.medium()
                 }}
-                className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-purple-500/30 to-purple-600/30 border border-purple-400/40 hover:from-purple-500/40 hover:to-purple-600/40 text-purple-100 shadow-lg transition-all duration-200 transform active:scale-95 min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px]"
+                className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-blue-500/30 to-blue-600/30 border border-blue-400/40 hover:from-blue-500/40 hover:to-blue-600/40 text-blue-100 shadow-lg transition-all duration-200 transform active:scale-95 min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px]"
                 title="Set as primary"
               >
                 <Maximize2 size={16} className="sm:w-5 sm:h-5" />

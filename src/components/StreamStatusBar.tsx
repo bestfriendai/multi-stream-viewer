@@ -138,7 +138,7 @@ export default function StreamStatusBar() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.3 }}
                     >
-                      <Activity className="w-4 h-4 text-purple-500" />
+                      <Activity className="w-4 h-4 text-blue-500" />
                       <span className="text-muted-foreground font-medium text-xs">
                         {totalTwitchStreams.toLocaleString()}+ live on Twitch
                       </span>
