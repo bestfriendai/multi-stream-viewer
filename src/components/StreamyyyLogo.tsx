@@ -14,29 +14,41 @@ interface StreamyyyLogoProps {
 const sizeConfig = {
   sm: {
     icon: 'w-6 h-6',
+    headerIcon: 'w-12 h-3', // 4:1 aspect ratio for header logo
     width: 24,
     height: 24,
+    headerWidth: 48,
+    headerHeight: 12,
     text: 'text-base',
     gap: 'gap-2'
   },
   md: {
     icon: 'w-8 h-8',
+    headerIcon: 'w-16 h-4', // 4:1 aspect ratio for header logo
     width: 32,
     height: 32,
+    headerWidth: 64,
+    headerHeight: 16,
     text: 'text-lg',
     gap: 'gap-2'
   },
   lg: {
     icon: 'w-12 h-12',
+    headerIcon: 'w-24 h-6', // 4:1 aspect ratio for header logo
     width: 48,
     height: 48,
+    headerWidth: 96,
+    headerHeight: 24,
     text: 'text-2xl',
     gap: 'gap-3'
   },
   xl: {
     icon: 'w-16 h-16',
+    headerIcon: 'w-32 h-8', // 4:1 aspect ratio for header logo
     width: 64,
     height: 64,
+    headerWidth: 128,
+    headerHeight: 32,
     text: 'text-3xl',
     gap: 'gap-4'
   }
@@ -66,22 +78,28 @@ export default function StreamyyyLogo({
   // Choose the appropriate logo based on usage
   const logoSrc = useForHeader ? '/streamyyy-logo-header.png' : '/streamyyy-logo-box.png';
   
-  const LogoIcon = () => (
-    <div className={cn('relative', config.icon)}>
-      <Image
-        src={logoSrc}
-        alt="Streamyyy Logo"
-        width={config.width}
-        height={config.height}
-        className={cn(
-          config.icon,
-          'object-contain',
-          variant === 'white' && 'brightness-0 invert'
-        )}
-        priority
-      />
-    </div>
-  );
+  const LogoIcon = () => {
+    const iconClasses = useForHeader ? config.headerIcon : config.icon;
+    const imageWidth = useForHeader ? config.headerWidth : config.width;
+    const imageHeight = useForHeader ? config.headerHeight : config.height;
+    
+    return (
+      <div className={cn('relative', iconClasses)}>
+        <Image
+          src={logoSrc}
+          alt="Streamyyy Logo"
+          width={imageWidth}
+          height={imageHeight}
+          className={cn(
+            iconClasses,
+            'object-contain',
+            variant === 'white' && 'brightness-0 invert'
+          )}
+          priority
+        />
+      </div>
+    );
+  };
 
   if (iconOnly) {
     return (
