@@ -232,8 +232,8 @@ export default function Home() {
       )}>
         <main className="flex-1 overflow-auto md:overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-            <div className="border-b px-4">
-              <TabsList className="h-12 bg-transparent">
+            <div className="border-b px-4 py-0">
+              <TabsList className="h-10 bg-transparent">
                 <TabsTrigger value="streams" className="gap-2">
                   <Grid3x3 size={16} />
                   <span className="hidden sm:inline">Streams</span>
@@ -262,14 +262,14 @@ export default function Home() {
               </TabsList>
             </div>
             
-            <TabsContent value="streams" className="flex-1 m-0 flex flex-col overflow-auto md:overflow-hidden">
+            <TabsContent value="streams" className="flex-1 m-0 p-0 flex flex-col overflow-auto md:overflow-hidden">
               <ErrorBoundary>
                 {streams.length === 0 ? (
                   <LandingPage onAddStream={() => setShowAddStream(true)} />
                 ) : (
                   <>
                     <StreamStatusBar />
-                    <div className="flex-1 overflow-y-auto md:overflow-auto">
+                    <div className="flex-1 overflow-y-auto md:overflow-auto p-0">
                       {/* Route to appropriate component based on layout */}
                       {(() => {
                         switch (gridLayout) {
