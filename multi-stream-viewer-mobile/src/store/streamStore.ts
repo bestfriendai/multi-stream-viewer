@@ -99,15 +99,33 @@ const useStreamStore = create<StreamStore>()(
         })),
       
       toggleMute: (streamId) =>
-        set((state) => ({
-          streamStates: {
-            ...state.streamStates,
-            [streamId]: {
-              ...state.streamStates[streamId],
-              isMuted: !state.streamStates[streamId]?.isMuted,
-            },
-          },
-        })),
+        set((state) => {
+          const currentStreamState = state.streamStates[streamId];
+          if (!currentStreamState) return state;
+          
+          const wasStreamMuted = currentStreamState.isMuted;
+          const newStreamStates = { ...state.streamStates };
+          
+          // If we're unmuting this stream, mute all other streams first
+          if (wasStreamMuted) {
+            Object.keys(newStreamStates).forEach(id => {
+              if (id !== streamId) {
+                newStreamStates[id] = {
+                  ...newStreamStates[id],
+                  isMuted: true,
+                };
+              }
+            });
+          }
+          
+          // Toggle the target stream
+          newStreamStates[streamId] = {
+            ...currentStreamState,
+            isMuted: !currentStreamState.isMuted,
+          };
+          
+          return { streamStates: newStreamStates };
+        }),
       
       setQuality: (streamId, quality) =>
         set((state) => ({

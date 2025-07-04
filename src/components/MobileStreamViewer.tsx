@@ -32,10 +32,9 @@ interface MobileStreamViewerProps {
 }
 
 export default function MobileStreamViewer({ show, onClose }: MobileStreamViewerProps) {
-  const { streams } = useStreamStore()
+  const { streams, toggleStreamMute } = useStreamStore()
   const { trackMobileGesture, trackStreamClicked, trackStreamFullscreen } = useAnalytics()
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isMuted, setIsMuted] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
 
   const activeStreams = streams.filter(stream => stream.isActive)
@@ -222,10 +221,10 @@ export default function MobileStreamViewer({ show, onClose }: MobileStreamViewer
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setIsMuted(!isMuted)}
+            onClick={() => currentStream && toggleStreamMute(currentStream.id)}
             className="text-white hover:bg-white/20"
           >
-            {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+            {currentStream?.muted ? <VolumeX size={20} /> : <Volume2 size={20} />}
           </Button>
           
           <Button

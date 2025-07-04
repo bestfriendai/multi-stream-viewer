@@ -28,10 +28,11 @@ export function useKeyboardShortcuts() {
   useHotkeys('space', (e) => {
     e.preventDefault()
     if (activeStreamId) {
-      toggleStreamMute(activeStreamId)
       const stream = streams.find(s => s.id === activeStreamId)
+      const wasMuted = stream?.muted
+      toggleStreamMute(activeStreamId)
       if (stream) {
-        toast.success(`${stream.channelName} ${stream.muted ? 'unmuted' : 'muted'}`)
+        toast.success(`${stream.channelName} ${wasMuted ? 'unmuted' : 'muted'}`)
       }
     }
   })
@@ -39,10 +40,11 @@ export function useKeyboardShortcuts() {
   // M to mute/unmute active stream
   useHotkeys('m', () => {
     if (activeStreamId) {
-      toggleStreamMute(activeStreamId)
       const stream = streams.find(s => s.id === activeStreamId)
+      const wasMuted = stream?.muted
+      toggleStreamMute(activeStreamId)
       if (stream) {
-        toast.success(`${stream.channelName} ${stream.muted ? 'unmuted' : 'muted'}`)
+        toast.success(`${stream.channelName} ${wasMuted ? 'unmuted' : 'muted'}`)
       }
     }
   })

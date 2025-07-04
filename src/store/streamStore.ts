@@ -222,6 +222,19 @@ export const useStreamStore = create<StreamStore>()(
             set((state) => {
               const stream = state.streams.find(s => s.id === streamId)
               if (stream) {
+                const wasStreamMuted = stream.muted
+                
+                // If we're unmuting this stream, mute all other streams first
+                if (wasStreamMuted) {
+                  state.streams.forEach(s => {
+                    if (s.id !== streamId) {
+                      s.muted = true
+                      s.lastUpdated = new Date()
+                    }
+                  })
+                }
+                
+                // Toggle the target stream
                 stream.muted = !stream.muted
                 stream.lastUpdated = new Date()
               }
