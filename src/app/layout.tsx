@@ -32,14 +32,21 @@ export const viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "STREAMYYY - Watch Multiple Streams at Once | Best MultiTwitch Alternative",
-  description: "Watch multiple Twitch streams simultaneously with STREAMYYY. The best free multistream viewer for watching up to 16 streams at once. Better than MultiTwitch, Multistre.am, and TwitchTheater. Watch Twitch, YouTube, Kick streams together.",
+  title: "Streamyyy - Watch Multiple Streams at Once",
+  description: "Streamyyy is a free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously. Never miss a moment from your favorite creators. Watch multiple live streams at once and stay connected to all the action across platforms.",
   metadataBase: new URL("https://streamyyy.com"),
   alternates: {
     canonical: "https://streamyyy.com",
   },
   manifest: "/manifest.json",
   keywords: [
+    "streamyyy",
+    "streamy",
+    "streamyy",
+    "streamy app",
+    "streamy viewer",
+    "streamy watch",
+    "streamy streams",
     "multitwitch",
     "multi twitch",
     "multitwitch.tv",
@@ -61,9 +68,11 @@ export const metadata: Metadata = {
     "twitch theater",
     "multiwatch",
     "teamstream",
-    "streamyyy",
     "best multitwitch alternative",
-    "free multistream viewer"
+    "free multistream viewer",
+    "stream aggregator",
+    "live stream viewer",
+    "multi stream platform"
   ],
   authors: [{ name: "Streamyyy.com Team" }],
   creator: "Streamyyy.com",
@@ -71,17 +80,17 @@ export const metadata: Metadata = {
   applicationName: "Streamyyy Multi-Stream Viewer",
   category: "entertainment",
   openGraph: {
-    title: "STREAMYYY - Best MultiTwitch Alternative | Watch Multiple Streams",
-    description: "Better than MultiTwitch.tv and Multistre.am. Watch up to 16 Twitch, YouTube, Kick streams simultaneously. The most powerful free multistream viewer with custom layouts, unified chat, and mobile support.",
+    title: "Streamyyy - Watch Multiple Streams at Once",
+    description: "Streamyyy is a free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously. Never miss a moment from your favorite creators.",
     url: "https://streamyyy.com",
-    siteName: "STREAMYYY - MultiStream Viewer",
+    siteName: "Streamyyy - Multi-Stream Viewer",
     images: [
       {
-        url: "/og-image.svg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "STREAMYYY - Watch Multiple Twitch Streams at Once - Best MultiTwitch Alternative",
-        type: "image/svg+xml",
+        alt: "Streamyyy - Watch Multiple Streams at Once",
+        type: "image/png",
       },
     ],
     locale: "en_US",
@@ -89,9 +98,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "STREAMYYY - Watch Multiple Streams | MultiTwitch Alternative",
-    description: "Better than MultiTwitch & Multistre.am. Watch 16 streams at once. Free multistream viewer for Twitch, YouTube, Kick.",
-    images: ["/twitter-card.svg"],
+    title: "Streamyyy - Watch Multiple Streams at Once",
+    description: "Streamyyy is a free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously. Never miss a moment from your favorite creators.",
+    images: ["/twitter-card.png"],
     creator: "@streamyyy",
     site: "@streamyyy",
   },
@@ -124,8 +133,8 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "STREAMYYY - Best MultiTwitch Alternative",
-    "description": "Watch multiple Twitch streams at once with STREAMYYY. Better than MultiTwitch.tv, Multistre.am, and TwitchTheater. Free multistream viewer supporting up to 16 simultaneous streams from Twitch, YouTube, Kick, and more.",
+    "name": "Streamyyy - Watch Multiple Streams at Once",
+    "description": "Streamyyy is a free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously. Never miss a moment from your favorite creators. Watch multiple live streams at once and stay connected to all the action across platforms.",
     "url": "https://streamyyy.com",
     "downloadUrl": "https://streamyyy.com",
     "applicationCategory": "MultimediaApplication",
@@ -133,10 +142,10 @@ export default function RootLayout({
     "softwareVersion": "2.0",
     "datePublished": "2025-01-01",
     "dateModified": new Date().toISOString(),
-    "screenshot": "https://streamyyy.com/og-image.svg",
+    "screenshot": "https://streamyyy.com/og-image.png",
     "author": {
       "@type": "Organization",
-      "name": "STREAMYYY Team",
+      "name": "Streamyyy Team",
       "url": "https://streamyyy.com"
     },
     "offers": {
@@ -153,14 +162,14 @@ export default function RootLayout({
       "worstRating": "1"
     },
     "featureList": [
-      "Watch up to 16 streams at once (more than MultiTwitch)",
-      "Better performance than MultiTwitch.tv and Multistre.am",
+      "Watch up to 16 streams at once with Streamyyy",
+      "Streamy interface for multi-stream viewing",
       "Watch multiple Twitch streams simultaneously",
       "Watch multiple YouTube streams at once", 
       "Mix Twitch, YouTube, Kick streams in one view",
       "Custom grid layouts (2x2, 3x3, 4x4, mosaic)",
       "Unified chat panel for all streams",
-      "Mobile optimized (unlike MultiTwitch)",
+      "Mobile optimized multi-stream viewer",
       "100% free - no premium features",
       "No registration required - instant access",
       "Keyboard shortcuts for power users",
@@ -197,8 +206,9 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Streamyyy" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+        <link rel="icon" type="image/png" href="/favicon.png" />
+        <link rel="shortcut icon" href="/favicon.png" />
         <link rel="manifest" href="/manifest.json" />
         
         {/* Google Consent Mode - Must be before GTM/Analytics */}

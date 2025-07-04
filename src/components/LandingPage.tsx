@@ -44,6 +44,7 @@ import { useStreamStore } from '@/store/streamStore'
 import { cn } from '@/lib/utils'
 import '@/styles/landing.css'
 import OptimizedBackgroundStreams from './OptimizedBackgroundStreams'
+import StreamyyyLogo from './StreamyyyLogo'
 
 interface LandingPageProps {
   onAddStream: () => void
@@ -246,6 +247,25 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 className="space-y-8 lg:col-span-2"
               >
                 {/* Trust Badge */}
+                {/* Logo above headline */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="flex justify-center mb-8"
+                >
+                  <div className="relative">
+                    <StreamyyyLogo 
+                      size="xl" 
+                      variant="gradient" 
+                      useForHeader={true} 
+                      iconOnly={true}
+                      showText={false}
+                      className="w-32 sm:w-40 md:w-48 lg:w-56 transition-all duration-300"
+                    />
+                  </div>
+                </motion.div>
+                
                 {/* Main Headline */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}

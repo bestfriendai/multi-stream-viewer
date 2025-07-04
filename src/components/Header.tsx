@@ -96,7 +96,8 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     size="lg" 
                     variant="gradient" 
                     useForHeader={true} 
-                    iconOnly={false}
+                    iconOnly={true}
+                    showText={false}
                     className="w-24 sm:w-28 md:w-32 lg:w-36 transition-all duration-300"
                   />
                 </div>

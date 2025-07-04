@@ -174,6 +174,11 @@ export default function Home() {
       <SEOSchema faqs={faqItems} type="WebApplication" />
       <SEOContent 
         keywords={[
+          "streamyyy",
+          "streamy",
+          "streamyy", 
+          "streamy app",
+          "streamy viewer",
           "watch multiple streams",
           "multi stream viewer", 
           "twitch multistream",
@@ -181,9 +186,13 @@ export default function Home() {
           "stream aggregator",
           "esports viewing",
           "gaming streams",
-          "live streaming platform"
+          "live streaming platform",
+          "multitwitch alternative",
+          "stream viewer"
         ]}
         topics={[
+          "Streamyyy multi-stream viewing",
+          "Streamy platform for content creators",
           "Esports tournament viewing",
           "Gaming content creation",
           "Live streaming entertainment",
@@ -191,8 +200,8 @@ export default function Home() {
           "Content creator collaboration"
         ]}
         features={[
-          "Multi-stream grid layouts",
-          "Real-time chat integration", 
+          "Streamyyy multi-stream grid layouts",
+          "Streamy real-time chat integration", 
           "Mobile responsive design",
           "Keyboard shortcuts support",
           "Stream synchronization",
