@@ -284,6 +284,8 @@ export default function EnhancedDiscovery() {
   const [topStreams, setTopStreams] = useState<StreamData[]>([])
   const [clips, setClips] = useState<ClipData[]>([])
   const [activeTab, setActiveTab] = useState('categories')
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [categoryStreams, setCategoryStreams] = useState<StreamData[]>([])
   const { addStream } = useStreamStore()
 
   // Fetch categorized streams
@@ -357,10 +359,38 @@ export default function EnhancedDiscovery() {
     }
   }, [searchQuery])
 
+  // Fetch category streams when category is selected
+  const fetchCategoryStreams = useCallback(async (category: string) => {
+    try {
+      const response = await fetch('/api/twitch/streams-by-category', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          categories: [category],
+          limit: 50 
+        })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const streams = data.categorizedStreams?.[0]?.streams || []
+        setCategoryStreams(streams)
+      }
+    } catch (error) {
+      console.error('Error fetching category streams:', error)
+    }
+  }, [])
+
   useEffect(() => {
     fetchCategorizedStreams()
     fetchClips()
   }, [fetchCategorizedStreams, fetchClips])
+
+  useEffect(() => {
+    if (selectedCategory && activeTab === 'category-view') {
+      fetchCategoryStreams(selectedCategory)
+    }
+  }, [selectedCategory, activeTab, fetchCategoryStreams])
 
   const handleAddStream = useCallback(async (channelName: string) => {
     const success = await addStream(channelName)
@@ -370,7 +400,9 @@ export default function EnhancedDiscovery() {
   }, [addStream])
 
   const handlePlayClip = useCallback((clip: ClipData) => {
-    window.open(clip.url, '_blank')
+    // Create a modal or embed player for clips
+    // For now, open in new tab but could be enhanced with modal
+    window.open(clip.url, '_blank', 'noopener,noreferrer')
   }, [])
 
   // Filter streams by language
@@ -452,11 +484,17 @@ export default function EnhancedDiscovery() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className={cn(
+          "grid w-full",
+          activeTab === 'category-view' ? "grid-cols-5" : "grid-cols-4"
+        )}>
           <TabsTrigger value="categories">Categories</TabsTrigger>
           <TabsTrigger value="top">Top Streams</TabsTrigger>
           <TabsTrigger value="clips">Popular Clips</TabsTrigger>
           <TabsTrigger value="search">Search Results</TabsTrigger>
+          {activeTab === 'category-view' && (
+            <TabsTrigger value="category-view">{selectedCategory}</TabsTrigger>
+          )}
         </TabsList>
 
         {/* Categories Tab */}
@@ -478,7 +516,14 @@ export default function EnhancedDiscovery() {
                     {category.streams.length} Live
                   </Badge>
                 </div>
-                <Button variant="ghost" size="sm">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => {
+                    setSelectedCategory(category.category)
+                    setActiveTab('category-view')
+                  }}
+                >
                   View All
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
@@ -528,6 +573,31 @@ export default function EnhancedDiscovery() {
           </div>
         </TabsContent>
 
+        {/* Category View Tab */}
+        <TabsContent value="category-view" className="mt-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold">{selectedCategory}</h2>
+              <p className="text-muted-foreground">{categoryStreams.length} live streams</p>
+            </div>
+            <Button 
+              variant="outline" 
+              onClick={() => setActiveTab('categories')}
+            >
+              ← Back to Categories
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {categoryStreams.map((stream) => (
+              <StreamCard
+                key={stream.id}
+                stream={stream}
+                onAddStream={handleAddStream}
+              />
+            ))}
+          </div>
+        </TabsContent>
+
         {/* Search Results Tab */}
         <TabsContent value="search" className="mt-6">
           {searchResults.length === 0 ? (
@@ -539,51 +609,116 @@ export default function EnhancedDiscovery() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {searchResults.map((result) => (
-                <Card key={result.id} className="overflow-hidden">
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="relative w-16 h-16 rounded-full overflow-hidden bg-muted flex-shrink-0">
-                        {result.profile_image_url ? (
-                          <Image
-                            src={result.profile_image_url}
-                            alt={result.display_name}
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-xl font-bold">
-                            {result.display_name[0].toUpperCase()}
+                <Card key={result.id} className="group overflow-hidden hover:shadow-lg transition-all duration-300">
+                  {result.is_live && result.stream ? (
+                    // Live stream card with thumbnail
+                    <>
+                      <div className="relative aspect-video">
+                        <Image
+                          src={result.stream.thumbnail_url?.replace('{width}', '440').replace('{height}', '248') || '/placeholder-thumbnail.jpg'}
+                          alt={result.title || result.display_name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                        
+                        {/* Live indicator */}
+                        <div className="absolute top-2 left-2 flex items-center gap-2">
+                          <Badge className="bg-red-600 text-white border-0">
+                            <div className="w-2 h-2 bg-white rounded-full animate-pulse mr-1" />
+                            LIVE
+                          </Badge>
+                        </div>
+
+                        {/* Viewer count */}
+                        <div className="absolute top-2 right-2">
+                          <Badge variant="secondary" className="bg-black/70 text-white border-0">
+                            <Users className="w-3 h-3 mr-1" />
+                            {result.stream.viewer_count?.toLocaleString() || '0'}
+                          </Badge>
+                        </div>
+
+                        {/* Play button overlay */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                          <Button
+                            size="lg"
+                            className="bg-white/90 text-black hover:bg-white"
+                            onClick={() => handleAddStream(result.login)}
+                          >
+                            <Play className="w-5 h-5 mr-2" />
+                            Watch Stream
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          {result.profile_image_url && (
+                            <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                              <Image
+                                src={result.profile_image_url}
+                                alt={result.display_name}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          )}
+                          
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold truncate" title={result.title || result.display_name}>
+                              {result.title || result.display_name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              {result.display_name}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              {result.game_name || 'No category'}
+                            </p>
                           </div>
-                        )}
+                        </div>
+                      </CardContent>
+                    </>
+                  ) : (
+                    // Offline channel card
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden bg-muted flex-shrink-0">
+                          {result.profile_image_url ? (
+                            <Image
+                              src={result.profile_image_url}
+                              alt={result.display_name}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-xl font-bold">
+                              {result.display_name[0]?.toUpperCase() || '?'}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex-1">
+                          <h3 className="font-semibold">{result.display_name}</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {result.game_name || 'No category'}
+                          </p>
+                          <Badge variant="secondary" className="mt-1 text-xs">
+                            OFFLINE
+                          </Badge>
+                        </div>
                       </div>
 
-                      <div className="flex-1">
-                        <h3 className="font-semibold">{result.display_name}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {result.game_name || 'No category'}
-                        </p>
-                        {result.is_live && result.stream && (
-                          <div className="flex items-center gap-2 mt-1">
-                            <Badge className="bg-red-600 text-white border-0 text-xs">
-                              LIVE
-                            </Badge>
-                            <span className="text-xs text-muted-foreground">
-                              {result.stream.viewer_count.toLocaleString()} viewers
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <Button
-                      size="sm"
-                      className="w-full mt-3"
-                      onClick={() => handleAddStream(result.login)}
-                    >
-                      <Play className="w-4 h-4 mr-2" />
-                      Add Stream
-                    </Button>
-                  </CardContent>
+                      <Button
+                        size="sm"
+                        className="w-full mt-3"
+                        onClick={() => handleAddStream(result.login)}
+                        variant="outline"
+                      >
+                        <Play className="w-4 h-4 mr-2" />
+                        Add Channel
+                      </Button>
+                    </CardContent>
+                  )}
                 </Card>
               ))}
             </div>
