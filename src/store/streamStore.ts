@@ -2,20 +2,20 @@ import { create } from 'zustand'
 import { devtools, persist, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { parseStreamInput } from '@/lib/streamParser'
+import { filterSponsoredStreams, isSponsoredStream } from '@/lib/sponsoredStreams'
 import type { 
   Stream, 
   StreamStore, 
   StreamInput, 
   GridLayout, 
-  Platform,
   Quality,
   StreamEvent 
 } from '@/types/stream'
 import { createStreamError, ERROR_CODES } from '@/types/errors'
 
-// Performance optimization: Calculate next position
+// Performance optimization: Calculate next position (exclude sponsored streams)
 const calculateNextPosition = (streams: readonly Stream[]): number => {
-  return streams.length
+  return filterSponsoredStreams([...streams]).length
 }
 
 // Generate unique stream ID
@@ -107,9 +107,10 @@ export const useStreamStore = create<StreamStore>()(
                 return false
               }
               
-              // Check for duplicates
+              // Check for duplicates (exclude sponsored streams from duplicate check)
               const { streams } = get()
-              const isDuplicate = streams.some(
+              const userStreams = filterSponsoredStreams([...streams])
+              const isDuplicate = userStreams.some(
                 (stream) => 
                   stream.channelName.toLowerCase() === streamInput.channelName.toLowerCase() &&
                   stream.platform === streamInput.platform
@@ -166,18 +167,25 @@ export const useStreamStore = create<StreamStore>()(
           },
           
           removeStream: (streamId: string) => {
+            // Prevent removal of sponsored streams
+            if (isSponsoredStream(streamId)) {
+              console.warn('Cannot remove sponsored stream:', streamId)
+              return
+            }
+            
             set((state) => {
-              const streamToRemove = state.streams.find(s => s.id === streamId)
               state.streams = state.streams.filter(s => s.id !== streamId)
               
-              // Update active stream if removed
+              // Update active stream if removed (prefer user streams over sponsored)
               if (state.activeStreamId === streamId) {
-                state.activeStreamId = state.streams.length > 0 ? state.streams[0]!.id : null
+                const userStreams = filterSponsoredStreams([...state.streams])
+                state.activeStreamId = userStreams.length > 0 ? userStreams[0]!.id : (state.streams.length > 0 ? state.streams[0]!.id : null)
               }
               
-              // Update primary stream if removed
+              // Update primary stream if removed (prefer user streams over sponsored)
               if (state.primaryStreamId === streamId) {
-                state.primaryStreamId = state.streams.length > 0 ? state.streams[0]!.id : null
+                const userStreams = filterSponsoredStreams([...state.streams])
+                state.primaryStreamId = userStreams.length > 0 ? userStreams[0]!.id : (state.streams.length > 0 ? state.streams[0]!.id : null)
               }
             })
             
@@ -234,7 +242,7 @@ export const useStreamStore = create<StreamStore>()(
                   })
                 }
                 
-                // Toggle the target stream
+                // Toggle the target stream (now works for sponsored streams too)
                 stream.muted = !stream.muted
                 stream.lastUpdated = new Date()
               }
@@ -277,9 +285,19 @@ export const useStreamStore = create<StreamStore>()(
           
           clearAllStreams: () => {
             set((state) => {
-              state.streams = []
-              state.activeStreamId = null
-              state.primaryStreamId = null
+              // Only clear user streams, keep sponsored streams
+              state.streams = state.streams.filter(s => s.isSponsored)
+              
+              // Reset active and primary stream IDs only if no streams remain
+              if (state.streams.length === 0) {
+                state.activeStreamId = null
+                state.primaryStreamId = null
+              } else {
+                // If only sponsored streams remain, set them as active/primary
+                state.activeStreamId = state.streams[0]?.id || null
+                state.primaryStreamId = state.streams[0]?.id || null
+              }
+              
               state.error = null
             })
           },

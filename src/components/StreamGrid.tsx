@@ -6,7 +6,9 @@ import type { PanInfo } from 'framer-motion'
 import { useStreamStore } from '@/store/streamStore'
 import { cn } from '@/lib/utils'
 import StreamEmbed from './StreamEmbed'
+import SponsoredStreamEmbed from './SponsoredStreamEmbed'
 import ResizableStreamGrid from './ResizableStreamGrid'
+import { injectSponsoredStream, getUserStreamCount } from '@/lib/sponsoredStreams'
 import '@/styles/mobile-stream-grid.css'
 import '@/styles/layout-modes.css'
 
@@ -151,6 +153,11 @@ const StreamGrid: React.FC = React.memo(() => {
   const [currentMobileIndex, setCurrentMobileIndex] = useState(0)
   const [pipPosition] = useState('top-right')
   
+  // Get streams with sponsored stream injected
+  const streamsWithSponsored = useMemo(() => {
+    return injectSponsoredStream([...streams])
+  }, [streams])
+  
   // Mobile detection
   useEffect(() => {
     const checkMobile = () => {
@@ -165,19 +172,20 @@ const StreamGrid: React.FC = React.memo(() => {
   }, [])
   
   const gridConfig = useMemo(() => {
-    const config = calculateGridConfig(streams.length, gridLayout, isMobile)
+    const config = calculateGridConfig(streamsWithSponsored.length, gridLayout, isMobile)
     console.log('🔧 Grid config calculated:', {
       layout: gridLayout,
-      streamCount: streams.length,
+      streamCount: streamsWithSponsored.length,
+      userStreamCount: getUserStreamCount(streamsWithSponsored),
       config,
       timestamp: new Date().toLocaleTimeString()
     })
     return config
-  }, [streams.length, gridLayout, primaryStreamId, isMobile])
+  }, [streamsWithSponsored.length, gridLayout, primaryStreamId, isMobile])
 
   // Mobile swipe navigation with improved gesture handling
   const handlePanEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (!isMobile || streams.length <= 1) return
+    if (!isMobile || streamsWithSponsored.length <= 1) return
     
     const threshold = 50
     const velocity = Math.abs(info.velocity.x)
@@ -185,7 +193,7 @@ const StreamGrid: React.FC = React.memo(() => {
     if (Math.abs(info.offset.x) > threshold || velocity > 500) {
       if (info.offset.x > 0 && currentMobileIndex > 0) {
         setCurrentMobileIndex(currentMobileIndex - 1)
-      } else if (info.offset.x < 0 && currentMobileIndex < streams.length - 1) {
+      } else if (info.offset.x < 0 && currentMobileIndex < streamsWithSponsored.length - 1) {
         setCurrentMobileIndex(currentMobileIndex + 1)
       }
     }
@@ -202,20 +210,20 @@ const StreamGrid: React.FC = React.memo(() => {
 
   // Render Focus Mode Layout
   const renderFocusLayout = () => {
-    console.log('🎯 renderFocusLayout called with', { primaryStreamId, streamCount: streams.length })
+    console.log('🎯 renderFocusLayout called with', { primaryStreamId, streamCount: streamsWithSponsored.length })
     
     // If no primaryStreamId is set, set the first stream as primary
-    if (!primaryStreamId && streams.length > 0) {
+    if (!primaryStreamId && streamsWithSponsored.length > 0) {
       console.log('🎯 No primaryStreamId set, setting first stream as primary')
-      setPrimaryStream(streams[0]!.id)
+      setPrimaryStream(streamsWithSponsored[0]!.id)
     }
     
-    const primaryStream = streams.find(s => s.id === primaryStreamId) || streams[0]
-    const secondaryStreams = streams.filter(s => s.id !== primaryStream?.id)
+    const primaryStream = streamsWithSponsored.find(s => s.id === primaryStreamId) || streamsWithSponsored[0]
+    const secondaryStreams = streamsWithSponsored.filter(s => s.id !== primaryStream?.id)
 
     console.log('🎯 Focus layout streams:', { primaryStream: primaryStream?.channelName, secondaryCount: secondaryStreams.length })
 
-    if (!primaryStream || streams.length === 0) {
+    if (!primaryStream || streamsWithSponsored.length === 0) {
       console.log('🎯 No streams available, showing empty state')
       return (
         <div className="flex items-center justify-center h-full">
@@ -238,9 +246,15 @@ const StreamGrid: React.FC = React.memo(() => {
           animate="visible"
           {...(!isMobile && { whileHover: "hover" })}
         >
-          <StreamEmbed 
-            stream={primaryStream} 
-          />
+          {primaryStream.isSponsored ? (
+            <SponsoredStreamEmbed 
+              stream={primaryStream} 
+            />
+          ) : (
+            <StreamEmbed 
+              stream={primaryStream} 
+            />
+          )}
         </motion.div>
 
         {/* Secondary Streams */}
@@ -263,9 +277,15 @@ const StreamGrid: React.FC = React.memo(() => {
                   whileTap="tap"
                   onClick={() => handleStreamClick(stream.id)}
                 >
-                  <StreamEmbed 
-                    stream={stream} 
-                  />
+                  {stream.isSponsored ? (
+                    <SponsoredStreamEmbed 
+                      stream={stream} 
+                    />
+                  ) : (
+                    <StreamEmbed 
+                      stream={stream} 
+                    />
+                  )}
                   <div className="absolute inset-0 bg-black/20 hover:bg-black/10 transition-colors" />
                 </motion.div>
               ))}
@@ -278,20 +298,20 @@ const StreamGrid: React.FC = React.memo(() => {
 
   // Render Picture-in-Picture Layout
   const renderPipLayout = () => {
-    console.log('📺 renderPipLayout called with', { primaryStreamId, streamCount: streams.length })
+    console.log('📺 renderPipLayout called with', { primaryStreamId, streamCount: streamsWithSponsored.length })
     
     // If no primaryStreamId is set, set the first stream as primary
-    if (!primaryStreamId && streams.length > 0) {
+    if (!primaryStreamId && streamsWithSponsored.length > 0) {
       console.log('📺 No primaryStreamId set, setting first stream as primary')
-      setPrimaryStream(streams[0]!.id)
+      setPrimaryStream(streamsWithSponsored[0]!.id)
     }
     
-    const mainStream = streams.find(s => s.id === primaryStreamId) || streams[0]
-    const pipStreams = streams.filter(s => s.id !== mainStream?.id)
+    const mainStream = streamsWithSponsored.find(s => s.id === primaryStreamId) || streamsWithSponsored[0]
+    const pipStreams = streamsWithSponsored.filter(s => s.id !== mainStream?.id)
 
     console.log('📺 PiP layout streams:', { mainStream: mainStream?.channelName, pipCount: pipStreams.length })
 
-    if (!mainStream || streams.length === 0) {
+    if (!mainStream || streamsWithSponsored.length === 0) {
       console.log('📺 No streams available, showing empty state')
       return (
         <div className="flex items-center justify-center h-full">
@@ -313,9 +333,15 @@ const StreamGrid: React.FC = React.memo(() => {
           initial="hidden"
           animate="visible"
         >
-          <StreamEmbed 
-            stream={mainStream} 
-          />
+          {mainStream.isSponsored ? (
+            <SponsoredStreamEmbed 
+              stream={mainStream} 
+            />
+          ) : (
+            <StreamEmbed 
+              stream={mainStream} 
+            />
+          )}
         </motion.div>
 
         {/* PiP Streams */}
@@ -338,9 +364,15 @@ const StreamGrid: React.FC = React.memo(() => {
                   dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
                   style={{ zIndex: 20 + index }}
                 >
-                  <StreamEmbed 
-                    stream={stream} 
-                  />
+                  {stream.isSponsored ? (
+                    <SponsoredStreamEmbed 
+                      stream={stream} 
+                    />
+                  ) : (
+                    <StreamEmbed 
+                      stream={stream} 
+                    />
+                  )}
                   <div className="absolute inset-0 bg-black/10 hover:bg-transparent transition-colors" />
                 </motion.div>
               ))}
@@ -353,7 +385,7 @@ const StreamGrid: React.FC = React.memo(() => {
 
   // Render Mobile Swipe Layout
   const renderMobileSwipeLayout = () => {
-    if (!isMobile || streams.length <= 2) return null
+    if (!isMobile || streamsWithSponsored.length <= 2) return null
 
     return (
       <div className="mobile-swipe-container">
@@ -361,11 +393,11 @@ const StreamGrid: React.FC = React.memo(() => {
           className="mobile-swipe-wrapper"
           style={{ 
             transform: `translateX(-${currentMobileIndex * 100}%)`,
-            width: `${streams.length * 100}%`
+            width: `${streamsWithSponsored.length * 100}%`
           }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
-          {streams.map((stream, index) => (
+          {streamsWithSponsored.map((stream, index) => (
             <div key={`mobile-${stream.id}`} className="mobile-swipe-item">
               <motion.div
                 className="w-full h-full rounded-xl overflow-hidden bg-black"
@@ -375,13 +407,19 @@ const StreamGrid: React.FC = React.memo(() => {
                 whileTap="tap"
                 onTap={() => setActiveStream(stream.id)}
               >
-                <StreamEmbed 
-                  stream={stream} 
-                />
+                {stream.isSponsored ? (
+                  <SponsoredStreamEmbed 
+                    stream={stream} 
+                  />
+                ) : (
+                  <StreamEmbed 
+                    stream={stream} 
+                  />
+                )}
                 
                 {/* Mobile stream indicator */}
                 <div className="absolute bottom-4 left-4 bg-black/80 text-white px-3 py-1 rounded-full text-sm font-medium z-10">
-                  {index + 1} / {streams.length}
+                  {index + 1} / {streamsWithSponsored.length}
                 </div>
               </motion.div>
             </div>
@@ -390,7 +428,7 @@ const StreamGrid: React.FC = React.memo(() => {
 
         {/* Swipe indicators */}
         <div className="mobile-swipe-indicators">
-          {streams.map((_, index) => (
+          {streamsWithSponsored.map((_, index) => (
             <button
               key={index}
               className={cn(
@@ -407,7 +445,7 @@ const StreamGrid: React.FC = React.memo(() => {
 
   // Get mosaic-specific classes based on stream count
   const getMosaicClasses = () => {
-    const count = streams.length
+    const count = streamsWithSponsored.length
     const classes = ['mosaic-grid']
     
     if (count <= 4) {
@@ -442,14 +480,14 @@ const StreamGrid: React.FC = React.memo(() => {
           isMosaicLayout ? 'h-full' : !isMobile ? 'min-h-full relative gap-2 p-2' : '',
           'layout-transition'
         )}
-        data-count={streams.length}
+        data-count={streamsWithSponsored.length}
         data-layout={gridLayout || 'auto'}
         data-mobile={isMobile}
         role="grid"
-        aria-label={`Stream grid with ${streams.length} stream${streams.length === 1 ? '' : 's'}`}
+        aria-label={`Stream grid with ${getUserStreamCount(streamsWithSponsored)} stream${getUserStreamCount(streamsWithSponsored) === 1 ? '' : 's'}${streamsWithSponsored.some(s => s.isSponsored) ? ' plus sponsored content' : ''}`}
       >
         <AnimatePresence mode="popLayout">
-          {streams.map((stream, index) => (
+          {streamsWithSponsored.map((stream, index) => (
             <motion.div
               key={`stream-${stream.id}`}
               layout="position"
@@ -466,7 +504,8 @@ const StreamGrid: React.FC = React.memo(() => {
                 'border border-border/20 rounded-xl',
                 'will-change-transform isolate cursor-pointer',
                 !isMobile && 'min-h-[200px]', // Only apply min-height on desktop
-                isMobile && 'mobile-stream-card' // Use mobile-specific classes
+                isMobile && 'mobile-stream-card', // Use mobile-specific classes
+                stream.isSponsored && 'sponsored-stream-card' // Add sponsored styling class
               )}
               style={{
                 contain: 'layout style paint',
@@ -474,11 +513,17 @@ const StreamGrid: React.FC = React.memo(() => {
                 minHeight: 0
               }}
               role="gridcell"
-              aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}`}
+              aria-label={`${stream.isSponsored ? 'Sponsored ' : ''}Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}`}
             >
-              <StreamEmbed 
-                stream={stream} 
-              />
+              {stream.isSponsored ? (
+                <SponsoredStreamEmbed 
+                  stream={stream} 
+                />
+              ) : (
+                <StreamEmbed 
+                  stream={stream} 
+                />
+              )}
             </motion.div>
           ))}
         </AnimatePresence>
@@ -487,7 +532,7 @@ const StreamGrid: React.FC = React.memo(() => {
   }
 
   // Main render logic
-  if (streams.length === 0) {
+  if (getUserStreamCount(streamsWithSponsored) === 0) {
     return (
       <motion.div
         variants={emptyStateVariants}

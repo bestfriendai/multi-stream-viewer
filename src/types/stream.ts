@@ -26,6 +26,7 @@ export interface Stream {
   isActive: boolean;
   readonly createdAt: Date;
   lastUpdated: Date;
+  readonly isSponsored?: boolean; // For sponsored streams
 }
 
 // Stream creation input with validation

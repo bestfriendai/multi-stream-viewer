@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import Header from '@/components/Header'
 import MobileHeader from '@/components/MobileHeader'
 import EnhancedMobileStreamViewer from '@/components/EnhancedMobileStreamViewer'
@@ -37,6 +36,7 @@ import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
 import { useStreamPreload } from '@/hooks/useStreamPreload'
 import { loadFromQueryParams } from '@/lib/shareableLinks'
+import { getUserStreamCount } from '@/lib/sponsoredStreams'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Grid3x3, Compass, Zap, Heart } from 'lucide-react'
@@ -241,15 +241,15 @@ export default function Home() {
       )}>
         <main className="flex-1 overflow-auto md:overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-            {streams.length > 0 && (
+            {getUserStreamCount([...streams]) > 0 && (
               <div className="border-b px-4 py-0">
                 <TabsList className="h-10 bg-transparent">
                 <TabsTrigger value="streams" className="gap-2">
                   <Grid3x3 size={16} />
                   <span className="hidden sm:inline">Streams</span>
-                  {streams.length > 0 && (
+                  {getUserStreamCount([...streams]) > 0 && (
                     <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-xs">
-                      {streams.length}
+                      {getUserStreamCount([...streams])}
                     </Badge>
                   )}
                 </TabsTrigger>
@@ -275,7 +275,7 @@ export default function Home() {
             
             <TabsContent value="streams" className="flex-1 m-0 p-0 flex flex-col overflow-auto md:overflow-hidden">
               <ErrorBoundary>
-                {streams.length === 0 ? (
+                {getUserStreamCount([...streams]) === 0 ? (
                   <LandingPage onAddStream={() => setShowAddStream(true)} />
                 ) : (
                   <>
@@ -354,7 +354,7 @@ export default function Home() {
           trackFeatureUsage('discover_mobile')
         }}
         showChat={showChat}
-        streamCount={streams.length}
+        streamCount={getUserStreamCount([...streams])}
         onToggleSwipeView={() => {
           setShowMobileStreamViewer(true)
           trackFeatureUsage('mobile_stream_viewer')
