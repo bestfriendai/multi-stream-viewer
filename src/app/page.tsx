@@ -45,6 +45,7 @@ import { useStreamGestures } from '@/hooks/useMobileGestures'
 import BentoStreamGrid from '@/components/BentoStreamGrid'
 import GestureStreamViewer from '@/components/GestureStreamViewer'
 import EnhancedMobileLayout from '@/components/EnhancedMobileLayout'
+import MobileFAB from '@/components/MobileFAB'
 
 export default function Home() {
   const [showChat, setShowChat] = useState(false)
@@ -389,6 +390,9 @@ export default function Home() {
           onDismissHints={() => setShowGestureHints(false)}
         />
       )}
+      
+      {/* Mobile Floating Action Button */}
+      {isMobile && streams.length > 0 && <MobileFAB />}
     </div>
   );
 }

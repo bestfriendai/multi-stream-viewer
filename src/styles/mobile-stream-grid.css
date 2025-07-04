@@ -395,6 +395,24 @@
   .mobile-stream-grid .stream-card:active {
     transform: scale(0.98);
   }
+  
+  /* Safe area padding for bottom controls */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 20px);
+  }
+  
+  /* Improved mobile stream embed visibility */
+  .mobile-stream-card .stream-embed-container {
+    position: relative;
+  }
+  
+  /* Always show controls on mobile for better accessibility */
+  @media (max-width: 768px) {
+    .stream-card .mobile-controls-visible {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+  }
 }
 
 /* Mobile landscape optimizations */

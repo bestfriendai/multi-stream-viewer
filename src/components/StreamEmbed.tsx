@@ -6,6 +6,7 @@ import type { Stream } from '@/types/stream'
 import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from 'lucide-react'
 import { useSingleChannelStatus } from '@/hooks/useTwitchStatus'
 import LiveIndicator from './LiveIndicator'
+import MobileStreamControls from './MobileStreamControls'
 import { haptic } from '@/lib/haptics'
 import { cn } from '@/lib/utils'
 
@@ -221,23 +222,38 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
         />
       </div>
       
-      {/* Stream Controls with improved mobile touch targets */}
-      <div className="absolute top-0 left-0 right-0 p-2 sm:p-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-all duration-200">
-        <div className="flex justify-between items-start">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md rounded-full px-2.5 sm:px-3 py-1 sm:py-1.5 border border-white/20">
-              <div className="text-white/90">{getPlatformIcon()}</div>
-              <span className="text-white text-xs sm:text-sm font-medium tracking-tight truncate max-w-[100px] sm:max-w-none">{stream.channelName}</span>
-            </div>
-            {stream.platform === 'twitch' && twitchStatus?.isLive && (
-              <LiveIndicator 
-                isLive={true} 
-                viewerCount={twitchStatus.viewerCount}
-                size="sm"
-              />
-            )}
+      {/* Stream Header Info */}
+      <div className="absolute top-0 left-0 right-0 p-2 sm:p-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md rounded-full px-2.5 sm:px-3 py-1 sm:py-1.5 border border-white/20">
+            <div className="text-white/90">{getPlatformIcon()}</div>
+            <span className="text-white text-xs sm:text-sm font-medium tracking-tight truncate max-w-[100px] sm:max-w-none">{stream.channelName}</span>
           </div>
-          
+          {stream.platform === 'twitch' && twitchStatus?.isLive && (
+            <LiveIndicator 
+              isLive={true} 
+              viewerCount={twitchStatus.viewerCount}
+              size="sm"
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Controls - Show on mobile, Desktop Controls - Show on desktop */}
+      {isMobile ? (
+        <MobileStreamControls
+          streamId={stream.id}
+          channelName={stream.channelName}
+          platform={stream.platform}
+          muted={stream.muted}
+          isPrimary={primaryStreamId === stream.id}
+          onMuteToggle={() => toggleStreamMute(stream.id)}
+          onFullscreen={() => handleFullscreen({ stopPropagation: () => {} } as React.MouseEvent)}
+          onSetPrimary={() => setPrimaryStream(stream.id)}
+          onRemove={() => removeStream(stream.id)}
+        />
+      ) : (
+        <div className="absolute top-0 right-0 p-2 sm:p-3 opacity-0 group-hover:opacity-100 transition-all duration-200">
           <div className="flex gap-1.5 sm:gap-2">
             <button
               onClick={(e) => {
@@ -291,7 +307,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
             </button>
           </div>
         </div>
-      </div>
+      )}
       
       {/* Stream Info Overlay */}
       {stream.platform === 'twitch' && twitchStatus?.isLive && twitchStatus.gameName && (

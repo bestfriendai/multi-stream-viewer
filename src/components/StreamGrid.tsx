@@ -9,6 +9,7 @@ import StreamEmbed from './StreamEmbed'
 import SponsoredStreamEmbed from './SponsoredStreamEmbed'
 import ResizableStreamGrid from './ResizableStreamGrid'
 import { injectSponsoredStream, getUserStreamCount } from '@/lib/sponsoredStreams'
+import StreamSkeleton, { StreamGridSkeleton } from './StreamSkeleton'
 import '@/styles/mobile-stream-grid.css'
 import '@/styles/layout-modes.css'
 
