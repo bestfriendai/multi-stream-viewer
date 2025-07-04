@@ -279,7 +279,7 @@ export const useStreamStore = create<StreamStore>()(
                 ...stream,
                 position: index,
                 lastUpdated: new Date(),
-              }))
+              })) as Stream[]
             })
           },
           

@@ -65,33 +65,29 @@ export const injectSponsoredStream = (userStreams: Stream[]): Stream[] => {
   if (sponsoredStream.placement === 'fixed') {
     // Fixed placement - insert at specified position
     const position = sponsoredStream.position || 0
-    const result = [...userStreams]
     
-    // Adjust positions of existing streams
-    result.forEach((stream, index) => {
-      if (index >= position) {
-        stream.position = index + 1
-      }
-    })
+    // Create new array with updated positions (avoiding mutation)
+    const adjustedStreams = userStreams.map((stream, index) => ({
+      ...stream,
+      position: index >= position ? index + 1 : stream.position
+    }))
     
     // Insert sponsored stream at fixed position
-    result.splice(position, 0, sponsoredStreamObj)
-    return result
+    adjustedStreams.splice(position, 0, sponsoredStreamObj)
+    return adjustedStreams
   } else if (sponsoredStream.placement === 'rotating') {
     // Rotating placement - insert at different positions based on user stream count
     const rotationPosition = userStreams.length % 4 // Rotate through first 4 positions
-    const result = [...userStreams]
     
-    // Adjust positions of existing streams
-    result.forEach((stream, index) => {
-      if (index >= rotationPosition) {
-        stream.position = index + 1
-      }
-    })
+    // Create new array with updated positions (avoiding mutation)
+    const adjustedStreams = userStreams.map((stream, index) => ({
+      ...stream,
+      position: index >= rotationPosition ? index + 1 : stream.position
+    }))
     
     // Insert sponsored stream at rotation position
-    result.splice(rotationPosition, 0, sponsoredStreamObj)
-    return result
+    adjustedStreams.splice(rotationPosition, 0, sponsoredStreamObj)
+    return adjustedStreams
   }
   
   return userStreams
