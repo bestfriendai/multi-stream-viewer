@@ -83,16 +83,22 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
         {/* Content */}
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300">
           <div className="h-16 flex items-center justify-between gap-2 sm:gap-4 transition-all duration-300">
-            {/* Enhanced Logo */}
+            {/* Centered Responsive Logo */}
             <motion.div 
-              className="flex items-center gap-3"
+              className="flex items-center justify-center flex-1 md:flex-initial md:justify-start gap-3"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
             >
               <Link href="/" className="relative group flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-300 -z-10" />
-                <div className="relative p-2.5 rounded-xl bg-gradient-to-br from-background/90 to-background/70 border border-border/40 group-hover:border-primary/50 transition-all duration-300 backdrop-blur-sm shadow-lg group-hover:shadow-xl">
-                  <StreamyyyLogo size="xl" variant="gradient" useForHeader={true} iconOnly={true} />
+                <div className="relative p-2 sm:p-2.5 rounded-xl bg-gradient-to-br from-background/90 to-background/70 border border-border/40 group-hover:border-primary/50 transition-all duration-300 backdrop-blur-sm shadow-lg group-hover:shadow-xl">
+                  <StreamyyyLogo 
+                    size="lg" 
+                    variant="gradient" 
+                    useForHeader={true} 
+                    iconOnly={false}
+                    className="w-24 sm:w-28 md:w-32 lg:w-36 transition-all duration-300"
+                  />
                 </div>
               </Link>
             </motion.div>
@@ -156,7 +162,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     disabled={streams.length >= 16}
                   >
                     <Plus className="h-4 w-4" />
-                    <span className="ml-1.5">Add</span>
+                    <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">Add</span>
                   </Button>
                 </motion.div>
 
@@ -168,7 +174,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     onClick={() => setShowDiscovery(true)}
                   >
                     <Compass className="h-4 w-4" />
-                    <span className="ml-1.5">Discover</span>
+                    <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">Discover</span>
                   </Button>
                 </motion.div>
 
@@ -185,7 +191,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     )}
                   >
                     <MessageSquare className="h-4 w-4" />
-                    <span className="ml-1.5">Chat</span>
+                    <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">Chat</span>
                   </Button>
                 </motion.div>
               </motion.div>
@@ -206,7 +212,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                       className="h-8 px-3 text-yellow-600 hover:bg-yellow-500/10"
                     >
                       <Zap className="h-4 w-4" />
-                      <span className="ml-1.5">AMP</span>
+                      <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">AMP</span>
                     </Button>
                   </motion.div>
                 </Link>

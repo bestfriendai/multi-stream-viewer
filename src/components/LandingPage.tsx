@@ -37,7 +37,8 @@ import {
   MousePointer,
   Command,
   Layers,
-  BarChart3
+  BarChart3,
+  X
 } from 'lucide-react'
 import { useStreamStore } from '@/store/streamStore'
 import { cn } from '@/lib/utils'
@@ -52,7 +53,7 @@ const features = [
   {
     icon: Monitor,
     title: "Multiple Streams",
-    description: "Watch up to 16 streams at once",
+    description: "Watch up to 16 streams simultaneously",
     gradient: "from-blue-500 to-cyan-500",
     stats: "16 Streams"
   },
@@ -65,46 +66,46 @@ const features = [
   },
   {
     icon: MessageSquare,
-    title: "Unified Chat",
-    description: "All chat in one place",
+    title: "Live Chat",
+    description: "Follow conversations across streams",
     gradient: "from-green-500 to-emerald-500",
     stats: "Real-time"
   },
   {
     icon: Layout,
-    title: "Smart Layouts",
-    description: "Auto-adjusting grids and custom layouts",
+    title: "Flexible Layouts",
+    description: "Grid, focus, and picture-in-picture views",
     gradient: "from-orange-500 to-red-500",
     stats: "Multiple"
   },
   {
     icon: SmartphoneIcon,
-    title: "Mobile Friendly",
-    description: "Works great on phones and tablets",
+    title: "Mobile Optimized",
+    description: "Perfect experience on any device",
     gradient: "from-blue-500 to-indigo-500",
     stats: "Responsive"
   },
   {
     icon: Zap,
-    title: "Fast Performance",
-    description: "No lag, no buffering",
+    title: "Instant Loading",
+    description: "Fast stream switching and loading",
     gradient: "from-yellow-500 to-orange-500",
-    stats: "Instant"
+    stats: "Quick"
   }
 ]
 
 const useCases = [
   {
     icon: Gamepad2,
-    title: "Esports Tournaments",
-    description: "Watch multiple POVs during tournaments",
-    example: "Follow all players in a CS2 match"
+    title: "Live Events",
+    description: "Watch multiple perspectives during events",
+    example: "Follow all the action from different angles"
   },
   {
     icon: Music,
-    title: "Music Festivals",
-    description: "Multiple stages, one screen",
-    example: "Watch all Coachella streams together"
+    title: "Music & Entertainment",
+    description: "Multiple performers, one screen",
+    example: "Watch all your favorite shows together"
   },
   {
     icon: Video,
@@ -113,10 +114,10 @@ const useCases = [
     example: "Stream management made easy"
   },
   {
-    icon: Mic,
-    title: "Podcast Networks",
-    description: "Follow multiple live podcasts",
-    example: "Never miss a moment"
+    icon: Users,
+    title: "IRL Streamers",
+    description: "Follow creators in real-life content",
+    example: "Catch every adventure live"
   }
 ]
 
@@ -219,26 +220,6 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
     { value: "16x", label: "Max Streams", icon: Monitor, color: "from-orange-500 to-red-500" }
   ]
 
-  const testimonials = [
-    {
-      quote: "Perfect for watching multiple streams during tournaments.",
-      author: "ProGamer_2024",
-      role: "Esports Fan",
-      rating: 5
-    },
-    {
-      quote: "Great for monitoring competitors while streaming.",
-      author: "StreamMaster",
-      role: "Content Creator",
-      rating: 5
-    },
-    {
-      quote: "Finally, a multi-stream viewer that just works!",
-      author: "ChatModerator",
-      role: "Viewer",
-      rating: 5
-    }
-  ]
 
   return (
     <div className="flex-1 overflow-y-auto relative -mt-0">
@@ -256,13 +237,13 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="grid lg:grid-cols-5 gap-12 items-center">
               {/* Left: Value Proposition */}
               <motion.div 
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
-                className="space-y-8"
+                className="space-y-8 lg:col-span-2"
               >
                 {/* Trust Badge */}
                 {/* Main Headline */}
@@ -272,13 +253,13 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   transition={{ delay: 0.2 }}
                 >
                   <h1 className="text-5xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-8">
-                    <span className="text-foreground">Multi-Stream</span>
+                    <span className="text-foreground">Watch Multiple</span>
                     <br />
-                    <span className="bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent">
-                      Live Experience
+                    <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
+                      Live Streams
                     </span>
                     <br />
-                    <span className="text-foreground">For Gamers</span>
+                    <span className="text-foreground">At Once</span>
                   </h1>
                 </motion.div>
 
@@ -290,16 +271,16 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   className="space-y-6"
                 >
                   <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-2xl">
-                    Watch your favorite streamers and creators all at once. Perfect for tournaments, collabs, 
-                    and discovering new content. No ads, no lag, just pure gaming entertainment.
+                    Never miss a moment from your favorite creators. Watch multiple live streams simultaneously 
+                    and stay connected to all the action across platforms.
                   </p>
                   
                   {/* Key Benefits */}
                   <div className="space-y-3 pt-4">
                     {[
-                      "Up to 16 streams - perfect for raid nights",
-                      "All your favorite platforms in one place",
-                      "No download, no account - start watching now"
+                      "Up to 16 streams simultaneously - never miss anything",
+                      "Works with Twitch, YouTube, Kick, and more",
+                      "No signup required - start watching instantly"
                     ].map((benefit, index) => (
                       <motion.div
                         key={benefit}
@@ -331,10 +312,10 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                     <Button 
                       size="lg" 
                       onClick={onAddStream}
-                      className="gap-3 text-lg px-10 py-7 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 shadow-xl hover:shadow-2xl transition-all duration-500 font-semibold border-0 rounded-xl text-white"
+                      className="gap-3 text-lg px-10 py-7 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 shadow-xl hover:shadow-2xl transition-all duration-500 font-semibold border-0 rounded-xl text-white"
                     >
                       <PlayCircle className="w-6 h-6" />
-                      Start Watching - Free Forever
+                      Start Watching - No Credit Card Required
                     </Button>
                   </motion.div>
                   
@@ -345,10 +326,10 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                     <Button 
                       size="lg" 
                       variant="outline"
-                      onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+                      onClick={() => window.location.href = '/sign-up'}
                       className="gap-3 text-lg px-10 py-7 border-2 border-border/60 hover:border-primary/30 hover:bg-muted/50 font-medium rounded-xl backdrop-blur-sm"
                     >
-                      Watch Demo
+                      Sign Up Free
                       <ArrowRight className="w-5 h-5" />
                     </Button>
                   </motion.div>
@@ -363,15 +344,15 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 >
                   <div className="flex items-center gap-2">
                     <Wifi className="w-4 h-4 text-green-500" />
-                    <span>99.9% Uptime</span>
+                    <span>Always Online</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Shield className="w-4 h-4 text-blue-500" />
-                    <span>Enterprise Security</span>
+                    <span>Secure & Private</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Zap className="w-4 h-4 text-yellow-500" />
-                    <span>Zero Lag</span>
+                    <span>Fast Streaming</span>
                   </div>
                 </motion.div>
               </motion.div>
@@ -381,15 +362,15 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="relative"
+                className="relative lg:col-span-3"
               >
-                <div className="relative bg-gradient-to-br from-card via-card/95 to-card/80 rounded-3xl border border-border/50 shadow-2xl hover:shadow-3xl p-8 backdrop-blur-sm transition-all duration-500">
+                <div className="relative bg-gradient-to-br from-card via-card/95 to-card/80 rounded-3xl border border-border/50 shadow-2xl hover:shadow-3xl p-6 lg:p-10 backdrop-blur-sm transition-all duration-500">
                   {/* Floating Elements */}
                   <div className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full animate-pulse" />
                   <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-r from-primary to-blue-600 rounded-full blur-sm opacity-60" />
                   {/* Demo Grid */}
                   <div className="aspect-video bg-gradient-to-br from-black/5 via-black/3 to-black/10 dark:from-black/20 dark:via-black/15 dark:to-black/30 rounded-xl overflow-hidden border border-border/20">
-                    <div className="grid grid-cols-2 grid-rows-2 gap-3 h-full p-3">
+                    <div className="grid grid-cols-2 grid-rows-2 gap-4 h-full p-4">
                       {Array.from({ length: 4 }).map((_, i) => {
                         const stream = demoStreams[i]
                         return (
@@ -662,6 +643,194 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section className="py-24 bg-gradient-to-b from-muted/10 to-background relative">
+        <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
+        <div className="container mx-auto px-4 relative">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+          >
+            <Badge className="mb-4 px-4 py-1.5" variant="outline">
+              <Trophy className="w-3 h-3 mr-1" />
+              Pricing
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Choose Your Plan</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Start free and upgrade when you're ready for more features
+            </p>
+          </motion.div>
+          
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Free Plan */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="group"
+            >
+              <Card className="p-8 h-full border-2 border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative">
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold mb-2">Free Plan</h3>
+                  <div className="text-4xl font-black mb-2">$0</div>
+                  <p className="text-muted-foreground">Perfect for getting started</p>
+                </div>
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Up to 4 streams simultaneously</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Basic layouts (Grid, Focus)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Mobile responsive design</span>
+                  </li>
+                  <li className="flex items-center gap-2 text-muted-foreground">
+                    <X className="w-5 h-5 text-muted-foreground" />
+                    <span>Ads displayed</span>
+                  </li>
+                </ul>
+                <Button className="w-full" variant="outline" onClick={onAddStream}>
+                  Get Started Free
+                </Button>
+              </Card>
+            </motion.div>
+
+            {/* Pro Plan */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="group relative"
+            >
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <Badge className="bg-primary text-primary-foreground px-3 py-1">
+                  Most Popular
+                </Badge>
+              </div>
+              <Card className="p-8 h-full border-2 border-primary hover:shadow-xl transition-all duration-300 relative">
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold mb-2">Pro Plan</h3>
+                  <div className="text-4xl font-black mb-2">$4.99<span className="text-lg font-normal text-muted-foreground">/mo</span></div>
+                  <p className="text-muted-foreground">Chat Members benefits</p>
+                </div>
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Up to 9 streams simultaneously</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>All layouts including PiP</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Ad-free experience</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Save custom layouts</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Priority support</span>
+                  </li>
+                </ul>
+                <Button className="w-full bg-primary hover:bg-primary/90" onClick={() => window.location.href = '/sign-up'}>
+                  Start Free Trial
+                </Button>
+              </Card>
+            </motion.div>
+
+            {/* Premium Plan */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="group"
+            >
+              <Card className="p-8 h-full border-2 border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative">
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold mb-2">Premium Plan</h3>
+                  <div className="text-4xl font-black mb-2">$9.99<span className="text-lg font-normal text-muted-foreground">/mo</span></div>
+                  <p className="text-muted-foreground">SuperChat Members perks</p>
+                </div>
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>All 16 streams simultaneously</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Advanced custom layouts</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Unified chat across all streams</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Stream analytics & insights</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Premium support & features</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-green-600" />
+                    </div>
+                    <span>Early access to new features</span>
+                  </li>
+                </ul>
+                <Button className="w-full" variant="outline" onClick={() => window.location.href = '/sign-up'}>
+                  Start Free Trial
+                </Button>
+              </Card>
+            </motion.div>
+          </div>
+
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-center mt-12 text-sm text-muted-foreground"
+          >
+            <p>All plans include a 7-day free trial. Cancel anytime. No contracts.</p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Benefits Section - SaaS Style */}
       <section className="py-24 relative">
         <div className="container mx-auto px-4 relative">
@@ -671,13 +840,13 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             whileInView={{ opacity: 1, y: 0 }}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Everything You Need to 
-              <span className="block bg-gradient-to-r from-purple-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Level Up Your Viewing
+              Everything You Need for 
+              <span className="block bg-gradient-to-r from-blue-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                Multi-Stream Viewing
               </span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Made for gamers, by gamers. The ultimate way to watch esports, variety streams, and your favorite content creators
+              The complete solution for watching multiple live streams. Perfect for events, entertainment, and staying connected with all your favorite creators.
             </p>
           </motion.div>
           
@@ -686,24 +855,24 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             {[
               {
                 icon: Monitor,
-                title: "Multi-POV Gaming",
-                description: "Follow multiple players in tournaments or watch your squad's streams together",
-                benefit: "See every angle of the action",
+                title: "Multi-Stream Display",
+                description: "Watch up to 16 streams simultaneously with intelligent layout management",
+                benefit: "Never miss anything happening across platforms",
                 stats: "16 Streams"
               },
               {
                 icon: MessageSquare,
-                title: "All Chat, One Place",
-                description: "Chat with all your favorite communities without missing a beat",
-                benefit: "Stay in the conversation everywhere",
+                title: "Unified Chat",
+                description: "Follow conversations across all your streams in one convenient place",
+                benefit: "Stay connected with every community",
                 stats: "Real-time"
               },
               {
                 icon: Layout,
-                title: "Custom Layouts",
-                description: "Grid view for tournaments, focus mode for your main, PiP for side streams",
-                benefit: "Watch exactly how you want",
-                stats: "Flexible"
+                title: "Smart Layouts",
+                description: "Grid, focus, and picture-in-picture modes that adapt to your viewing needs",
+                benefit: "Perfect view for any content type",
+                stats: "Adaptive"
               }
             ].map((feature, index) => (
               <motion.div
@@ -715,7 +884,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               >
                 <Card className="p-8 h-full border-0 bg-gradient-to-br from-background via-background/98 to-muted/15 hover:shadow-2xl transition-all duration-500 group-hover:scale-[1.02] backdrop-blur-sm">
                   <div className="flex items-start gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-purple-600 via-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-600 to-cyan-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                       <feature.icon className="w-7 h-7 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -913,94 +1082,6 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         </section>
       )}
 
-      {/* Testimonials Section */}
-      <section className="py-24 bg-gradient-to-b from-muted/20 to-background relative">
-        <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
-        <div className="container mx-auto px-4 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
-          >
-            <Badge className="mb-4 px-4 py-1.5" variant="outline">
-              <Star className="w-3 h-3 mr-1" />
-              Testimonials
-            </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Loved by Content Creators</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              See what our community of streamers, viewers, and content creators are saying
-            </p>
-          </motion.div>
-          
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.author}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
-              >
-                <Card className="p-8 h-full hover:shadow-xl transition-all duration-300 group relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  {/* Star Rating */}
-                  <div className="flex items-center gap-1 mb-4">
-                    {Array.from({ length: testimonial.rating }).map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    ))}
-                  </div>
-                  
-                  {/* Quote */}
-                  <blockquote className="text-lg leading-relaxed mb-6 relative">
-                    <div className="absolute -top-2 -left-2 text-4xl text-primary/20">"</div>
-                    {testimonial.quote}
-                    <div className="absolute -bottom-4 -right-2 text-4xl text-primary/20">"</div>
-                  </blockquote>
-                  
-                  {/* Author */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">
-                        {testimonial.author[0]}
-                      </span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-foreground">{testimonial.author}</div>
-                      <div className="text-sm text-muted-foreground">{testimonial.role}</div>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-          
-          {/* Additional Social Proof */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-center mt-16"
-          >
-            <div className="flex flex-wrap justify-center items-center gap-8 text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Star className="w-5 h-5 text-yellow-400" />
-                <span className="font-semibold">4.9/5</span>
-                <span>Average Rating</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-blue-500" />
-                <span className="font-semibold">10K+</span>
-                <span>Reviews</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-orange-500" />
-                <span className="font-semibold">#1</span>
-                <span>MultiTwitch Alternative</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Final CTA Section - Professional */}
       <section className="py-32 bg-gradient-to-b from-background via-muted/10 to-muted/30 relative overflow-hidden">
@@ -1035,9 +1116,9 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 transition={{ delay: 0.2 }}
               >
                 <h2 className="text-6xl md:text-7xl font-black leading-tight mb-8">
-                  Ready to Level Up Your
-                  <span className="block bg-gradient-to-r from-purple-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                    Gaming Experience?
+                  Ready to Transform Your
+                  <span className="block bg-gradient-to-r from-blue-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                    Streaming Experience?
                   </span>
                 </h2>
               </motion.div>
@@ -1049,8 +1130,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 transition={{ delay: 0.3 }}
               >
                 <p className="text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                  Join the community of gamers who never miss a moment. Watch tournaments, follow your squad, 
-                  and discover new creators - all in one epic viewing experience.
+                  Join thousands who've upgraded to multi-stream viewing. Never miss a moment from your favorite creators, 
+                  events, and live content - all in one powerful platform.
                 </p>
               </motion.div>
               
@@ -1068,10 +1149,10 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   <Button 
                     size="lg" 
                     onClick={onAddStream}
-                    className="gap-3 text-xl px-12 py-8 bg-gradient-to-r from-purple-600 via-purple-600 to-pink-600 hover:from-purple-700 hover:via-purple-700 hover:to-pink-700 shadow-2xl hover:shadow-3xl transition-all duration-500 font-bold text-white border-0 rounded-2xl"
+                    className="gap-3 text-xl px-12 py-8 bg-gradient-to-r from-blue-600 via-blue-600 to-cyan-600 hover:from-blue-700 hover:via-blue-700 hover:to-cyan-700 shadow-2xl hover:shadow-3xl transition-all duration-500 font-bold text-white border-0 rounded-2xl"
                   >
                     <PlayCircle className="w-7 h-7" />
-                    Start Gaming Now
+                    Start Streaming Now
                   </Button>
                 </motion.div>
                 
@@ -1082,10 +1163,10 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   <Button 
                     size="lg" 
                     variant="outline"
-                    onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => window.location.href = '/sign-up'}
                     className="gap-3 text-xl px-12 py-8 border-2 border-border/60 hover:border-primary/40 hover:bg-muted/50 font-semibold rounded-2xl backdrop-blur-sm"
                   >
-                    See Live Demo
+                    Sign Up Free
                     <ArrowRight className="w-6 h-6" />
                   </Button>
                 </motion.div>
