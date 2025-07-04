@@ -81,8 +81,8 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
         </div>
         
         {/* Content */}
-        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-16 flex items-center justify-between gap-4">
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300">
+          <div className="h-16 flex items-center justify-between gap-2 sm:gap-4 transition-all duration-300">
             {/* Enhanced Logo */}
             <motion.div 
               className="flex items-center gap-3"
@@ -98,16 +98,16 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
             </motion.div>
 
             {/* Enhanced Mobile Actions - More responsive */}
-            <div className="flex items-center gap-1.5 sm:gap-2 md:hidden">
+            <div className="flex items-center gap-1.5 sm:gap-2 md:hidden transition-all duration-300">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   onClick={() => setShowAddStream(true)}
                   size="sm"
-                  className="h-10 px-3 sm:px-4 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg border-0 min-w-[44px] touch-manipulation"
+                  className="h-10 px-3 sm:px-4 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg border-0 min-w-[44px] touch-manipulation transition-all duration-300"
                   disabled={streams.length >= 16}
                 >
                   <Plus className="h-4 w-4" />
-                  <span className="ml-1.5 hidden xs:inline">Add</span>
+                  <span className="ml-1.5 hidden xs:inline transition-opacity duration-300">Add</span>
                 </Button>
               </motion.div>
 
@@ -115,11 +115,11 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="h-10 w-10 sm:px-3 sm:w-auto border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm min-w-[44px] touch-manipulation"
+                  className="h-10 w-10 sm:px-3 sm:w-auto border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm min-w-[44px] touch-manipulation transition-all duration-300"
                   onClick={() => setShowDiscovery(true)}
                 >
                   <Compass className="h-4 w-4" />
-                  <span className="ml-1.5 hidden sm:inline">Discover</span>
+                  <span className="ml-1.5 hidden sm:inline transition-opacity duration-300">Discover</span>
                 </Button>
               </motion.div>
 
@@ -137,7 +137,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
 
             {/* Desktop Actions */}
             <motion.div 
-              className="hidden md:flex items-center gap-2"
+              className="hidden md:flex items-center gap-2 transition-all duration-300"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}

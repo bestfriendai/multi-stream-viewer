@@ -241,12 +241,12 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
   ]
 
   return (
-    <div className="flex-1 overflow-y-auto relative">
+    <div className="flex-1 overflow-y-auto relative -mt-0">
       {/* Optimized Background Live Streams */}
       <OptimizedBackgroundStreams channels={liveChannels} />
       
       {/* Clean Professional Hero Section */}
-      <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20">
+      <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20 -mt-0">
         {/* Clean Professional Background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-muted/30" />
@@ -272,13 +272,13 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   transition={{ delay: 0.2 }}
                 >
                   <h1 className="text-5xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-8">
-                    <span className="text-foreground">Watch Multiple</span>
+                    <span className="text-foreground">Multi-Stream</span>
                     <br />
-                    <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
-                      Live Streams
+                    <span className="bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent">
+                      Live Experience
                     </span>
                     <br />
-                    <span className="text-foreground">In One Place</span>
+                    <span className="text-foreground">For Gamers</span>
                   </h1>
                 </motion.div>
 
@@ -290,16 +290,16 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   className="space-y-6"
                 >
                   <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-2xl">
-                    The professional multi-stream platform for creators, esports fans, and content enthusiasts. 
-                    No more switching tabs or missing moments.
+                    Watch your favorite streamers and creators all at once. Perfect for tournaments, collabs, 
+                    and discovering new content. No ads, no lag, just pure gaming entertainment.
                   </p>
                   
                   {/* Key Benefits */}
                   <div className="space-y-3 pt-4">
                     {[
-                      "Watch up to 16 streams simultaneously",
-                      "Works with Twitch, YouTube, Kick & more",
-                      "Zero setup required - works instantly"
+                      "Up to 16 streams - perfect for raid nights",
+                      "All your favorite platforms in one place",
+                      "No download, no account - start watching now"
                     ].map((benefit, index) => (
                       <motion.div
                         key={benefit}
@@ -331,10 +331,10 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                     <Button 
                       size="lg" 
                       onClick={onAddStream}
-                      className="gap-3 text-lg px-10 py-7 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 shadow-xl hover:shadow-2xl transition-all duration-500 font-semibold border-0 rounded-xl text-white"
+                      className="gap-3 text-lg px-10 py-7 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 shadow-xl hover:shadow-2xl transition-all duration-500 font-semibold border-0 rounded-xl text-white"
                     >
                       <PlayCircle className="w-6 h-6" />
-                      Start Free - No Signup Required
+                      Start Watching - Free Forever
                     </Button>
                   </motion.div>
                   
@@ -467,9 +467,9 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               <Eye className="w-3 h-3 mr-1" />
               Live Demo
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">See It In Action</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Watch Live Now</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              {loading ? "Loading live streams..." : "Experience multi-stream viewing with real live streams from popular creators"}
+              {loading ? "Loading live channels..." : "Real streamers, real gameplay, real entertainment - all in perfect sync"}
             </p>
           </motion.div>
           
@@ -610,29 +610,29 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               <Zap className="w-3 h-3 mr-1" />
               Quick Start
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold">Simple as 1-2-3</h2>
+            <h2 className="text-4xl md:text-5xl font-bold">Get Started in Seconds</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
               {
                 step: "1",
-                title: "Add Your Streams",
-                description: "Paste URLs or type channel names from any supported platform",
+                title: "Find Your Streamers",
+                description: "Search for your favorite creators or paste their channel links",
                 icon: Plus,
-                color: "from-blue-500 to-cyan-500"
+                color: "from-purple-500 to-purple-600"
               },
               {
                 step: "2",
-                title: "Choose Your Layout",
-                description: "Select from pre-made layouts or create your own custom view",
+                title: "Pick Your View",
+                description: "Grid, focus, or picture-in-picture - however you like to watch",
                 icon: Layout,
-                color: "from-blue-500 to-cyan-500"
+                color: "from-purple-500 to-purple-600"
               },
               {
                 step: "3",
-                title: "Enjoy The Show",
-                description: "Watch all streams with synchronized controls and unified chat",
+                title: "Watch & Chat",
+                description: "Follow the action across multiple streams with live chat",
                 icon: PlayCircle,
                 color: "from-green-500 to-emerald-500"
               }
@@ -672,12 +672,12 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Everything You Need to 
-              <span className="block bg-gradient-to-r from-primary via-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                Stream Smarter
+              <span className="block bg-gradient-to-r from-purple-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Level Up Your Viewing
               </span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Built for creators, streamers, and viewers who demand the best multi-streaming experience
+              Made for gamers, by gamers. The ultimate way to watch esports, variety streams, and your favorite content creators
             </p>
           </motion.div>
           
@@ -686,24 +686,24 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             {[
               {
                 icon: Monitor,
-                title: "Multi-Stream Viewing",
-                description: "Watch up to 16 streams simultaneously with intelligent layout management",
-                benefit: "Never miss a moment across multiple streams",
+                title: "Multi-POV Gaming",
+                description: "Follow multiple players in tournaments or watch your squad's streams together",
+                benefit: "See every angle of the action",
                 stats: "16 Streams"
               },
               {
                 icon: MessageSquare,
-                title: "Unified Chat System",
-                description: "All your favorite stream chats in one convenient sidebar",
-                benefit: "Stay connected with all communities at once",
+                title: "All Chat, One Place",
+                description: "Chat with all your favorite communities without missing a beat",
+                benefit: "Stay in the conversation everywhere",
                 stats: "Real-time"
               },
               {
                 icon: Layout,
-                title: "Smart Layouts",
-                description: "AI-powered layout suggestions and custom grid arrangements",
-                benefit: "Perfect viewing experience every time",
-                stats: "Auto-Adjust"
+                title: "Custom Layouts",
+                description: "Grid view for tournaments, focus mode for your main, PiP for side streams",
+                benefit: "Watch exactly how you want",
+                stats: "Flexible"
               }
             ].map((feature, index) => (
               <motion.div
@@ -715,7 +715,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               >
                 <Card className="p-8 h-full border-0 bg-gradient-to-br from-background via-background/98 to-muted/15 hover:shadow-2xl transition-all duration-500 group-hover:scale-[1.02] backdrop-blur-sm">
                   <div className="flex items-start gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-primary via-blue-600 to-cyan-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-purple-600 via-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                       <feature.icon className="w-7 h-7 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -1035,9 +1035,9 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 transition={{ delay: 0.2 }}
               >
                 <h2 className="text-6xl md:text-7xl font-black leading-tight mb-8">
-                  Ready to Transform Your
-                  <span className="block bg-gradient-to-r from-primary via-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                    Streaming Experience?
+                  Ready to Level Up Your
+                  <span className="block bg-gradient-to-r from-purple-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    Gaming Experience?
                   </span>
                 </h2>
               </motion.div>
@@ -1049,8 +1049,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 transition={{ delay: 0.3 }}
               >
                 <p className="text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                  Join millions who've upgraded to the professional multi-streaming platform. 
-                  Start watching multiple streams instantly.
+                  Join the community of gamers who never miss a moment. Watch tournaments, follow your squad, 
+                  and discover new creators - all in one epic viewing experience.
                 </p>
               </motion.div>
               
@@ -1068,10 +1068,10 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   <Button 
                     size="lg" 
                     onClick={onAddStream}
-                    className="gap-3 text-xl px-12 py-8 bg-gradient-to-r from-primary via-blue-600 to-cyan-600 hover:from-primary/90 hover:via-blue-600/90 hover:to-cyan-600/90 shadow-2xl hover:shadow-3xl transition-all duration-500 font-bold text-white border-0 rounded-2xl"
+                    className="gap-3 text-xl px-12 py-8 bg-gradient-to-r from-purple-600 via-purple-600 to-pink-600 hover:from-purple-700 hover:via-purple-700 hover:to-pink-700 shadow-2xl hover:shadow-3xl transition-all duration-500 font-bold text-white border-0 rounded-2xl"
                   >
                     <PlayCircle className="w-7 h-7" />
-                    Start Free Now
+                    Start Gaming Now
                   </Button>
                 </motion.div>
                 
