@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { cn } from '@/lib/utils'
 import { 
   Plus, 
   Menu, 
@@ -70,45 +71,67 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
   
   return (
     <div>
-      <header className="bg-background/80 backdrop-blur-xl sticky top-0 z-50 border-b border-border/30 shadow-sm glass">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="relative sticky top-0 z-50 border-b border-border/20">
+        {/* Enhanced Background with Multiple Layers */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-background/85 backdrop-blur-2xl" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/90 to-background/95" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(120,119,198,0.1),transparent_50%)]" />
+        </div>
+        
+        {/* Content */}
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="h-16 flex items-center justify-between gap-4">
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <Link href="/" className="flex-shrink-0 hover:scale-105 transition-all duration-200">
-                <StreamyyyLogo size="sm" variant="gradient" />
+            {/* Enhanced Logo */}
+            <motion.div 
+              className="flex items-center gap-3"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Link href="/" className="relative group flex-shrink-0">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-300 -z-10" />
+                <div className="relative p-2.5 rounded-xl bg-gradient-to-br from-background/90 to-background/70 border border-border/40 group-hover:border-primary/50 transition-all duration-300 backdrop-blur-sm shadow-lg group-hover:shadow-xl">
+                  <StreamyyyLogo size="sm" variant="gradient" />
+                </div>
               </Link>
-            </div>
+            </motion.div>
 
-            {/* Mobile Primary Actions */}
-            <div className="flex items-center gap-1.5 md:hidden">
-              <Button
-                onClick={() => setShowAddStream(true)}
-                size="sm"
-                className="h-9 px-3 font-medium shadow-sm"
-                disabled={streams.length >= 16}
-              >
-                <Plus className="h-4 w-4" />
-                <span className="ml-1.5">Add</span>
-              </Button>
+            {/* Enhanced Mobile Actions */}
+            <div className="flex items-center gap-2 md:hidden">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={() => setShowAddStream(true)}
+                  size="sm"
+                  className="h-9 px-3 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg border-0"
+                  disabled={streams.length >= 16}
+                >
+                  <Plus className="h-4 w-4" />
+                  <span className="ml-1.5">Add</span>
+                </Button>
+              </motion.div>
 
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="h-9 px-3 border-border/60 hover:border-border/80 shadow-sm"
-                onClick={() => setShowDiscovery(true)}
-              >
-                <Compass className="h-4 w-4" />
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="h-9 px-3 border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm"
+                  onClick={() => setShowDiscovery(true)}
+                >
+                  <Compass className="h-4 w-4" />
+                </Button>
+              </motion.div>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-9 w-9 p-0 hover:bg-muted/60"
-                onClick={() => setShowMobileMenu(true)}
-              >
-                <Menu className="h-4 w-4" />
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-9 w-9 p-0 hover:bg-muted/60 rounded-lg"
+                  onClick={() => setShowMobileMenu(true)}
+                >
+                  <Menu className="h-4 w-4" />
+                </Button>
+              </motion.div>
             </div>
 
             {/* Desktop Actions */}
@@ -118,49 +141,61 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              {/* Primary Actions Group */}
+              {/* Enhanced Primary Actions Group */}
               <motion.div 
-                className="flex items-center gap-1.5 bg-muted/30 rounded-lg p-1"
-                whileHover={{ scale: 1.02 }}
+                className="flex items-center gap-1 bg-gradient-to-r from-muted/30 via-muted/40 to-muted/30 backdrop-blur-md rounded-xl p-1.5 border border-border/30 shadow-lg"
+                whileHover={{ scale: 1.01, y: -1, boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}
                 transition={{ duration: 0.2 }}
               >
-                <Button
-                  onClick={() => setShowAddStream(true)}
-                  size="sm"
-                  className="h-8 px-3 font-medium shadow-sm"
-                  disabled={streams.length >= 16}
-                >
-                  <Plus className="h-4 w-4" />
-                  <span className="ml-1.5">Add</span>
-                </Button>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    onClick={() => setShowAddStream(true)}
+                    size="sm"
+                    className="h-8 px-3 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 border-0 shadow-md"
+                    disabled={streams.length >= 16}
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span className="ml-1.5">Add</span>
+                  </Button>
+                </motion.div>
 
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="h-8 px-3 hover:bg-background/80"
-                  onClick={() => setShowDiscovery(true)}
-                >
-                  <Compass className="h-4 w-4" />
-                  <span className="ml-1.5">Discover</span>
-                </Button>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-8 px-3 hover:bg-background/60 rounded-lg"
+                    onClick={() => setShowDiscovery(true)}
+                  >
+                    <Compass className="h-4 w-4" />
+                    <span className="ml-1.5">Discover</span>
+                  </Button>
+                </motion.div>
 
-                <Button
-                  variant={showChat ? "default" : "ghost"}
-                  size="sm"
-                  onClick={onToggleChat}
-                  className="h-8 px-3"
-                >
-                  <MessageSquare className="h-4 w-4" />
-                  <span className="ml-1.5">Chat</span>
-                </Button>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    variant={showChat ? "default" : "ghost"}
+                    size="sm"
+                    onClick={onToggleChat}
+                    className={cn(
+                      "h-8 px-3 rounded-lg",
+                      showChat 
+                        ? "bg-gradient-to-r from-primary to-primary/90 border-0" 
+                        : "hover:bg-background/60"
+                    )}
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    <span className="ml-1.5">Chat</span>
+                  </Button>
+                </motion.div>
               </motion.div>
 
               {/* Navigation Links */}
               <motion.div 
-                className="flex items-center gap-1"
+                className="flex items-center gap-1 bg-gradient-to-r from-muted/20 via-muted/25 to-muted/20 backdrop-blur-sm rounded-lg p-1 border border-border/20"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.1, duration: 0.3 }}
+                whileHover={{ scale: 1.01 }}
               >
                 <Link href="/amp-summer">
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -191,11 +226,11 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
 
               {/* Controls Group */}
               <motion.div 
-                className="flex items-center gap-1 bg-muted/30 rounded-lg p-1"
+                className="flex items-center gap-1 bg-gradient-to-r from-muted/35 via-muted/40 to-muted/35 backdrop-blur-sm rounded-lg p-1 border border-border/25 shadow-md"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.3 }}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}
               >
                 <EnhancedLayoutSelector />
                 <SavedLayoutsDialog />
@@ -227,10 +262,11 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
 
               {/* User Actions */}
               <motion.div 
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 bg-gradient-to-r from-muted/25 to-muted/30 backdrop-blur-sm rounded-lg p-1.5 border border-border/20"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.3 }}
+                whileHover={{ scale: 1.01 }}
               >
                 <ThemeToggle />
 
