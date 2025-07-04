@@ -258,7 +258,7 @@
   .stream-embed-container > div > div {
     width: 100% !important;
     height: 100% !important;
-    object-fit: contain !important;
+    object-fit: cover !important;
     object-position: center !important;
     position: absolute !important;
     top: 0 !important;
@@ -342,6 +342,36 @@
     aspect-ratio: 1/1 !important;
   }
   
+  /* Scale video content to fill square containers */
+  .mobile-grid-2x1-square .stream-embed-container,
+  .mobile-grid-3x1-square .stream-embed-container,
+  .mobile-grid-2x2-square .stream-embed-container,
+  .mobile-grid-2x3-square .stream-embed-container,
+  .mobile-grid-3x3-square .stream-embed-container,
+  .mobile-grid-4x4-square .stream-embed-container,
+  .mobile-grid-4-col-square .stream-embed-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  
+  /* Scale 16:9 video to fill 1:1 container */
+  .mobile-grid-2x1-square iframe,
+  .mobile-grid-3x1-square iframe,
+  .mobile-grid-2x2-square iframe,
+  .mobile-grid-2x3-square iframe,
+  .mobile-grid-3x3-square iframe,
+  .mobile-grid-4x4-square iframe,
+  .mobile-grid-4-col-square iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 177.77% !important; /* 16/9 = 1.777 */
+    height: 100% !important;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+  }
+  
   /* Fix Twitch embed container */
   .stream-embed-container > div {
     width: 100% !important;
@@ -411,6 +441,28 @@
     .stream-card .mobile-controls-visible {
       opacity: 1 !important;
       visibility: visible !important;
+    }
+    
+    /* Mobile stream embed specific styling */
+    .mobile-stream-embed {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: black;
+    }
+    
+    /* Center and scale video content for square containers */
+    .mobile-grid-2x2-square .mobile-stream-embed > div,
+    .mobile-grid-2x3-square .mobile-stream-embed > div,
+    .mobile-grid-3x3-square .mobile-stream-embed > div {
+      position: absolute;
+      width: 177.77% !important;
+      height: 100% !important;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 }

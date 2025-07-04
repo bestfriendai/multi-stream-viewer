@@ -114,7 +114,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       iframe.style.left = '0'
       iframe.style.width = '100%'
       iframe.style.height = '100%'
-      iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=${stream.muted ? 1 : 0}&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}`
+      iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=${stream.muted ? 1 : 0}&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}&widget_referrer=${window.location.href}`
       iframe.setAttribute('frameborder', '0')
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
       iframe.setAttribute('allowfullscreen', 'true')
@@ -145,9 +145,8 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
   }, [stream.channelName, stream.channelId, stream.platform])
   
   useEffect(() => {
-    // Only update mute state if player is ready and platform is Twitch
-    // Avoid unnecessary re-renders that cause stream reloads
-    if (playerRef.current && stream.platform === 'twitch') {
+    // Update mute state for different platforms
+    if (stream.platform === 'twitch' && playerRef.current) {
       // Small delay to ensure player is fully initialized
       const timer = setTimeout(() => {
         if (playerRef.current) {
@@ -156,10 +155,17 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       }, 100)
       
       return () => clearTimeout(timer)
+    } else if (stream.platform === 'youtube' && embedRef.current) {
+      // For YouTube, we need to use postMessage API
+      const iframe = embedRef.current.querySelector('iframe')
+      if (iframe && iframe.contentWindow) {
+        const command = stream.muted ? 'mute' : 'unMute'
+        iframe.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: command, args: '' }),
+          '*'
+        )
+      }
     }
-    // Note: YouTube mute state changes via URL parameter changes cause stream reloads
-    // For better UX, we rely on the initial mute state set during embed creation
-    // Users can use YouTube's native controls for mute if needed
     return undefined
   }, [stream.muted, stream.platform])
   
@@ -210,7 +216,7 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
       <div 
         className={cn(
           "w-full h-full rounded-2xl overflow-hidden relative stream-embed-container",
-          isMobile ? "aspect-video" : "" // Force 16:9 on mobile
+          isMobile ? "mobile-stream-embed" : ""
         )}
       >
         <div 
