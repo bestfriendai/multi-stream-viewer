@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, memo } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import type { Stream } from '@/types/stream'
 import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from 'lucide-react'
@@ -20,10 +20,11 @@ declare global {
   }
 }
 
-export default function StreamEmbed({ stream }: StreamEmbedProps) {
+function StreamEmbedInner({ stream }: StreamEmbedProps) {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const currentMutedRef = useRef(stream.muted)
   const { 
     toggleStreamMute, 
     removeStream, 
@@ -163,6 +164,9 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
   }, [stream.channelName, stream.channelId, stream.platform])
   
   useEffect(() => {
+    // Update the ref
+    currentMutedRef.current = stream.muted
+    
     // Update mute state for different platforms
     if (stream.platform === 'twitch' && playerRef.current) {
       // Small delay to ensure player is fully initialized
@@ -363,3 +367,17 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
     </div>
   )
 }
+
+// Memoize the component but allow re-renders for mute changes
+const StreamEmbed = memo(StreamEmbedInner, (prevProps, nextProps) => {
+  // Only re-render if these properties change
+  return (
+    prevProps.stream.id === nextProps.stream.id &&
+    prevProps.stream.channelName === nextProps.stream.channelName &&
+    prevProps.stream.platform === nextProps.stream.platform &&
+    prevProps.stream.channelId === nextProps.stream.channelId
+    // Don't include muted - we handle that via useEffect
+  )
+})
+
+export default StreamEmbed

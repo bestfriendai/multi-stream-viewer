@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, memo } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import type { Stream } from '@/types/stream'
 import { Volume2, VolumeX, X, Maximize2, Youtube, Twitch, Maximize, Users } from 'lucide-react'
@@ -66,7 +66,7 @@ class TwitchScriptManager {
   }
 }
 
-export default function StreamEmbedOptimized({ stream }: StreamEmbedProps) {
+function StreamEmbedOptimizedInner({ stream }: StreamEmbedProps) {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const embedInstanceRef = useRef<any>(null)
@@ -317,3 +317,16 @@ export default function StreamEmbedOptimized({ stream }: StreamEmbedProps) {
     </div>
   )
 }
+
+// Memoize to prevent re-renders on mute changes
+const StreamEmbedOptimized = memo(StreamEmbedOptimizedInner, (prevProps, nextProps) => {
+  return (
+    prevProps.stream.id === nextProps.stream.id &&
+    prevProps.stream.channelName === nextProps.stream.channelName &&
+    prevProps.stream.platform === nextProps.stream.platform &&
+    prevProps.stream.channelId === nextProps.stream.channelId
+    // Don't include muted - we handle that via useEffect
+  )
+})
+
+export default StreamEmbedOptimized
