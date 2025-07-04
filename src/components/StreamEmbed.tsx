@@ -144,12 +144,22 @@ export default function StreamEmbed({ stream }: StreamEmbedProps) {
   }, [stream.channelName, stream.channelId, stream.platform])
   
   useEffect(() => {
+    // Only update mute state if player is ready and platform is Twitch
+    // Avoid unnecessary re-renders that cause stream reloads
     if (playerRef.current && stream.platform === 'twitch') {
-      playerRef.current.setMuted(stream.muted)
+      // Small delay to ensure player is fully initialized
+      const timer = setTimeout(() => {
+        if (playerRef.current) {
+          playerRef.current.setMuted(stream.muted)
+        }
+      }, 100)
+      
+      return () => clearTimeout(timer)
     }
     // Note: YouTube mute state changes via URL parameter changes cause stream reloads
     // For better UX, we rely on the initial mute state set during embed creation
     // Users can use YouTube's native controls for mute if needed
+    return undefined
   }, [stream.muted, stream.platform])
   
   const handleMuteToggle = (e: React.MouseEvent) => {

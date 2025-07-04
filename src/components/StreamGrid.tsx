@@ -16,12 +16,12 @@ import '@/styles/layout-modes.css'
 const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: boolean) => {
   if (count === 0) return { cols: 1, rows: 1, class: 'grid-cols-1' }
   
-  // Mobile-optimized layouts - Better screen utilization and sizing
+  // Mobile-optimized layouts - Use square aspect ratios for better space utilization
   if (isMobile) {
     if (count === 1) return { cols: 1, rows: 1, class: 'mobile-grid-single' }
-    if (count === 2) return { cols: 1, rows: 2, class: 'mobile-grid-1x2' }
-    if (count === 3) return { cols: 1, rows: 3, class: 'mobile-grid-1x3' }
-    if (count === 4) return { cols: 2, rows: 2, class: 'mobile-grid-2x2' }
+    if (count === 2) return { cols: 2, rows: 1, class: 'mobile-grid-2x1-square' }
+    if (count === 3) return { cols: 3, rows: 1, class: 'mobile-grid-3x1-square' }
+    if (count === 4) return { cols: 2, rows: 2, class: 'mobile-grid-2x2-square' }
     if (count <= 6) return { cols: 2, rows: 3, class: 'mobile-grid-2x3-square' }
     if (count <= 9) return { cols: 3, rows: 3, class: 'mobile-grid-3x3-square' }
     if (count <= 16) return { cols: 4, rows: 4, class: 'mobile-grid-4x4-square' }
