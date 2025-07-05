@@ -93,6 +93,9 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none optimized-background-streams">
+      {/* Black background shown until streams are loaded */}
+      <div className="absolute inset-0 bg-black" />
+      
       <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-4 scale-105">
         {[...Array(4)].map((_, index) => {
           const channel = channels[index % channels.length]
@@ -105,7 +108,7 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
           return (
             <motion.div 
               key={`bg-${channel.channelName}-${index}`} 
-              className="relative overflow-hidden rounded-lg"
+              className="relative overflow-hidden rounded-lg bg-black"
               initial={{ opacity: 0.9, scale: 1 }}
               animate={{ opacity: 0.9, scale: 1 }}
               transition={{ duration: 0 }}

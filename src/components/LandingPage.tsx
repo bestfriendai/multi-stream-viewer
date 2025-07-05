@@ -220,7 +220,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       <OptimizedBackgroundStreams channels={liveChannels} />
       
       {/* Clean Professional Hero Section */}
-      <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20 -mt-16">
+      <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20 pt-16">
         {/* Clean Professional Background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-muted/30" />
