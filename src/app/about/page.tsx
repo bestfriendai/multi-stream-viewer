@@ -58,9 +58,9 @@ export default function AboutPage() {
     },
     {
       icon: Shuffle,
-      title: "The Paywall Problem",
-      problem: "Want to watch multiple streams? That'll be $9.99/month. Want mobile access? Another $4.99. Want to remove ads? $14.99.",
-      solution: "Everything. Free. Forever. No premium tiers, no paywalls, no BS. Because multi-stream viewing is a right, not a luxury.",
+      title: "The Accessibility Challenge",
+      problem: "Most platforms limit how many streams you can watch. Premium features are scattered across different services with varying costs.",
+      solution: "Core multi-stream viewing accessible to everyone. Optional premium features for power users who want enhanced experiences.",
       color: "from-yellow-500 to-orange-500"
     }
   ]
@@ -68,7 +68,7 @@ export default function AboutPage() {
   const stats = [
     { number: "1M+", label: "Streams Watched", icon: Eye },
     { number: "50K+", label: "Active Users", icon: Users },
-    { number: "$0", label: "Forever Free", icon: Heart },
+    { number: "Free", label: "Basic Access", icon: Heart },
     { number: "16", label: "Max Streams", icon: Monitor }
   ]
 
@@ -167,7 +167,7 @@ export default function AboutPage() {
                   <h3 className="font-bold mb-2">No Account? No Problem.</h3>
                   <p className="text-muted-foreground">
                     Why do you need an account to watch streams? You don't. Open Streamyyy, add streams, watch. 
-                    That's it. No email harvesting, no data mining, no tracking.
+                    That's it. Optional sign-up for those who want to save layouts and preferences.
                   </p>
                 </div>
               </div>
@@ -238,18 +238,18 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold mb-3">Blazing Fast</h3>
               <p className="text-muted-foreground">
-                No ads. No tracking scripts. No bloat. Just pure, optimized code that loads in milliseconds 
-                and runs like butter.
+                Optimized for speed with minimal overhead. Clean, efficient code that loads quickly 
+                and runs smoothly across all devices.
               </p>
             </div>
             <div className="text-center">
               <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Privacy First</h3>
+              <h3 className="text-xl font-bold mb-3">Privacy Focused</h3>
               <p className="text-muted-foreground">
-                We don't track you. We don't sell your data. We don't even require an email. 
-                Your viewing habits are none of our business.
+                We respect your privacy. We don't sell your data. No account required to start watching. 
+                Transparent about our data practices.
               </p>
             </div>
             <div className="text-center">
