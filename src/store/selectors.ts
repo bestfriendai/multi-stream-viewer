@@ -28,15 +28,23 @@ export const selectActiveStreams = (state: StreamStore) =>
 export const selectMutedStreams = (state: StreamStore) => {
   if (typeof window === 'undefined') return []
   
-  const { muteManager } = require('@/lib/muteManager')
-  return state.streams.filter(stream => muteManager.getMuteState(stream.id))
+  try {
+    const { muteManager } = require('@/lib/muteManager')
+    return state.streams.filter(stream => muteManager.getMuteState(stream.id))
+  } catch {
+    return []
+  }
 }
 
 export const selectUnmutedStreams = (state: StreamStore) => {
   if (typeof window === 'undefined') return state.streams
   
-  const { muteManager } = require('@/lib/muteManager')
-  return state.streams.filter(stream => !muteManager.getMuteState(stream.id))
+  try {
+    const { muteManager } = require('@/lib/muteManager')
+    return state.streams.filter(stream => !muteManager.getMuteState(stream.id))
+  } catch {
+    return state.streams
+  }
 }
 
 // Parametrized selectors (return functions)
@@ -97,15 +105,26 @@ export const selectStreamListForUI = (state: StreamStore) => {
     }))
   }
   
-  const { muteManager } = require('@/lib/muteManager')
-  return state.streams.map(stream => ({
-    id: stream.id,
-    channelName: stream.channelName,
-    platform: stream.platform,
-    position: stream.position,
-    muted: muteManager.getMuteState(stream.id),
-    isActive: stream.isActive
-  }))
+  try {
+    const { muteManager } = require('@/lib/muteManager')
+    return state.streams.map(stream => ({
+      id: stream.id,
+      channelName: stream.channelName,
+      platform: stream.platform,
+      position: stream.position,
+      muted: muteManager.getMuteState(stream.id),
+      isActive: stream.isActive
+    }))
+  } catch {
+    return state.streams.map(stream => ({
+      id: stream.id,
+      channelName: stream.channelName,
+      platform: stream.platform,
+      position: stream.position,
+      muted: false,
+      isActive: stream.isActive
+    }))
+  }
 }
 
 // State validation selectors

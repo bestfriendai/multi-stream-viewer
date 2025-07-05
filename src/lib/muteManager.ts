@@ -3,6 +3,8 @@
  * Handles all platform-specific mute operations without triggering re-renders
  */
 
+import * as React from 'react'
+
 type MuteState = Map<string, boolean>
 type PlayerRef = any // Platform-specific player reference
 
@@ -236,5 +238,3 @@ export function useMuteState(streamId: string): [boolean, () => void] {
   return [muted, toggleMute]
 }
 
-// Import React for the hook
-import * as React from 'react'
