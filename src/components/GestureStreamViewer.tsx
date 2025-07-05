@@ -53,7 +53,7 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
   const [rotation, setRotation] = useState(0)
   
   const containerRef = useRef<HTMLDivElement>(null)
-  const controlsTimeoutRef = useRef<NodeJS.Timeout>()
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   
   // Motion values for gestures
   const x = useMotionValue(0)
