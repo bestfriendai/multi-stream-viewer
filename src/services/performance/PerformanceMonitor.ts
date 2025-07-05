@@ -63,15 +63,14 @@ export class PerformanceMonitor {
   // Web Vitals Collection
   private startWebVitalsCollection(): void {
     // Import web-vitals dynamically to avoid SSR issues
-    // TODO: Install web-vitals package
-    // import('web-vitals').then(({ onCLS, onLCP, onTTFB, onINP }) => {
-    //   onCLS(this.handleWebVital.bind(this))
-    //   onLCP(this.handleWebVital.bind(this))
-    //   onTTFB(this.handleWebVital.bind(this))
-    //   onINP(this.handleWebVital.bind(this))
-    // }).catch(error => {
-    //   console.warn('Failed to load web-vitals:', error)
-    // })
+    import('web-vitals').then(({ onCLS, onLCP, onTTFB, onINP }) => {
+      onCLS(this.handleWebVital.bind(this))
+      onLCP(this.handleWebVital.bind(this))
+      onTTFB(this.handleWebVital.bind(this))
+      onINP(this.handleWebVital.bind(this))
+    }).catch(error => {
+      console.warn('Failed to load web-vitals:', error)
+    })
   }
 
   private handleWebVital = (metric: any): void => {
