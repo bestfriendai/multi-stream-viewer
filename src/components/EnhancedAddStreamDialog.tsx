@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { useTwitchAutosuggest } from '@/hooks/useTwitchAutosuggest'
 import { useStreamStore } from '@/store/streamStore'
+import { useSubscription } from '@/hooks/useSubscription'
 import { cn } from '@/lib/utils'
 
 interface EnhancedAddStreamDialogProps {
@@ -31,13 +32,14 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
   const [isAddingBulk, setIsAddingBulk] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const { addStream, setGridLayout } = useStreamStore()
+  const { subscription } = useSubscription()
   
   const { suggestions, loading } = useTwitchAutosuggest(channelInput, {
     enabled: open && channelInput.length > 0
   })
 
   const handleAddStream = async (input: string) => {
-    const success = await addStream(input)
+    const success = await addStream(input, subscription)
     if (success) {
       setChannelInput('')
       onOpenChange(false)
@@ -62,7 +64,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
           const topStreams = data.streams.slice(0, 4)
           for (const stream of topStreams) {
             if (stream.user_login) {
-              await addStream(stream.user_login)
+              await addStream(stream.user_login, subscription)
             }
           }
           // Set layout to 2x2
@@ -96,7 +98,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
           
           for (const stream of randomStreams) {
             if (stream.user_login) {
-              await addStream(stream.user_login)
+              await addStream(stream.user_login, subscription)
             }
           }
           // Set layout to 2x2

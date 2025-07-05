@@ -1,48 +1,24 @@
 #!/bin/bash
 
-# Script to properly set up Vercel environment variables
-echo "Setting up Vercel environment variables..."
+# Setup script for Vercel environment variables
+# This script will configure all necessary environment variables for the Stripe integration
 
-# Remove existing variables to start fresh
-echo "Removing existing variables..."
-vercel env rm TWITCH_CLIENT_ID production --yes 2>/dev/null
-vercel env rm TWITCH_CLIENT_ID preview --yes 2>/dev/null
-vercel env rm TWITCH_CLIENT_ID development --yes 2>/dev/null
-vercel env rm TWITCH_CLIENT_SECRET production --yes 2>/dev/null
-vercel env rm TWITCH_CLIENT_SECRET preview --yes 2>/dev/null
-vercel env rm TWITCH_CLIENT_SECRET development --yes 2>/dev/null
-vercel env rm TWITCH_REDIRECT_URI production --yes 2>/dev/null
-vercel env rm TWITCH_REDIRECT_URI preview --yes 2>/dev/null
-vercel env rm TWITCH_REDIRECT_URI development --yes 2>/dev/null
-vercel env rm NEXT_PUBLIC_APP_URL production --yes 2>/dev/null
-vercel env rm NEXT_PUBLIC_APP_URL preview --yes 2>/dev/null
-vercel env rm NEXT_PUBLIC_APP_URL development --yes 2>/dev/null
+echo "Setting up Vercel environment variables for Stripe integration..."
 
-sleep 2
+# Add Stripe Live Keys
+echo "Adding Stripe secret key..."
+echo "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" | vercel env add STRIPE_SECRET_KEY production
 
-# Add variables without newlines
-echo "Adding TWITCH_CLIENT_ID..."
-echo -n "840q0uzqa2ny9oob3yp8ako6dqs31g" | vercel env add TWITCH_CLIENT_ID production
-echo -n "840q0uzqa2ny9oob3yp8ako6dqs31g" | vercel env add TWITCH_CLIENT_ID preview
-echo -n "840q0uzqa2ny9oob3yp8ako6dqs31g" | vercel env add TWITCH_CLIENT_ID development
+echo "Adding Stripe publishable key..."
+echo "pk_live_51NwE4bKUMGTMjCZ42N3dkwkTg8hT9Q8noE02a77VtJeNcrYCc9Rks7FIYjYRwugESEtXJ4SnRKeFNreVXVS1rkx200Ug4AODfn" | vercel env add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY production
 
-echo "Adding TWITCH_CLIENT_SECRET..."
-echo -n "6359is1cljkasakhaobken9r0shohc" | vercel env add TWITCH_CLIENT_SECRET production
-echo -n "6359is1cljkasakhaobken9r0shohc" | vercel env add TWITCH_CLIENT_SECRET preview
-echo -n "6359is1cljkasakhaobken9r0shohc" | vercel env add TWITCH_CLIENT_SECRET development
+echo "Adding Stripe webhook secret..."
+echo "whsec_c8610e66da2867273ff4fed7122245b964780b09381999f3aafea23e7a3a9aa3" | vercel env add STRIPE_WEBHOOK_SECRET production
 
-echo "Adding TWITCH_REDIRECT_URI..."
-echo -n "https://streamyyy.com/auth/twitch/callback" | vercel env add TWITCH_REDIRECT_URI production
-echo -n "https://streamyyy.com/auth/twitch/callback" | vercel env add TWITCH_REDIRECT_URI preview
-echo -n "http://localhost:3000/auth/twitch/callback" | vercel env add TWITCH_REDIRECT_URI development
-
-echo "Adding NEXT_PUBLIC_APP_URL..."
-echo -n "https://streamyyy.com" | vercel env add NEXT_PUBLIC_APP_URL production
-echo -n "https://streamyyy.com" | vercel env add NEXT_PUBLIC_APP_URL preview
-echo -n "http://localhost:3000" | vercel env add NEXT_PUBLIC_APP_URL development
-
-echo "Environment variables set up successfully!"
-echo "Deploying to production..."
-vercel --prod --force
-
-echo "Done! The Twitch integration should now be working."
+echo "Vercel environment variables configured successfully!"
+echo ""
+echo "Important: You will need to:"
+echo "1. Configure your Stripe webhook endpoint in the Stripe Dashboard"
+echo "2. Point the webhook to: https://streamyyy.com/api/stripe/webhook"
+echo "3. Enable these events: customer.subscription.created, customer.subscription.updated, customer.subscription.deleted, checkout.session.completed"
+echo "4. Update your Supabase products table with actual Stripe product/price IDs"

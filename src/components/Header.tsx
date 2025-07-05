@@ -18,7 +18,8 @@ import {
   BookmarkPlus,
   MoreVertical,
   LogIn,
-  X
+  X,
+  Crown
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from './theme-toggle'
@@ -227,6 +228,19 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     >
                       <Zap className="h-4 w-4" />
                       <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">AMP</span>
+                    </Button>
+                  </motion.div>
+                </Link>
+
+                <Link href="/pricing">
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-3 text-purple-600 hover:bg-purple-500/10"
+                    >
+                      <Crown className="h-4 w-4" />
+                      <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">Pricing</span>
                     </Button>
                   </motion.div>
                 </Link>

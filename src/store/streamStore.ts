@@ -4,6 +4,7 @@ import { immer } from 'zustand/middleware/immer'
 import { parseStreamInput } from '@/lib/streamParser'
 import { filterSponsoredStreams, isSponsoredStream } from '@/lib/sponsoredStreams'
 import { muteManager } from '@/lib/muteManager'
+import { getStreamLimit } from '@/lib/subscription'
 import type { 
   Stream, 
   StreamStore, 
@@ -12,6 +13,7 @@ import type {
   Quality,
   StreamEvent 
 } from '@/types/stream'
+import type { Subscription } from '@/lib/subscription'
 import { createStreamError, ERROR_CODES } from '@/types/errors'
 
 // Performance optimization: Calculate next position (exclude sponsored streams)
@@ -84,7 +86,7 @@ export const useStreamStore = create<StreamStore>()(
           error: null,
           
           // Actions with proper error handling and validation
-          addStream: async (input: StreamInput | string): Promise<boolean> => {
+          addStream: async (input: StreamInput | string, subscription?: Subscription | null): Promise<boolean> => {
             try {
               set((state) => {
                 state.isLoading = true
@@ -121,6 +123,21 @@ export const useStreamStore = create<StreamStore>()(
                   ERROR_CODES.STREAM_INVALID_URL,
                   'Stream already exists',
                   { channelName: streamInput.channelName, platform: streamInput.platform }
+                )
+                set((state) => {
+                  state.error = error.message
+                  state.isLoading = false
+                })
+                return false
+              }
+
+              // Check subscription-based stream limits
+              const streamLimit = getStreamLimit(subscription || null)
+              if (userStreams.length >= streamLimit) {
+                const error = createStreamError(
+                  ERROR_CODES.STREAM_LIMIT_EXCEEDED,
+                  `Stream limit reached. ${subscription ? `Your ${subscription.product_name} plan allows up to ${streamLimit} streams.` : `Free users can add up to ${streamLimit} streams. Upgrade for more.`}`,
+                  { limit: streamLimit, current: userStreams.length }
                 )
                 set((state) => {
                   state.error = error.message

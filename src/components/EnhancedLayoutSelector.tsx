@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import { useStreamStore } from '@/store/streamStore'
+import { useSubscription } from '@/hooks/useSubscription'
 import { Button } from '@/components/ui/button'
 import { 
   DropdownMenu,
@@ -139,11 +140,21 @@ interface EnhancedLayoutSelectorProps {
 
 export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayoutSelectorProps) {
   const { gridLayout, setGridLayout, streams } = useStreamStore()
+  const { hasFeature } = useSubscription()
   const [isOpen, setIsOpen] = useState(false)
 
   const currentLayout = layoutOptions.find(layout => layout.id === gridLayout) || layoutOptions[0]!
 
   const handleLayoutChange = (layoutId: GridLayout) => {
+    const layout = layoutOptions.find(l => l.id === layoutId)
+    
+    // Check if layout requires Pro and user doesn't have it
+    if (layout?.isPro && !hasFeature('custom_layouts')) {
+      // Could redirect to pricing page or show upgrade modal
+      console.log('Pro feature required for custom layouts')
+      return
+    }
+    
     console.log('🎛️ Layout selector: Changing from', gridLayout, 'to', layoutId, '| Mobile:', mobile, '| Streams:', streams.length)
     setGridLayout(layoutId)
     setIsOpen(false)
@@ -192,7 +203,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
             {layoutOptions.slice(0, 8).map((layout) => {
               const Icon = layout.icon
               const isActive = gridLayout === layout.id
-              const isDisabled = layout.isPro && streams.length === 0
+              const isDisabled = layout.isPro && !hasFeature('custom_layouts')
               
               return (
                 <DropdownMenuItem
@@ -260,7 +271,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
           {layoutOptions.map((layout) => {
             const Icon = layout.icon
             const isActive = gridLayout === layout.id
-            const isDisabled = layout.isPro && streams.length === 0
+            const isDisabled = layout.isPro && !hasFeature('custom_layouts')
             
             return (
               <motion.div

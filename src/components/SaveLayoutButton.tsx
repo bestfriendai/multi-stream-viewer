@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { useSavedLayouts } from '@/hooks/useSupabaseData'
-import { Save } from 'lucide-react'
+import { useSubscription } from '@/hooks/useSubscription'
+import { Save, Star } from 'lucide-react'
 import { toast } from 'sonner'
+import Link from 'next/link'
 
 interface SaveLayoutButtonProps {
   currentLayout: any
@@ -16,6 +18,7 @@ interface SaveLayoutButtonProps {
 
 export function SaveLayoutButton({ currentLayout, className }: SaveLayoutButtonProps) {
   const { isSignedIn } = useAuth()
+  const { hasFeature } = useSubscription()
   const { saveLayout } = useSavedLayouts()
   const [isOpen, setIsOpen] = useState(false)
   const [layoutName, setLayoutName] = useState('')
@@ -56,6 +59,21 @@ export function SaveLayoutButton({ currentLayout, className }: SaveLayoutButtonP
         <Save className="h-4 w-4 mr-2" />
         Sign in to save layouts
       </Button>
+    )
+  }
+
+  if (!hasFeature('custom_layouts')) {
+    return (
+      <Link href="/pricing">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className={className}
+        >
+          <Star className="h-4 w-4 mr-2" />
+          Upgrade to save layouts
+        </Button>
+      </Link>
     )
   }
 

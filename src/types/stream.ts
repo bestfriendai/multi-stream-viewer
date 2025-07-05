@@ -1,4 +1,5 @@
 // Modern TypeScript types with strict typing for 2025
+import type { Subscription } from '@/lib/subscription'
 
 export const PLATFORMS = ['twitch', 'youtube', 'rumble'] as const;
 export type Platform = typeof PLATFORMS[number];
@@ -47,9 +48,9 @@ export interface StreamState {
   readonly error: string | null;
 }
 
-// Stream store actions interface
+// Stream store actions interface  
 export interface StreamActions {
-  addStream: (input: StreamInput | string) => Promise<boolean>;
+  addStream: (input: StreamInput | string, subscription?: Subscription | null) => Promise<boolean>;
   removeStream: (streamId: string) => void;
   setStreamQuality: (streamId: string, quality: Quality) => void;
   setStreamVolume: (streamId: string, volume: number) => void;
