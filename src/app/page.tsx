@@ -173,7 +173,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-background" {...(isMobile ? streamGestures.handlers : {})}>
+    <div className="flex flex-col min-h-screen bg-background" {...(isMobile ? streamGestures.handlers : {})}>
       <SEOSchema faqs={faqItems} type="WebApplication" />
       <SEOContent 
         keywords={[
@@ -240,7 +240,7 @@ export default function Home() {
         "flex-1 flex",
         "pb-16 md:pb-0", // Add padding for mobile nav
         "overflow-auto md:overflow-hidden", // Allow scrolling on mobile, hidden on desktop
-        "md:h-full" // Full height on desktop
+        "relative" // Relative positioning for proper layout
       )}>
         <main className="flex-1 overflow-auto md:overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">

@@ -9,13 +9,6 @@ import { Github, Twitter, MessageCircle, Mail } from 'lucide-react';
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const pathname = usePathname();
-  
-  // Hide footer on main stream viewer page to prevent scrolling interference
-  const isMainStreamPage = pathname === '/';
-  
-  if (isMainStreamPage) {
-    return null;
-  }
 
   return (
     <footer className="border-t border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mt-auto">
@@ -28,87 +21,61 @@ export default function Footer() {
               The ultimate multi-stream viewing platform. Watch multiple live streams simultaneously 
               and discover new content across all your favorite streaming platforms.
             </p>
-            <div className="flex space-x-4">
-              <Link 
-                href="https://twitter.com/streamyyy" 
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="Follow us on Twitter"
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Mail size={16} />
+              <a 
+                href="mailto:contact@streamyyy.com" 
+                className="hover:text-primary transition-colors"
               >
-                <Twitter size={20} />
-              </Link>
-              <Link 
-                href="https://github.com/streamyyy" 
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="View our GitHub"
-              >
-                <Github size={20} />
-              </Link>
-              <Link 
-                href="https://discord.gg/streamyyy" 
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="Join our Discord"
-              >
-                <MessageCircle size={20} />
-              </Link>
-              <Link 
-                href="mailto:support@streamyyy.com" 
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="Contact us via email"
-              >
-                <Mail size={20} />
-              </Link>
+                contact@streamyyy.com
+              </a>
             </div>
           </div>
 
-          {/* Features */}
+          {/* Legal */}
           <div>
-            <h3 className="font-semibold mb-4">Features</h3>
+            <h3 className="font-semibold mb-4">Legal</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link href="/multi-view" className="hover:text-primary transition-colors">
-                  Multi-Stream View
+                <Link href="/terms" className="hover:text-primary transition-colors">
+                  Terms of Service
                 </Link>
               </li>
               <li>
-                <Link href="/browse" className="hover:text-primary transition-colors">
-                  Stream Discovery
+                <Link href="/privacy" className="hover:text-primary transition-colors">
+                  Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/favorites" className="hover:text-primary transition-colors">
-                  Favorites Management
+                <Link href="/cookies" className="hover:text-primary transition-colors">
+                  Cookie Policy
                 </Link>
               </li>
               <li>
-                <Link href="/layouts" className="hover:text-primary transition-colors">
-                  Custom Layouts
+                <Link href="/dmca" className="hover:text-primary transition-colors">
+                  DMCA Policy
                 </Link>
               </li>
               <li>
-                <Link href="/chat" className="hover:text-primary transition-colors">
-                  Live Chat Integration
+                <Link href="/compliance" className="hover:text-primary transition-colors">
+                  Compliance
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-primary transition-colors">
-                  Streaming Blog
+                <Link href="/accessibility" className="hover:text-primary transition-colors">
+                  Accessibility
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Support */}
+          {/* Company */}
           <div>
-            <h3 className="font-semibold mb-4">Support</h3>
+            <h3 className="font-semibold mb-4">Company</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link href="/support" className="hover:text-primary transition-colors">
-                  Help Center
-                </Link>
-              </li>
-              <li>
-                <Link href="/api/docs" className="hover:text-primary transition-colors">
-                  API Documentation
+                <Link href="/about" className="hover:text-primary transition-colors">
+                  About Us
                 </Link>
               </li>
               <li>
@@ -117,18 +84,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-primary transition-colors">
-                  About Us
+                <Link href="/blog" className="hover:text-primary transition-colors">
+                  Blog
                 </Link>
               </li>
               <li>
-                <Link href="/feedback" className="hover:text-primary transition-colors">
-                  Send Feedback
-                </Link>
-              </li>
-              <li>
-                <Link href="/status" className="hover:text-primary transition-colors">
-                  Service Status
+                <Link href="/advertise" className="hover:text-primary transition-colors">
+                  Advertise
                 </Link>
               </li>
             </ul>
@@ -140,17 +102,17 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm text-muted-foreground">
             <p>&copy; {currentYear} Streamyyy.com. All rights reserved.</p>
             <div className="flex space-x-4">
-              <Link href="/privacy-policy" className="hover:text-primary transition-colors">
-                Privacy Policy
+              <Link href="/terms" className="hover:text-primary transition-colors">
+                Terms
               </Link>
-              <Link href="/terms-conditions" className="hover:text-primary transition-colors">
-                Terms & Conditions
+              <Link href="/privacy" className="hover:text-primary transition-colors">
+                Privacy
               </Link>
-              <Link href="/cookie-policy" className="hover:text-primary transition-colors">
-                Cookie Policy
+              <Link href="/cookies" className="hover:text-primary transition-colors">
+                Cookies
               </Link>
-              <Link href="/dmca-policy" className="hover:text-primary transition-colors">
-                DMCA Policy
+              <Link href="/dmca" className="hover:text-primary transition-colors">
+                DMCA
               </Link>
             </div>
           </div>

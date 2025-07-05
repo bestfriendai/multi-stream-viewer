@@ -143,6 +143,21 @@ export const useStreamStore = create<StreamStore>()(
                 }
               })
               
+              // After adding the stream, check if we need to unmute based on viewer count
+              // This is done outside the immer update to avoid issues with async operations
+              setTimeout(() => {
+                const { streams } = get()
+                const userStreams = filterSponsoredStreams([...streams])
+                
+                // Only proceed if this is the first stream or all streams are muted
+                const allMuted = userStreams.every(s => muteManager.getMuteState(s.id))
+                if (userStreams.length > 0 && allMuted) {
+                  // For now, unmute the first stream added if all are muted
+                  // In the future, this will be based on viewer count when that data is available
+                  muteManager.toggleMute(userStreams[0]!.id)
+                }
+              }, 100)
+              
               // Track analytics
               trackEvent({
                 type: 'stream_added',
