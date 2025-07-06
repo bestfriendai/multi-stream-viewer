@@ -82,8 +82,15 @@ export async function POST(request: NextRequest) {
         .eq('id', profile.id);
     }
 
+    // Validate required environment variables
+    if (!process.env.NEXT_PUBLIC_APP_URL) {
+      console.error('❌ NEXT_PUBLIC_APP_URL not configured');
+      return NextResponse.json({ error: 'App URL not configured' }, { status: 500 });
+    }
+
+    console.log('🏪 Creating Stripe checkout session...', { priceId, customerId, productId });
+    
     // Create checkout session
-    console.log('🏪 Creating Stripe checkout session...');
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       payment_method_types: ['card'],
@@ -96,6 +103,15 @@ export async function POST(request: NextRequest) {
       mode: 'subscription',
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
+      customer_creation: 'if_required',
+      billing_address_collection: 'auto',
+      allow_promotion_codes: true,
+      subscription_data: {
+        metadata: {
+          clerk_user_id: user.id,
+          product_id: productId,
+        },
+      },
       metadata: {
         clerk_user_id: user.id,
         product_id: productId,

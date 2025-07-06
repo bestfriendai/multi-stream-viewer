@@ -1,21 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-// Using test keys for safe testing - this will use the test key from your environment
-const testKey = process.env.STRIPE_SECRET_KEY?.replace('sk_live_', 'sk_test_') || 'sk_test_placeholder';
-const stripe = new Stripe(testKey, {
+// Use the real live Stripe key
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-06-30.basil'
 });
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🧪 TEST MODE: Creating checkout session with test data');
+    console.log('🧪 Creating checkout session with live Stripe');
     
-    // Test data - safe to use
+    // Live data for testing
     const testData = {
-      priceId: 'price_test_123', // Test price ID
-      productId: 'prod_test_123', // Test product ID
-      customerId: 'cus_test_123' // Test customer ID
+      priceId: 'price_live_test', // Will use price_data instead
+      productId: 'prod_live_test',
+      customerId: 'cus_live_test'
     };
 
     // Create checkout session with test data
@@ -41,7 +40,7 @@ export async function POST(request: NextRequest) {
       success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/test-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/test-cancel`,
       metadata: {
-        test_mode: 'true',
+        live_test_mode: 'true',
         product_id: testData.productId,
       },
     });
@@ -54,8 +53,8 @@ export async function POST(request: NextRequest) {
       success: true,
       url: session.url,
       sessionId: session.id,
-      testMode: true,
-      message: 'Test checkout session created successfully'
+      liveMode: true,
+      message: 'Live checkout session created successfully for testing'
     });
   } catch (error) {
     console.error('❌ TEST ERROR creating checkout session:', error);
@@ -64,7 +63,7 @@ export async function POST(request: NextRequest) {
         success: false,
         error: 'Failed to create test checkout session',
         details: error instanceof Error ? error.message : 'Unknown error',
-        testMode: true
+        liveMode: true
       },
       { status: 500 }
     );
@@ -73,9 +72,9 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   return NextResponse.json({
-    message: 'Stripe Test Checkout Session API',
-    status: 'Ready for testing',
-    testMode: true,
-    note: 'This endpoint is for testing only'
+    message: 'Stripe Live Checkout Session API',
+    status: 'Ready for live testing',
+    liveMode: true,
+    note: 'This endpoint uses live Stripe keys for testing'
   });
 }
