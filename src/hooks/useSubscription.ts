@@ -29,6 +29,18 @@ export function useSubscription() {
     try {
       setLoading(true);
       setError(null);
+      
+      // First, trigger auto-sync to ensure data is up to date
+      try {
+        await fetch('/api/stripe/auto-sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ force: false }) // Auto-sync only if needed
+        });
+      } catch (syncError) {
+        console.warn('Auto-sync failed, continuing with existing data:', syncError);
+      }
+      
       const sub = await getUserSubscription(user.id);
       setSubscription(sub);
     } catch (err) {
@@ -41,6 +53,34 @@ export function useSubscription() {
 
   const refetch = () => {
     fetchSubscription();
+  };
+
+  const forceSync = async () => {
+    if (!user) return;
+    
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Force sync with Stripe
+      const syncResponse = await fetch('/api/stripe/auto-sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ force: true })
+      });
+      
+      if (!syncResponse.ok) {
+        throw new Error('Failed to sync subscription data');
+      }
+      
+      // Refetch subscription after sync
+      await fetchSubscription();
+      
+    } catch (err) {
+      console.error('Error forcing sync:', err);
+      setError('Failed to sync subscription data');
+      setLoading(false);
+    }
   };
 
   // Helper functions
@@ -57,6 +97,7 @@ export function useSubscription() {
     loading,
     error,
     refetch,
+    forceSync,
     isSubscribed,
     isPro,
     isPremium,

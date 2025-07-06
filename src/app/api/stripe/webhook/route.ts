@@ -79,6 +79,7 @@ export async function POST(request: NextRequest) {
           trial_end: (subscription as any).trial_end ? new Date((subscription as any).trial_end * 1000).toISOString() : null,
         };
 
+        // Update or insert subscription record
         if (event.type === 'customer.subscription.created') {
           await supabase.from('subscriptions').insert(subscriptionData);
         } else {
@@ -86,6 +87,55 @@ export async function POST(request: NextRequest) {
             .from('subscriptions')
             .update(subscriptionData)
             .eq('stripe_subscription_id', subscription.id);
+        }
+
+        // Update profile with subscription status
+        const profileUpdateData: any = {
+          stripe_subscription_id: subscription.id,
+          updated_at: new Date().toISOString()
+        };
+
+        // Determine subscription status and tier
+        if (subscription.status === 'active') {
+          profileUpdateData.subscription_status = 'active';
+          profileUpdateData.subscription_expires_at = new Date(subscription.current_period_end * 1000).toISOString();
+          
+          // Get product details to determine tier
+          const { data: productDetails } = await supabase
+            .from('products')
+            .select('name, tier')
+            .eq('id', product.id)
+            .single();
+          
+          if (productDetails) {
+            profileUpdateData.subscription_tier = productDetails.tier || 'pro';
+          } else {
+            // Fallback: determine tier from product name or price
+            profileUpdateData.subscription_tier = 'pro';
+          }
+        } else if (subscription.status === 'canceled' || subscription.status === 'incomplete_expired') {
+          profileUpdateData.subscription_status = 'canceled';
+          profileUpdateData.subscription_tier = 'free';
+          profileUpdateData.subscription_expires_at = null;
+        } else if (subscription.status === 'past_due') {
+          profileUpdateData.subscription_status = 'past_due';
+          // Keep current tier but mark as past due
+        } else {
+          profileUpdateData.subscription_status = 'inactive';
+          profileUpdateData.subscription_tier = 'free';
+          profileUpdateData.subscription_expires_at = null;
+        }
+
+        // Update the profile
+        const { error: profileUpdateError } = await supabase
+          .from('profiles')
+          .update(profileUpdateData)
+          .eq('id', profile.id);
+
+        if (profileUpdateError) {
+          console.error('Error updating profile subscription status:', profileUpdateError);
+        } else {
+          console.log(`Profile updated for user ${profile.id}: ${profileUpdateData.subscription_status}`);
         }
 
         break;

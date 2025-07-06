@@ -101,7 +101,7 @@ class StripeService {
           quantity: 1,
         },
       ],
-      success_url: params.successUrl || `${baseUrl}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: params.successUrl || `${baseUrl}/?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: params.cancelUrl || `${baseUrl}/pricing`,
       
       // Modern features
