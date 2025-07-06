@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Check, Star, Zap, Crown } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase';
 import Header from '@/components/Header';
 
 interface Product {
@@ -46,7 +46,6 @@ export default function PricingPage() {
 
   const fetchProducts = async () => {
     try {
-      const supabase = createClient();
       const { data, error } = await supabase
         .from('products')
         .select('*')
@@ -66,31 +65,13 @@ export default function PricingPage() {
     if (!user) return;
 
     try {
-      const supabase = createClient();
-      
-      // First get the user profile to get the UUID
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('clerk_user_id', user.id)
-        .single();
-
-      if (profileError) {
-        console.error('Error fetching profile:', profileError);
-        return;
+      // Use API route to fetch subscription instead of direct Supabase call
+      const response = await fetch('/api/subscription/get-active');
+      if (!response.ok) {
+        throw new Error('Failed to fetch subscription');
       }
-
-      if (!profile) {
-        console.log('No profile found for user');
-        return;
-      }
-
-      // Now get the subscription using the profile UUID
-      const { data, error } = await supabase
-        .rpc('get_active_subscription', { user_uuid: profile.id });
-
-      if (error) throw error;
-      setSubscription(data?.[0] || null);
+      const data = await response.json();
+      setSubscription(data.subscription);
     } catch (error) {
       console.error('Error fetching subscription:', error);
     }
