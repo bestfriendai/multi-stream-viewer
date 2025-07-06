@@ -90,7 +90,7 @@ export default function PricingPage() {
         ? product.stripe_price_monthly_id 
         : product.stripe_price_yearly_id;
 
-      const response = await fetch('/api/stripe/create-checkout-session', {
+      const response = await fetch('/api/stripe/checkout/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export default function PricingPage() {
 
   const handleManageSubscription = async () => {
     try {
-      const response = await fetch('/api/stripe/create-portal-session', {
+      const response = await fetch('/api/stripe/portal/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

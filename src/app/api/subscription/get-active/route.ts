@@ -32,16 +32,27 @@ export async function GET() {
       return NextResponse.json({ subscription: null });
     }
 
-    // Now get the subscription using the profile UUID
-    const { data, error } = await supabase
-      .rpc('get_active_subscription', { user_uuid: profile.id });
+    // Now get the active subscription using the profile UUID
+    const { data: subscriptions, error: subscriptionError } = await supabase
+      .from('subscriptions')
+      .select(`
+        id,
+        status,
+        product_name,
+        current_period_end,
+        cancel_at_period_end
+      `)
+      .eq('user_id', profile.id)
+      .in('status', ['active', 'trialing'])
+      .order('created_at', { ascending: false })
+      .limit(1);
 
-    if (error) {
-      console.error('Error fetching subscription:', error);
+    if (subscriptionError) {
+      console.error('Error fetching subscription:', subscriptionError);
       return NextResponse.json({ error: 'Database error' }, { status: 500 });
     }
 
-    return NextResponse.json({ subscription: data?.[0] || null });
+    return NextResponse.json({ subscription: subscriptions?.[0] || null });
   } catch (error) {
     console.error('Error fetching active subscription:', error);
     return NextResponse.json(
