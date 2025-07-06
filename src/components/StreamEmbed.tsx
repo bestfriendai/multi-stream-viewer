@@ -70,10 +70,11 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
             layout: 'video',
             theme: 'dark',
             allowfullscreen: true,
+            controls: false, // Disable native controls, use custom UI
             // Mobile-specific optimizations
             ...(isMobileDevice() && {
               quality: 'auto',
-              controls: true
+              controls: false // Disable native controls, use custom UI
             })
           })
           
@@ -255,10 +256,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
     <div className="relative w-full h-full group rounded-2xl overflow-hidden bg-black transform-gpu">
       {/* Properly sized embed container */}
       <div 
-        className={cn(
-          "w-full h-full rounded-2xl overflow-hidden relative stream-embed-container",
-          isMobileDevice() ? "mobile-stream-embed" : ""
-        )}
+        className="w-full h-full rounded-2xl overflow-hidden relative stream-embed-container"
       >
         <div 
           ref={embedRef} 
@@ -300,7 +298,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
           onRemove={() => removeStream(stream.id)}
         />
       ) : (
-        <div className="absolute top-0 right-0 p-2 sm:p-3 opacity-0 group-hover:opacity-100 transition-all duration-200">
+        <div className="absolute top-0 right-0 p-2 sm:p-3 opacity-100 group-hover:opacity-100 transition-all duration-200 z-20">
           <div className="flex gap-1.5 sm:gap-2">
             <button
               onClick={(e) => {

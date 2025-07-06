@@ -63,12 +63,15 @@ const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: bool
       if (count <= 16) return { cols: 4, rows: 4, class: 'mosaic-grid grid-cols-4' }
       return { cols: 4, rows: Math.ceil(count / 4), class: 'mosaic-grid grid-cols-4' }
     
+    case 'stacked':
+      return { cols: 1, rows: count, class: 'stacked-layout' }
+
     case 'focus':
       return { cols: 0, rows: 0, class: 'focus-layout' }
-    
+
     case 'pip':
       return { cols: 0, rows: 0, class: 'pip-layout' }
-    
+
     case 'custom':
       return { cols: 0, rows: 0, class: 'custom-layout' }
     
@@ -590,12 +593,17 @@ const StreamGrid: React.FC = React.memo(() => {
           console.log('🎯 Rendering pip layout')
           return renderPipLayout()
         }
-        
+
+        if (gridLayout === 'stacked') {
+          console.log('🎯 Rendering stacked layout')
+          return renderGridLayout()
+        }
+
         if (gridLayout === 'mosaic') {
           console.log('🎯 Rendering mosaic layout (special grid)')
           return renderGridLayout() // Mosaic uses special CSS classes in renderGridLayout
         }
-        
+
         console.log('🎯 Rendering standard grid layout')
         return renderGridLayout()
       })()}

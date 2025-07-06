@@ -18,6 +18,7 @@ class MuteManager {
   private muteStates: MuteState = new Map()
   private playerRefs: Map<string, PlayerRef> = new Map()
   private listeners: MuteListener[] = []
+  private muteEnforcementInterval: NodeJS.Timeout | null = null
   
   // Singleton pattern
   static getInstance(): MuteManager {
@@ -41,57 +42,208 @@ class MuteManager {
           console.error('Failed to load mute states:', e)
         }
       }
+
+      // Start mute enforcement for better ad handling
+      this.startMuteEnforcement()
     }
   }
+
+  // Start periodic mute enforcement to handle ad state changes
+  private startMuteEnforcement() {
+    if (this.muteEnforcementInterval) return
+
+    this.muteEnforcementInterval = setInterval(() => {
+      this.enforceMuteStates()
+    }, 2000) // Check every 2 seconds
+  }
+
+  // Enforce current mute states on all players
+  private enforceMuteStates() {
+    // First, ensure only one stream is unmuted
+    this.enforceOnlyOneUnmuted()
+
+    // Then enforce mute states on all players
+    this.muteStates.forEach((muted, streamId) => {
+      if (muted) { // Only enforce muted state to avoid unmuting accidentally
+        const player = this.playerRefs.get(streamId)
+        if (player && player.platform === 'twitch') {
+          try {
+            if (player.ref?.setMuted) {
+              player.ref.setMuted(true)
+            }
+            if (player.ref?.setVolume) {
+              player.ref.setVolume(0)
+            }
+          } catch (error) {
+            // Silently handle enforcement errors
+          }
+        }
+      }
+    })
+  }
+
+  // Stop mute enforcement
+  private stopMuteEnforcement() {
+    if (this.muteEnforcementInterval) {
+      clearInterval(this.muteEnforcementInterval)
+      this.muteEnforcementInterval = null
+    }
+  }
+
   
   // Register a player reference for a stream
   registerPlayer(streamId: string, playerRef: PlayerRef, platform: string) {
     this.playerRefs.set(streamId, { ref: playerRef, platform })
-    
+
+    // Ensure only one stream is unmuted when registering new players
+    this.enforceOnlyOneUnmuted()
+
     // Apply current mute state if exists
     const currentMuted = this.getMuteState(streamId)
     this.applyMuteToPlayer(streamId, currentMuted, platform, playerRef)
+
+    // Set up platform-specific event listeners for state changes
+    if (platform === 'twitch' && playerRef?.addEventListener) {
+      this.setupTwitchEventListeners(streamId, playerRef)
+    }
+
+    // Double-check mute state after a short delay to handle race conditions
+    setTimeout(() => {
+      const finalMuted = this.getMuteState(streamId)
+      this.applyMuteToPlayer(streamId, finalMuted, platform, playerRef)
+    }, 100)
+  }
+
+  // Setup Twitch player event listeners for better mute control
+  private setupTwitchEventListeners(streamId: string, playerRef: any) {
+    if (!playerRef?.addEventListener) return
+
+    try {
+      // Listen for ad events and re-apply mute state
+      if (typeof window !== 'undefined' && window.Twitch?.Player) {
+        // Ad start event
+        playerRef.addEventListener(window.Twitch.Player.PLAY, () => {
+          const currentMuted = this.getMuteState(streamId)
+          // Always re-apply our mute state to override any native control changes
+          setTimeout(() => {
+            this.applyMuteToPlayer(streamId, currentMuted, 'twitch', playerRef)
+          }, 100)
+        })
+
+        // Video ready event (after ads)
+        playerRef.addEventListener(window.Twitch.Player.READY, () => {
+          const currentMuted = this.getMuteState(streamId)
+          this.applyMuteToPlayer(streamId, currentMuted, 'twitch', playerRef)
+        })
+
+        // Online/offline state changes
+        playerRef.addEventListener(window.Twitch.Player.ONLINE, () => {
+          const currentMuted = this.getMuteState(streamId)
+          this.applyMuteToPlayer(streamId, currentMuted, 'twitch', playerRef)
+        })
+
+        // Listen for any volume/mute changes from native controls and override them
+        if (playerRef.addEventListener) {
+          // Override any native mute state changes
+          const originalSetMuted = playerRef.setMuted
+          if (originalSetMuted) {
+            playerRef.setMuted = (muted: boolean) => {
+              // Only allow our mute manager to control mute state
+              const ourMuteState = this.getMuteState(streamId)
+              originalSetMuted.call(playerRef, ourMuteState)
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to setup Twitch event listeners:', error)
+    }
   }
   
   // Unregister player on cleanup
   unregisterPlayer(streamId: string) {
     this.playerRefs.delete(streamId)
+
+    // Stop enforcement if no players remain
+    if (this.playerRefs.size === 0 && this.muteEnforcementInterval) {
+      clearInterval(this.muteEnforcementInterval)
+      this.muteEnforcementInterval = null
+    }
   }
   
   // Get mute state for a stream
   getMuteState(streamId: string): boolean {
     return this.muteStates.get(streamId) ?? true // Default to muted
   }
+
+  // Force all streams to be muted except one
+  setOnlyUnmuted(streamId: string) {
+    // Mute all streams first
+    this.muteStates.forEach((_, id) => {
+      if (id !== streamId) {
+        this.muteStates.set(id, true)
+        this.applyMuteToStream(id, true)
+        this.notifyListeners(id, true)
+      }
+    })
+
+    // Unmute the target stream
+    this.muteStates.set(streamId, false)
+    this.applyMuteToStream(streamId, false)
+    this.notifyListeners(streamId, false)
+
+    // Save states
+    this.saveStates()
+  }
+
+  // Ensure only one stream is unmuted at any time
+  enforceOnlyOneUnmuted() {
+    const unmutedStreams = Array.from(this.muteStates.entries())
+      .filter(([_, muted]) => !muted)
+      .map(([id, _]) => id)
+
+    if (unmutedStreams.length > 1) {
+      // Keep the first unmuted stream, mute the rest
+      const keepUnmuted = unmutedStreams[0]
+      unmutedStreams.slice(1).forEach(streamId => {
+        this.muteStates.set(streamId, true)
+        this.applyMuteToStream(streamId, true)
+        this.notifyListeners(streamId, true)
+      })
+      this.saveStates()
+    }
+  }
   
   // Toggle mute for a stream
   toggleMute(streamId: string): boolean {
     const currentMuted = this.getMuteState(streamId)
     const newMuted = !currentMuted
-    
-    // Update state
-    this.muteStates.set(streamId, newMuted)
-    
-    // If unmuting this stream, mute all others
+
     if (!newMuted) {
-      this.muteStates.forEach((_, id) => {
-        if (id !== streamId) {
-          this.muteStates.set(id, true)
-          this.applyMuteToStream(id, true)
-          // Notify listeners for the muted streams
-          this.notifyListeners(id, true)
-        }
-      })
+      // If unmuting, use the dedicated method to ensure only this stream is unmuted
+      this.setOnlyUnmuted(streamId)
+    } else {
+      // If muting, just mute this stream
+      this.muteStates.set(streamId, true)
+      this.applyMuteToStream(streamId, true)
+
+      // Add immediate enforcement for muted streams to handle ad states
+      setTimeout(() => {
+        this.applyMuteToStream(streamId, true)
+      }, 100)
+      setTimeout(() => {
+        this.applyMuteToStream(streamId, true)
+      }, 500)
+
+      this.notifyListeners(streamId, true)
+      this.saveStates()
     }
-    
-    // Apply to player
-    this.applyMuteToStream(streamId, newMuted)
-    
-    // Notify listeners
-    this.notifyListeners(streamId, newMuted)
-    
-    // Save to localStorage
-    this.saveStates()
-    
+
+    // Always enforce only one unmuted stream
+    setTimeout(() => {
+      this.enforceOnlyOneUnmuted()
+    }, 50)
+
     return newMuted
   }
   
@@ -122,10 +274,76 @@ class MuteManager {
     }
   }
   
-  // Twitch mute control
+  // Twitch mute control with enhanced ad state handling
   private muteTwitchPlayer(playerRef: any, muted: boolean) {
-    if (playerRef?.setMuted) {
+    if (!playerRef?.setMuted) return
+
+    try {
+      // Primary mute control
       playerRef.setMuted(muted)
+
+      // Enhanced volume control for ad states and commercial breaks
+      if (playerRef.setVolume) {
+        if (muted) {
+          playerRef.setVolume(0)
+        } else {
+          // Restore to reasonable volume when unmuting
+          playerRef.setVolume(0.5)
+        }
+      }
+
+      // Force mute state with retry mechanism for ad transitions
+      if (muted) {
+        // Use setTimeout to re-apply mute after potential ad state changes
+        setTimeout(() => {
+          try {
+            if (playerRef.setMuted) {
+              playerRef.setMuted(true)
+            }
+            if (playerRef.setVolume) {
+              playerRef.setVolume(0)
+            }
+          } catch (retryError) {
+            console.warn('Twitch mute retry failed:', retryError)
+          }
+        }, 100)
+
+        // Additional retry for stubborn ad states
+        setTimeout(() => {
+          try {
+            if (playerRef.setMuted) {
+              playerRef.setMuted(true)
+            }
+            if (playerRef.setVolume) {
+              playerRef.setVolume(0)
+            }
+          } catch (retryError) {
+            console.warn('Twitch mute second retry failed:', retryError)
+          }
+        }, 500)
+      }
+
+    } catch (error) {
+      console.error('Twitch mute/volume control error:', error)
+      // Fallback: try just the basic mute with retries
+      this.retryTwitchMute(playerRef, muted, 3)
+    }
+  }
+
+  // Retry mechanism for stubborn Twitch mute states
+  private retryTwitchMute(playerRef: any, muted: boolean, retries: number) {
+    if (retries <= 0 || !playerRef?.setMuted) return
+
+    try {
+      playerRef.setMuted(muted)
+      if (muted && playerRef.setVolume) {
+        playerRef.setVolume(0)
+      }
+    } catch (error) {
+      console.warn(`Twitch mute retry ${4 - retries} failed:`, error)
+      setTimeout(() => {
+        this.retryTwitchMute(playerRef, muted, retries - 1)
+      }, 200 * (4 - retries)) // Exponential backoff
     }
   }
   
@@ -211,6 +429,17 @@ class MuteManager {
       states[id] = muted
     })
     return states
+  }
+
+  // Debug method to log current state
+  debugState() {
+    console.log('=== MuteManager Debug State ===')
+    console.log('Mute States:', this.getAllStates())
+    console.log('Registered Players:', Array.from(this.playerRefs.keys()))
+    console.log('Unmuted Streams:', Array.from(this.muteStates.entries())
+      .filter(([_, muted]) => !muted)
+      .map(([id, _]) => id))
+    console.log('===============================')
   }
 }
 
