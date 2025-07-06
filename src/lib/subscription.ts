@@ -28,29 +28,15 @@ export interface Product {
 
 export async function getUserSubscription(userId: string): Promise<Subscription | null> {
   try {
-    const supabase = createClient();
-
-    // Get user profile first
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('clerk_user_id', userId)
-      .single();
-
-    if (profileError || !profile) {
+    // Use API route instead of direct Supabase queries to avoid RLS issues
+    const response = await fetch('/api/subscription/get-active');
+    if (!response.ok) {
+      console.error('Failed to fetch subscription:', response.status);
       return null;
     }
-
-    // Get active subscription using the stored function
-    const { data, error } = await supabase
-      .rpc('get_active_subscription', { user_uuid: profile.id });
-
-    if (error) {
-      console.error('Error fetching subscription:', error);
-      return null;
-    }
-
-    return data?.[0] || null;
+    
+    const data = await response.json();
+    return data.subscription || null;
   } catch (error) {
     console.error('Error in getUserSubscription:', error);
     return null;
@@ -59,6 +45,7 @@ export async function getUserSubscription(userId: string): Promise<Subscription 
 
 export async function getProducts(): Promise<Product[]> {
   try {
+    // Products should be publicly readable, so direct Supabase query is fine
     const supabase = createClient();
     const { data, error } = await supabase
       .from('products')
