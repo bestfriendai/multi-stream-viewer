@@ -8,9 +8,9 @@ export const QUALITIES = ['auto', '160p', '360p', '480p', '720p', '1080p'] as co
 export type Quality = typeof QUALITIES[number];
 
 export const GRID_LAYOUTS = [
-  '1x1', '2x1', '1x2', '2x2', '3x3', '4x4', 
-  'custom', 'grid-2x2', 'grid-3x3', 'grid-4x4', 
-  'mosaic', 'pip', 'focus'
+  '1x1', '2x1', '1x2', '2x2', '3x3', '4x4',
+  'custom', 'grid-2x2', 'grid-3x3', 'grid-4x4',
+  'mosaic', 'pip', 'focus', 'stacked'
 ] as const;
 export type GridLayout = typeof GRID_LAYOUTS[number];
 
