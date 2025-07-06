@@ -4,7 +4,9 @@ import { createClient } from '@/lib/supabase/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-06-30.basil'
+  apiVersion: '2024-12-18.acacia',
+  timeout: 30000,
+  maxNetworkRetries: 3
 });
 
 export async function POST(request: NextRequest) {
@@ -65,21 +67,26 @@ export async function POST(request: NextRequest) {
     let customerId = profile.stripe_customer_id;
     
     if (!customerId) {
-      const customer = await stripe.customers.create({
-        email: user.emailAddresses[0]?.emailAddress || '',
-        name: user.fullName || '',
-        metadata: {
-          clerk_user_id: user.id,
-        },
-      });
-      
-      customerId = customer.id;
-      
-      // Update profile with stripe_customer_id
-      await supabase
-        .from('profiles')
-        .update({ stripe_customer_id: customerId })
-        .eq('id', profile.id);
+      try {
+        const customer = await stripe.customers.create({
+          email: user.emailAddresses[0]?.emailAddress || '',
+          name: user.fullName || '',
+          metadata: {
+            clerk_user_id: user.id,
+          },
+        });
+        
+        customerId = customer.id;
+        
+        // Update profile with stripe_customer_id
+        await supabase
+          .from('profiles')
+          .update({ stripe_customer_id: customerId })
+          .eq('id', profile.id);
+      } catch (customerError) {
+        console.error('Failed to create customer:', customerError);
+        return NextResponse.json({ error: 'Failed to create customer account' }, { status: 500 });
+      }
     }
 
     // Validate required environment variables
@@ -90,33 +97,48 @@ export async function POST(request: NextRequest) {
 
     console.log('🏪 Creating Stripe checkout session...', { priceId, customerId, productId });
     
-    // Create checkout session
-    const session = await stripe.checkout.sessions.create({
-      customer: customerId,
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
+    // Create checkout session with error handling
+    let session;
+    try {
+      session = await stripe.checkout.sessions.create({
+        customer: customerId,
+        payment_method_types: ['card'],
+        line_items: [
+          {
+            price: priceId,
+            quantity: 1,
+          },
+        ],
+        mode: 'subscription',
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
+        billing_address_collection: 'auto',
+        allow_promotion_codes: true,
+        subscription_data: {
+          metadata: {
+            clerk_user_id: user.id,
+            product_id: productId,
+          },
         },
-      ],
-      mode: 'subscription',
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
-      customer_creation: 'if_required',
-      billing_address_collection: 'auto',
-      allow_promotion_codes: true,
-      subscription_data: {
         metadata: {
           clerk_user_id: user.id,
           product_id: productId,
         },
-      },
-      metadata: {
-        clerk_user_id: user.id,
-        product_id: productId,
-      },
-    });
+      });
+    } catch (stripeError) {
+      console.error('Stripe checkout session creation failed:', stripeError);
+      
+      if (stripeError instanceof Stripe.errors.StripeError) {
+        return NextResponse.json({ 
+          error: 'Stripe checkout error',
+          details: stripeError.message,
+          type: stripeError.type,
+          code: stripeError.code
+        }, { status: 400 });
+      }
+      
+      throw stripeError; // Re-throw if not a Stripe error
+    }
 
     console.log('✅ Checkout session created:', { sessionId: session.id, url: session.url });
     return NextResponse.json({ url: session.url });
