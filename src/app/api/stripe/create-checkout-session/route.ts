@@ -20,11 +20,19 @@ export async function POST(request: NextRequest) {
     const stripeService = getStripeService();
     
     // Ensure customer exists
-    const { customer } = await stripeService.ensureCustomer({
+    const customerParams: { clerkUserId: string; email?: string; name?: string } = {
       clerkUserId: user.id,
-      email: user.emailAddresses[0]?.emailAddress,
-      name: user.fullName || undefined,
-    });
+    };
+    
+    if (user.emailAddresses[0]?.emailAddress) {
+      customerParams.email = user.emailAddresses[0].emailAddress;
+    }
+    
+    if (user.fullName) {
+      customerParams.name = user.fullName;
+    }
+    
+    const { customer } = await stripeService.ensureCustomer(customerParams);
 
     // Create checkout session
     const session = await stripeService.createCheckoutSession({
