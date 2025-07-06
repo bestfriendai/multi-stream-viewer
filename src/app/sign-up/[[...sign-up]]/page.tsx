@@ -1,6 +1,8 @@
 import { SignUp } from "@clerk/nextjs";
 
-export default function SignUpPage() {
+export default function SignUpPage({ searchParams }: { searchParams: { redirect_url?: string } }) {
+  const redirectUrl = searchParams.redirect_url || "/";
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <SignUp 
@@ -18,8 +20,8 @@ export default function SignUpPage() {
             dividerText: "text-muted-foreground"
           }
         }}
-        redirectUrl="/"
-        signInUrl="/sign-in"
+        redirectUrl={redirectUrl}
+        signInUrl={`/sign-in${searchParams.redirect_url ? `?redirect_url=${encodeURIComponent(searchParams.redirect_url)}` : ''}`}
       />
     </div>
   );

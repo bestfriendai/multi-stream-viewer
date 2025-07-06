@@ -305,7 +305,6 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                           variant="ghost" 
                           size="sm" 
                           className="h-8 px-3"
-                          onClick={() => console.log('Sign In button clicked')}
                         >
                           <LogIn className="h-4 w-4" />
                           <span className="ml-1.5">Sign In</span>
@@ -318,7 +317,6 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                           variant="default" 
                           size="sm" 
                           className="h-8 px-3 shadow-sm"
-                          onClick={() => console.log('Sign Up button clicked')}
                         >
                           <span>Sign Up</span>
                         </Button>
@@ -470,7 +468,6 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                           variant="outline" 
                           size="sm" 
                           className="h-9"
-                          onClick={() => console.log('Mobile Sign In button clicked')}
                         >
                           <LogIn className="h-4 w-4" />
                           <span className="ml-2">Sign In</span>
@@ -481,7 +478,6 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                           variant="default" 
                           size="sm" 
                           className="h-9"
-                          onClick={() => console.log('Mobile Sign Up button clicked')}
                         >
                           <span>Sign Up</span>
                         </Button>

@@ -78,7 +78,7 @@ export default function PricingPage() {
 
   const handleSubscribe = async (product: Product) => {
     if (!user) {
-      window.location.href = '/sign-in';
+      window.location.href = '/sign-in?redirect_url=' + encodeURIComponent('/pricing');
       return;
     }
 
