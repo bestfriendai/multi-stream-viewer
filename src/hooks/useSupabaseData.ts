@@ -10,23 +10,20 @@ type Subscription = Database['public']['Tables']['subscriptions']['Row']
 type Product = Database['public']['Tables']['products']['Row']
 
 export function useSavedLayouts() {
-  const { supabase, profile } = useSupabase()
+  const { profile } = useSupabase()
   const [layouts, setLayouts] = useState<SavedLayout[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const fetchLayouts = async () => {
-    if (!profile || !supabase) return
+    if (!profile) return
 
     try {
-      const { data, error } = await supabase
-        .from('saved_layouts')
-        .select('*')
-        .eq('user_id', profile.id)
-        .order('created_at', { ascending: false })
-
-      if (error) throw error
-      setLayouts(data || [])
+      const response = await fetch('/api/layouts/get')
+      if (!response.ok) throw new Error('Failed to fetch layouts')
+      
+      const data = await response.json()
+      setLayouts(data.layouts || [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch layouts')
     } finally {
@@ -35,32 +32,22 @@ export function useSavedLayouts() {
   }
 
   const saveLayout = async (name: string, layoutData: any, isDefault = false) => {
-    if (!profile || !supabase) return
+    if (!profile) return
 
     try {
-      if (isDefault) {
-        await supabase
-          .from('saved_layouts')
-          .update({ is_default: false })
-          .eq('user_id', profile.id)
+      const response = await fetch('/api/layouts/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, layoutData, isDefault })
+      })
+      
+      if (!response.ok) throw new Error('Failed to save layout')
+      
+      const data = await response.json()
+      if (data.layout) {
+        setLayouts(prev => [data.layout, ...prev])
       }
-
-      const { data, error } = await supabase
-        .from('saved_layouts')
-        .insert({
-          user_id: profile.id,
-          name,
-          layout_data: layoutData,
-          is_default: isDefault,
-        })
-        .select()
-        .single()
-
-      if (error) throw error
-      if (data) {
-        setLayouts(prev => [data, ...prev])
-      }
-      return data
+      return data.layout
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save layout')
       throw err
@@ -68,15 +55,15 @@ export function useSavedLayouts() {
   }
 
   const deleteLayout = async (layoutId: string) => {
-    if (!supabase) return
-
     try {
-      const { error } = await supabase
-        .from('saved_layouts')
-        .delete()
-        .eq('id', layoutId)
-
-      if (error) throw error
+      const response = await fetch('/api/layouts/delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ layoutId })
+      })
+      
+      if (!response.ok) throw new Error('Failed to delete layout')
+      
       setLayouts(prev => prev.filter(layout => layout.id !== layoutId))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete layout')
@@ -85,20 +72,17 @@ export function useSavedLayouts() {
   }
 
   const setDefaultLayout = async (layoutId: string) => {
-    if (!profile || !supabase) return
+    if (!profile) return
 
     try {
-      await supabase
-        .from('saved_layouts')
-        .update({ is_default: false })
-        .eq('user_id', profile.id)
-
-      const { error } = await supabase
-        .from('saved_layouts')
-        .update({ is_default: true })
-        .eq('id', layoutId)
-
-      if (error) throw error
+      const response = await fetch('/api/layouts/set-default', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ layoutId })
+      })
+      
+      if (!response.ok) throw new Error('Failed to set default layout')
+      
       setLayouts(prev => prev.map(layout => ({
         ...layout,
         is_default: layout.id === layoutId
@@ -125,23 +109,20 @@ export function useSavedLayouts() {
 }
 
 export function useUserPreferences() {
-  const { supabase, profile } = useSupabase()
+  const { profile } = useSupabase()
   const [preferences, setPreferences] = useState<UserPreferences | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const fetchPreferences = async () => {
-    if (!profile || !supabase) return
+    if (!profile) return
 
     try {
-      const { data, error } = await supabase
-        .from('user_preferences')
-        .select('*')
-        .eq('user_id', profile.id)
-        .single()
-
-      if (error && error.code !== 'PGRST116') throw error
-      setPreferences(data || null)
+      const response = await fetch('/api/preferences/get')
+      if (!response.ok) throw new Error('Failed to fetch preferences')
+      
+      const data = await response.json()
+      setPreferences(data.preferences || null)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch preferences')
     } finally {
@@ -150,21 +131,20 @@ export function useUserPreferences() {
   }
 
   const updatePreferences = async (newPreferences: any) => {
-    if (!profile || !supabase) return
+    if (!profile) return
 
     try {
-      const { data, error } = await supabase
-        .from('user_preferences')
-        .upsert({
-          user_id: profile.id,
-          preferences: newPreferences,
-        })
-        .select()
-        .single()
-
-      if (error) throw error
-      setPreferences(data)
-      return data
+      const response = await fetch('/api/preferences/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ preferences: newPreferences })
+      })
+      
+      if (!response.ok) throw new Error('Failed to update preferences')
+      
+      const data = await response.json()
+      setPreferences(data.preferences)
+      return data.preferences
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update preferences')
       throw err
@@ -185,26 +165,20 @@ export function useUserPreferences() {
 }
 
 export function useSubscription() {
-  const { supabase, profile } = useSupabase()
+  const { profile } = useSupabase()
   const [subscription, setSubscription] = useState<Subscription | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const fetchSubscription = async () => {
-    if (!profile || !supabase) return
+    if (!profile) return
 
     try {
-      const { data, error } = await supabase
-        .from('subscriptions')
-        .select('*, products(*)')
-        .eq('user_id', profile.id)
-        .in('status', ['active', 'trialing'])
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single()
-
-      if (error && error.code !== 'PGRST116') throw error
-      setSubscription(data || null)
+      const response = await fetch('/api/subscription/get-active')
+      if (!response.ok) throw new Error('Failed to fetch subscription')
+      
+      const data = await response.json()
+      setSubscription(data.subscription || null)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch subscription')
     } finally {
@@ -216,33 +190,35 @@ export function useSubscription() {
     fetchSubscription()
   }, [profile])
 
+  const hasFeature = (feature: string) => {
+    if (!subscription) return false
+    // For now, return true for any feature if user has active subscription
+    // This can be expanded to check specific features based on subscription type
+    return subscription.status === 'active' || subscription.status === 'trialing'
+  }
+
   return {
     subscription,
     isLoading,
     error,
     refetch: fetchSubscription,
     hasActiveSubscription: subscription?.status === 'active' || subscription?.status === 'trialing',
+    hasFeature,
   }
 }
 
 export function useProducts() {
-  const { supabase } = useSupabase()
   const [products, setProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const fetchProducts = async () => {
-    if (!supabase) return
-
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('active', true)
-        .order('price_monthly', { ascending: true })
-
-      if (error) throw error
-      setProducts(data || [])
+      const response = await fetch('/api/products/get')
+      if (!response.ok) throw new Error('Failed to fetch products')
+      
+      const data = await response.json()
+      setProducts(data.products || [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch products')
     } finally {
