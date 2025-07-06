@@ -45,7 +45,6 @@ import { cn } from '@/lib/utils'
 import '@/styles/landing.css'
 import OptimizedBackgroundStreams from './OptimizedBackgroundStreams'
 import StreamyyyLogo from './StreamyyyLogo'
-import DotGrid from './DotGrid'
 
 interface LandingPageProps {
   onAddStream: () => void
