@@ -2,11 +2,9 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth, useUser } from '@clerk/nextjs'
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@/lib/supabase'
 
 interface SupabaseContextType {
-  supabase: SupabaseClient<Database> | null
   profile: Database['public']['Tables']['profiles']['Row'] | null
   isLoading: boolean
   refreshProfile: () => Promise<void>
@@ -14,75 +12,29 @@ interface SupabaseContextType {
 
 const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined)
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
 export function SupabaseProvider({ children }: { children: React.ReactNode }) {
-  const { getToken, isSignedIn } = useAuth()
+  const { isSignedIn } = useAuth()
   const { user } = useUser()
-  const [supabase, setSupabase] = useState<SupabaseClient<Database> | null>(null)
   const [profile, setProfile] = useState<Database['public']['Tables']['profiles']['Row'] | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-
-  // Create Supabase client with Clerk integration using the new native approach
-  useEffect(() => {
-    const client = createClient(supabaseUrl, supabaseAnonKey, {
-      async accessToken() {
-        return getToken() ?? null
-      },
-    })
-
-    setSupabase(client as any)
-  }, [getToken])
-
-  const getSupabaseWithAuth = async () => {
-    return supabase
-  }
 
   const createOrUpdateProfile = async () => {
     if (!user) return
     
-    const client = await getSupabaseWithAuth()
-    if (!client) return
-
     try {
-      const { data: existingProfile } = await client
-        .from('profiles')
-        .select('*')
-        .eq('clerk_user_id', user.id)
-        .single()
+      // Use API route instead of direct Supabase call
+      const response = await fetch('/api/profile/sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-      if (existingProfile) {
-        const { data: updatedProfile } = await client
-          .from('profiles')
-          .update({
-            email: user.emailAddresses[0]?.emailAddress || '',
-            full_name: user.fullName || '',
-            avatar_url: user.imageUrl || '',
-            updated_at: new Date().toISOString(),
-          })
-          .eq('clerk_user_id', user.id)
-          .select()
-          .single()
-
-        if (updatedProfile) {
-          setProfile(updatedProfile)
-        }
+      if (response.ok) {
+        const data = await response.json();
+        setProfile(data.profile);
       } else {
-        const { data: newProfile } = await client
-          .from('profiles')
-          .insert({
-            clerk_user_id: user.id,
-            email: user.emailAddresses[0]?.emailAddress || '',
-            full_name: user.fullName || '',
-            avatar_url: user.imageUrl || '',
-          })
-          .select()
-          .single()
-
-        if (newProfile) {
-          setProfile(newProfile)
-        }
+        console.error('Error syncing profile:', response.statusText);
       }
     } catch (error) {
       console.error('Error creating/updating profile:', error)
@@ -94,18 +46,15 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const refreshProfile = async () => {
     if (!user) return
     
-    const client = await getSupabaseWithAuth()
-    if (!client) return
-
     try {
-      const { data } = await client
-        .from('profiles')
-        .select('*')
-        .eq('clerk_user_id', user.id)
-        .single()
-
-      if (data) {
-        setProfile(data)
+      // Use API route instead of direct Supabase call
+      const response = await fetch('/api/profile/get');
+      
+      if (response.ok) {
+        const data = await response.json();
+        setProfile(data.profile);
+      } else {
+        console.error('Error fetching profile:', response.statusText);
       }
     } catch (error) {
       console.error('Error refreshing profile:', error)
@@ -113,22 +62,17 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    if (isSignedIn && user && supabase) {
+    if (isSignedIn && user) {
       createOrUpdateProfile()
     } else {
       setProfile(null)
       setIsLoading(false)
     }
-  }, [isSignedIn, user, supabase])
-
-  if (!supabase) {
-    return null
-  }
+  }, [isSignedIn, user])
 
   return (
     <SupabaseContext.Provider
       value={{
-        supabase,
         profile,
         isLoading,
         refreshProfile,
