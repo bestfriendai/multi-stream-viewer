@@ -19,7 +19,7 @@ const throttle = (func: Function, limit: number) => {
 
 function hexToRgb(hex: string) {
   const m = hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
-  if (!m) return { r: 0, g: 0, b: 0 };
+  if (!m || !m[1] || !m[2] || !m[3]) return { r: 0, g: 0, b: 0 };
   return {
     r: parseInt(m[1], 16),
     g: parseInt(m[2], 16),
