@@ -45,6 +45,7 @@ import { cn } from '@/lib/utils'
 import '@/styles/landing.css'
 import OptimizedBackgroundStreams from './OptimizedBackgroundStreams'
 import StreamyyyLogo from './StreamyyyLogo'
+import DotGrid from './DotGrid'
 
 interface LandingPageProps {
   onAddStream: () => void
@@ -218,7 +219,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
     <div className="flex-1 overflow-y-auto relative">
       {/* Optimized Background Live Streams */}
       <OptimizedBackgroundStreams channels={liveChannels} />
-      
+
       {/* Clean Professional Hero Section */}
       <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20 pt-4">
         {/* Clean Professional Background */}
@@ -235,7 +236,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-center mb-12 lg:mb-16"
+              className="text-center mb-8 lg:mb-12"
             >
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight leading-[1.05] mb-8 lg:whitespace-nowrap">
                 <span className="text-foreground">Watch Multiple</span>
@@ -248,7 +249,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               </h1>
             </motion.div>
 
-            <div className="grid lg:grid-cols-5 gap-12 items-center">
+            <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start lg:items-center">
               {/* Left: Value Proposition */}
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
@@ -364,9 +365,9 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="relative lg:col-span-3 -mt-8 lg:-mt-16"
+                className="relative lg:col-span-3 flex items-start justify-center -mt-32 lg:-mt-48"
               >
-                <div className="relative bg-gradient-to-br from-card via-card/95 to-card/80 rounded-3xl border border-border/50 shadow-2xl hover:shadow-3xl p-6 lg:p-10 backdrop-blur-sm transition-all duration-500">
+                <div className="relative bg-gradient-to-br from-card via-card/95 to-card/80 rounded-3xl border border-border/50 shadow-2xl hover:shadow-3xl p-6 lg:p-8 backdrop-blur-sm transition-all duration-500 w-full max-w-xl lg:max-w-2xl">
                   {/* Floating Elements */}
                   <motion.div 
                     className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full animate-pulse" 
