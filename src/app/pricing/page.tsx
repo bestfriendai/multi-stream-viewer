@@ -103,10 +103,18 @@ export default function PricingPage() {
 
       const data = await response.json();
       
-      if (data.url) {
+      if (response.ok && data.url) {
         window.location.href = data.url;
       } else {
-        throw new Error('Failed to create checkout session');
+        // Handle specific error cases
+        if (response.status === 401) {
+          // User not authenticated
+          console.log('User not authenticated, redirecting to sign in');
+          window.location.href = data.redirectUrl || '/sign-in?redirect_url=' + encodeURIComponent('/pricing');
+          return;
+        }
+        
+        throw new Error(data.message || data.error || 'Failed to create checkout session');
       }
     } catch (error) {
       console.error('Error creating checkout session:', error);

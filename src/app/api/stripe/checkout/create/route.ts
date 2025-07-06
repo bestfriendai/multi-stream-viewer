@@ -8,12 +8,22 @@ export async function POST(request: NextRequest) {
   try {
     console.log('🚀 Creating checkout session v2...');
     
-    // Validate authentication
+    // Validate authentication with better error handling
     const user = await currentUser();
     if (!user) {
-      console.log('❌ Authentication required');
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+      console.log('❌ Authentication required - user not logged in');
+      return NextResponse.json({ 
+        error: 'Authentication required', 
+        message: 'Please sign in to subscribe to a plan',
+        redirectUrl: '/sign-in?redirect_url=' + encodeURIComponent('/pricing')
+      }, { status: 401 });
     }
+    
+    console.log('✅ User authenticated:', {
+      userId: user.id,
+      email: user.emailAddresses[0]?.emailAddress,
+      fullName: user.fullName
+    });
 
     // Parse and validate request body
     const body = await request.json();
