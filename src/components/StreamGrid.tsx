@@ -11,11 +11,12 @@ import ResizableStreamGrid from './ResizableStreamGrid'
 import { injectSponsoredStream, getUserStreamCount } from '@/lib/sponsoredStreams'
 import StreamSkeleton, { StreamGridSkeleton } from './StreamSkeleton'
 import { muteManager } from '@/lib/muteManager'
+import type { GridLayout } from '@/types/stream'
 import '@/styles/mobile-stream-grid.css'
 import '@/styles/layout-modes.css'
 
 // Enhanced mobile-first grid configuration
-const calculateGridConfig = (count: number, gridLayout?: string, isMobile?: boolean) => {
+const calculateGridConfig = (count: number, gridLayout?: GridLayout, isMobile?: boolean) => {
   if (count === 0) return { cols: 1, rows: 1, class: 'grid-cols-1' }
   
   // Mobile-optimized layouts - Use square aspect ratios for better space utilization
