@@ -300,8 +300,16 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   className="flex flex-col sm:flex-row gap-4 pt-8"
                 >
                   <motion.div
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{ 
+                      scale: 1.02,
+                      y: -3
+                    }}
                     whileTap={{ scale: 0.98 }}
+                    transition={{ 
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 30
+                    }}
                   >
                     <Button 
                       size="lg" 
@@ -360,17 +368,39 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               >
                 <div className="relative bg-gradient-to-br from-card via-card/95 to-card/80 rounded-3xl border border-border/50 shadow-2xl hover:shadow-3xl p-6 lg:p-10 backdrop-blur-sm transition-all duration-500">
                   {/* Floating Elements */}
-                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full animate-pulse" />
-                  <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-r from-primary to-blue-600 rounded-full blur-sm opacity-60" />
+                  <motion.div 
+                    className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full animate-pulse" 
+                    animate={{ 
+                      y: [0, -10, 0],
+                      scale: [1, 1.1, 1]
+                    }}
+                    transition={{ 
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                  <motion.div 
+                    className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-r from-primary to-blue-600 rounded-full blur-sm opacity-60" 
+                    animate={{ 
+                      y: [0, 10, 0],
+                      x: [0, 5, 0]
+                    }}
+                    transition={{ 
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
                   {/* Demo Grid */}
                   <div className="aspect-video bg-gradient-to-br from-black/5 via-black/3 to-black/10 dark:from-black/20 dark:via-black/15 dark:to-black/30 rounded-xl overflow-hidden border border-border/20">
-                    <div className="grid grid-cols-2 grid-rows-2 gap-4 h-full p-4">
+                    <div className="grid grid-cols-2 grid-rows-2 gap-4 h-full p-4 items-center justify-center">
                       {Array.from({ length: 4 }).map((_, i) => {
                         const stream = demoStreams[i]
                         return (
                           <motion.div 
                             key={i} 
-                            className="bg-black rounded-lg relative overflow-hidden cursor-pointer group"
+                            className="bg-black rounded-lg relative overflow-hidden cursor-pointer group h-full"
                             initial={{ opacity: 0, scale: 0.8, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             transition={{ 
@@ -725,8 +755,9 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+              transition={{ delay: 0.1, duration: 0.6 }}
               className="group"
+              whileHover={{ scale: 1.02, y: -5 }}
             >
               <Card className="p-8 h-full border-2 border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative">
                 <div className="text-center mb-6">
@@ -770,6 +801,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="group relative"
+              whileHover={{ scale: 1.02, y: -5 }}
             >
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <Badge className="bg-primary text-primary-foreground px-3 py-1">
@@ -826,6 +858,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
               className="group"
+              whileHover={{ scale: 1.02, y: -5 }}
             >
               <Card className="p-8 h-full border-2 border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative">
                 <div className="text-center mb-6">

@@ -123,6 +123,7 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ scale: 1.02, y: -5 }}
               >
                 <Card className="h-full p-6 hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/50">
                   <div className="flex items-start gap-4">
@@ -232,36 +233,60 @@ export default function AboutPage() {
         >
           <h2 className="text-3xl font-bold text-center mb-12">Why We're Different</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <motion.div 
+              className="text-center"
+              whileHover={{ scale: 1.05, y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div 
+                className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4"
+                whileHover={{ rotate: 10 }}
+                transition={{ duration: 0.3 }}
+              >
                 <Zap className="w-10 h-10 text-white" />
-              </div>
+              </motion.div>
               <h3 className="text-xl font-bold mb-3">Blazing Fast</h3>
               <p className="text-muted-foreground">
                 Optimized for speed with minimal overhead. Clean, efficient code that loads quickly 
                 and runs smoothly across all devices.
               </p>
-            </div>
-            <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            </motion.div>
+            <motion.div 
+              className="text-center"
+              whileHover={{ scale: 1.05, y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div 
+                className="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4"
+                whileHover={{ rotate: 10 }}
+                transition={{ duration: 0.3 }}
+              >
                 <Shield className="w-10 h-10 text-white" />
-              </div>
+              </motion.div>
               <h3 className="text-xl font-bold mb-3">Privacy Focused</h3>
               <p className="text-muted-foreground">
                 We respect your privacy. We don't sell your data. No account required to start watching. 
                 Transparent about our data practices.
               </p>
-            </div>
-            <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            </motion.div>
+            <motion.div 
+              className="text-center"
+              whileHover={{ scale: 1.05, y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div 
+                className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4"
+                whileHover={{ rotate: 10 }}
+                transition={{ duration: 0.3 }}
+              >
                 <Users className="w-10 h-10 text-white" />
-              </div>
+              </motion.div>
               <h3 className="text-xl font-bold mb-3">Community Driven</h3>
               <p className="text-muted-foreground">
                 Built by the community, for the community. Every feature request is considered. 
                 Every bug report is valued. This is your platform.
               </p>
-            </div>
+            </motion.div>
           </div>
         </motion.div>
 

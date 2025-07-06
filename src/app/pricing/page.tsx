@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -66,8 +67,27 @@ export default function PricingPage() {
 
     try {
       const supabase = createClient();
+      
+      // First get the user profile to get the UUID
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('clerk_user_id', user.id)
+        .single();
+
+      if (profileError) {
+        console.error('Error fetching profile:', profileError);
+        return;
+      }
+
+      if (!profile) {
+        console.log('No profile found for user');
+        return;
+      }
+
+      // Now get the subscription using the profile UUID
       const { data, error } = await supabase
-        .rpc('get_active_subscription', { user_uuid: user.id });
+        .rpc('get_active_subscription', { user_uuid: profile.id });
 
       if (error) throw error;
       setSubscription(data?.[0] || null);
@@ -163,8 +183,19 @@ export default function PricingPage() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading pricing...</p>
+          <motion.div 
+            className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.p 
+            className="mt-4 text-gray-600"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            Loading pricing...
+          </motion.p>
         </div>
       </div>
     );
@@ -174,39 +205,83 @@ export default function PricingPage() {
     <>
       <Header onToggleChat={() => {}} showChat={false} />
       <div className="container mx-auto px-4 py-8">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Choose Your Plan</h1>
-        <p className="text-xl text-gray-600 mb-8">
+      <motion.div 
+        className="text-center mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <motion.h1 
+          className="text-4xl font-bold mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          Choose Your Plan
+        </motion.h1>
+        <motion.p 
+          className="text-xl text-gray-600 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           Unlock powerful features to enhance your streaming experience
-        </p>
+        </motion.p>
         
         {/* Billing Cycle Toggle */}
-        <div className="flex items-center justify-center gap-4 mb-8">
+        <motion.div 
+          className="flex items-center justify-center gap-4 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
           <span className={billingCycle === 'monthly' ? 'font-semibold' : 'text-gray-500'}>
             Monthly
           </span>
-          <button
+          <motion.button
             onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
             className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                billingCycle === 'yearly' ? 'translate-x-6' : 'translate-x-1'
-              }`}
+            <motion.span
+              className="inline-block h-4 w-4 rounded-full bg-white shadow-lg"
+              animate={{
+                x: billingCycle === 'yearly' ? 20 : 4
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
             />
-          </button>
+          </motion.button>
           <span className={billingCycle === 'yearly' ? 'font-semibold' : 'text-gray-500'}>
             Yearly
           </span>
-          {billingCycle === 'yearly' && (
-            <Badge variant="secondary" className="ml-2">Save 17%</Badge>
-          )}
-        </div>
-      </div>
+          <AnimatePresence>
+            {billingCycle === 'yearly' && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, x: -10 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 0.8, x: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Badge variant="secondary" className="ml-2">Save 17%</Badge>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </motion.div>
 
-      <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <motion.div 
+        className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      >
         {/* Free Plan */}
-        <Card className="relative">
+        <motion.div
+          whileHover={{ scale: 1.02, y: -8 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Card className="relative h-full">
           <CardHeader className="text-center">
             <div className="flex items-center justify-center mb-4">
               <Zap className="w-6 h-6 text-gray-500" />
@@ -246,15 +321,23 @@ export default function PricingPage() {
             </Button>
           </CardContent>
         </Card>
+        </motion.div>
 
         {/* Dynamic Plans from Database */}
-        {products.map((product) => {
+        {products.map((product, index) => {
           const isCurrentPlan = subscription?.product_name === product.name;
           const price = billingCycle === 'monthly' ? product.price_monthly : product.price_yearly;
           const features = product.features || {};
           
           return (
-            <Card key={product.id} className="relative">
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
+              whileHover={{ scale: 1.02, y: -8 }}
+            >
+              <Card className="relative h-full">
               {getProductBadge(product.name) && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                   {getProductBadge(product.name)}
@@ -326,9 +409,10 @@ export default function PricingPage() {
                 )}
               </CardContent>
             </Card>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
 
       {/* Current Subscription Status */}
       {subscription && (
