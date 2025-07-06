@@ -220,7 +220,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       <OptimizedBackgroundStreams channels={liveChannels} />
       
       {/* Clean Professional Hero Section */}
-      <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20 pt-16">
+      <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20 pt-4">
         {/* Clean Professional Background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-muted/30" />
@@ -356,7 +356,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="relative lg:col-span-3"
+                className="relative lg:col-span-3 -mt-8 lg:-mt-16"
               >
                 <div className="relative bg-gradient-to-br from-card via-card/95 to-card/80 rounded-3xl border border-border/50 shadow-2xl hover:shadow-3xl p-6 lg:p-10 backdrop-blur-sm transition-all duration-500">
                   {/* Floating Elements */}
@@ -368,29 +368,93 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                       {Array.from({ length: 4 }).map((_, i) => {
                         const stream = demoStreams[i]
                         return (
-                          <div key={i} className="bg-black rounded-md relative overflow-hidden">
+                          <motion.div 
+                            key={i} 
+                            className="bg-black rounded-lg relative overflow-hidden cursor-pointer group"
+                            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            transition={{ 
+                              delay: 0.6 + i * 0.1,
+                              duration: 0.5,
+                              type: "spring",
+                              stiffness: 100
+                            }}
+                            whileHover={{ 
+                              scale: 1.05,
+                              y: -5
+                            }}
+                          >
                             {stream ? (
                               <>
-                                <img 
+                                <motion.img 
                                   src={`https://static-cdn.jtvnw.net/previews-ttv/live_user_${stream.channelName}-640x360.jpg`}
                                   alt={stream.channelName}
-                                  className="absolute inset-0 w-full h-full object-cover"
+                                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                                   loading="lazy"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                                <div className="absolute bottom-1 left-1 right-1">
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent group-hover:from-black/50" />
+                                <motion.div 
+                                  className="absolute bottom-1 left-1 right-1"
+                                  initial={{ y: 10, opacity: 0 }}
+                                  animate={{ y: 0, opacity: 1 }}
+                                  transition={{ delay: 0.8 + i * 0.1 }}
+                                >
                                   <p className="text-xs text-white font-medium truncate">{stream.channelName}</p>
-                                </div>
-                                <Badge className="absolute top-1 right-1 bg-red-600 text-white border-0 text-xs px-1 py-0">
-                                  LIVE
-                                </Badge>
+                                </motion.div>
+                                <motion.div
+                                  className="absolute top-1 right-1"
+                                  animate={{ 
+                                    scale: [1, 1.1, 1],
+                                    opacity: [0.8, 1, 0.8]
+                                  }}
+                                  transition={{ 
+                                    duration: 1.5,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  <Badge className="bg-red-600 text-white border-0 text-xs px-1.5 py-0.5 shadow-lg">
+                                    LIVE
+                                  </Badge>
+                                </motion.div>
+                                
+                                {/* Animated viewer count */}
+                                <motion.div
+                                  className="absolute top-1 left-1 bg-black/60 backdrop-blur-sm rounded px-1.5 py-0.5"
+                                  initial={{ scale: 0, opacity: 0 }}
+                                  animate={{ scale: 1, opacity: 1 }}
+                                  transition={{ delay: 1 + i * 0.1 }}
+                                >
+                                  <motion.span 
+                                    className="text-xs text-white font-medium flex items-center gap-1"
+                                    animate={{ opacity: [0.7, 1, 0.7] }}
+                                    transition={{ duration: 2, repeat: Infinity }}
+                                  >
+                                    <Eye className="w-2.5 h-2.5" />
+                                    {stream.viewerCount || Math.floor(Math.random() * 10000 + 1000)}
+                                  </motion.span>
+                                </motion.div>
                               </>
                             ) : (
-                              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center">
-                                <PlayCircle className="w-8 h-8 text-white/50" />
-                              </div>
+                              <motion.div 
+                                className="absolute inset-0 bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center"
+                                whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.3)" }}
+                              >
+                                <motion.div
+                                  animate={{ 
+                                    rotate: 360,
+                                    scale: [1, 1.2, 1]
+                                  }}
+                                  transition={{ 
+                                    rotate: { duration: 4, repeat: Infinity, ease: "linear" },
+                                    scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                                  }}
+                                >
+                                  <PlayCircle className="w-8 h-8 text-white/50" />
+                                </motion.div>
+                              </motion.div>
                             )}
-                          </div>
+                          </motion.div>
                         )
                       })}
                     </div>
