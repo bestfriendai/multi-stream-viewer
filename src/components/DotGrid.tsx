@@ -173,16 +173,19 @@ const DotGrid: React.FC<DotGridProps> = ({
     buildGrid();
 
     let ro: ResizeObserver | null = null;
-    if ("ResizeObserver" in window) {
+    if (typeof window !== "undefined" && "ResizeObserver" in window) {
       ro = new ResizeObserver(buildGrid);
       wrapperRef.current && ro.observe(wrapperRef.current);
-    } else {
+    } else if (typeof window !== "undefined") {
       window.addEventListener("resize", buildGrid);
     }
 
     return () => {
-      if (ro) ro.disconnect();
-      else window.removeEventListener("resize", buildGrid);
+      if (ro) {
+        ro.disconnect();
+      } else if (typeof window !== "undefined") {
+        window.removeEventListener("resize", buildGrid);
+      }
     };
   }, [buildGrid]);
 
@@ -278,12 +281,16 @@ const DotGrid: React.FC<DotGridProps> = ({
 
     const throttledMove = throttle(onMove, 50);
 
-    window.addEventListener("mousemove", throttledMove, { passive: true });
-    window.addEventListener("click", onClick);
+    if (typeof window !== "undefined") {
+      window.addEventListener("mousemove", throttledMove, { passive: true });
+      window.addEventListener("click", onClick);
+    }
 
     return () => {
-      window.removeEventListener("mousemove", throttledMove);
-      window.removeEventListener("click", onClick);
+      if (typeof window !== "undefined") {
+        window.removeEventListener("mousemove", throttledMove);
+        window.removeEventListener("click", onClick);
+      }
     };
   }, [
     maxSpeed,
