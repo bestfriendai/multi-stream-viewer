@@ -110,7 +110,13 @@ export default function PricingPage() {
       }
     } catch (error) {
       console.error('Error creating checkout session:', error);
-      alert('Something went wrong. Please try again.');
+      
+      // Show more specific error message
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Something went wrong. Please try again.';
+        
+      alert(`Checkout Error: ${errorMessage}`);
     } finally {
       setSubscribing(null);
     }

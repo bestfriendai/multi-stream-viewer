@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 // Using test keys for safe testing - this will use the test key from your environment
 const testKey = process.env.STRIPE_SECRET_KEY?.replace('sk_live_', 'sk_test_') || 'sk_test_placeholder';
 const stripe = new Stripe(testKey, {
-  apiVersion: '2025-06-30.basil'
+  apiVersion: '2023-10-16'
 });
 
 export async function POST(request: NextRequest) {

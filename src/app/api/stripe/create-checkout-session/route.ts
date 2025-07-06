@@ -4,20 +4,26 @@ import { createClient } from '@/lib/supabase/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-06-30.basil'
+  apiVersion: '2023-10-16'
 });
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('🎯 Creating checkout session...');
+    
     const user = await currentUser();
+    console.log('🔍 User check:', { userId: user?.id, isSignedIn: !!user });
     
     if (!user) {
+      console.log('❌ No user found');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { priceId, productId } = await request.json();
+    console.log('📋 Request data:', { priceId, productId });
 
     if (!priceId || !productId) {
+      console.log('❌ Missing required data');
       return NextResponse.json({ error: 'Price ID and Product ID are required' }, { status: 400 });
     }
 
@@ -77,6 +83,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create checkout session
+    console.log('🏪 Creating Stripe checkout session...');
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       payment_method_types: ['card'],
@@ -95,11 +102,19 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log('✅ Checkout session created:', { sessionId: session.id, url: session.url });
     return NextResponse.json({ url: session.url });
   } catch (error) {
-    console.error('Error creating checkout session:', error);
+    console.error('❌ Error creating checkout session:', error);
+    
+    // Return more specific error message
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
-      { error: 'Failed to create checkout session' },
+      { 
+        error: 'Failed to create checkout session',
+        details: errorMessage,
+        timestamp: new Date().toISOString()
+      },
       { status: 500 }
     );
   }
