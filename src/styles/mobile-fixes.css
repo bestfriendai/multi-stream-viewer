@@ -1,0 +1,102 @@
+/* Mobile-specific fixes to prevent unwanted refreshing */
+
+/* Prevent pull-to-refresh on all mobile browsers */
+html {
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  -webkit-overscroll-behavior: none;
+  -webkit-overscroll-behavior-y: none;
+}
+
+body {
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  -webkit-overscroll-behavior: none;
+  -webkit-overscroll-behavior-y: none;
+  
+  /* Prevent zoom on double tap */
+  touch-action: manipulation;
+  
+  /* Prevent text selection on mobile */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow text selection only in specific elements */
+input, textarea, [contenteditable] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* Mobile-specific touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Prevent pull-to-refresh on mobile browsers */
+  html, body {
+    overscroll-behavior: none !important;
+    overscroll-behavior-y: none !important;
+    -webkit-overscroll-behavior: none !important;
+    -webkit-overscroll-behavior-y: none !important;
+  }
+  
+  /* Optimize touch interactions */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+  }
+  
+  /* Allow specific touch actions for scrollable elements */
+  .scrollable, [data-scrollable] {
+    touch-action: pan-y;
+    overscroll-behavior: contain;
+  }
+  
+  /* Prevent accidental zooming */
+  input, select, textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Specific fixes for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  html, body {
+    overscroll-behavior: none;
+    -webkit-overscroll-behavior: none;
+  }
+  
+  /* Prevent bounce scrolling */
+  .no-bounce {
+    -webkit-overflow-scrolling: auto;
+  }
+}
+
+/* Prevent refresh on Chrome mobile */
+@media screen and (max-width: 768px) {
+  html {
+    overscroll-behavior-y: none;
+  }
+  
+  body {
+    overscroll-behavior-y: none;
+    position: relative;
+  }
+}
+
+/* Additional mobile browser specific fixes */
+/* Firefox Mobile */
+@-moz-document url-prefix() {
+  html, body {
+    overscroll-behavior: none;
+  }
+}
+
+/* Samsung Internet */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  html, body {
+    overscroll-behavior: none;
+  }
+}

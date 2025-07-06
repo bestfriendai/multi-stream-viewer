@@ -6,12 +6,12 @@ import Link from 'next/link'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
 import { cn } from '@/lib/utils'
-import { 
-  Plus, 
-  Menu, 
-  MessageSquare, 
-  Compass, 
-  Zap, 
+import {
+  Plus,
+  Menu,
+  MessageSquare,
+  Compass,
+  Zap,
   Trash2,
   Keyboard,
   Share2,
@@ -46,6 +46,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
 import { UserButton, SignInButton, SignUpButton, useUser } from "@clerk/nextjs"
+import { Badge } from "@/components/ui/badge"
+import { useSubscription } from "@/hooks/useSubscription"
 
 interface HeaderProps {
   onToggleChat: () => void
@@ -57,19 +59,20 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
   const [showDiscovery, setShowDiscovery] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [showClearConfirm, setShowClearConfirm] = useState(false)
-  
-  const { 
-    streams, 
+
+  const {
+    streams,
     clearAllStreams
   } = useStreamStore()
-  
+
   const { trackFeatureUsage, trackMenuItemClick } = useAnalytics()
   const { isSignedIn, user, isLoaded } = useUser()
-  
+  const { subscription, isPro, isPremium, loading: subscriptionLoading } = useSubscription()
+
   // Debug logging
   console.log('Header - Clerk state:', { isLoaded, isSignedIn, user: user?.id })
-  
-  
+
+
   return (
     <div>
       <header className="relative sticky top-0 z-50 border-b border-border/20">
@@ -80,26 +83,26 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(120,119,198,0.1),transparent_50%)]" />
         </div>
-        
+
         {/* Content */}
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300">
           <div className="h-16 flex items-center justify-between gap-2 sm:gap-4 transition-all duration-300">
             {/* Centered Responsive Logo */}
-            <motion.div 
+            <motion.div
               className="flex items-center justify-center flex-1 md:flex-initial md:justify-start gap-3"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
             >
               <Link href="/" className="relative group flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-300 -z-10" />
-                <div className="relative p-2 sm:p-2.5 rounded-xl bg-gradient-to-br from-background/90 to-background/70 border border-border/40 group-hover:border-primary/50 transition-all duration-300 backdrop-blur-sm shadow-lg group-hover:shadow-xl">
-                  <StreamyyyLogo 
-                    size="lg" 
-                    variant="gradient" 
-                    useForHeader={true} 
+                <div className="relative p-1.5 sm:p-2 rounded-xl bg-gradient-to-br from-background/90 to-background/70 border border-border/40 group-hover:border-primary/50 transition-all duration-300 backdrop-blur-sm shadow-lg group-hover:shadow-xl">
+                  <StreamyyyLogo
+                    size="xl"
+                    variant="gradient"
+                    useForHeader={true}
                     iconOnly={true}
                     showText={false}
-                    className="w-24 sm:w-28 md:w-32 lg:w-36 transition-all duration-300"
+                    className="transition-all duration-300"
                   />
                 </div>
               </Link>
@@ -121,8 +124,8 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
 
               {/* Mobile Layout Selector - Show when streams exist */}
               {streams.length > 0 && (
-                <motion.div 
-                  whileHover={{ scale: 1.05 }} 
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="flex-shrink-0"
                 >
@@ -133,9 +136,9 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               )}
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
+                <Button
+                  variant="outline"
+                  size="sm"
                   className="h-10 w-10 sm:px-3 sm:w-auto border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm min-w-[44px] touch-manipulation transition-all duration-300"
                   onClick={() => setShowDiscovery(true)}
                 >
@@ -157,14 +160,14 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
             </div>
 
             {/* Desktop Actions */}
-            <motion.div 
+            <motion.div
               className="hidden md:flex items-center gap-2 transition-all duration-300"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
               {/* Enhanced Primary Actions Group */}
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-1 bg-gradient-to-r from-muted/30 via-muted/40 to-muted/30 backdrop-blur-md rounded-xl p-1.5 border border-border/30 shadow-lg"
                 whileHover={{ scale: 1.01, y: -1, boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}
                 transition={{ duration: 0.2 }}
@@ -182,9 +185,9 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 </motion.div>
 
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     className="h-8 px-3 hover:bg-background/60 rounded-lg"
                     onClick={() => setShowDiscovery(true)}
                   >
@@ -200,8 +203,8 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     onClick={onToggleChat}
                     className={cn(
                       "h-8 px-3 rounded-lg",
-                      showChat 
-                        ? "bg-gradient-to-r from-primary to-primary/90 border-0" 
+                      showChat
+                        ? "bg-gradient-to-r from-primary to-primary/90 border-0"
                         : "hover:bg-background/60"
                     )}
                   >
@@ -212,7 +215,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               </motion.div>
 
               {/* Navigation Links */}
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-1 bg-gradient-to-r from-muted/20 via-muted/25 to-muted/20 backdrop-blur-sm rounded-lg p-1 border border-border/20"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -248,7 +251,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               </motion.div>
 
               {/* Controls Group */}
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-1 bg-gradient-to-r from-muted/35 via-muted/40 to-muted/35 backdrop-blur-sm rounded-lg p-1 border border-border/25 shadow-md"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -258,7 +261,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 <EnhancedLayoutSelector />
                 <SavedLayoutsDialog />
                 <ShareDialog />
-                
+
                 <AnimatePresence>
                   {streams.length > 0 && (
                     <motion.div
@@ -284,7 +287,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               <Separator orientation="vertical" className="h-6 opacity-50" />
 
               {/* User Actions */}
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-2 bg-gradient-to-r from-muted/25 to-muted/30 backdrop-blur-sm rounded-lg p-1.5 border border-border/20"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -294,16 +297,36 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 <ThemeToggle />
 
                 {isSignedIn ? (
-                  <motion.div whileHover={{ scale: 1.05 }}>
-                    <UserButton afterSignOutUrl="/" />
-                  </motion.div>
+                  <div className="flex items-center gap-2">
+                    {/* Subscription Badge */}
+                    {!subscriptionLoading && (isPro || isPremium) && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Badge 
+                          variant={isPremium ? "premium" : "gradient"}
+                          className="text-xs font-semibold"
+                        >
+                          <Crown className="h-3 w-3" />
+                          {isPremium ? "Premium" : "Pro"}
+                        </Badge>
+                      </motion.div>
+                    )}
+                    
+                    <motion.div whileHover={{ scale: 1.05 }}>
+                      <UserButton afterSignOutUrl="/" />
+                    </motion.div>
+                  </div>
                 ) : (
                   <div className="flex gap-1.5">
                     <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           className="h-8 px-3"
                         >
                           <LogIn className="h-4 w-4" />
@@ -313,9 +336,9 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     </SignInButton>
                     <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Button 
-                          variant="default" 
-                          size="sm" 
+                        <Button
+                          variant="default"
+                          size="sm"
                           className="h-8 px-3 shadow-sm"
                         >
                           <span>Sign Up</span>
@@ -343,21 +366,21 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 md:hidden"
               onClick={() => setShowMobileMenu(false)}
             />
-            
+
             {/* Mobile Menu Panel */}
             <motion.div
               initial={{ x: "100%", opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0 }}
-              transition={{ 
-                type: "spring", 
-                damping: 30, 
+              transition={{
+                type: "spring",
+                damping: 30,
                 stiffness: 400,
                 opacity: { duration: 0.2 }
               }}
               className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-background/95 backdrop-blur-xl border-l border-border/50 z-50 md:hidden shadow-2xl"
             >
-              <motion.div 
+              <motion.div
                 className="flex items-center justify-between p-4 border-b border-border/50"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -378,14 +401,14 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 </motion.div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 className="p-4 space-y-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.3 }}
               >
                 {/* Stream Count */}
-                <motion.div 
+                <motion.div
                   className="bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg p-3 border border-border/30"
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -398,7 +421,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 </motion.div>
 
                 {/* Quick Actions */}
-                <motion.div 
+                <motion.div
                   className="space-y-2"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -460,13 +483,25 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 <div className="pt-4 border-t border-border flex justify-center gap-3">
                   <ThemeToggle />
                   {isSignedIn ? (
-                    <UserButton afterSignOutUrl="/" />
+                    <div className="flex items-center gap-2">
+                      {/* Mobile Subscription Badge */}
+                      {!subscriptionLoading && (isPro || isPremium) && (
+                        <Badge 
+                          variant={isPremium ? "premium" : "gradient"}
+                          className="text-xs font-semibold"
+                        >
+                          <Crown className="h-3 w-3" />
+                          {isPremium ? "Premium" : "Pro"}
+                        </Badge>
+                      )}
+                      <UserButton afterSignOutUrl="/" />
+                    </div>
                   ) : (
                     <div className="flex gap-2">
                       <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
+                        <Button
+                          variant="outline"
+                          size="sm"
                           className="h-9"
                         >
                           <LogIn className="h-4 w-4" />
@@ -474,9 +509,9 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                         </Button>
                       </SignInButton>
                       <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
-                        <Button 
-                          variant="default" 
-                          size="sm" 
+                        <Button
+                          variant="default"
+                          size="sm"
                           className="h-9"
                         >
                           <span>Sign Up</span>
@@ -492,14 +527,14 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
       </AnimatePresence>
 
       {/* Dialogs */}
-      <EnhancedAddStreamDialog 
-        open={showAddStream} 
-        onOpenChange={setShowAddStream} 
+      <EnhancedAddStreamDialog
+        open={showAddStream}
+        onOpenChange={setShowAddStream}
       />
-      
-      <DiscoverPopup 
-        open={showDiscovery} 
-        onOpenChange={setShowDiscovery} 
+
+      <DiscoverPopup
+        open={showDiscovery}
+        onOpenChange={setShowDiscovery}
       />
 
       {/* Clear Streams Confirmation Dialog */}

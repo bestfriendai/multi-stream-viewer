@@ -48,7 +48,7 @@ export const useMobileGestures = (options: UseMobileGesturesOptions = {}) => {
   const [pullDistance, setPullDistance] = useState(0)
   const [lastTap, setLastTap] = useState<number>(0)
   const longPressTimer = useRef<NodeJS.Timeout | null>(null)
-  
+
   const { streams, setActiveStream } = useStreamStore()
 
   const calculateSwipe = (): SwipeDirection => {
@@ -120,16 +120,19 @@ export const useMobileGestures = (options: UseMobileGesturesOptions = {}) => {
     const currentY = touch.clientY
     const distanceY = currentY - touchStart.y
 
-    // Handle pull to refresh
-    if (isPulling && distanceY > 0 && window.scrollY <= 0) {
-      e.preventDefault()
+    // Handle pull to refresh - only if explicitly enabled and at top of page
+    if (isPulling && distanceY > 0 && window.scrollY <= 0 && onPullToRefresh) {
+      // Only prevent default if we're actually handling pull-to-refresh
+      if (distanceY > 50) {
+        e.preventDefault()
+      }
       const distance = Math.min(distanceY, pullThreshold * 1.5)
       setPullDistance(distance)
-      
+
       // Add resistance effect
       const resistance = distance / pullThreshold
       const adjustedDistance = distance - (resistance * 20)
-      
+
       // Visual feedback (you can use this in your component)
       document.documentElement.style.setProperty('--pull-distance', `${adjustedDistance}px`)
     }
@@ -175,7 +178,7 @@ export const useMobileGestures = (options: UseMobileGesturesOptions = {}) => {
     if (!touchStart || !touchEnd) return
 
     const swipe = calculateSwipe()
-    
+
     switch (swipe.direction) {
       case 'left':
         onSwipeLeft?.()
@@ -259,8 +262,9 @@ export const useStreamGestures = () => {
       }
     },
     onPullToRefresh: () => {
-      // Refresh streams (you can implement this)
-      window.location.reload()
+      // Refresh streams without full page reload
+      console.log('Pull to refresh triggered - implement stream refresh here')
+      // TODO: Implement proper stream refresh logic
     }
   })
 

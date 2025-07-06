@@ -10,7 +10,7 @@ export default function BlogHeader() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center">
-            <StreamyyyLogo size="md" variant="gradient" useForHeader={true} iconOnly={true} />
+            <StreamyyyLogo size="lg" variant="gradient" useForHeader={true} iconOnly={true} />
           </Link>
           <nav className="hidden md:flex items-center gap-6">
             <Link href="/blog" className="text-sm font-medium transition-colors hover:text-primary">
@@ -18,7 +18,7 @@ export default function BlogHeader() {
             </Link>
           </nav>
         </div>
-        
+
         <div className="flex items-center gap-4">
           <Link href="/">
             <Button className="gap-2">

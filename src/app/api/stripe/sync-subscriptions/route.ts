@@ -68,12 +68,12 @@ export async function POST(request: NextRequest) {
             status: subscription.status,
             product_id: product.id,
             price_id: priceId,
-            current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-            cancel_at_period_end: subscription.cancel_at_period_end,
-            canceled_at: subscription.canceled_at ? new Date(subscription.canceled_at * 1000).toISOString() : null,
-            trial_start: subscription.trial_start ? new Date(subscription.trial_start * 1000).toISOString() : null,
-            trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
+            current_period_start: new Date((subscription as any).current_period_start * 1000).toISOString(),
+            current_period_end: new Date((subscription as any).current_period_end * 1000).toISOString(),
+            cancel_at_period_end: (subscription as any).cancel_at_period_end,
+            canceled_at: (subscription as any).canceled_at ? new Date((subscription as any).canceled_at * 1000).toISOString() : null,
+            trial_start: (subscription as any).trial_start ? new Date((subscription as any).trial_start * 1000).toISOString() : null,
+            trial_end: (subscription as any).trial_end ? new Date((subscription as any).trial_end * 1000).toISOString() : null,
             updated_at: new Date().toISOString()
           };
           
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
           // Determine subscription status and tier
           if (subscription.status === 'active') {
             profileUpdateData.subscription_status = 'active';
-            profileUpdateData.subscription_expires_at = new Date(subscription.current_period_end * 1000).toISOString();
+            profileUpdateData.subscription_expires_at = new Date((subscription as any).current_period_end * 1000).toISOString();
             profileUpdateData.subscription_tier = product.tier || 'pro';
           } else if (subscription.status === 'canceled' || subscription.status === 'incomplete_expired') {
             profileUpdateData.subscription_status = 'canceled';

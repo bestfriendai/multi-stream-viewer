@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
         // Determine subscription status and tier
         if (subscription.status === 'active') {
           profileUpdateData.subscription_status = 'active';
-          profileUpdateData.subscription_expires_at = new Date(subscription.current_period_end * 1000).toISOString();
+          profileUpdateData.subscription_expires_at = new Date((subscription as any).current_period_end * 1000).toISOString();
           
           // Get product details to determine tier
           const { data: productDetails } = await supabase

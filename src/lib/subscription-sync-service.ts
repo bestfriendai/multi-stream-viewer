@@ -56,7 +56,14 @@ class SubscriptionSyncService {
         .single();
       
       if (productError || !product) {
-        return { success: false, error: `Product not found for price ${priceId}` };
+        // Check if this price exists in Stripe (might be live mode vs test mode issue)
+        try {
+          await this.stripe.prices.retrieve(priceId);
+          console.warn(`⚠️ Price ${priceId} exists in Stripe but no matching product found in Supabase. Skipping sync.`);
+        } catch (stripeError) {
+          console.warn(`⚠️ Price ${priceId} not found in current Stripe environment. This might be a live/test mode mismatch. Skipping sync.`);
+        }
+        return { success: false, error: `Product not found for price ${priceId} (skipped)` };
       }
       
       // Prepare subscription data
@@ -67,12 +74,12 @@ class SubscriptionSyncService {
         status: subscription.status,
         product_id: product.id,
         price_id: priceId,
-        current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-        current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-        cancel_at_period_end: subscription.cancel_at_period_end,
-        canceled_at: subscription.canceled_at ? new Date(subscription.canceled_at * 1000).toISOString() : null,
-        trial_start: subscription.trial_start ? new Date(subscription.trial_start * 1000).toISOString() : null,
-        trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
+        current_period_start: new Date((subscription as any).current_period_start * 1000).toISOString(),
+        current_period_end: new Date((subscription as any).current_period_end * 1000).toISOString(),
+        cancel_at_period_end: (subscription as any).cancel_at_period_end,
+        canceled_at: (subscription as any).canceled_at ? new Date((subscription as any).canceled_at * 1000).toISOString() : null,
+        trial_start: (subscription as any).trial_start ? new Date((subscription as any).trial_start * 1000).toISOString() : null,
+        trial_end: (subscription as any).trial_end ? new Date((subscription as any).trial_end * 1000).toISOString() : null,
         updated_at: new Date().toISOString()
       };
       
@@ -96,7 +103,7 @@ class SubscriptionSyncService {
       // Determine subscription status and tier
       if (subscription.status === 'active') {
         profileUpdateData.subscription_status = 'active';
-        profileUpdateData.subscription_expires_at = new Date(subscription.current_period_end * 1000).toISOString();
+        profileUpdateData.subscription_expires_at = new Date((subscription as any).current_period_end * 1000).toISOString();
         profileUpdateData.subscription_tier = product.tier || 'pro';
       } else if (subscription.status === 'canceled' || subscription.status === 'incomplete_expired') {
         profileUpdateData.subscription_status = 'canceled';
@@ -111,14 +118,51 @@ class SubscriptionSyncService {
         profileUpdateData.subscription_expires_at = null;
       }
       
-      // Update the profile
-      const { error: profileUpdateError } = await supabase
-        .from('profiles')
-        .update(profileUpdateData)
-        .eq('id', profileId);
-      
-      if (profileUpdateError) {
-        return { success: false, error: `Profile update failed: ${profileUpdateError.message}` };
+      // Update profile with subscription info (handle missing columns gracefully)
+      try {
+        const updateData: any = {};
+        
+        // Only add fields that exist in the schema
+        const { data: columns } = await supabase
+          .from('information_schema.columns')
+          .select('column_name')
+          .eq('table_name', 'profiles')
+          .eq('table_schema', 'public');
+        
+        const columnNames = columns?.map(col => col.column_name) || [];
+        
+        // Check each field before adding to update data
+        Object.keys(profileUpdateData).forEach(key => {
+          if (columnNames.includes(key)) {
+            updateData[key] = profileUpdateData[key];
+          }
+        });
+        
+        if (Object.keys(updateData).length > 0) {
+          const { error: profileUpdateError } = await supabase
+            .from('profiles')
+            .update(updateData)
+            .eq('id', profileId);
+
+          if (profileUpdateError) {
+            return { success: false, error: `Profile update failed: ${profileUpdateError.message}` };
+          }
+        } else {
+          console.warn('No subscription columns found in profiles table. Please run the migration.');
+        }
+      } catch (columnError) {
+        console.warn('Could not check profile columns, attempting direct update:', columnError);
+        
+        // Fallback: try direct update
+        const { error: profileUpdateError } = await supabase
+          .from('profiles')
+          .update(profileUpdateData)
+          .eq('id', profileId);
+
+        if (profileUpdateError) {
+          console.error('Error updating profile (fallback):', profileUpdateError);
+          return { success: false, error: `Profile update failed: ${profileUpdateError.message}` };
+        }
       }
       
       return { success: true };

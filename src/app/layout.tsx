@@ -10,6 +10,7 @@ import CookieConsent from "@/components/CookieConsent";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { SupabaseProvider } from "@/contexts/SupabaseContext";
+import AutoSyncInitializer from "@/components/AutoSyncInitializer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,9 @@ const geistMono = Geist_Mono({
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 5,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#6366f1" },
     { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" }
@@ -165,7 +168,7 @@ export default function RootLayout({
       "Watch up to 16 streams at once with Streamyyy",
       "Streamy interface for multi-stream viewing",
       "Watch multiple Twitch streams simultaneously",
-      "Watch multiple YouTube streams at once", 
+      "Watch multiple YouTube streams at once",
       "Mix Twitch, YouTube, Kick streams in one view",
       "Custom grid layouts (2x2, 3x3, 4x4, mosaic)",
       "Unified chat panel for all streams",
@@ -206,11 +209,13 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Streamyyy" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
         <link rel="apple-touch-icon" href="/favicon.png" />
         <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="shortcut icon" href="/favicon.png" />
         <link rel="manifest" href="/manifest.json" />
-        
+
         {/* Google Consent Mode - Must be before GTM/Analytics */}
         <Script
           id="google-consent-init"
@@ -219,7 +224,7 @@ export default function RootLayout({
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
-              
+
               // Default consent state (denied until user accepts)
               gtag('consent', 'default', {
                 'ad_storage': 'denied',
@@ -232,7 +237,7 @@ export default function RootLayout({
             `
           }}
         />
-        
+
         {/* Google AdSense - Will respect consent mode */}
         <Script
           id="google-adsense"
@@ -240,7 +245,7 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4679934692726562"
           crossOrigin="anonymous"
         />
-        
+
         {/* Google tag (gtag.js) */}
         <Script
           id="google-analytics"
@@ -259,7 +264,7 @@ export default function RootLayout({
             `,
           }}
         />
-        
+
         <Script
           id="json-ld"
           type="application/ld+json"
@@ -271,6 +276,7 @@ export default function RootLayout({
       >
         <ClerkProvider>
           <SupabaseProvider>
+            <AutoSyncInitializer />
             <GoogleAnalytics />
             <ThemeProvider
               attribute="class"
