@@ -4,6 +4,8 @@ import { sentryAdvancedDebugger } from '@/lib/sentry-advanced-debugging'
 import { sentryProfilingReplay } from '@/lib/sentry-profiling-replay'
 import { streamMonitor, apiPerformanceMonitor, userJourneyTracker } from '@/lib/sentry-custom-integrations'
 import { sentryDebugUtilities } from '@/lib/sentry-debug-utilities'
+import { sentryCronMonitor } from '@/lib/sentry-cron-monitoring'
+import { sentryAttachments, attachmentUtils } from '@/lib/sentry-attachments'
 
 /**
  * Advanced Sentry React Hook
@@ -83,6 +85,17 @@ export interface SentryAdvancedHook {
   trackStreamStart: (streamId: string) => void
   trackStreamEnd: (streamId: string) => void
   trackStreamError: (streamId: string, error: string) => void
+  
+  // Cron monitoring
+  startCronJob: (slug: string, metadata?: any) => string
+  finishCronJob: (slug: string, status: 'ok' | 'error' | 'timeout', error?: Error) => void
+  withCronMonitoring: <T>(slug: string, fn: () => Promise<T> | T, metadata?: any) => Promise<T>
+  
+  // Attachments
+  attachDebugSnapshot: (description?: string) => Promise<void>
+  attachErrorContext: (error: Error, context?: any) => void
+  attachStreamState: () => void
+  attachPerformanceData: () => void
   
   // Component lifecycle
   onMount: () => void
@@ -473,6 +486,36 @@ export function useSentryAdvanced(options: SentryAdvancedOptions): SentryAdvance
       streamMonitor.trackStreamError(streamId, error)
       userJourneyTracker.trackStep('stream.error', { streamId, error, componentName })
     }, [componentName]),
+
+    // Cron monitoring
+    startCronJob: useCallback((slug: string, metadata?: any) => {
+      return sentryCronMonitor.startCronJob(slug, { ...metadata, componentName })
+    }, [componentName]),
+
+    finishCronJob: useCallback((slug: string, status: 'ok' | 'error' | 'timeout', error?: Error) => {
+      sentryCronMonitor.finishCronJob(slug, status, error)
+    }, []),
+
+    withCronMonitoring: useCallback(<T,>(slug: string, fn: () => Promise<T> | T, metadata?: any) => {
+      return sentryCronMonitor.withCronMonitoring(slug, fn, { ...metadata, componentName })
+    }, [componentName]),
+
+    // Attachments
+    attachDebugSnapshot: useCallback(async (description: string = `Debug snapshot from ${componentName}`) => {
+      await sentryAttachments.attachDebugSnapshot(description)
+    }, [componentName]),
+
+    attachErrorContext: useCallback((error: Error, context?: any) => {
+      sentryAttachments.attachErrorContext(error, { ...context, componentName })
+    }, [componentName]),
+
+    attachStreamState: useCallback(() => {
+      sentryAttachments.attachStreamState()
+    }, []),
+
+    attachPerformanceData: useCallback(() => {
+      sentryAttachments.attachPerformanceData()
+    }, []),
 
     // Component lifecycle
     onMount: useCallback(() => {

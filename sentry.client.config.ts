@@ -4,6 +4,9 @@ import { customSentryIntegrations, beforeSend, beforeSendTransaction } from './s
 import { sentryAdvancedDebugger } from './src/lib/sentry-advanced-debugging';
 import { sentryProfilingReplay } from './src/lib/sentry-profiling-replay';
 import { sentryDebugUtilities } from './src/lib/sentry-debug-utilities';
+import { sentryUptimeMonitor } from './src/lib/sentry-uptime-monitoring';
+import { sentryCronMonitor } from './src/lib/sentry-cron-monitoring';
+import { sentryAttachments, attachmentUtils } from './src/lib/sentry-attachments';
 
 Sentry.init({
   dsn: "https://cb0c99be8431b823967fd7e441ae7924@o4509628501262336.ingest.us.sentry.io/4509628733390848",
@@ -343,8 +346,19 @@ if (typeof window !== 'undefined') {
     sentryDebugUtilities.enableRealTimeMonitoring();
   }
   
+  // Initialize uptime monitoring (auto-configured in the uptime monitoring file)
+  // The uptime monitor auto-initializes and sets up default checks
+  
   // Set up error boundary for unhandled errors
   window.addEventListener('error', (event) => {
+    // Attach comprehensive debug context for critical errors
+    attachmentUtils.attachFullDebugContext(event.error, {
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno,
+      source: 'window.error'
+    });
+    
     sentryAdvancedDebugger.captureAdvancedError(event.error, {
       level: 'error',
       tags: { source: 'window.error' },
@@ -358,14 +372,19 @@ if (typeof window !== 'undefined') {
   
   // Set up unhandled promise rejection handler
   window.addEventListener('unhandledrejection', (event) => {
-    sentryAdvancedDebugger.captureAdvancedError(
-      new Error(`Unhandled Promise Rejection: ${event.reason}`), 
-      {
-        level: 'error',
-        tags: { source: 'unhandled.promise' },
-        extra: { reason: event.reason }
-      }
-    );
+    const error = new Error(`Unhandled Promise Rejection: ${event.reason}`)
+    
+    // Attach debug context for promise rejections
+    attachmentUtils.attachMinimalDebugInfo(error, { 
+      reason: event.reason,
+      source: 'unhandled.promise'
+    });
+    
+    sentryAdvancedDebugger.captureAdvancedError(error, {
+      level: 'error',
+      tags: { source: 'unhandled.promise' },
+      extra: { reason: event.reason }
+    });
   });
   
   // Track page load performance
