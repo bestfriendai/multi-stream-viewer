@@ -296,7 +296,7 @@ const AdaptiveHeader = React.memo(function AdaptiveHeader({ onToggleChat, showCh
                 <Separator orientation="vertical" className="h-6" />
 
                 {isSignedIn ? (
-                  <UserButton afterSignOutUrl="/" />
+                  <UserButton />
                 ) : (
                   <div className="flex gap-2">
                     <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
@@ -468,7 +468,7 @@ const AdaptiveHeader = React.memo(function AdaptiveHeader({ onToggleChat, showCh
                 <div className="pt-4 border-t border-border flex justify-center gap-3">
                   <ThemeToggle />
                   {isSignedIn ? (
-                    <UserButton afterSignOutUrl="/" />
+                    <UserButton />
                   ) : (
                     <div className="flex gap-2">
                       <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">

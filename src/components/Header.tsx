@@ -324,7 +324,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     )}
                     
                     <motion.div whileHover={{ scale: 1.05 }}>
-                      <UserButton afterSignOutUrl="/" />
+                      <UserButton />
                     </motion.div>
                   </div>
                 ) : (
@@ -502,7 +502,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                           {isPremium ? "Premium" : "Pro"}
                         </Badge>
                       )}
-                      <UserButton afterSignOutUrl="/" />
+                      <UserButton />
                     </div>
                   ) : (
                     <div className="flex gap-2">

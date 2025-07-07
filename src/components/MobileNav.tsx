@@ -46,13 +46,13 @@ export default function MobileNav({
   ] as const
   
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t md:hidden z-30 pb-safe shadow-lg">
+    <nav className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t md:hidden z-30 pb-safe shadow-lg" role="navigation" aria-label="Mobile navigation">
       {/* Stream Status Indicator */}
       {activeStreams > 0 && (
-        <div className="px-4 py-2 border-b border-border/50">
+        <div className="px-4 py-2 border-b border-border/50" role="status" aria-live="polite">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" aria-hidden="true" />
               <span className="text-responsive-sm text-muted-foreground">
                 {activeStreams} stream{activeStreams !== 1 ? 's' : ''} live
               </span>
@@ -64,7 +64,7 @@ export default function MobileNav({
         </div>
       )}
       
-      <div className="grid grid-cols-5 gap-1 p-3">
+      <div className="grid grid-cols-5 gap-1 p-3" role="group" aria-label="Main navigation buttons">
         {/* Add Stream Button */}
         <Button
           variant="ghost"
@@ -75,10 +75,12 @@ export default function MobileNav({
           }}
           disabled={streamCount >= 16}
           className={cn(
-            "flex flex-col gap-1.5 h-auto py-4 min-h-[56px] rounded-xl transition-all active:scale-95",
+            "flex flex-col gap-1.5 h-auto py-4 rounded-xl transition-all active:scale-95",
             streamCount >= 16 && "opacity-50",
             "hover:bg-primary/10 hover:text-primary"
           )}
+          style={{ minWidth: '56px', minHeight: '56px' }}
+          aria-label={streamCount >= 16 ? 'Maximum streams reached' : 'Add new stream'}
         >
           <div className="relative">
             <Plus size={22} />
@@ -97,7 +99,9 @@ export default function MobileNav({
             onOpenDiscover()
             trackMobileGesture('tap', 'discover_button')
           }}
-          className="flex flex-col gap-1.5 h-auto py-4 min-h-[56px] rounded-xl transition-all active:scale-95 hover:bg-primary/10 hover:text-primary"
+          className="flex flex-col gap-1.5 h-auto py-4 rounded-xl transition-all active:scale-95 hover:bg-primary/10 hover:text-primary"
+          style={{ minWidth: '56px', minHeight: '56px' }}
+          aria-label="Discover popular streams"
         >
           <TrendingUp size={22} />
           <span className="text-responsive-xs font-medium">Discover</span>
@@ -109,7 +113,9 @@ export default function MobileNav({
             <Button
               variant="ghost"
               size="lg"
-              className="flex flex-col gap-1.5 h-auto py-4 min-h-[64px] rounded-xl transition-all active:scale-95 hover:bg-primary/10 hover:text-primary relative"
+              className="flex flex-col gap-1.5 h-auto py-4 rounded-xl transition-all active:scale-95 hover:bg-primary/10 hover:text-primary relative"
+              style={{ minWidth: '56px', minHeight: '64px' }}
+              aria-label={`Layout options - ${activeStreams} active streams`}
             >
               <div className="relative">
                 <LayoutGrid size={22} />
@@ -174,7 +180,9 @@ export default function MobileNav({
             onOpenLayouts()
             trackMobileGesture('tap', 'saved_layouts_button')
           }}
-          className="flex flex-col gap-1.5 h-auto py-4 min-h-[56px] rounded-xl transition-all active:scale-95 hover:bg-primary/10 hover:text-primary"
+          className="flex flex-col gap-1.5 h-auto py-4 rounded-xl transition-all active:scale-95 hover:bg-primary/10 hover:text-primary"
+          style={{ minWidth: '56px', minHeight: '56px' }}
+          aria-label="Manage saved layouts"
         >
           <Bookmark size={22} />
           <span className="text-responsive-xs font-medium">Saved</span>
@@ -189,11 +197,13 @@ export default function MobileNav({
             trackMobileGesture('tap', showChat ? 'chat_close' : 'chat_open')
           }}
           className={cn(
-            "flex flex-col gap-1.5 h-auto py-4 min-h-[56px] rounded-xl transition-all active:scale-95",
+            "flex flex-col gap-1.5 h-auto py-4 rounded-xl transition-all active:scale-95",
             showChat 
               ? "bg-primary text-primary-foreground hover:bg-primary/90" 
               : "hover:bg-primary/10 hover:text-primary"
           )}
+          style={{ minWidth: '56px', minHeight: '56px' }}
+          aria-label={showChat ? 'Close chat' : 'Open chat'}
         >
           <div className="relative">
             <MessageSquare size={22} />
@@ -204,6 +214,6 @@ export default function MobileNav({
           <span className="text-responsive-xs font-medium">{showChat ? 'Close' : 'Chat'}</span>
         </Button>
       </div>
-    </div>
+    </nav>
   )
 }

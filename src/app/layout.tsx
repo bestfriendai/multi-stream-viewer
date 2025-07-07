@@ -164,6 +164,7 @@ export default function RootLayout({
           strategy="afterInteractive"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4679934692726562"
           crossOrigin="anonymous"
+          async
         />
 
         {/* Google tag (gtag.js) */}

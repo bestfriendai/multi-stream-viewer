@@ -9,6 +9,11 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   skipMiddlewareUrlNormalize: true,
+  // Optimize CSS loading to reduce preload warnings
+  experimental: {
+    optimizeCss: true,
+    cssChunking: 'strict',
+  },
   turbopack: {
     rules: {
       '*.svg': {

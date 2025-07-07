@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Volume2, VolumeX, X, Maximize2, Maximize, MoreVertical, Share2, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { haptic } from '@/lib/haptics'
+import { createMuteButtonHandler, createMobileButtonHandler } from '@/utils/eventHandlers'
 import { useTranslation } from '@/contexts/LanguageContext'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -38,38 +38,24 @@ export default function MobileStreamControls({
   const [isFavorite, setIsFavorite] = useState(false)
   const { t } = useTranslation()
 
-  const handleMuteToggle = (e?: React.MouseEvent) => {
-    e?.preventDefault()
-    e?.stopPropagation()
-    haptic.light()
-    onMuteToggle()
-  }
+  const handleMuteToggle = createMuteButtonHandler(onMuteToggle)
 
-  const handleFullscreen = (e?: React.MouseEvent) => {
-    e?.preventDefault()
-    e?.stopPropagation()
-    haptic.medium()
-    onFullscreen()
-  }
+  const handleFullscreen = createMobileButtonHandler(onFullscreen, {
+    hapticFeedback: 'medium',
+    analytics: { event: 'fullscreen_toggle', properties: { source: 'mobile_controls' } }
+  })
 
-  const handleSetPrimary = (e?: React.MouseEvent) => {
-    e?.preventDefault()
-    e?.stopPropagation()
-    haptic.medium()
-    onSetPrimary()
-  }
+  const handleSetPrimary = createMobileButtonHandler(onSetPrimary, {
+    hapticFeedback: 'medium',
+    analytics: { event: 'set_primary', properties: { source: 'mobile_controls' } }
+  })
 
-  const handleRemove = (e?: React.MouseEvent) => {
-    e?.preventDefault()
-    e?.stopPropagation()
-    haptic.heavy()
-    onRemove()
-  }
+  const handleRemove = createMobileButtonHandler(onRemove, {
+    hapticFeedback: 'heavy',
+    analytics: { event: 'remove_stream', properties: { source: 'mobile_controls' } }
+  })
 
-  const handleShare = (e?: React.MouseEvent) => {
-    e?.preventDefault()
-    e?.stopPropagation()
-    haptic.light()
+  const handleShare = createMobileButtonHandler(() => {
     if (onShare) onShare()
     // Native share implementation
     if (navigator.share) {
@@ -79,15 +65,18 @@ export default function MobileStreamControls({
         url: window.location.href
       })
     }
-  }
+  }, {
+    hapticFeedback: 'light',
+    analytics: { event: 'share_stream', properties: { source: 'mobile_controls', platform } }
+  })
 
-  const handleFavorite = (e?: React.MouseEvent) => {
-    e?.preventDefault()
-    e?.stopPropagation()
-    haptic.light()
+  const handleFavorite = createMobileButtonHandler(() => {
     setIsFavorite(!isFavorite)
     if (onFavorite) onFavorite()
-  }
+  }, {
+    hapticFeedback: 'light',
+    analytics: { event: 'favorite_toggle', properties: { source: 'mobile_controls', favorited: !isFavorite } }
+  })
 
   return (
     <>
@@ -100,11 +89,12 @@ export default function MobileStreamControls({
               onClick={handleMuteToggle}
               className={cn(
                 "relative p-3 rounded-full backdrop-blur-md transition-all duration-200 transform active:scale-90",
-                "min-w-[48px] min-h-[48px] flex items-center justify-center",
+                "flex items-center justify-center",
                 muted 
                   ? "bg-red-500/20 border border-red-400/30 text-red-100"
                   : "bg-white/20 border border-white/30 text-white"
               )}
+              style={{ minWidth: '56px', minHeight: '56px' }}
               aria-label={muted ? t('header.unmuteStream') : t('header.muteStream')}
             >
               {muted ? <VolumeX size={20} /> : <Volume2 size={20} />}
@@ -116,9 +106,10 @@ export default function MobileStreamControls({
               onClick={handleFullscreen}
               className={cn(
                 "relative p-3 rounded-full backdrop-blur-md transition-all duration-200 transform active:scale-90",
-                "min-w-[48px] min-h-[48px] flex items-center justify-center",
+                "flex items-center justify-center",
                 "bg-white/20 border border-white/30 text-white"
               )}
+              style={{ minWidth: '56px', minHeight: '56px' }}
               aria-label={t('header.fullscreen')}
             >
               <Maximize size={20} />
@@ -130,9 +121,10 @@ export default function MobileStreamControls({
                 onClick={handleSetPrimary}
                 className={cn(
                   "relative p-3 rounded-full backdrop-blur-md transition-all duration-200 transform active:scale-90",
-                  "min-w-[48px] min-h-[48px] flex items-center justify-center",
+                  "flex items-center justify-center",
                   "bg-blue-500/20 border border-blue-400/30 text-blue-100"
                 )}
+                style={{ minWidth: '56px', minHeight: '56px' }}
                 aria-label={t('streams.setPrimary')}
               >
                 <Maximize2 size={20} />
@@ -144,15 +136,18 @@ export default function MobileStreamControls({
           {/* Secondary Controls */}
           <div className="flex gap-2">
             <button
-              onClick={() => {
-                haptic.light()
+              onClick={createMobileButtonHandler(() => {
                 setShowQuickActions(!showQuickActions)
-              }}
+              }, {
+                hapticFeedback: 'light',
+                analytics: { event: 'quick_actions_toggle', properties: { source: 'mobile_controls' } }
+              })}
               className={cn(
                 "relative p-3 rounded-full backdrop-blur-md transition-all duration-200 transform active:scale-90",
-                "min-w-[48px] min-h-[48px] flex items-center justify-center",
+                "flex items-center justify-center",
                 "bg-white/20 border border-white/30 text-white"
               )}
+              style={{ minWidth: '56px', minHeight: '56px' }}
               aria-label={t('mobile.moreOptions')}
             >
               <MoreVertical size={20} />
@@ -191,41 +186,49 @@ export default function MobileStreamControls({
                 <h3 className="text-white font-semibold text-lg mb-3">{channelName}</h3>
 
                 <button
-                  onClick={() => {
+                  onClick={createMobileButtonHandler(() => {
                     handleShare()
                     setShowQuickActions(false)
-                  }}
+                  })}
                   className="w-full flex items-center gap-4 p-4 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors"
+                  style={{ minHeight: '56px' }}
+                  aria-label={t('mobile.shareStream')}
                 >
                   <Share2 size={24} className="text-white" />
                   <span className="text-white text-left">{t('mobile.shareStream')}</span>
                 </button>
 
                 <button
-                  onClick={() => {
+                  onClick={createMobileButtonHandler(() => {
                     handleFavorite()
                     setShowQuickActions(false)
-                  }}
+                  })}
                   className="w-full flex items-center gap-4 p-4 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors"
+                  style={{ minHeight: '56px' }}
+                  aria-label={isFavorite ? t('streams.removeFromFavorites') : t('streams.addToFavorites')}
                 >
                   <Heart size={24} className={cn("transition-colors", isFavorite ? "text-red-500 fill-red-500" : "text-white")} />
                   <span className="text-white text-left">{isFavorite ? t('streams.removeFromFavorites') : t('streams.addToFavorites')}</span>
                 </button>
 
                 <button
-                  onClick={() => {
+                  onClick={createMobileButtonHandler(() => {
                     handleRemove()
                     setShowQuickActions(false)
-                  }}
+                  })}
                   className="w-full flex items-center gap-4 p-4 rounded-2xl bg-red-500/20 hover:bg-red-500/30 transition-colors"
+                  style={{ minHeight: '56px' }}
+                  aria-label={t('header.removeStream')}
                 >
                   <X size={24} className="text-red-400" />
                   <span className="text-red-400 text-left">{t('header.removeStream')}</span>
                 </button>
 
                 <button
-                  onClick={() => setShowQuickActions(false)}
+                  onClick={createMobileButtonHandler(() => setShowQuickActions(false))}
                   className="w-full p-4 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors mt-4"
+                  style={{ minHeight: '56px' }}
+                  aria-label={t('common.cancel')}
                 >
                   <span className="text-white">{t('common.cancel')}</span>
                 </button>

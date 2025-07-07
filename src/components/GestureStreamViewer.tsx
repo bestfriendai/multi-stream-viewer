@@ -64,6 +64,17 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
   const opacity = useTransform(x, [-200, 0, 200], [0.5, 1, 0.5])
   const rotateX = useTransform(rotate, [0, 180], [0, 180])
 
+  // Cleanup motion values on unmount
+  useEffect(() => {
+    return () => {
+      x.destroy()
+      scale.destroy()
+      rotate.destroy()
+      opacity.destroy()
+      rotateX.destroy()
+    }
+  }, [])
+
   // Auto-hide controls
   const resetControlsTimeout = useCallback(() => {
     if (controlsTimeoutRef.current) {
@@ -73,6 +84,15 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
     controlsTimeoutRef.current = setTimeout(() => {
       setShowControls(false)
     }, 3000)
+  }, [])
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current)
+      }
+    }
   }, [])
 
   // Navigation functions
@@ -393,12 +413,15 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
                   if (currentStream) {
                     toggleStreamMute(currentStream.id)
                   }
                 }}
-                className="h-10 w-10 p-0 text-white hover:bg-white/20 touch-target"
+                className="h-10 w-10 p-0 text-white hover:bg-white/20"
+                style={{ minWidth: '56px', minHeight: '56px' }}
               >
                 {currentStream && muteManager.getMuteState(currentStream.id) ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
               </Button>
@@ -407,7 +430,8 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
                 size="sm"
                 variant="ghost"
                 onClick={toggleFullscreen}
-                className="h-10 w-10 p-0 text-white hover:bg-white/20 touch-target"
+                className="h-10 w-10 p-0 text-white hover:bg-white/20"
+                style={{ minWidth: '56px', minHeight: '56px' }}
               >
                 <Maximize2 className="h-5 w-5" />
               </Button>
@@ -416,7 +440,8 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
                 size="sm"
                 variant="ghost"
                 onClick={handleRotate}
-                className="h-10 w-10 p-0 text-white hover:bg-white/20 touch-target"
+                className="h-10 w-10 p-0 text-white hover:bg-white/20"
+                style={{ minWidth: '56px', minHeight: '56px' }}
               >
                 <RotateCw className="h-5 w-5" />
               </Button>
@@ -425,7 +450,8 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
                 size="sm"
                 variant="ghost"
                 onClick={handleZoomIn}
-                className="h-10 w-10 p-0 text-white hover:bg-white/20 touch-target"
+                className="h-10 w-10 p-0 text-white hover:bg-white/20"
+                style={{ minWidth: '56px', minHeight: '56px' }}
               >
                 <ZoomIn className="h-5 w-5" />
               </Button>
@@ -434,7 +460,8 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
                 size="sm"
                 variant="ghost"
                 onClick={handleZoomOut}
-                className="h-10 w-10 p-0 text-white hover:bg-white/20 touch-target"
+                className="h-10 w-10 p-0 text-white hover:bg-white/20"
+                style={{ minWidth: '56px', minHeight: '56px' }}
               >
                 <ZoomOut className="h-5 w-5" />
               </Button>
@@ -443,7 +470,8 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
                 size="sm"
                 variant="ghost"
                 onClick={handleShare}
-                className="h-10 w-10 p-0 text-white hover:bg-white/20 touch-target"
+                className="h-10 w-10 p-0 text-white hover:bg-white/20"
+                style={{ minWidth: '56px', minHeight: '56px' }}
               >
                 <Share2 className="h-5 w-5" />
               </Button>
@@ -452,7 +480,8 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
                 size="sm"
                 variant="ghost"
                 onClick={() => setShowInfo(true)}
-                className="h-10 w-10 p-0 text-white hover:bg-white/20 touch-target"
+                className="h-10 w-10 p-0 text-white hover:bg-white/20"
+                style={{ minWidth: '56px', minHeight: '56px' }}
               >
                 <MoreHorizontal className="h-5 w-5" />
               </Button>
@@ -487,15 +516,15 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
                   </div>
 
                   <div className="grid grid-cols-3 gap-4">
-                    <Button variant="outline" className="h-12 gap-2 touch-target">
+                    <Button variant="outline" className="h-12 gap-2" style={{ minHeight: '56px' }}>
                       <Heart className="h-4 w-4" />
                       Follow
                     </Button>
-                    <Button variant="outline" className="h-12 gap-2 touch-target">
+                    <Button variant="outline" className="h-12 gap-2" style={{ minHeight: '56px' }}>
                       <MessageSquare className="h-4 w-4" />
                       Chat
                     </Button>
-                    <Button variant="outline" className="h-12 gap-2 touch-target">
+                    <Button variant="outline" className="h-12 gap-2" style={{ minHeight: '56px' }}>
                       <Share2 className="h-4 w-4" />
                       Share
                     </Button>

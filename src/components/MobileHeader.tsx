@@ -201,7 +201,7 @@ export default function MobileHeader({
             {/* Authentication Button - Visible on Mobile */}
             {isSignedIn ? (
               <div className="h-10 w-10 flex items-center justify-center">
-                <UserButton afterSignOutUrl="/" />
+                <UserButton />
               </div>
             ) : (
               <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
@@ -260,7 +260,7 @@ export default function MobileHeader({
                 {isSignedIn ? (
                   <DropdownMenuItem className="flex items-center justify-between p-0">
                     <div className="flex items-center gap-2 p-2">
-                      <UserButton afterSignOutUrl="/" />
+                      <UserButton />
                       <span className="text-sm">Profile</span>
                     </div>
                   </DropdownMenuItem>

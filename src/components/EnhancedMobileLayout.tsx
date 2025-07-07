@@ -1,8 +1,7 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
-import { useGesture } from '@use-gesture/react'
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu,
   ChevronDown,
@@ -21,6 +20,7 @@ import { muteManager } from '@/lib/muteManager'
 import { Button } from '@/components/ui/button'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { useMobileDetection } from '@/hooks/useMobileDetection'
 import { cn } from '@/lib/utils'
 import { Drawer } from 'vaul'
 import StreamEmbedOptimized from './StreamEmbedOptimized'
@@ -41,129 +41,64 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
 }) => {
   const { streams, toggleStreamMute } = useStreamStore()
   const { trackFeatureUsage } = useAnalytics()
+  const { isMobile, orientation } = useMobileDetection()
   
   const [viewMode, setViewMode] = useState<ViewMode>('stack')
-  const [orientation, setOrientation] = useState<Orientation>('portrait')
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [currentStreamIndex, setCurrentStreamIndex] = useState(0)
-  const [isCompactMode, setIsCompactMode] = useState(false)
   const [showGestureTutorial, setShowGestureTutorial] = useState(false)
   
   const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollY } = useScroll()
 
-  // Detect mobile device
-  const isMobileDevice = () => {
-    if (typeof window === 'undefined') return false
-    return window.innerWidth < 768
-  }
-
-  // Prevent Safari mobile refresh - RESTORED with safer implementation
+  // Simplified Safari mobile refresh prevention
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined' || !isMobile) return
 
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
-    const isMobile = window.innerWidth < 768
+    if (!isSafari) return
 
-    if (isSafari && isMobile) {
-      let startY = 0
-      let isScrolling = false
+    let startY = 0
 
-      const handleTouchStart = (e: TouchEvent) => {
-        if (e.touches && e.touches[0]) {
-          startY = e.touches[0].clientY
-          isScrolling = false
-        }
-      }
-
-      const handleTouchMove = (e: TouchEvent) => {
-        if (!e.touches || !e.touches[0]) return
-
-        const currentY = e.touches[0].clientY
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-        const deltaY = currentY - startY
-
-        // Only prevent pull-to-refresh, not regular scrolling
-        if (scrollTop <= 0 && deltaY > 0 && !isScrolling) {
-          // Check if this is an intentional pull-to-refresh gesture (significant movement)
-          if (deltaY > 10) {
-            e.preventDefault()
-          }
-        } else {
-          isScrolling = true
-        }
-      }
-
-      // Use passive:false only when necessary for preventDefault
-      document.addEventListener('touchstart', handleTouchStart, { passive: true })
-      document.addEventListener('touchmove', handleTouchMove, { passive: false })
-
-      return () => {
-        document.removeEventListener('touchstart', handleTouchStart)
-        document.removeEventListener('touchmove', handleTouchMove)
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches?.[0]) {
+        startY = e.touches[0].clientY
       }
     }
 
-    return undefined
-  }, [])
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!e.touches?.[0]) return
 
-  // Detect orientation changes
-  useEffect(() => {
-    const handleOrientationChange = () => {
-      const isLandscape = window.innerWidth > window.innerHeight
-      setOrientation(isLandscape ? 'landscape' : 'portrait')
-      
-      // Auto-switch view modes based on orientation
-      if (isLandscape && viewMode === 'stack') {
-        setViewMode('grid')
-      } else if (!isLandscape && viewMode === 'grid' && streams.length > 2) {
-        setViewMode('stack')
+      const currentY = e.touches[0].clientY
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+      const deltaY = currentY - startY
+
+      // Only prevent pull-to-refresh at top of page
+      if (scrollTop <= 0 && deltaY > 10) {
+        e.preventDefault()
       }
     }
 
-    handleOrientationChange()
-    window.addEventListener('resize', handleOrientationChange)
-    window.addEventListener('orientationchange', handleOrientationChange)
-    
+    document.addEventListener('touchstart', handleTouchStart, { passive: true })
+    document.addEventListener('touchmove', handleTouchMove, { passive: false })
+
     return () => {
-      window.removeEventListener('resize', handleOrientationChange)
-      window.removeEventListener('orientationchange', handleOrientationChange)
+      document.removeEventListener('touchstart', handleTouchStart)
+      document.removeEventListener('touchmove', handleTouchMove)
     }
-  }, [viewMode, streams.length])
+  }, [isMobile])
 
-  // Compact mode - Re-enabled with throttling to prevent excessive updates
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    // Throttle updates to prevent excessive re-renders
-    const throttledUpdate = () => {
-      setIsCompactMode(latest > 100)
+  // Auto-switch view modes based on orientation - memoized
+  useEffect(() => {
+    if (orientation === 'landscape' && viewMode === 'stack') {
+      setViewMode('grid')
+    } else if (orientation === 'portrait' && viewMode === 'grid' && streams.length > 2) {
+      setViewMode('stack')
     }
-    
-    // Use requestAnimationFrame for smooth updates
-    requestAnimationFrame(throttledUpdate)
-  })
+  }, [orientation, viewMode, streams.length])
 
-  // Pull-to-refresh gesture - Re-enabled with safer implementation
-  const bind = useGesture({
-    onDrag: ({ down, movement: [, my], velocity: [, vy], direction: [, dy] }) => {
-      // Only handle pull-to-refresh if at top of page
-      if (scrollY.get() <= 10 && dy > 0 && my > 100) {
-        if (!down && vy > 0.5) {
-          handleRefresh()
-        }
-      }
-    }
-  }, {
-    drag: {
-      axis: 'y', // Only allow vertical drag
-      filterTaps: true, // Filter out accidental taps
-      threshold: 10 // Minimum movement to trigger
-    }
-  })
-
+  // Simplified refresh handler
   const handleRefresh = useCallback(() => {
-    // Refresh stream data
     trackFeatureUsage('mobile_pull_to_refresh')
-    // Add haptic feedback
     if ('vibrate' in navigator) {
       navigator.vibrate(50)
     }
@@ -174,81 +109,59 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
     trackFeatureUsage(`mobile_view_mode_${mode}`)
   }, [trackFeatureUsage])
 
-  // Desktop Stack Layout Component - Full width square videos
-  const DesktopStackLayout = () => (
-    <div className="space-y-6 p-6 h-full overflow-y-auto">
-      {streams.map((stream, index) => (
-        <motion.div
-          key={stream.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
-          className={cn(
-            "relative bg-card overflow-hidden rounded-lg border border-border/50",
-            "stream-card w-full"
-          )}
-          style={{
-            aspectRatio: '1/1', // Square aspect ratio
-            width: '100%', // Full width of container
-            height: 'auto',
-            minHeight: '70vh', // Larger minimum height
-            maxHeight: '90vh' // Larger maximum height
-          }}
-        >
-          <div className="w-full h-full">
-            <StreamEmbedOptimized stream={stream} />
-          </div>
-
-          {/* Stream info overlay */}
-          <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-sm rounded-lg px-3 py-2 text-white text-sm z-10">
-            <div className="font-medium">{stream.channelName}</div>
-            <div className="text-xs opacity-80 capitalize">{stream.platform}</div>
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  )
-
-  // Mobile Stack Layout Component
-  const MobileStackLayout = () => (
-    <div className="space-y-0">
-      {streams.map((stream, index) => (
-        <motion.div
-          key={stream.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
-          className={cn(
-            "relative bg-card overflow-hidden",
-            "touch-target stream-card w-full"
-          )}
-          style={{
-            aspectRatio: '16/9',
-            minHeight: '200px',
-            maxHeight: '300px',
-            height: 'auto',
-            width: '100vw'
-          }}
-        >
-          <div className="w-full h-full">
-            <StreamEmbedOptimized stream={stream} />
-          </div>
-
-          {/* StreamEmbedOptimized already has its own controls and channel info, no need to duplicate */}
-        </motion.div>
-      ))}
-    </div>
-  )
-
-  // Mobile Grid Layout Component
-  const MobileGridLayout = () => (
+  // Optimized Stack Layout Component - Responsive sizing
+  const StackLayout = useMemo(() => (
     <div className={cn(
-      "grid gap-3 p-4",
-      orientation === 'portrait'
+      "space-y-6 h-full overflow-y-auto",
+      isMobile ? "space-y-0 p-0" : "p-6"
+    )}>
+      {streams.map((stream, index) => (
+        <motion.div
+          key={stream.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+          className={cn(
+            "relative bg-card overflow-hidden border-border/50",
+            "stream-card w-full",
+            isMobile ? "border-0" : "rounded-lg border"
+          )}
+          style={{
+            aspectRatio: isMobile ? '16/9' : '1/1',
+            width: '100%',
+            height: 'auto',
+            minHeight: isMobile ? '200px' : '70vh',
+            maxHeight: isMobile ? '300px' : '90vh'
+          }}
+        >
+          <div className="w-full h-full">
+            <StreamEmbedOptimized stream={stream} />
+          </div>
+
+          {/* Stream info overlay - only on desktop */}
+          {!isMobile && (
+            <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-sm rounded-lg px-3 py-2 text-white text-sm z-10">
+              <div className="font-medium">{stream.channelName}</div>
+              <div className="text-xs opacity-80 capitalize">{stream.platform}</div>
+            </div>
+          )}
+        </motion.div>
+      ))}
+    </div>
+  ), [streams, isMobile])
+
+  // Optimized Grid Layout Component - Responsive grid
+  const GridLayout = useMemo(() => (
+    <div className={cn(
+      "grid gap-3",
+      isMobile ? "p-4" : "p-6",
+      orientation === 'portrait' && isMobile
         ? "grid-cols-1"
         : streams.length <= 2
           ? "grid-cols-2"
-          : "grid-cols-3"
+          : isMobile
+            ? "grid-cols-2"
+            : "grid-cols-3"
     )}>
       {streams.map((stream, index) => (
         <motion.div
@@ -256,11 +169,11 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: index * 0.05 }}
-          className="relative bg-card rounded-lg overflow-hidden border border-border/50 touch-target stream-card"
+          className="relative bg-card rounded-lg overflow-hidden border border-border/50 stream-card"
           style={{
             aspectRatio: '16/9',
-            minHeight: orientation === 'portrait' ? '160px' : '120px',
-            maxHeight: orientation === 'portrait' ? '200px' : '160px'
+            minHeight: orientation === 'portrait' && isMobile ? '160px' : '120px',
+            maxHeight: orientation === 'portrait' && isMobile ? '200px' : '160px'
           }}
           onClick={() => {
             setCurrentStreamIndex(index)
@@ -270,12 +183,11 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
           <div className="w-full h-full">
             <StreamEmbedOptimized stream={stream} />
           </div>
-
-          {/* StreamEmbedOptimized already has its own controls, no need to add more */}
         </motion.div>
       ))}
     </div>
-  )
+  ), [streams, isMobile, orientation, setCurrentStreamIndex, setViewMode])
+
 
   // View Mode Selector
   const ViewModeSelector = () => (
@@ -512,7 +424,6 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
   return (
     <div 
       ref={containerRef}
-      {...bind()}
       className={cn("relative bg-background", "min-h-screen overflow-hidden", className)}
     >
       {/* Content based on view mode */}
@@ -524,7 +435,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            {isMobileDevice() ? <MobileStackLayout /> : <DesktopStackLayout />}
+            {StackLayout}
           </motion.div>
         )}
         
@@ -535,7 +446,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.1 }}
           >
-            <MobileGridLayout />
+            {GridLayout}
           </motion.div>
         )}
         
