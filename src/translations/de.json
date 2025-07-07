@@ -1,0 +1,848 @@
+{
+  "header": {
+    "addStream": "Stream Hinzufügen",
+    "discover": "Entdecken",
+    "chat": "Chat",
+    "pricing": "Preise",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "menu": "Menü",
+    "activeStreams": "Aktive Streams",
+    "clear": "Löschen",
+    "clearAllStreams": "Alle Streams Löschen",
+    "noStreamsActive": "Keine aktiven Streams",
+    "streamCount": "{{count}} Streams",
+    "removeStream": "Stream entfernen",
+    "muteStream": "Stream stumm schalten",
+    "unmuteStream": "Ton einschalten",
+    "fullscreen": "Vollbild",
+    "settings": "Einstellungen"
+  },
+  "navigation": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "pricing": "Preise",
+    "home": "Startseite",
+    "about": "Über Uns",
+    "contact": "Kontakt",
+    "privacy": "Datenschutz",
+    "terms": "Bedingungen"
+  },
+  "common": {
+    "clear": "Löschen",
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "contact": "Kontakt aufnehmen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen",
+    "open": "Öffnen",
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "warning": "Warnung",
+    "info": "Information",
+    "yes": "Ja",
+    "no": "Nein",
+    "ok": "OK",
+    "apply": "Anwenden",
+    "reset": "Zurücksetzen",
+    "search": "Suchen",
+    "filter": "Filtern",
+    "sort": "Sortieren",
+    "view": "Ansehen",
+    "share": "Teilen",
+    "copy": "Kopieren",
+    "paste": "Einfügen",
+    "cut": "Ausschneiden",
+    "undo": "Rückgängig",
+    "redo": "Wiederholen",
+    "confirmRemoveAllStreams": "Sind Sie sicher, dass Sie alle Streams entfernen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "clearAll": "Alle Löschen"
+  },
+  "landing": {
+    "heroTitle": "Mehrere Live-Streams Gleichzeitig Ansehen",
+    "heroSubtitle": "Der ultimative Multi-Stream-Viewer für Twitch, YouTube und mehr. Schauen Sie bis zu 16 Streams gleichzeitig mit anpassbaren Layouts.",
+    "startWatchingNow": "Jetzt Ansehen",
+    "signUpFree": "Kostenlos Registrieren",
+    "noCreditCard": "Keine Kreditkarte erforderlich",
+    "trustIndicators": {
+      "alwaysOnline": "Immer Online",
+      "securePrivate": "Sicher & Privat",
+      "fastStreaming": "Schnelles Streaming"
+    },
+    "demo": {
+      "liveDemo": "Live-Demo",
+      "watchLiveNow": "Jetzt Live Ansehen",
+      "loadingChannels": "Lade Live-Kanäle...",
+      "realStreamers": "Echte Streamer, echtes Gameplay, echte Unterhaltung - alles in perfekter Synchronisation",
+      "showingLiveStreams": "Zeige echte Live-Streams - Klicken Sie auf 'Jetzt Ansehen', um es selbst zu probieren!",
+      "loadingStreams": "Lade Live-Streams...",
+      "layoutsAdjust": "Layouts passen sich automatisch an die Anzahl der Streams an"
+    },
+    "quickStart": {
+      "badge": "Schnellstart",
+      "findStreamers": {
+        "title": "Finden Sie Ihre Streamer",
+        "description": "Suchen Sie nach Ihren Lieblings-Creatorn oder fügen Sie deren Kanal-Links ein"
+      },
+      "pickView": {
+        "title": "Wählen Sie Ihre Ansicht",
+        "description": "Raster, Fokus oder Bild-in-Bild - wie Sie es gerne sehen"
+      },
+      "watchChat": {
+        "title": "Schauen & Chatten",
+        "description": "Verfolgen Sie das Geschehen auf mehreren Streams mit Live-Chat"
+      }
+    },
+    "pricing": {
+      "badge": "Preise"
+    },
+    "benefits": {
+      "title": {
+        "main": "Alles was Sie für",
+        "highlight": "Multi-Stream-Viewing brauchen"
+      },
+      "subtitle": "Die komplette Lösung für das Ansehen mehrerer Live-Streams. Perfekt für Events, Unterhaltung und um mit all Ihren Lieblings-Creatorn in Verbindung zu bleiben.",
+      "multiStream": {
+        "title": "Multi-Stream-Anzeige",
+        "description": "Schauen Sie bis zu 16 Streams gleichzeitig mit intelligentem Layout-Management",
+        "benefit": "Verpassen Sie nie etwas, was auf den Plattformen passiert"
+      },
+      "unifiedChat": {
+        "title": "Vereinheitlichter Chat",
+        "description": "Verfolgen Sie Unterhaltungen über alle Ihre Streams an einem praktischen Ort",
+        "benefit": "Bleiben Sie mit jeder Community verbunden"
+      },
+      "smartLayouts": {
+        "title": "Intelligente Layouts",
+        "description": "Raster-, Fokus- und Bild-in-Bild-Modi, die sich an Ihre Ansichtsbedürfnisse anpassen",
+        "benefit": "Perfekte Ansicht für jeden Content-Typ"
+      },
+      "platformSupport": {
+        "title": "Plattform-Unterstützung",
+        "description": "Twitch, YouTube, Kick und mehr"
+      },
+      "mobileOptimized": {
+        "title": "Mobil Optimiert",
+        "description": "Perfekte Erfahrung auf jedem Gerät"
+      },
+      "lightningFast": {
+        "title": "Blitzschnell",
+        "description": "Kein Puffern, sofortiges Laden"
+      }
+    },
+    "useCases": {
+      "badge": "Anwendungsfälle",
+      "title": "Perfekt Für",
+      "subtitle": "Was auch immer Sie schauen, wir haben Sie abgedeckt"
+    },
+    "liveStreamers": {
+      "popularStreams": "Beliebte Streams",
+      "liveNow": "Jetzt Live",
+      "clickToAdd": "Klicken Sie auf einen beliebigen Stream, um ihn sofort hinzuzufügen"
+    },
+    "finalCta": {
+      "title": {
+        "main": "Bereit, Ihr",
+        "highlight": "Streaming-Erlebnis zu Transformieren?"
+      },
+      "subtitle": "Schließen Sie sich Tausenden an, die auf Multi-Stream-Viewing umgestiegen sind. Verpassen Sie nie einen Moment Ihrer Lieblings-Creator, Events und Live-Content - alles auf einer mächtigen Plattform.",
+      "startButton": "Jetzt mit Streaming Beginnen",
+      "welcomeBack": "Willkommen zurück • Sofort starten",
+      "noSignup": "Keine Anmeldung erforderlich • Sofort starten",
+      "trustElements": {
+        "free": "100% Kostenlos",
+        "noDownload": "Kein Download Erforderlich",
+        "worksInstantly": "Funktioniert Sofort"
+      }
+    },
+    "features": {
+      "multiPlatform": {
+        "title": "Multi-Plattform-Unterstützung",
+        "description": "Multi-Plattform-Unterstützung für Twitch, YouTube, Kick und mehr"
+      },
+      "customLayouts": {
+        "title": "Anpassbare Layouts",
+        "description": "Anpassbare Raster-Layouts und Bild-in-Bild-Modus"
+      },
+      "realTime": {
+        "title": "Echtzeit-Synchronisation",
+        "description": "Synchronisierte Anzeige mit Echtzeit-Chat-Integration"
+      },
+      "freeToUse": {
+        "title": "Kostenlos Nutzbar",
+        "description": "Grundfunktionen kostenlos verfügbar, Premium-Funktionen für Power-User"
+      },
+      "liveSync": "Live-Synchronisation",
+      "unifiedChat": "Vereinheitlichter Chat"
+    },
+    "stats": {
+      "streamsWatched": "Streams Angesehen",
+      "activeUsers": "Aktive Nutzer",
+      "basicAccess": "Basis-Zugang",
+      "maxStreams": "Max. Streams"
+    },
+    "testimonials": {
+      "title": "Was Nutzer Sagen",
+      "subtitle": "Schließen Sie sich Tausenden von Nutzern an, die Streamyyy lieben"
+    },
+    "getStartedInSeconds": "In Sekunden Loslegen",
+    "getStartedFree": "Kostenlos Loslegen",
+    "quickStart": "Schnellstart"
+  },
+  "layouts": {
+    "single": "Einzeln",
+    "stacked": "Gestapelt",
+    "grid2x2": "2x2 Raster",
+    "grid3x3": "3x3 Raster",
+    "grid4x4": "4x4 Raster",
+    "stackedLayout": "Gestapeltes Layout",
+    "mosaicLayout": "Mosaik-Layout",
+    "focusMode": "Fokus-Modus",
+    "pip": "Bild-in-Bild",
+    "customLayout": "Benutzerdefiniertes Layout",
+    "layoutSelector": "Layout-Auswahl",
+    "selectLayout": "Layout Auswählen",
+    "currentLayout": "Aktuelles Layout",
+    "changeLayout": "Layout Ändern",
+    "singleDescription": "1 Stream",
+    "sideBySide": "Nebeneinander",
+    "sideBySideDescription": "2 Streams horizontal",
+    "stackedDescription": "2 Streams vertikal",
+    "grid2x2Description": "4 Streams",
+    "grid3x3Description": "9 Streams",
+    "grid4x4Description": "16 Streams",
+    "mosaicDescription": "Adaptives Raster",
+    "focusDescription": "1 Haupt + Miniaturansichten",
+    "pipDescription": "1 Haupt + schwimmend"
+  },
+  "streams": {
+    "addStream": "Stream Hinzufügen",
+    "popularStreams": "Beliebte Streams",
+    "searchPlaceholder": "Nach Streamern suchen oder Stream-URL eingeben",
+    "enterStreamUrl": "Streamer-Name oder URL eingeben",
+    "noStreamsFound": "Keine Streams gefunden",
+    "loadingStreams": "Streams werden geladen...",
+    "streamOffline": "Stream ist offline",
+    "streamError": "Fehler beim Laden des Streams",
+    "addFirstStream": "Fügen Sie Ihren ersten Stream hinzu, um zu beginnen",
+    "maxStreamsReached": "Maximale Anzahl von Streams erreicht",
+    "duplicateStream": "Stream bereits hinzugefügt",
+    "invalidUrl": "Ungültige Stream-URL",
+    "platformNotSupported": "Plattform nicht unterstützt",
+    "supportedFormats": "Unterstützte Formate",
+    "formats": {
+      "twitch": "Twitch: Benutzername oder twitch.tv/benutzername",
+      "youtube": "YouTube: youtube.com/watch?v=VIDEO_ID",
+      "rumble": "Rumble: rumble.com/v1234-titel.html"
+    },
+    "streamNumber": "Stream {{number}}",
+    "playing": "Spielt {{game}}",
+    "categories": {
+      "gaming": "Gaming",
+      "justChatting": "Einfach Reden",
+      "music": "Musik",
+      "creative": "Kreativ",
+      "sports": "Sport",
+      "talk": "Talk-Shows"
+    },
+    "setPrimary": "Als Haupt-Stream festlegen",
+    "addToFavorites": "Zu Favoriten hinzufügen",
+    "removeFromFavorites": "Von Favoriten entfernen"
+  },
+  "footer": {
+    "freeMultiStreamViewer": "Kostenloser Multi-Stream-Viewer zum gleichzeitigen Ansehen mehrerer Twitch-Streams, YouTube-Streams und mehr.",
+    "termsOfService": "Nutzungsbedingungen",
+    "privacyPolicy": "Datenschutzrichtlinie",
+    "cookiePolicy": "Cookie-Richtlinie",
+    "dmcaPolicy": "DMCA-Richtlinie",
+    "compliance": "Compliance",
+    "accessibility": "Barrierefreiheit",
+    "aboutUs": "Über Uns",
+    "contactUs": "Kontakt",
+    "blog": "Blog",
+    "advertise": "Werbung",
+    "allRightsReserved": "Alle Rechte vorbehalten.",
+    "madeWithLove": "Mit ❤️ für die Streaming-Community gemacht",
+    "gdprCompliant": "DSGVO, CCPA & PIPEDA konform • Wir respektieren Ihre Privatsphäre",
+    "supportedPlatforms": "Unterstützte Plattformen",
+    "platforms": {
+      "youtube": "YouTube Live"
+    },
+    "moreComingSoon": "Mehr bald verfügbar",
+    "socialMedia": {
+      "followUs": "Folgen Sie uns in den sozialen Medien",
+      "github": "GitHub",
+      "twitter": "Twitter",
+      "discord": "Discord"
+    },
+    "legal": {
+      "title": "Rechtliches",
+      "terms": "Bedingungen",
+      "privacy": "Datenschutz",
+      "cookies": "Cookies",
+      "dmca": "DMCA"
+    },
+    "company": {
+      "title": "Unternehmen",
+      "about": "Über Uns",
+      "contact": "Kontakt",
+      "blog": "Blog",
+      "advertise": "Werbung"
+    }
+  },
+  "about": {
+    "title": "Über Streamyyy",
+    "subtitle": "Das ultimative Multi-Stream-Viewing-Erlebnis",
+    "description": "Streamyyy ist der führende Multi-Stream-Viewer, mit dem Sie mehrere Live-Streams gleichzeitig ansehen können. Ob Sie Esports-Turniere verfolgen, mit Ihren Lieblings-Streamern Schritt halten oder mehrere Kanäle überwachen - wir haben Sie abgedeckt.",
+    "hero": {
+      "title": "Wir haben gelöst",
+      "subtitle": "Die Probleme, die niemand sonst lösen wollte",
+      "description": "Während andere Bezahlschranken errichteten, haben wir Brücken gebaut. Während sie Sie auf einen Stream beschränkten, gaben wir Ihnen sechzehn. Das ist unsere Geschichte."
+    },
+    "problems": {
+      "title": "Die Probleme, die wir zermalmt haben",
+      "theProblem": "Das Problem",
+      "ourSolution": "Unsere Lösung",
+      "multiStream": {
+        "title": "Multi-Stream-Anzeige",
+        "problem": "Das Ansehen mehrerer Streams bedeutet, mit mehreren Tabs und Fenstern zu jonglieren und wichtige Momente zu verpassen.",
+        "solution": "Unsere einheitliche Benutzeroberfläche ermöglicht es Ihnen, bis zu 16 Streams gleichzeitig mit anpassbaren Layouts anzusehen."
+      },
+      "multiMonitor": {
+        "title": "Der Multi-Monitor-Mythos",
+        "problem": "Denken Sie, Sie brauchen 4 Monitore und ein 5000€-Setup, um mehrere Streams zu schauen? Das ist es, was sie Ihnen glauben machen wollen.",
+        "solution": "Ein Bildschirm, unbegrenzte Möglichkeiten. Unsere intelligenten Layouts passen sich jeder Bildschirmgröße an. Multi-Monitor-Setup auf einem Laptop? Geschafft."
+      },
+      "tournament": {
+        "title": "Turnier-FOMO",
+        "problem": "Esports-Turniere haben Haupt-Streams, Spieler-POVs, Kommentator-Streams und Watch-Parties. Sie verpassen 80% der Action.",
+        "solution": "Benutzerdefinierte Turnier-Layouts. Schauen Sie die Hauptübertragung, den POV Ihres Lieblingsspielers und den besten Kommentar gleichzeitig."
+      },
+      "mobile": {
+        "title": "Mobile Streaming-Gefängnis",
+        "problem": "Mobile Nutzer sind Bürger zweiter Klasse in der Streaming-Welt. Ein Stream zur Zeit? Im Jahr 2025? Wirklich?",
+        "solution": "Vollständige mobile Optimierung mit Gestensteuerung, intelligenten Layouts und batterieeffizientem Streaming. Desktop-Power in Ihrer Tasche."
+      },
+      "platform": {
+        "title": "Plattform-Segregation",
+        "problem": "Ihre Lieblings-Creator sind über Twitch, YouTube, Kick, Rumble verstreut. Jede Plattform will Sie in ihrem Ökosystem gefangen halten.",
+        "solution": "Plattform-agnostisches Viewing. Mischen Sie jede unterstützte Plattform in einer Ansicht. Wir spielen keine Favoriten - Ihr Content, Ihre Wahl."
+      },
+      "accessibility": {
+        "title": "Die Zugänglichkeits-Herausforderung",
+        "problem": "Die meisten Plattformen begrenzen, wie viele Streams Sie schauen können. Premium-Features sind über verschiedene Services mit unterschiedlichen Kosten verstreut.",
+        "solution": "Kern-Multi-Stream-Viewing für alle zugänglich. Optionale Premium-Features für Power-User, die erweiterte Erfahrungen wollen."
+      }
+    },
+    "philosophy": {
+      "title": "Unsere Philosophie",
+      "subtitle": "Radikale Einfachheit",
+      "noAccount": {
+        "title": "Kein Konto? Kein Problem.",
+        "description": "Warum brauchen Sie ein Konto, um Streams zu schauen? Brauchen Sie nicht. Öffnen Sie Streamyyy, fügen Sie Streams hinzu, schauen Sie. Das war's. Optionale Anmeldung für diejenigen, die Layouts und Einstellungen speichern wollen."
+      },
+      "features": {
+        "title": "Features, die Zählen",
+        "description": "Wir fügen keine Features hinzu, weil wir es können. Jeder Pixel, jeder Button, jede Zeile Code hat einen Zweck: Multi-Stream-Viewing besser zu machen. Kein Bloatware, kein Schnickschnack, kein Corporate-BS."
+      },
+      "built": {
+        "title": "Anders Gebaut",
+        "description": "Wir sind nicht VC-finanziert. Wir verfolgen keinen Exit. Wir sind Stream-Zuschauer, die es satt hatten, schlechte Lösungen zu haben und beschlossen, etwas Besseres zu bauen. Für uns. Für Sie. Für alle."
+      }
+    },
+    "stats": {
+      "title": "Die Zahlen Lügen Nicht",
+      "streamsWatched": "Streams Angesehen",
+      "activeUsers": "Aktive Nutzer",
+      "basicAccess": "Basis-Zugang",
+      "maxStreams": "Max. Streams",
+      "free": "Kostenlos"
+    },
+    "features": {
+      "multiStream": {
+        "title": "Multi-Stream-Anzeige",
+        "problem": "Das Ansehen mehrerer Streams bedeutet, mit mehreren Tabs und Fenstern zu jonglieren und wichtige Momente zu verpassen.",
+        "solution": "Unsere einheitliche Benutzeroberfläche ermöglicht es Ihnen, bis zu 16 Streams gleichzeitig mit anpassbaren Layouts anzusehen."
+      },
+      "customLayouts": {
+        "title": "Anpassbare Layouts",
+        "problem": "Eine Größe passt nicht für alle, wenn es um Anzeigepräferenzen geht.",
+        "solution": "Wählen Sie aus Raster-Layouts, Bild-in-Bild, Fokus-Modus und mehr, um Ihrem Anzeigestyle zu entsprechen."
+      },
+      "realTimeSync": {
+        "title": "Echtzeit-Synchronisation",
+        "problem": "Streams können nicht synchron sein, was koordiniertes Ansehen schwierig macht.",
+        "solution": "Unsere Technologie stellt sicher, dass alle Ihre Streams für das beste Anzeigeerlebnis synchron bleiben."
+      }
+    },
+    "cta": {
+      "title": "Bereit anzufangen?",
+      "subtitle": "Schließen Sie sich Tausenden von Nutzern an, die bereits Streamyyy verwenden",
+      "button": "Jetzt Ansehen"
+    }
+  },
+  "pricing": {
+    "title": "Wählen Sie Ihren Plan",
+    "subtitle": "Kostenlos starten, upgraden wenn Sie mehr brauchen",
+    "trialInfo": "Alle Pläne beinhalten eine 7-tägige kostenlose Testversion. Jederzeit kündbar. Keine Verträge.",
+    "free": {
+      "title": "Kostenloser Plan",
+      "price": "0€",
+      "period": "für immer",
+      "description": "Perfekt für den Einstieg",
+      "features": {
+        "streams": "Bis zu 4 Streams gleichzeitig",
+        "layouts": "Basis-Layouts (Raster, Fokus)",
+        "mobile": "Mobiles responsives Design",
+        "ads": "Werbung angezeigt"
+      },
+      "button": "Loslegen"
+    },
+    "pro": {
+      "title": "Pro Plan",
+      "price": "9,99€",
+      "period": "pro Monat",
+      "description": "Chat-Mitglieder Vorteile",
+      "badge": "Am Beliebtesten",
+      "features": {
+        "streams": "Bis zu 9 Streams gleichzeitig",
+        "layouts": "Alle Layouts inklusive PiP",
+        "adFree": "Werbefreie Erfahrung",
+        "customLayouts": "Benutzerdefinierte Layouts speichern",
+        "support": "Prioritäts-Support"
+      },
+      "button": "Kostenlose Testversion Starten"
+    },
+    "premium": {
+      "title": "Premium Plan",
+      "price": "19,99€",
+      "period": "pro Monat",
+      "description": "SuperChat-Mitglieder Vorteile",
+      "features": {
+        "streams": "Alle 16 Streams gleichzeitig",
+        "layouts": "Erweiterte benutzerdefinierte Layouts",
+        "chat": "Vereinheitlichter Chat über alle Streams",
+        "analytics": "Stream-Analysen & Insights",
+        "support": "Premium-Support & Features",
+        "earlyAccess": "Früher Zugang zu neuen Features"
+      },
+      "button": "Kostenlose Testversion Starten"
+    }
+  },
+  "errors": {
+    "generic": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.",
+    "network": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.",
+    "notFound": "Seite nicht gefunden.",
+    "unauthorized": "Sie müssen sich anmelden, um auf diese Funktion zuzugreifen.",
+    "forbidden": "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen.",
+    "serverError": "Serverfehler. Bitte versuchen Sie es später erneut.",
+    "streamNotFound": "Stream nicht gefunden oder ist offline.",
+    "invalidInput": "Bitte geben Sie eine gültige Eingabe ein.",
+    "rateLimited": "Zu viele Anfragen. Bitte warten Sie einen Moment.",
+    "copyFailed": "Kopieren in die Zwischenablage fehlgeschlagen"
+  },
+  "notifications": {
+    "streamAdded": "Stream erfolgreich hinzugefügt",
+    "streamRemoved": "Stream entfernt",
+    "layoutChanged": "Layout geändert",
+    "settingsSaved": "Einstellungen gespeichert",
+    "languageChanged": "Sprache geändert zu {{language}}",
+    "copySuccess": "In die Zwischenablage kopiert",
+    "shareSuccess": "Share-Link kopiert"
+  },
+  "discovery": {
+    "title": "Streams Entdecken",
+    "subtitle": "Neue Streams zum Ansehen finden",
+    "searchPlaceholder": "Nach Streamern suchen...",
+    "categories": "Kategorien",
+    "topStreams": "Top Streams",
+    "liveNow": "Jetzt Live",
+    "viewers": "{{count}} Zuschauer",
+    "noResults": "Keine Streams gefunden",
+    "loadMore": "Mehr Laden",
+    "refresh": "Aktualisieren",
+    "addToGrid": "Zum Raster Hinzufügen",
+    "watchNow": "Jetzt Ansehen",
+    "following": "Folge Ich",
+    "recommended": "Empfohlen",
+    "trending": "Trending",
+    "addTopStreams": "Top 4 Live-Streams hinzufügen",
+    "randomStreamers": "Zufällige Streamer",
+    "discoverRandomStreams": "4 zufällige Streams entdecken"
+  },
+  "chat": {
+    "title": "Chat",
+    "placeholder": "Nachricht eingeben...",
+    "send": "Senden",
+    "connecting": "Verbinde mit Chat...",
+    "connected": "Verbunden",
+    "disconnected": "Getrennt",
+    "reconnecting": "Verbinde neu...",
+    "error": "Chat-Fehler",
+    "emotes": "Emotes",
+    "settings": "Chat-Einstellungen",
+    "fontSize": "Schriftgröße",
+    "showTimestamps": "Zeitstempel Anzeigen",
+    "showBadges": "Abzeichen Anzeigen",
+    "hideCommands": "Befehle Ausblenden",
+    "show": "Chat Anzeigen",
+    "hide": "Chat Ausblenden"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "general": "Allgemein",
+    "display": "Anzeige",
+    "audio": "Audio",
+    "keyboard": "Tastaturkürzel",
+    "privacy": "Datenschutz",
+    "account": "Konto",
+    "theme": "Theme",
+    "language": "Sprache",
+    "autoplay": "Automatische Wiedergabe",
+    "quality": "Standard-Qualität",
+    "volume": "Standard-Lautstärke",
+    "notifications": "Benachrichtigungen",
+    "analytics": "Analysen",
+    "accessibility": "Barrierefreiheit",
+    "advanced": "Erweitert",
+    "reset": "Auf Standardwerte zurücksetzen",
+    "save": "Änderungen speichern",
+    "cancel": "Abbrechen"
+  },
+  "share": {
+    "title": "Teilen",
+    "subtitle": "Teilen Sie Ihr Stream-Setup",
+    "copyLink": "Link kopieren",
+    "shareOnTwitter": "Auf Twitter teilen",
+    "shareOnFacebook": "Auf Facebook teilen",
+    "shareOnReddit": "Auf Reddit teilen",
+    "shareOnDiscord": "Auf Discord teilen",
+    "embed": "Einbetten",
+    "qrCode": "QR-Code",
+    "linkCopied": "Link in Zwischenablage kopiert",
+    "checkStreams": "Schauen Sie sich diese Streams an!",
+    "linkIncludes": "Dieser Link enthält",
+    "streamsCount": "{{count}} Stream{{count, plural, one {} other {s}}}",
+    "layoutInfo": "{{layout}} Layout",
+    "shareViaSystem": "Über System teilen"
+  },
+  "keyboard": {
+    "title": "Tastaturkürzel",
+    "subtitle": "Beschleunigen Sie Ihren Arbeitsablauf",
+    "addStream": "Stream hinzufügen",
+    "toggleChat": "Chat umschalten",
+    "toggleFullscreen": "Vollbild umschalten",
+    "muteAll": "Alle stumm schalten",
+    "clearAll": "Alle löschen",
+    "nextLayout": "Nächstes Layout",
+    "prevLayout": "Vorheriges Layout",
+    "focusSearch": "Suche fokussieren",
+    "openSettings": "Einstellungen öffnen",
+    "openHelp": "Hilfe öffnen"
+  },
+  "help": {
+    "title": "Hilfe & Support",
+    "gettingStarted": "Erste Schritte",
+    "addingStreams": "Streams hinzufügen",
+    "layouts": "Layouts",
+    "shortcuts": "Tastaturkürzel",
+    "troubleshooting": "Fehlerbehebung",
+    "contact": "Support kontaktieren",
+    "documentation": "Dokumentation",
+    "tutorials": "Tutorials",
+    "faq": "Häufige Fragen",
+    "community": "Community"
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "signOut": "Abmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "forgotPassword": "Passwort vergessen?",
+    "resetPassword": "Passwort zurücksetzen",
+    "createAccount": "Konto erstellen",
+    "alreadyHaveAccount": "Bereits ein Konto?",
+    "dontHaveAccount": "Noch kein Konto?",
+    "signInWith": "Anmelden mit",
+    "signUpWith": "Registrieren mit",
+    "google": "Google",
+    "github": "GitHub",
+    "discord": "Discord",
+    "twitch": "Twitch"
+  },
+  "profile": {
+    "title": "Ihr Profil",
+    "subtitle": "Verwalten Sie Ihre Kontoeinstellungen und Ihr Abonnement",
+    "settings": "Profil-Einstellungen",
+    "avatar": "Avatar",
+    "displayName": "Anzeigename",
+    "username": "Benutzername",
+    "bio": "Bio",
+    "location": "Standort",
+    "website": "Website",
+    "socialLinks": "Social Links",
+    "preferences": "Einstellungen",
+    "subscription": "Abonnement",
+    "billing": "Abrechnung",
+    "usage": "Nutzung",
+    "activity": "Aktivität",
+    "pleaseSignIn": "Bitte melden Sie sich an, um Ihr Profil anzuzeigen",
+    "somethingWentWrong": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
+  },
+  "subscription": {
+    "title": "Abonnement",
+    "current": "Aktueller Plan",
+    "upgrade": "Upgraden",
+    "downgrade": "Downgraden",
+    "cancel": "Abonnement kündigen",
+    "renews": "Verlängert sich am",
+    "expires": "Läuft ab am",
+    "billing": "Abrechnung",
+    "invoices": "Rechnungen",
+    "paymentMethod": "Zahlungsmethode",
+    "updatePayment": "Zahlungsmethode aktualisieren",
+    "features": "Funktionen",
+    "usage": "Nutzung",
+    "limits": "Limits",
+    "premium": "Premium",
+    "pro": "Pro",
+    "free": "Kostenlos"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "accessRequired": "Dashboard-Zugriff Erforderlich",
+    "pleaseSignIn": "Bitte melden Sie sich an, um auf Ihr Dashboard zuzugreifen.",
+    "welcome": "Willkommen, {{name}}!",
+    "user": "Benutzer",
+    "email": "E-Mail",
+    "userId": "Benutzer-ID",
+    "created": "Erstellt",
+    "na": "N/A"
+  },
+  "favorites": {
+    "title": "Lieblings-Streams",
+    "savedStreamers": "Ihre gespeicherten Streamer für schnellen Zugriff",
+    "saveStreamers": "Speichern Sie Ihre Lieblings-Streamer (melden Sie sich an, um geräteübergreifend zu synchronisieren)",
+    "noFavorites": "Noch keine Favoriten",
+    "startAdding": "Fügen Sie Streams zu Ihren Favoriten hinzu, um sie hier zu sehen",
+    "browseStreams": "Streams durchstöbern",
+    "addToStream": "Zu Stream hinzufügen",
+    "added": "Hinzugefügt",
+    "backToStreams": "Zurück zu Streams"
+  },
+  "mobile": {
+    "menu": "Menü",
+    "close": "Schließen",
+    "swipeUp": "Nach oben wischen für mehr",
+    "swipeDown": "Nach unten wischen zum Schließen",
+    "tapToFocus": "Antippen zum Fokussieren",
+    "doubleTapFullscreen": "Doppeltippen für Vollbild",
+    "pinchToZoom": "Kneifen zum Zoomen",
+    "rotateDevice": "Gerät drehen für bessere Ansicht",
+    "installApp": "App installieren",
+    "addToHomeScreen": "Zum Startbildschirm hinzufügen",
+    "moreOptions": "Weitere Optionen",
+    "shareTitle": "{{channel}} auf Streamyyy ansehen",
+    "shareText": "Schauen Sie sich {{channel}}'s Stream an!",
+    "shareStream": "Stream teilen"
+  },
+  "accessibility": {
+    "title": "Barrierefreiheit",
+    "highContrast": "Hoher Kontrast",
+    "largeText": "Großer Text",
+    "reducedMotion": "Reduzierte Bewegung",
+    "screenReader": "Screenreader-Unterstützung",
+    "keyboardNavigation": "Tastatur-Navigation",
+    "focusIndicators": "Fokus-Indikatoren",
+    "colorBlindness": "Farbenblindheit-Unterstützung",
+    "audioDescriptions": "Audio-Beschreibungen"
+  },
+  "analytics": {
+    "title": "Analysen",
+    "overview": "Überblick",
+    "streams": "Streams",
+    "viewers": "Zuschauer",
+    "engagement": "Engagement",
+    "performance": "Leistung",
+    "reports": "Berichte",
+    "export": "Daten exportieren",
+    "timeRange": "Zeitraum",
+    "today": "Heute",
+    "week": "Diese Woche",
+    "month": "Dieser Monat",
+    "year": "Dieses Jahr",
+    "custom": "Benutzerdefinierter Zeitraum"
+  },
+  "buttons": {
+    "getStarted": "Loslegen",
+    "learnMore": "Mehr erfahren",
+    "watchNow": "Jetzt ansehen",
+    "tryFree": "Kostenlos testen",
+    "upgrade": "Upgraden",
+    "subscribe": "Abonnieren",
+    "download": "Herunterladen",
+    "share": "Teilen",
+    "copy": "Kopieren",
+    "paste": "Einfügen",
+    "cut": "Ausschneiden",
+    "undo": "Rückgängig",
+    "redo": "Wiederholen",
+    "refresh": "Aktualisieren",
+    "reload": "Neu laden",
+    "retry": "Erneut versuchen",
+    "continue": "Fortfahren",
+    "finish": "Beenden",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "skip": "Überspringen",
+    "done": "Fertig",
+    "submit": "Senden",
+    "send": "Senden",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "modify": "Modifizieren",
+    "remove": "Entfernen",
+    "add": "Hinzufügen",
+    "insert": "Einfügen",
+    "import": "Importieren",
+    "export": "Exportieren",
+    "backup": "Backup",
+    "restore": "Wiederherstellen",
+    "sync": "Synchronisieren",
+    "connect": "Verbinden",
+    "disconnect": "Trennen",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "register": "Registrieren",
+    "verify": "Verifizieren",
+    "confirm": "Bestätigen",
+    "approve": "Genehmigen",
+    "reject": "Ablehnen",
+    "accept": "Akzeptieren",
+    "decline": "Ablehnen"
+  },
+  "status": {
+    "online": "Online",
+    "offline": "Offline",
+    "live": "Live",
+    "ended": "Beendet",
+    "starting": "Startet",
+    "loading": "Lädt",
+    "buffering": "Puffert",
+    "connecting": "Verbindet",
+    "connected": "Verbunden",
+    "disconnected": "Getrennt",
+    "reconnecting": "Verbindet neu",
+    "failed": "Fehlgeschlagen",
+    "success": "Erfolg",
+    "error": "Fehler",
+    "warning": "Warnung",
+    "info": "Information",
+    "pending": "Ausstehend",
+    "processing": "Verarbeitet",
+    "completed": "Abgeschlossen",
+    "cancelled": "Abgebrochen",
+    "expired": "Abgelaufen",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "enabled": "Aktiviert",
+    "disabled": "Deaktiviert",
+    "available": "Verfügbar",
+    "unavailable": "Nicht verfügbar",
+    "ready": "Bereit",
+    "busy": "Beschäftigt",
+    "idle": "Untätig"
+  },
+  "time": {
+    "now": "Jetzt",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "tomorrow": "Morgen",
+    "thisWeek": "Diese Woche",
+    "lastWeek": "Letzte Woche",
+    "nextWeek": "Nächste Woche",
+    "thisMonth": "Dieser Monat",
+    "lastMonth": "Letzter Monat",
+    "nextMonth": "Nächster Monat",
+    "thisYear": "Dieses Jahr",
+    "lastYear": "Letztes Jahr",
+    "nextYear": "Nächstes Jahr",
+    "seconds": "Sekunden",
+    "minutes": "Minuten",
+    "hours": "Stunden",
+    "days": "Tage",
+    "weeks": "Wochen",
+    "months": "Monate",
+    "years": "Jahre",
+    "ago": "vor",
+    "in": "in",
+    "at": "um",
+    "on": "am",
+    "from": "von",
+    "to": "bis",
+    "until": "bis",
+    "since": "seit",
+    "during": "während",
+    "before": "vor",
+    "after": "nach"
+  },
+  "units": {
+    "viewers": "Zuschauer",
+    "streams": "Streams",
+    "channels": "Kanäle",
+    "users": "Benutzer",
+    "followers": "Follower",
+    "subscribers": "Abonnenten",
+    "likes": "Likes",
+    "views": "Aufrufe",
+    "comments": "Kommentare",
+    "shares": "Geteilte",
+    "downloads": "Downloads",
+    "uploads": "Uploads",
+    "files": "Dateien",
+    "folders": "Ordner",
+    "items": "Elemente",
+    "results": "Ergebnisse",
+    "matches": "Treffer",
+    "entries": "Einträge",
+    "records": "Datensätze",
+    "pages": "Seiten",
+    "posts": "Beiträge",
+    "articles": "Artikel",
+    "messages": "Nachrichten",
+    "notifications": "Benachrichtigungen",
+    "alerts": "Alarme",
+    "warnings": "Warnungen",
+    "errors": "Fehler"
+  },
+  "tabs": {
+    "streams": "Streams",
+    "discover": "Entdecken",
+    "following": "Folge ich",
+    "features": "Funktionen",
+    "new": "NEU"
+  },
+  "faq": {
+    "howManyStreams": {
+      "question": "Wie viele Streams kann ich gleichzeitig ansehen?",
+      "answer": "Sie können mit Streamyyy bis zu 16 Streams gleichzeitig ansehen. Das Layout passt sich automatisch an die Anzahl der Streams an, die Sie hinzufügen."
+    },
+    "isFree": {
+      "question": "Ist Streamyyy kostenlos?",
+      "answer": "Ja! Streamyyy ist komplett kostenlos zu nutzen. Keine Registrierung, kein Abonnement oder versteckte Gebühren erforderlich."
+    },
+    "mixPlatforms": {
+      "question": "Kann ich Twitch- und YouTube-Streams zusammen ansehen?",
+      "answer": "Absolut! Sie können Streams von Twitch, YouTube, Rumble und anderen unterstützten Plattformen im selben Viewer mischen."
+    },
+    "mobileSupport": {
+      "question": "Funktioniert es auf mobilen Geräten?",
+      "answer": "Ja, Streamyyy ist vollständig responsiv und für Telefone, Tablets und Desktop-Computer optimiert."
+    }
+  }
+}

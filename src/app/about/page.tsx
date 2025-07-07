@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { useUser } from '@clerk/nextjs'
+import { useTranslation } from '@/contexts/LanguageContext'
 import { 
   ArrowLeft, 
   Zap, 
@@ -20,67 +22,82 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 export default function AboutPage() {
+  const { isLoaded, isSignedIn } = useUser()
+  const { t } = useTranslation()
+
+  // Show loading state while authentication is being determined
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">{t('common.loading')}</p>
+        </div>
+      </div>
+    )
+  }
+
   const problems = [
     {
       icon: Eye,
-      title: "The Tab Juggling Nightmare",
-      problem: "Following multiple streamers means 20+ browser tabs, constant switching, missing key moments, and your CPU crying for mercy.",
-      solution: "Watch up to 16 streams simultaneously in one clean interface. See every clutch play, every donation, every raid - all at once.",
+      title: t('about.problems.multiStream.title'),
+      problem: t('about.problems.multiStream.problem'),
+      solution: t('about.problems.multiStream.solution'),
       color: "from-purple-500 to-pink-500"
     },
     {
       icon: Monitor,
-      title: "The Multi-Monitor Myth",
-      problem: "Think you need 4 monitors and a $5000 setup to watch multiple streams? That's what they want you to believe.",
-      solution: "One screen, unlimited possibilities. Our smart layouts adapt to any display size. Multi-monitor setup on a laptop? Done.",
+      title: t('about.problems.multiMonitor.title'),
+      problem: t('about.problems.multiMonitor.problem'),
+      solution: t('about.problems.multiMonitor.solution'),
       color: "from-blue-500 to-cyan-500"
     },
     {
       icon: Users,
-      title: "Tournament FOMO",
-      problem: "Esports tournaments have main streams, player POVs, caster streams, and watch parties. You're missing 80% of the action.",
-      solution: "Custom tournament layouts. Watch the main broadcast, your favorite player's POV, and the best commentary all at once.",
+      title: t('about.problems.tournament.title'),
+      problem: t('about.problems.tournament.problem'),
+      solution: t('about.problems.tournament.solution'),
       color: "from-green-500 to-emerald-500"
     },
     {
       icon: Smartphone,
-      title: "Mobile Streaming Prison",
-      problem: "Mobile users are second-class citizens in the streaming world. One stream at a time? In 2025? Really?",
-      solution: "Full mobile optimization with gesture controls, smart layouts, and battery-efficient streaming. Desktop power in your pocket.",
+      title: t('about.problems.mobile.title'),
+      problem: t('about.problems.mobile.problem'),
+      solution: t('about.problems.mobile.solution'),
       color: "from-orange-500 to-red-500"
     },
     {
       icon: Globe,
-      title: "Platform Segregation",
-      problem: "Your favorite creators are scattered across Twitch, YouTube, Kick, Rumble. Each platform wants you trapped in their ecosystem.",
-      solution: "Platform agnostic viewing. Mix any supported platform in one view. We don't play favorites - your content, your choice.",
+      title: t('about.problems.platform.title'),
+      problem: t('about.problems.platform.problem'),
+      solution: t('about.problems.platform.solution'),
       color: "from-purple-500 to-indigo-500"
     },
     {
       icon: Shuffle,
-      title: "The Accessibility Challenge",
-      problem: "Most platforms limit how many streams you can watch. Premium features are scattered across different services with varying costs.",
-      solution: "Core multi-stream viewing accessible to everyone. Optional premium features for power users who want enhanced experiences.",
+      title: t('about.problems.accessibility.title'),
+      problem: t('about.problems.accessibility.problem'),
+      solution: t('about.problems.accessibility.solution'),
       color: "from-yellow-500 to-orange-500"
     }
   ]
 
   const stats = [
-    { number: "1M+", label: "Streams Watched", icon: Eye },
-    { number: "50K+", label: "Active Users", icon: Users },
-    { number: "Free", label: "Basic Access", icon: Heart },
-    { number: "16", label: "Max Streams", icon: Monitor }
+    { number: "1M+", label: t('about.stats.streamsWatched'), icon: Eye },
+    { number: "50K+", label: t('about.stats.activeUsers'), icon: Users },
+    { number: t('about.stats.free'), label: t('about.stats.basicAccess'), icon: Heart },
+    { number: "16", label: t('about.stats.maxStreams'), icon: Monitor }
   ]
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Streamyyy
+          {t('common.back')}
         </Link>
 
         {/* Hero Section */}
@@ -92,16 +109,15 @@ export default function AboutPage() {
         >
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 text-transparent bg-clip-text">
-              We Solved
+              {t('about.hero.title')}
             </span>
             <br />
             <span className="text-2xl md:text-4xl text-muted-foreground">
-              The Problems No One Else Would
+              {t('about.hero.subtitle')}
             </span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            While others built paywalls, we built bridges. While they limited you to one stream, 
-            we gave you sixteen. This is our story.
+            {t('about.hero.description')}
           </p>
         </motion.div>
 
@@ -113,7 +129,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-3xl md:text-4xl font-bold text-center mb-12"
           >
-            The Problems We Crushed
+            {t('about.problems.title')}
           </motion.h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -134,11 +150,11 @@ export default function AboutPage() {
                       <h3 className="text-xl font-bold mb-3">{item.title}</h3>
                       <div className="space-y-3">
                         <div>
-                          <Badge variant="destructive" className="mb-2">The Problem</Badge>
+                          <Badge variant="destructive" className="mb-2">{t('about.problems.theProblem')}</Badge>
                           <p className="text-sm text-muted-foreground">{item.problem}</p>
                         </div>
                         <div>
-                          <Badge variant="default" className="mb-2 bg-green-600">Our Solution</Badge>
+                          <Badge variant="default" className="mb-2 bg-green-600">{t('about.problems.ourSolution')}</Badge>
                           <p className="text-sm">{item.solution}</p>
                         </div>
                       </div>
@@ -159,36 +175,33 @@ export default function AboutPage() {
         >
           <Card className="p-8 md:p-12 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-500/30">
             <h2 className="text-3xl font-bold mb-6 text-center">
-              Our Philosophy: <span className="text-primary">Radical Simplicity</span>
+              {t('about.philosophy.title')}: <span className="text-primary">{t('about.philosophy.subtitle')}</span>
             </h2>
             <div className="space-y-6 max-w-4xl mx-auto">
               <div className="flex items-start gap-4">
                 <Brain className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="font-bold mb-2">No Account? No Problem.</h3>
+                  <h3 className="font-bold mb-2">{t('about.philosophy.noAccount.title')}</h3>
                   <p className="text-muted-foreground">
-                    Why do you need an account to watch streams? You don't. Open Streamyyy, add streams, watch. 
-                    That's it. Optional sign-up for those who want to save layouts and preferences.
+                    {t('about.philosophy.noAccount.description')}
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <Sparkles className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="font-bold mb-2">Features That Matter</h3>
+                  <h3 className="font-bold mb-2">{t('about.philosophy.features.title')}</h3>
                   <p className="text-muted-foreground">
-                    We don't add features because we can. Every pixel, every button, every line of code 
-                    has one purpose: making multi-stream viewing better. No bloat, no fluff, no corporate BS.
+                    {t('about.philosophy.features.description')}
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <Heart className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="font-bold mb-2">Built Different</h3>
+                  <h3 className="font-bold mb-2">{t('about.philosophy.built.title')}</h3>
                   <p className="text-muted-foreground">
-                    We're not VC-funded. We're not chasing an exit. We're stream viewers who got tired of 
-                    crappy solutions and decided to build something better. For us. For you. For everyone.
+                    {t('about.philosophy.built.description')}
                   </p>
                 </div>
               </div>
@@ -203,7 +216,7 @@ export default function AboutPage() {
           transition={{ duration: 0.6, delay: 1 }}
           className="mb-20"
         >
-          <h2 className="text-3xl font-bold text-center mb-12">The Numbers Don't Lie</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">{t('about.stats.title')}</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <motion.div
@@ -332,17 +345,17 @@ export default function AboutPage() {
             Start watching smarter.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
+            <Link
               href="/"
               className="px-8 py-4 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground rounded-xl font-bold text-lg transition-all transform hover:scale-105"
             >
-              Start Watching Now
+              {t('about.cta.button')}
             </Link>
-            <Link 
+            <Link
               href="/contact"
               className="px-8 py-4 bg-card hover:bg-card/80 border-2 border-primary rounded-xl font-bold text-lg transition-all"
             >
-              Get in Touch
+              {t('common.contact')}
             </Link>
           </div>
         </motion.div>

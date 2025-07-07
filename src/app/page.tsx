@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useUser } from '@clerk/nextjs'
+import { useTranslation } from '@/contexts/LanguageContext'
 import Header from '@/components/Header'
 import MobileHeader from '@/components/MobileHeader'
 import EnhancedMobileStreamViewer from '@/components/EnhancedMobileStreamViewer'
@@ -47,7 +49,9 @@ import GestureStreamViewer from '@/components/GestureStreamViewer'
 import EnhancedMobileLayout from '@/components/EnhancedMobileLayout'
 import MobileFAB from '@/components/MobileFAB'
 
-export default function Home() {
+export default function HomePage() {
+  const { isLoaded, isSignedIn, user } = useUser()
+  const { t } = useTranslation()
   const [showChat, setShowChat] = useState(false)
   const [showAddStream, setShowAddStream] = useState(false)
   const [showMobileView, setShowMobileView] = useState(false)
@@ -58,22 +62,22 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false)
   const { addStream, setGridLayout, streams, gridLayout } = useStreamStore()
   const { trackChatToggle, trackFeatureUsage, trackStreamAdded } = useAnalytics()
-  
+
   // Mobile gesture support
   const streamGestures = useStreamGestures()
-  
+
   // Mobile detection
   useEffect(() => {
     const checkMobile = () => {
       const mobile = window.innerWidth < 768
       setIsMobile(mobile)
     }
-    
+
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
-  
+
   // Separate effect for gesture hints to avoid re-renders on stream changes
   useEffect(() => {
     if (isMobile && streams.length > 0 && !localStorage.getItem('gesture-hints-shown')) {
@@ -81,13 +85,13 @@ export default function Home() {
       localStorage.setItem('gesture-hints-shown', 'true')
     }
   }, [isMobile, streams.length])
-  
+
   // Enable keyboard shortcuts
   useKeyboardShortcuts()
-  
+
   // Preload streaming resources for faster loading
   useStreamPreload()
-  
+
   // Track homepage visit
   useEffect(() => {
     // Simple check for GA and track page view
@@ -99,12 +103,12 @@ export default function Home() {
         })
       }
     }
-    
+
     // Try immediately and after a short delay
     checkGA()
     setTimeout(checkGA, 1000)
   }, [])
-  
+
   // Load streams from URL params on mount
   useEffect(() => {
     const loadStreams = async () => {
@@ -119,38 +123,30 @@ export default function Home() {
     }
     loadStreams()
   }, [])
-  
-  // Removed auto-show mobile view - let users choose their preferred view
-  // useEffect(() => {
-  //   const isMobile = window.innerWidth < 768
-  //   if (isMobile && streams.filter(s => s.isActive).length > 0) {
-  //     setShowMobileView(true)
-  //   }
-  // }, [streams])
-  
+
   const faqItems = [
     {
-      question: "How many streams can I watch at once?",
-      answer: "You can watch up to 16 streams simultaneously with Streamyyy. The layout automatically adjusts based on the number of streams you add."
+      question: t('faq.howManyStreams.question'),
+      answer: t('faq.howManyStreams.answer')
     },
     {
-      question: "Is Streamyyy free to use?",
-      answer: "Yes! Streamyyy is completely free to use. No registration, subscription, or hidden fees required."
+      question: t('faq.isFree.question'),
+      answer: t('faq.isFree.answer')
     },
     {
-      question: "Can I watch Twitch and YouTube streams together?",
-      answer: "Absolutely! You can mix streams from Twitch, YouTube, Rumble and other supported platforms in the same viewer."
+      question: t('faq.mixPlatforms.question'),
+      answer: t('faq.mixPlatforms.answer')
     },
     {
-      question: "Does it work on mobile devices?",
-      answer: "Yes, Streamyyy is fully responsive and optimized for phones, tablets, and desktop computers."
+      question: t('faq.mobileSupport.question'),
+      answer: t('faq.mobileSupport.answer')
     }
   ]
 
   // Enhanced page variants for smooth transitions
   const pageVariants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
       transition: {
         duration: 0.6,
@@ -162,8 +158,8 @@ export default function Home() {
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.5,
@@ -172,18 +168,30 @@ export default function Home() {
     }
   }
 
+  // Show loading state while authentication is being determined
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">{t('common.loading')}</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-background" {...(isMobile ? streamGestures.handlers : {})}>
       <SEOSchema faqs={faqItems} type="WebApplication" />
-      <SEOContent 
+      <SEOContent
         keywords={[
           "streamyyy",
           "streamy",
-          "streamyy", 
+          "streamyy",
           "streamy app",
           "streamy viewer",
           "watch multiple streams",
-          "multi stream viewer", 
+          "multi stream viewer",
           "twitch multistream",
           "youtube multi stream",
           "stream aggregator",
@@ -204,7 +212,7 @@ export default function Home() {
         ]}
         features={[
           "Streamyyy multi-stream grid layouts",
-          "Streamy real-time chat integration", 
+          "Streamy real-time chat integration",
           "Mobile responsive design",
           "Keyboard shortcuts support",
           "Stream synchronization",
@@ -219,22 +227,22 @@ export default function Home() {
           "Rumble"
         ]}
       />
-      
+
       {/* Desktop Header */}
       <div className="hidden md:block">
         <Header onToggleChat={() => setShowChat(!showChat)} showChat={showChat} />
       </div>
-      
+
       {/* Mobile Header */}
       <div className="md:hidden">
-        <MobileHeader 
+        <MobileHeader
           onAddStream={() => {
             setShowAddStream(true)
             trackFeatureUsage('add_stream_mobile_header')
           }}
         />
       </div>
-      
+
       {/* Main Content with Tabs */}
       <div className={cn(
         "flex-1 flex",
@@ -249,7 +257,7 @@ export default function Home() {
                 <TabsList className="h-10 bg-transparent">
                 <TabsTrigger value="streams" className="gap-2">
                   <Grid3x3 size={16} />
-                  <span className="hidden sm:inline">Streams</span>
+                  <span className="hidden sm:inline">{t('tabs.streams')}</span>
                   {streams.length > 0 && (
                     <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-xs">
                       {streams.length}
@@ -258,24 +266,24 @@ export default function Home() {
                 </TabsTrigger>
                 <TabsTrigger value="discover" className="gap-2">
                   <Compass size={16} />
-                  <span className="hidden sm:inline">Discover</span>
+                  <span className="hidden sm:inline">{t('tabs.discover')}</span>
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse ml-2" />
                 </TabsTrigger>
                 <TabsTrigger value="following" className="gap-2">
                   <Heart size={16} />
-                  <span className="hidden sm:inline">Following</span>
+                  <span className="hidden sm:inline">{t('tabs.following')}</span>
                   <Badge variant="default" className="ml-2 h-5 px-1.5 text-xs bg-gradient-to-r from-red-600 to-pink-600">
-                    NEW
+                    {t('tabs.new')}
                   </Badge>
                 </TabsTrigger>
                 <TabsTrigger value="features" className="gap-2">
                   <Zap size={16} />
-                  <span className="hidden sm:inline">Features</span>
+                  <span className="hidden sm:inline">{t('tabs.features')}</span>
                 </TabsTrigger>
               </TabsList>
               </div>
             )}
-            
+
             <TabsContent value="streams" className="flex-1 m-0 p-0 flex flex-col overflow-auto md:overflow-hidden">
               <ErrorBoundary>
                 {streams.length === 0 ? (
@@ -290,7 +298,7 @@ export default function Home() {
                         if (isMobile) {
                           return <EnhancedMobileLayout />
                         }
-                        
+
                         // Desktop routing
                         switch (gridLayout) {
                           case 'custom':
@@ -299,6 +307,8 @@ export default function Home() {
                             return <StreamGrid />
                           case 'pip':
                             return <EnhancedMobileLayout />
+                          case 'stacked':
+                            return <StreamGrid />
                           case 'mosaic':
                             return <StreamGrid />
                           default:
@@ -310,19 +320,19 @@ export default function Home() {
                 )}
               </ErrorBoundary>
             </TabsContent>
-            
+
             <TabsContent value="discover" className="flex-1 overflow-y-auto">
               <ErrorBoundary>
                 <EnhancedDiscovery />
               </ErrorBoundary>
             </TabsContent>
-            
+
             <TabsContent value="following" className="flex-1 overflow-y-auto">
               <ErrorBoundary>
                 <FollowingRecommended />
               </ErrorBoundary>
             </TabsContent>
-            
+
             <TabsContent value="features" className="flex-1 overflow-y-auto p-4">
               <ErrorBoundary>
                 <FeaturesShowcase />
@@ -330,7 +340,7 @@ export default function Home() {
             </TabsContent>
           </Tabs>
         </main>
-        
+
         <ErrorBoundary>
           <StreamChat show={showChat} onClose={() => {
             setShowChat(false)
@@ -338,7 +348,7 @@ export default function Home() {
           }} />
         </ErrorBoundary>
       </div>
-      
+
       {/* Mobile Navigation */}
       <MobileNav
         onAddStream={() => {
@@ -363,36 +373,36 @@ export default function Home() {
           trackFeatureUsage('mobile_stream_viewer')
         }}
       />
-      
+
       {/* Enhanced Mobile Stream Viewer */}
-      <EnhancedMobileStreamViewer 
-        show={showMobileStreamViewer} 
-        onClose={() => setShowMobileStreamViewer(false)} 
+      <EnhancedMobileStreamViewer
+        show={showMobileStreamViewer}
+        onClose={() => setShowMobileStreamViewer(false)}
       />
-      
+
       {/* Mobile Swipe Controls - Only show when explicitly enabled */}
       {showMobileView && <MobileSwipeControls onClose={() => setShowMobileView(false)} />}
-      
+
       {/* Enhanced Add Stream Dialog */}
-      <EnhancedAddStreamDialog 
-        open={showAddStream} 
-        onOpenChange={setShowAddStream} 
+      <EnhancedAddStreamDialog
+        open={showAddStream}
+        onOpenChange={setShowAddStream}
       />
-      
+
       {/* Discover Popup */}
-      <DiscoverPopup 
-        open={showDiscoverPopup} 
-        onOpenChange={setShowDiscoverPopup} 
+      <DiscoverPopup
+        open={showDiscoverPopup}
+        onOpenChange={setShowDiscoverPopup}
       />
-      
+
       {/* Mobile Gesture Overlay */}
       {isMobile && (
-        <MobileGestureOverlay 
+        <MobileGestureOverlay
           showHints={showGestureHints}
           onDismissHints={() => setShowGestureHints(false)}
         />
       )}
-      
+
       {/* Mobile Floating Action Button */}
       {isMobile && streams.length > 0 && <MobileFAB />}
     </div>

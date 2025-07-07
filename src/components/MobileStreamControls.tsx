@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Volume2, VolumeX, X, Maximize2, Maximize, MoreVertical, Share2, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { haptic } from '@/lib/haptics'
+import { useTranslation } from '@/contexts/LanguageContext'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface MobileStreamControlsProps {
@@ -35,6 +36,7 @@ export default function MobileStreamControls({
 }: MobileStreamControlsProps) {
   const [showQuickActions, setShowQuickActions] = useState(false)
   const [isFavorite, setIsFavorite] = useState(false)
+  const { t } = useTranslation()
 
   const handleMuteToggle = () => {
     haptic.light()
@@ -62,8 +64,8 @@ export default function MobileStreamControls({
     // Native share implementation
     if (navigator.share) {
       navigator.share({
-        title: `Watch ${channelName} on Streamyyy`,
-        text: `Check out ${channelName}'s stream!`,
+        title: t('mobile.shareTitle', { channel: channelName }),
+        text: t('mobile.shareText', { channel: channelName }),
         url: window.location.href
       })
     }
@@ -91,7 +93,7 @@ export default function MobileStreamControls({
                   ? "bg-red-500/20 border border-red-400/30 text-red-100"
                   : "bg-white/20 border border-white/30 text-white"
               )}
-              aria-label={muted ? 'Unmute' : 'Mute'}
+              aria-label={muted ? t('header.unmuteStream') : t('header.muteStream')}
             >
               {muted ? <VolumeX size={20} /> : <Volume2 size={20} />}
               {/* Touch feedback ripple */}
@@ -105,7 +107,7 @@ export default function MobileStreamControls({
                 "min-w-[48px] min-h-[48px] flex items-center justify-center",
                 "bg-white/20 border border-white/30 text-white"
               )}
-              aria-label="Fullscreen"
+              aria-label={t('header.fullscreen')}
             >
               <Maximize size={20} />
               <span className="absolute inset-0 rounded-full bg-white/20 scale-0 active:scale-100 transition-transform duration-300" />
@@ -119,7 +121,7 @@ export default function MobileStreamControls({
                   "min-w-[48px] min-h-[48px] flex items-center justify-center",
                   "bg-blue-500/20 border border-blue-400/30 text-blue-100"
                 )}
-                aria-label="Set as primary"
+                aria-label={t('streams.setPrimary')}
               >
                 <Maximize2 size={20} />
                 <span className="absolute inset-0 rounded-full bg-white/20 scale-0 active:scale-100 transition-transform duration-300" />
@@ -139,7 +141,7 @@ export default function MobileStreamControls({
                 "min-w-[48px] min-h-[48px] flex items-center justify-center",
                 "bg-white/20 border border-white/30 text-white"
               )}
-              aria-label="More options"
+              aria-label={t('mobile.moreOptions')}
             >
               <MoreVertical size={20} />
               <span className="absolute inset-0 rounded-full bg-white/20 scale-0 active:scale-100 transition-transform duration-300" />
@@ -184,7 +186,7 @@ export default function MobileStreamControls({
                   className="w-full flex items-center gap-4 p-4 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors"
                 >
                   <Share2 size={24} className="text-white" />
-                  <span className="text-white text-left">Share Stream</span>
+                  <span className="text-white text-left">{t('mobile.shareStream')}</span>
                 </button>
 
                 <button
@@ -195,7 +197,7 @@ export default function MobileStreamControls({
                   className="w-full flex items-center gap-4 p-4 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors"
                 >
                   <Heart size={24} className={cn("transition-colors", isFavorite ? "text-red-500 fill-red-500" : "text-white")} />
-                  <span className="text-white text-left">{isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</span>
+                  <span className="text-white text-left">{isFavorite ? t('streams.removeFromFavorites') : t('streams.addToFavorites')}</span>
                 </button>
 
                 <button
@@ -206,14 +208,14 @@ export default function MobileStreamControls({
                   className="w-full flex items-center gap-4 p-4 rounded-2xl bg-red-500/20 hover:bg-red-500/30 transition-colors"
                 >
                   <X size={24} className="text-red-400" />
-                  <span className="text-red-400 text-left">Remove Stream</span>
+                  <span className="text-red-400 text-left">{t('header.removeStream')}</span>
                 </button>
 
                 <button
                   onClick={() => setShowQuickActions(false)}
                   className="w-full p-4 rounded-2xl bg-white/10 hover:bg-white/20 transition-colors mt-4"
                 >
-                  <span className="text-white">Cancel</span>
+                  <span className="text-white">{t('common.cancel')}</span>
                 </button>
               </div>
             </motion.div>

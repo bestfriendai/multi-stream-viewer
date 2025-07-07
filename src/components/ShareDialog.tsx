@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Share2, Copy, Check } from 'lucide-react'
 import { useStreamStore } from '@/store/streamStore'
 import { generateShareableLink } from '@/lib/shareableLinks'
+import { useTranslation } from '@/contexts/LanguageContext'
 import { toast } from 'sonner'
 
 interface ShareDialogProps {
@@ -16,6 +17,7 @@ interface ShareDialogProps {
 export default function ShareDialog({ mobile = false }: ShareDialogProps) {
   const [copied, setCopied] = useState(false)
   const { streams, gridLayout } = useStreamStore()
+  const { t } = useTranslation()
   
   const shareableLink = generateShareableLink([...streams], gridLayout)
   
@@ -23,10 +25,10 @@ export default function ShareDialog({ mobile = false }: ShareDialogProps) {
     try {
       await navigator.clipboard.writeText(shareableLink)
       setCopied(true)
-      toast.success('Link copied to clipboard!')
+      toast.success(t('notifications.copySuccess'))
       setTimeout(() => setCopied(false), 2000)
     } catch {
-      toast.error('Failed to copy link')
+      toast.error(t('errors.copyFailed'))
     }
   }
   
@@ -34,8 +36,8 @@ export default function ShareDialog({ mobile = false }: ShareDialogProps) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Multi-Stream Viewer',
-          text: 'Check out these streams!',
+          title: t('share.title'),
+          text: t('share.checkStreams'),
           url: shareableLink
         })
       } catch {
@@ -49,12 +51,12 @@ export default function ShareDialog({ mobile = false }: ShareDialogProps) {
   const trigger = mobile ? (
     <Button variant="outline" className="w-full justify-start h-12" disabled={streams.length === 0}>
       <Share2 className="mr-3 h-5 w-5" />
-      Share Streams
+      {t('header.shareStreams')}
     </Button>
   ) : (
     <Button variant="outline" size="sm" className="h-9" disabled={streams.length === 0}>
       <Share2 size={16} className="mr-2" />
-      Share
+      {t('buttons.share')}
     </Button>
   )
 
@@ -66,12 +68,12 @@ export default function ShareDialog({ mobile = false }: ShareDialogProps) {
       
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Share Current View</DialogTitle>
+          <DialogTitle>{t('header.shareCurrentView')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">Shareable Link</label>
+            <label className="text-sm font-medium">{t('header.shareableLink')}</label>
             <div className="flex gap-2">
               <Input
                 value={shareableLink}
@@ -89,18 +91,18 @@ export default function ShareDialog({ mobile = false }: ShareDialogProps) {
           
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">
-              This link includes:
+              {t('share.linkIncludes')}:
             </p>
             <ul className="text-sm text-muted-foreground list-disc list-inside">
-              <li>{streams.length} stream{streams.length !== 1 ? 's' : ''}</li>
-              <li>{gridLayout} layout</li>
+              <li>{t('share.streamsCount', { count: streams.length })}</li>
+              <li>{t('share.layoutInfo', { layout: gridLayout })}</li>
             </ul>
           </div>
           
           {'share' in navigator && (
             <Button onClick={handleShare} className="w-full">
               <Share2 size={16} className="mr-2" />
-              Share via System
+              {t('share.shareViaSystem')}
             </Button>
           )}
         </div>

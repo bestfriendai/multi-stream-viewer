@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { rateLimiters } from '@/lib/rate-limiter';
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
+
+
 // Define which routes need rate limiting and their limits
 const rateLimitConfig = {
   // Search endpoints - more restrictive
@@ -46,13 +48,21 @@ const isPublicRoute = createRouteMatcher([
   '/multitwitch(.*)',
 ]);
 
-// Custom middleware logic for rate limiting
+// Custom middleware logic for rate limiting and i18n
 async function customMiddleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  
+
   // Check if route should bypass rate limiting
   if (bypassRoutes.some(route => pathname.startsWith(route))) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+
+    // Handle language preference for future internationalization
+    if (!pathname.startsWith('/api/') && !pathname.startsWith('/_next/') && !pathname.includes('.')) {
+      const localeCookie = request.cookies.get('locale')?.value || 'en';
+      response.headers.set('x-user-locale', localeCookie);
+    }
+
+    return response;
   }
   
   // Find matching rate limiter
@@ -66,9 +76,15 @@ async function customMiddleware(request: NextRequest) {
     }
   }
   
-  // Add security headers to all API responses
+  // Create response with headers
   const response = NextResponse.next();
-  
+
+  // Handle language preference for future internationalization
+  if (!pathname.startsWith('/api/') && !pathname.startsWith('/_next/') && !pathname.includes('.')) {
+    const localeCookie = request.cookies.get('locale')?.value || 'en';
+    response.headers.set('x-user-locale', localeCookie);
+  }
+
   if (pathname.startsWith('/api/')) {
     response.headers.set('X-Content-Type-Options', 'nosniff');
     response.headers.set('X-Frame-Options', 'DENY');
@@ -98,3 +114,4 @@ export const config = {
     '/(api|trpc)(.*)',
   ],
 };
+

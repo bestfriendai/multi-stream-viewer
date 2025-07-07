@@ -3,8 +3,10 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { useTranslation } from '@/contexts/LanguageContext'
 import { cn } from '@/lib/utils'
 import {
   Plus,
@@ -26,6 +28,7 @@ import { ThemeToggle } from './theme-toggle'
 import SavedLayoutsDialog from './SavedLayoutsDialog'
 import ShareDialog from './ShareDialog'
 import EnhancedLayoutSelector from './EnhancedLayoutSelector'
+import LanguageSelector from './LanguageSelector'
 const EnhancedAddStreamDialog = dynamic(() => import('./EnhancedAddStreamDialog'), {
   loading: () => <div className="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg h-32" />
 })
@@ -67,7 +70,10 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
 
   const { trackFeatureUsage, trackMenuItemClick } = useAnalytics()
   const { isSignedIn, user, isLoaded } = useUser()
+  const { t } = useTranslation()
   const { subscription, isPro, isPremium, loading: subscriptionLoading } = useSubscription()
+  
+
 
   // Debug logging
   console.log('Header - Clerk state:', { isLoaded, isSignedIn, user: user?.id })
@@ -118,7 +124,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                   disabled={streams.length >= 16}
                 >
                   <Plus className="h-4 w-4" />
-                  <span className="ml-1.5 hidden xs:inline transition-opacity duration-300">Add</span>
+                  <span className="ml-1.5 hidden xs:inline transition-opacity duration-300">{t('header.addStream')}</span>
                 </Button>
               </motion.div>
 
@@ -143,7 +149,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                   onClick={() => setShowDiscovery(true)}
                 >
                   <Compass className="h-4 w-4" />
-                  <span className="ml-1.5 hidden sm:inline transition-opacity duration-300">Discover</span>
+                  <span className="ml-1.5 hidden sm:inline transition-opacity duration-300">{t('header.discover')}</span>
                 </Button>
               </motion.div>
 
@@ -180,7 +186,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     disabled={streams.length >= 16}
                   >
                     <Plus className="h-4 w-4" />
-                    <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">Add</span>
+                    <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">{t('header.addStream')}</span>
                   </Button>
                 </motion.div>
 
@@ -209,7 +215,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     )}
                   >
                     <MessageSquare className="h-4 w-4" />
-                    <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">Chat</span>
+                    <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">{t('header.chat')}</span>
                   </Button>
                 </motion.div>
               </motion.div>
@@ -243,7 +249,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                       className="h-8 px-3 text-purple-600 hover:bg-purple-500/10"
                     >
                       <Crown className="h-4 w-4" />
-                      <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">Pricing</span>
+                      <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">{t('header.pricing')}</span>
                     </Button>
                   </motion.div>
                 </Link>
@@ -277,7 +283,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                         className="h-8 px-3 text-destructive hover:bg-destructive/10"
                       >
                         <X className="h-4 w-4" />
-                        <span className="ml-1.5">Clear ({streams.length})</span>
+                        <span className="ml-1.5">{t('header.clear')} ({streams.length})</span>
                       </Button>
                     </motion.div>
                   )}
@@ -294,6 +300,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 transition={{ delay: 0.3, duration: 0.3 }}
                 whileHover={{ scale: 1.01 }}
               >
+                <LanguageSelector />
                 <ThemeToggle />
 
                 {isSignedIn ? (
@@ -330,7 +337,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                           className="h-8 px-3"
                         >
                           <LogIn className="h-4 w-4" />
-                          <span className="ml-1.5">Sign In</span>
+                          <span className="ml-1.5">{t('navigation.signIn')}</span>
                         </Button>
                       </motion.div>
                     </SignInButton>
@@ -341,7 +348,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                           size="sm"
                           className="h-8 px-3 shadow-sm"
                         >
-                          <span>Sign Up</span>
+                          <span>{t('navigation.signUp')}</span>
                         </Button>
                       </motion.div>
                     </SignUpButton>
@@ -387,7 +394,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 transition={{ delay: 0.1, duration: 0.3 }}
               >
                 <h2 className="text-lg font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                  Menu
+                  {t('header.menu')}
                 </h2>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
@@ -414,7 +421,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.3 }}
                 >
-                  <div className="text-sm text-muted-foreground">Active Streams</div>
+                  <div className="text-sm text-muted-foreground">{t('header.activeStreams')}</div>
                   <div className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
                     {streams.length} / 16
                   </div>
@@ -436,7 +443,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     className="w-full justify-start h-12"
                   >
                     <MessageSquare className="mr-3 h-5 w-5" />
-                    {showChat ? 'Hide Chat' : 'Show Chat'}
+                    {showChat ? t('chat.hide') : t('chat.show')}
                   </Button>
 
                   <Link href="/amp-summer" className="block">
@@ -474,13 +481,14 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                       className="w-full justify-start h-12"
                     >
                       <Trash2 className="mr-3 h-5 w-5" />
-                      Clear All Streams
+                      {t('header.clearAllStreams')}
                     </Button>
                   </div>
                 )}
 
                 {/* Theme Toggle */}
                 <div className="pt-4 border-t border-border flex justify-center gap-3">
+                  <LanguageSelector />
                   <ThemeToggle />
                   {isSignedIn ? (
                     <div className="flex items-center gap-2">
@@ -541,18 +549,18 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
       <Dialog open={showClearConfirm} onOpenChange={setShowClearConfirm}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Clear All Streams</DialogTitle>
+            <DialogTitle>{t('header.clearAllStreams')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <p className="text-muted-foreground">
-              Are you sure you want to remove all {streams.length} stream{streams.length !== 1 ? 's' : ''}? This action cannot be undone.
+              {t('common.confirmRemoveAllStreams')}
             </p>
             <div className="flex gap-3 justify-end">
               <Button
                 variant="outline"
                 onClick={() => setShowClearConfirm(false)}
               >
-                Cancel
+{t('common.cancel')}
               </Button>
               <Button
                 variant="destructive"
@@ -563,7 +571,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 }}
               >
                 <Trash2 className="h-4 w-4 mr-2" />
-                Clear All
+{t('common.clearAll')}
               </Button>
             </div>
           </div>

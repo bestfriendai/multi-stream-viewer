@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "../styles/layout-modes.css";
 @import "../styles/mobile-fixes.css";
+@import "../styles/amp.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -650,9 +651,12 @@ body.force-desktop-mode .stream-grid {
     min-height: auto;
     height: auto;
 
-    /* Mobile stack layout - single column */
+    /* Mobile stack layout - single column, full width */
     display: flex !important;
     flex-direction: column !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100vw !important;
 
     /* Performance optimizations */
     contain: layout style paint;
@@ -714,10 +718,11 @@ body.force-desktop-mode .stream-grid {
 
   /* Mobile streams are always full width and stacked vertically */
   .stream-grid[data-count] > * {
-    width: 100% !important;
+    width: 100vw !important;
     aspect-ratio: 16 / 9 !important;
     min-height: 200px !important;
     max-height: 300px !important;
+    margin-left: calc(-50vw + 50%) !important;
   }
 
   /* Add mobile layout indicator */
@@ -1259,4 +1264,31 @@ button:not(.no-touch-target),
 
 .animation-delay-2000 {
   animation-delay: 2s;
+}
+
+/* Hide Twitch native controls to ensure only our custom controls are used */
+iframe[src*="twitch.tv"] {
+  /* Hide native Twitch player controls */
+  pointer-events: auto !important;
+}
+
+/* Hide any Twitch control overlays that might appear */
+iframe[src*="twitch.tv"] .player-controls,
+iframe[src*="twitch.tv"] .player-overlay,
+iframe[src*="twitch.tv"] .player-button,
+iframe[src*="twitch.tv"] [data-a-target*="player-controls"],
+iframe[src*="twitch.tv"] [data-a-target*="player-overlay"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Ensure our custom controls are always on top */
+.stream-embed-container {
+  position: relative;
+  z-index: 1;
+}
+
+.stream-embed-container .absolute {
+  z-index: 10;
 }

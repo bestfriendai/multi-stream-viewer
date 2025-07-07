@@ -45,7 +45,7 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
           layout: 'video',
           theme: 'dark',
           allowfullscreen: true,
-          controls: true // Enable controls for user interaction
+          controls: false // Disable native controls, use custom UI
         })
         
         embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {

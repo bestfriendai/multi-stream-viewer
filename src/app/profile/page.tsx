@@ -1,6 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslation } from '@/contexts/LanguageContext';
+
+// Force dynamic rendering for this protected route
+export const dynamic = 'force-dynamic';
 import { useUser } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +16,7 @@ import Link from 'next/link';
 
 export default function ProfilePage() {
   const { user } = useUser();
+  const { t } = useTranslation();
   const { subscription, loading, isSubscribed, isPro, isPremium, limits } = useSubscription();
   const [managingSubscription, setManagingSubscription] = useState(false);
 
@@ -35,7 +40,7 @@ export default function ProfilePage() {
       }
     } catch (error) {
       console.error('Error creating portal session:', error);
-      alert('Something went wrong. Please try again.');
+      alert(t('profile.somethingWentWrong'));
     } finally {
       setManagingSubscription(false);
     }
@@ -48,18 +53,18 @@ export default function ProfilePage() {
   };
 
   const getSubscriptionBadge = () => {
-    if (isPremium) return <Badge className="bg-purple-100 text-purple-800">Premium</Badge>;
-    if (isPro) return <Badge className="bg-blue-100 text-blue-800">Pro</Badge>;
-    return <Badge variant="outline">Free</Badge>;
+    if (isPremium) return <Badge className="bg-purple-100 text-purple-800">{t('subscription.premium')}</Badge>;
+    if (isPro) return <Badge className="bg-blue-100 text-blue-800">{t('subscription.pro')}</Badge>;
+    return <Badge variant="outline">{t('subscription.free')}</Badge>;
   };
 
   if (!user) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Please sign in to view your profile</h1>
+          <h1 className="text-2xl font-bold mb-4">{t('profile.pleaseSignIn')}</h1>
           <Link href="/sign-in">
-            <Button>Sign In</Button>
+            <Button>{t('auth.signIn')}</Button>
           </Link>
         </div>
       </div>
@@ -69,8 +74,8 @@ export default function ProfilePage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Your Profile</h1>
-        <p className="text-gray-600">Manage your account settings and subscription</p>
+        <h1 className="text-3xl font-bold mb-2">{t('profile.title')}</h1>
+        <p className="text-gray-600">{t('profile.subtitle')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">

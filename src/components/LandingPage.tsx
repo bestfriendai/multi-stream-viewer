@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useUser } from '@clerk/nextjs'
+
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { 
-  Monitor, 
-  Zap, 
-  MessageSquare, 
-  Layout, 
+import {
+  Monitor,
+  Zap,
+  MessageSquare,
+  Layout,
   Smartphone,
   Globe,
   PlayCircle,
@@ -41,6 +43,7 @@ import {
   X
 } from 'lucide-react'
 import { useStreamStore } from '@/store/streamStore'
+import { useTranslation } from '@/contexts/LanguageContext'
 import { cn } from '@/lib/utils'
 import '@/styles/landing.css'
 import OptimizedBackgroundStreams from './OptimizedBackgroundStreams'
@@ -124,6 +127,10 @@ const useCases = [
 
 export default function LandingPage({ onAddStream }: LandingPageProps) {
   const { addStream } = useStreamStore()
+  const { isLoaded, isSignedIn, user } = useUser()
+  const { t } = useTranslation()
+  
+
   const [liveChannels, setLiveChannels] = useState<Array<{
     channelName: string
     viewerCount: number
@@ -238,13 +245,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               className="text-center mb-8 lg:mb-12"
             >
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight leading-[1.05] mb-8 lg:whitespace-nowrap">
-                <span className="text-foreground">Watch Multiple</span>
-                <span className="block lg:inline"> </span>
-                <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
-                  Live Streams
-                </span>
-                <span className="block lg:inline"> </span>
-                <span className="text-foreground">At Once</span>
+{t('landing.heroTitle')}
               </h1>
             </motion.div>
 
@@ -265,16 +266,15 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   className="space-y-6"
                 >
                   <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-2xl">
-                    Never miss a moment from your favorite creators. Watch multiple live streams simultaneously 
-                    and stay connected to all the action across platforms.
+{t('landing.heroSubtitle')}
                   </p>
                   
                   {/* Key Benefits */}
                   <div className="space-y-3 pt-4">
                     {[
-                      "Up to 16 streams simultaneously - never miss anything",
-                      "Works with Twitch, YouTube, Kick, and more",
-                      "No signup required - start watching instantly"
+                      t('landing.features.multiPlatform.description'),
+                      t('landing.features.customLayouts.description'),
+                      isSignedIn ? t('landing.startWatchingNow') : t('landing.signUpFree')
                     ].map((benefit, index) => (
                       <motion.div
                         key={benefit}
@@ -293,48 +293,50 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 </motion.div>
 
                 {/* CTA Buttons */}
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
                   className="flex flex-col sm:flex-row gap-4 pt-8"
                 >
                   <motion.div
-                    whileHover={{ 
+                    whileHover={{
                       scale: 1.02,
                       y: -3
                     }}
                     whileTap={{ scale: 0.98 }}
-                    transition={{ 
+                    transition={{
                       type: "spring",
                       stiffness: 300,
                       damping: 30
                     }}
                   >
-                    <Button 
-                      size="lg" 
+                    <Button
+                      size="lg"
                       onClick={onAddStream}
                       className="gap-3 text-lg px-10 py-7 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 shadow-xl hover:shadow-2xl transition-all duration-500 font-semibold border-0 rounded-xl text-white"
                     >
                       <PlayCircle className="w-6 h-6" />
-                      Start Watching - No Credit Card Required
+{t('landing.startWatchingNow')}
                     </Button>
                   </motion.div>
                   
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Button 
-                      size="lg" 
-                      variant="outline"
-                      onClick={() => window.location.href = '/sign-up'}
-                      className="gap-3 text-lg px-10 py-7 border-2 border-border/60 hover:border-primary/30 hover:bg-muted/50 font-medium rounded-xl backdrop-blur-sm"
+                  {!isSignedIn && (
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                     >
-                      Sign Up Free
-                      <ArrowRight className="w-5 h-5" />
-                    </Button>
-                  </motion.div>
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        onClick={() => window.location.href = '/sign-up'}
+                        className="gap-3 text-lg px-10 py-7 border-2 border-border/60 hover:border-primary/30 hover:bg-muted/50 font-medium rounded-xl backdrop-blur-sm"
+                      >
+{t('landing.signUpFree')}
+                        <ArrowRight className="w-5 h-5" />
+                      </Button>
+                    </motion.div>
+                  )}
                 </motion.div>
 
                 {/* Trust Indicators */}
@@ -346,15 +348,15 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 >
                   <div className="flex items-center gap-2">
                     <Wifi className="w-4 h-4 text-green-500" />
-                    <span>Always Online</span>
+                    <span>{t('landing.trustIndicators.alwaysOnline')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Shield className="w-4 h-4 text-blue-500" />
-                    <span>Secure & Private</span>
+                    <span>{t('landing.trustIndicators.securePrivate')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Zap className="w-4 h-4 text-yellow-500" />
-                    <span>Fast Streaming</span>
+                    <span>{t('landing.trustIndicators.fastStreaming')}</span>
                   </div>
                 </motion.div>
               </motion.div>
@@ -534,11 +536,11 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           >
             <Badge className="mb-4 px-4 py-1.5" variant="outline">
               <Eye className="w-3 h-3 mr-1" />
-              Live Demo
+              {t('landing.demo.liveDemo')}
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Watch Live Now</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">{t('landing.demo.watchLiveNow')}</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              {loading ? "Loading live channels..." : "Real streamers, real gameplay, real entertainment - all in perfect sync"}
+              {loading ? t('landing.demo.loadingChannels') : t('landing.demo.realStreamers')}
             </p>
           </motion.div>
           
@@ -651,10 +653,10 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               
               <p className="text-center text-sm text-muted-foreground mt-4">
                 {demoStreams.length > 0 
-                  ? "Showing actual live streams - Click 'Start Watching Now' to try it yourself!"
+                  ? t('landing.demo.showingLiveStreams')
                   : loading 
-                    ? "Loading live streams..." 
-                    : "Layouts automatically adjust based on the number of streams"}
+                    ? t('landing.demo.loadingStreams')
+                    : t('landing.demo.layoutsAdjust')}
               </p>
             </Card>
           </div>
@@ -677,31 +679,31 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           >
             <Badge className="mb-4 px-4 py-1.5" variant="outline">
               <Zap className="w-3 h-3 mr-1" />
-              Quick Start
+              {t('landing.quickStart.badge')}
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold">Get Started in Seconds</h2>
+            <h2 className="text-4xl md:text-5xl font-bold">{t('landing.getStartedInSeconds')}</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
               {
                 step: "1",
-                title: "Find Your Streamers",
-                description: "Search for your favorite creators or paste their channel links",
+                title: t('landing.quickStart.findStreamers.title'),
+                description: t('landing.quickStart.findStreamers.description'),
                 icon: Plus,
                 color: "from-purple-500 to-purple-600"
               },
               {
                 step: "2",
-                title: "Pick Your View",
-                description: "Grid, focus, or picture-in-picture - however you like to watch",
+                title: t('landing.quickStart.pickView.title'),
+                description: t('landing.quickStart.pickView.description'),
                 icon: Layout,
                 color: "from-purple-500 to-purple-600"
               },
               {
                 step: "3",
-                title: "Watch & Chat",
-                description: "Follow the action across multiple streams with live chat",
+                title: t('landing.quickStart.watchChat.title'),
+                description: t('landing.quickStart.watchChat.description'),
                 icon: PlayCircle,
                 color: "from-green-500 to-emerald-500"
               }
@@ -742,11 +744,11 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           >
             <Badge className="mb-4 px-4 py-1.5" variant="outline">
               <Trophy className="w-3 h-3 mr-1" />
-              Pricing
+              {t('landing.pricing.badge')}
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Choose Your Plan</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">{t('pricing.title')}</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Start free and upgrade when you're ready for more features
+              {t('pricing.subtitle')}
             </p>
           </motion.div>
           
@@ -761,36 +763,36 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             >
               <Card className="p-8 h-full border-2 border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative">
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold mb-2">Free Plan</h3>
+                  <h3 className="text-2xl font-bold mb-2">{t('pricing.free.title')}</h3>
                   <div className="text-4xl font-black mb-2">$0</div>
-                  <p className="text-muted-foreground">Perfect for getting started</p>
+                  <p className="text-muted-foreground">{t('pricing.free.description')}</p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Up to 4 streams simultaneously</span>
+                    <span>{t('pricing.free.features.streams')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Basic layouts (Grid, Focus)</span>
+                    <span>{t('pricing.free.features.layouts')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Mobile responsive design</span>
+                    <span>{t('pricing.free.features.mobile')}</span>
                   </li>
                   <li className="flex items-center gap-2 text-muted-foreground">
                     <X className="w-5 h-5 text-muted-foreground" />
-                    <span>Ads displayed</span>
+                    <span>{t('pricing.free.features.ads')}</span>
                   </li>
                 </ul>
                 <Button className="w-full" variant="outline" onClick={onAddStream}>
-                  Get Started Free
+                  {t('landing.getStartedFree')}
                 </Button>
               </Card>
             </motion.div>
@@ -805,49 +807,49 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             >
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <Badge className="bg-primary text-primary-foreground px-3 py-1">
-                  Most Popular
+                  {t('pricing.pro.badge')}
                 </Badge>
               </div>
               <Card className="p-8 h-full border-2 border-primary hover:shadow-xl transition-all duration-300 relative">
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold mb-2">Pro Plan</h3>
+                  <h3 className="text-2xl font-bold mb-2">{t('pricing.pro.title')}</h3>
                   <div className="text-4xl font-black mb-2">$4.99<span className="text-lg font-normal text-muted-foreground">/mo</span></div>
-                  <p className="text-muted-foreground">Chat Members benefits</p>
+                  <p className="text-muted-foreground">{t('pricing.pro.description')}</p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Up to 9 streams simultaneously</span>
+                    <span>{t('pricing.pro.features.streams')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>All layouts including PiP</span>
+                    <span>{t('pricing.pro.features.layouts')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Ad-free experience</span>
+                    <span>{t('pricing.pro.features.adFree')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Save custom layouts</span>
+                    <span>{t('pricing.pro.features.customLayouts')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Priority support</span>
+                    <span>{t('pricing.pro.features.support')}</span>
                   </li>
                 </ul>
                 <Button className="w-full bg-primary hover:bg-primary/90" onClick={() => window.location.href = '/sign-up'}>
-                  Start Free Trial
+                  {t('pricing.pro.button')}
                 </Button>
               </Card>
             </motion.div>
@@ -862,50 +864,50 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             >
               <Card className="p-8 h-full border-2 border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative">
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold mb-2">Premium Plan</h3>
+                  <h3 className="text-2xl font-bold mb-2">{t('pricing.premium.title')}</h3>
                   <div className="text-4xl font-black mb-2">$9.99<span className="text-lg font-normal text-muted-foreground">/mo</span></div>
-                  <p className="text-muted-foreground">SuperChat Members perks</p>
+                  <p className="text-muted-foreground">{t('pricing.premium.description')}</p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>All 16 streams simultaneously</span>
+                    <span>{t('pricing.premium.features.streams')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Advanced custom layouts</span>
+                    <span>{t('pricing.premium.features.layouts')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Unified chat across all streams</span>
+                    <span>{t('pricing.premium.features.chat')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Stream analytics & insights</span>
+                    <span>{t('pricing.premium.features.analytics')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Premium support & features</span>
+                    <span>{t('pricing.premium.features.support')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
                       <div className="w-2 h-2 rounded-full bg-green-600" />
                     </div>
-                    <span>Early access to new features</span>
+                    <span>{t('pricing.premium.features.earlyAccess')}</span>
                   </li>
                 </ul>
                 <Button className="w-full" variant="outline" onClick={() => window.location.href = '/sign-up'}>
-                  Start Free Trial
+                  {t('pricing.premium.button')}
                 </Button>
               </Card>
             </motion.div>
@@ -917,7 +919,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             transition={{ delay: 0.5 }}
             className="text-center mt-12 text-sm text-muted-foreground"
           >
-            <p>All plans include a 7-day free trial. Cancel anytime. No contracts.</p>
+            <p>{t('pricing.trialInfo')}</p>
           </motion.div>
         </div>
       </section>
@@ -931,13 +933,13 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             whileInView={{ opacity: 1, y: 0 }}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Everything You Need for 
+              {t('landing.benefits.title.main')}
               <span className="block bg-gradient-to-r from-blue-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                Multi-Stream Viewing
+                {t('landing.benefits.title.highlight')}
               </span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              The complete solution for watching multiple live streams. Perfect for events, entertainment, and staying connected with all your favorite creators.
+              {t('landing.benefits.subtitle')}
             </p>
           </motion.div>
           
@@ -946,23 +948,23 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             {[
               {
                 icon: Monitor,
-                title: "Multi-Stream Display",
-                description: "Watch up to 16 streams simultaneously with intelligent layout management",
-                benefit: "Never miss anything happening across platforms",
+                title: t('landing.benefits.multiStream.title'),
+                description: t('landing.benefits.multiStream.description'),
+                benefit: t('landing.benefits.multiStream.benefit'),
                 stats: "16 Streams"
               },
               {
                 icon: MessageSquare,
-                title: "Unified Chat",
-                description: "Follow conversations across all your streams in one convenient place",
-                benefit: "Stay connected with every community",
+                title: t('landing.benefits.unifiedChat.title'),
+                description: t('landing.benefits.unifiedChat.description'),
+                benefit: t('landing.benefits.unifiedChat.benefit'),
                 stats: "Real-time"
               },
               {
                 icon: Layout,
-                title: "Smart Layouts",
-                description: "Grid, focus, and picture-in-picture modes that adapt to your viewing needs",
-                benefit: "Perfect view for any content type",
+                title: t('landing.benefits.smartLayouts.title'),
+                description: t('landing.benefits.smartLayouts.description'),
+                benefit: t('landing.benefits.smartLayouts.benefit'),
                 stats: "Adaptive"
               }
             ].map((feature, index) => (
@@ -1003,20 +1005,20 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             {[
               {
                 icon: Globe,
-                title: "Platform Support",
-                description: "Twitch, YouTube, Kick, and more",
+                title: t('landing.benefits.platformSupport.title'),
+                description: t('landing.benefits.platformSupport.description'),
                 gradient: "from-blue-500 to-cyan-500"
               },
               {
                 icon: SmartphoneIcon,
-                title: "Mobile Optimized",
-                description: "Perfect experience on any device",
+                title: t('landing.benefits.mobileOptimized.title'),
+                description: t('landing.benefits.mobileOptimized.description'),
                 gradient: "from-green-500 to-emerald-500"
               },
               {
                 icon: Zap,
-                title: "Lightning Fast",
-                description: "Zero buffering, instant loading",
+                title: t('landing.benefits.lightningFast.title'),
+                description: t('landing.benefits.lightningFast.description'),
                 gradient: "from-yellow-500 to-orange-500"
               }
             ].map((feature, index) => (
@@ -1053,10 +1055,10 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           >
             <Badge className="mb-4 px-4 py-1.5" variant="outline">
               <Users className="w-3 h-3 mr-1" />
-              Use Cases
+              {t('landing.useCases.badge')}
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Perfect For</h2>
-            <p className="text-xl text-muted-foreground">Whatever you're watching, we've got you covered</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">{t('landing.useCases.title')}</h2>
+            <p className="text-xl text-muted-foreground">{t('landing.useCases.subtitle')}</p>
           </motion.div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
@@ -1098,10 +1100,10 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 </Badge>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
-                Popular Streams
-                <span className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent"> Live Now</span>
+                {t('landing.liveStreamers.popularStreams')}
+                <span className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent"> {t('landing.liveStreamers.liveNow')}</span>
               </h2>
-              <p className="text-xl text-muted-foreground text-center">Click any stream to add it instantly</p>
+              <p className="text-xl text-muted-foreground text-center">{t('landing.liveStreamers.clickToAdd')}</p>
             </motion.div>
             
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
@@ -1197,7 +1199,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-full text-sm font-medium border border-green-200 dark:border-green-800"
               >
                 <Shield className="w-4 h-4" />
-                No signup required • Start immediately
+                {isSignedIn ? t('landing.finalCta.welcomeBack') : t('landing.finalCta.noSignup')}
               </motion.div>
 
               {/* Headline */}
@@ -1207,9 +1209,9 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 transition={{ delay: 0.2 }}
               >
                 <h2 className="text-6xl md:text-7xl font-black leading-tight mb-8">
-                  Ready to Transform Your
+                  {t('landing.finalCta.title.main')}
                   <span className="block bg-gradient-to-r from-blue-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                    Streaming Experience?
+                    {t('landing.finalCta.title.highlight')}
                   </span>
                 </h2>
               </motion.div>
@@ -1221,8 +1223,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 transition={{ delay: 0.3 }}
               >
                 <p className="text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                  Join thousands who've upgraded to multi-stream viewing. Never miss a moment from your favorite creators, 
-                  events, and live content - all in one powerful platform.
+                  {t('landing.finalCta.subtitle')}
                 </p>
               </motion.div>
               
@@ -1243,24 +1244,26 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                     className="gap-3 text-xl px-12 py-8 bg-gradient-to-r from-blue-600 via-blue-600 to-cyan-600 hover:from-blue-700 hover:via-blue-700 hover:to-cyan-700 shadow-2xl hover:shadow-3xl transition-all duration-500 font-bold text-white border-0 rounded-2xl"
                   >
                     <PlayCircle className="w-7 h-7" />
-                    Start Streaming Now
+                    {t('landing.finalCta.startButton')}
                   </Button>
                 </motion.div>
                 
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  <Button 
-                    size="lg" 
-                    variant="outline"
-                    onClick={() => window.location.href = '/sign-up'}
-                    className="gap-3 text-xl px-12 py-8 border-2 border-border/60 hover:border-primary/40 hover:bg-muted/50 font-semibold rounded-2xl backdrop-blur-sm"
+                {!isSignedIn && (
+                  <motion.div
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
                   >
-                    Sign Up Free
-                    <ArrowRight className="w-6 h-6" />
-                  </Button>
-                </motion.div>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      onClick={() => window.location.href = '/sign-up'}
+                      className="gap-3 text-xl px-12 py-8 border-2 border-border/60 hover:border-primary/40 hover:bg-muted/50 font-semibold rounded-2xl backdrop-blur-sm"
+                    >
+                      {t('landing.signUpFree')}
+                      <ArrowRight className="w-6 h-6" />
+                    </Button>
+                  </motion.div>
+                )}
               </motion.div>
 
               {/* Final Trust Elements */}
@@ -1272,15 +1275,15 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               >
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span>100% Free</span>
+                  <span>{t('landing.finalCta.trustElements.free')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                  <span>No Download Required</span>
+                  <span>{t('landing.finalCta.trustElements.noDownload')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                  <span>Works Instantly</span>
+                  <span>{t('landing.finalCta.trustElements.worksInstantly')}</span>
                 </div>
               </motion.div>
             </motion.div>

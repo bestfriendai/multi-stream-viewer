@@ -128,17 +128,17 @@ export const useLayoutStore = create<LayoutState>()(
       immer((set, get) => ({
         // Initial state
         activeLayoutId: null,
-        currentGridLayout: '2x2',
+        currentGridLayout: 'grid-2x2',
         savedLayouts: [],
         settings: {
           autoSaveLayouts: true,
           maxSavedLayouts: 20,
-          defaultLayout: '2x2',
+          defaultLayout: 'grid-2x2',
           rememberLastLayout: true
         },
-        mobileLayout: '1x1',
-        tabletLayout: '2x2',
-        desktopLayout: '3x3',
+        mobileLayout: 'grid-1x1',
+        tabletLayout: 'grid-2x2',
+        desktopLayout: 'grid-3x3',
         
         actions: {
           setActiveLayout: (layoutId) => set((state) => {

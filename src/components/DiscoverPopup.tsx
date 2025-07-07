@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
+import { useTranslation } from '@/contexts/LanguageContext'
 
 interface StreamData {
   id: string
@@ -37,11 +38,11 @@ interface DiscoverPopupProps {
   onOpenChange: (open: boolean) => void
 }
 
-const QUICK_CATEGORIES = [
-  { name: 'Just Chatting', icon: MessageSquare },
-  { name: 'Gaming', icon: Gamepad2 },
-  { name: 'Music', icon: Music },
-  { name: 'Art', icon: Palette },
+const getQuickCategories = (t: (key: string) => string) => [
+  { name: t('streams.categories.justChatting'), key: 'Just Chatting', icon: MessageSquare },
+  { name: t('streams.categories.gaming'), key: 'Gaming', icon: Gamepad2 },
+  { name: t('streams.categories.music'), key: 'Music', icon: Music },
+  { name: t('streams.categories.creative'), key: 'Art', icon: Palette },
 ]
 
 export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps) {
@@ -52,6 +53,8 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
   const [loading, setLoading] = useState(false)
   const [searching, setSearching] = useState(false)
   const { addStream } = useStreamStore()
+  const { t } = useTranslation()
+  const quickCategories = getQuickCategories(t)
 
   // Fetch trending streams
   const fetchTrendingStreams = useCallback(async () => {
@@ -189,7 +192,7 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="flex items-center gap-2">
             <Star className="w-5 h-5 text-yellow-500" />
-            Discover Streams
+            {t('discovery.title')}
           </DialogTitle>
         </DialogHeader>
 
@@ -198,7 +201,7 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Search streamers, games, or categories..."
+              placeholder={t('discovery.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 pr-4"
@@ -220,16 +223,16 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
               className="gap-2"
             >
               <TrendingUp className="w-4 h-4" />
-              Trending
+              {t('discovery.trending')}
             </Button>
-            {QUICK_CATEGORIES.map((category) => {
+            {quickCategories.map((category) => {
               const Icon = category.icon
               return (
                 <Button
-                  key={category.name}
-                  variant={selectedCategory === category.name ? 'default' : 'outline'}
+                  key={category.key}
+                  variant={selectedCategory === category.key ? 'default' : 'outline'}
                   size="sm"
-                  onClick={() => handleCategorySelect(category.name)}
+                  onClick={() => handleCategorySelect(category.key)}
                   className="gap-2"
                 >
                   <Icon className="w-4 h-4" />
@@ -257,7 +260,7 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
               <div className="text-center py-12">
                 <Search className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
                 <p className="text-muted-foreground">
-                  {searchQuery ? 'No streams found' : 'Search for streamers to discover new content'}
+                  {searchQuery ? t('discovery.noResults') : t('streams.addFirstStream')}
                 </p>
               </div>
             ) : (
@@ -277,7 +280,7 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
                       <div className="absolute top-2 left-2 flex items-center gap-1">
                         <Badge className="bg-red-600 text-white border-0 text-xs">
                           <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse mr-1" />
-                          LIVE
+                          {t('status.live')}
                         </Badge>
                         <Badge variant="secondary" className="bg-black/70 text-white border-0 text-xs">
                           <Clock className="w-3 h-3 mr-1" />
@@ -300,7 +303,7 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
                           onClick={() => handleAddStream(stream.user_login)}
                         >
                           <Play className="w-4 h-4 mr-2" />
-                          Add Stream
+                          {t('streams.addStream')}
                         </Button>
                       </div>
                     </div>

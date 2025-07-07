@@ -230,7 +230,7 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
               'vercel.app'
             ],
             autoplay: true,
-            muted: streamMuted,
+            muted: true, // Always start muted, mute manager will control state
             layout: 'video',
             theme: 'dark',
             allowfullscreen: true,
@@ -238,7 +238,7 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
             quality: priority === 'high' 
               ? (isMobile ? '720p' : '1080p')
               : (isMobile ? '480p' : '720p'),
-            controls: true,
+            controls: false, // Disable native controls, use custom UI
             // Reduce initial loading overhead for non-primary streams
             time: priority === 'low' ? '0' : undefined
           }
@@ -249,8 +249,9 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
             embedInstanceRef.current.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
               if (!cancelled && isMountedRef.current) {
                 playerRef.current = embedInstanceRef.current.getPlayer()
-                if (streamMuted && playerRef.current?.setMuted) {
-                  playerRef.current.setMuted(true)
+                if (playerRef.current) {
+                  // Register with mute manager for proper state handling
+                  muteManager.registerPlayer(stream.id, playerRef.current, 'twitch')
                 }
                 setIsLoading(false)
               }
@@ -258,6 +259,17 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
             
             embedInstanceRef.current.addEventListener(window.Twitch.Embed.VIDEO_PLAY, () => {
               setIsLoading(false)
+              // Re-enforce mute state on video play (handles ad transitions)
+              if (streamMuted && playerRef.current) {
+                setTimeout(() => {
+                  if (playerRef.current?.setMuted) {
+                    playerRef.current.setMuted(true)
+                  }
+                  if (playerRef.current?.setVolume) {
+                    playerRef.current.setVolume(0)
+                  }
+                }, 100)
+              }
             })
           }
         } else if (stream.platform === 'youtube' && embedRef.current) {
@@ -325,17 +337,8 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
     }
   }, [stream.channelName, stream.channelId, stream.platform, isVisible, placeholder, priority, cleanup])
   
-  // Handle mute state changes
-  useEffect(() => {
-    if (stream.platform === 'twitch' && playerRef.current?.setMuted) {
-      playerRef.current.setMuted(streamMuted)
-    } else if (stream.platform === 'youtube' && embedRef.current) {
-      const iframe = embedRef.current.querySelector('iframe') as HTMLIFrameElement
-      if (iframe && iframe.contentWindow) {
-        muteManager.registerPlayer(stream.id, iframe, 'youtube')
-      }
-    }
-  }, [streamMuted, stream.platform, stream.id])
+  // Mute state changes are now handled entirely by muteManager
+  // No need for manual useEffect since registerPlayer handles state application
   
   const handleMuteToggle = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
@@ -454,7 +457,14 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
       )}
       
       {/* Embed Container */}
-      <div ref={embedRef} className="absolute inset-0 w-full h-full" />
+      <div
+        ref={embedRef}
+        className="absolute inset-0 w-full h-full"
+        style={{
+          // Ensure our custom controls take precedence
+          position: 'relative'
+        }}
+      />
     </div>
   )
 }, (prevProps, nextProps) => {

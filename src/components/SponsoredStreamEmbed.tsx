@@ -63,14 +63,14 @@ const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, classN
             channel: stream.channelName,
             parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'ampsummer.com'],
             autoplay: true, // Autoplay sponsored content
-            muted: streamMuted, // Use separate mute state
+            muted: true, // Always start muted, mute manager will control state
             layout: 'video',
             theme: 'dark',
             allowfullscreen: true,
+            controls: false, // Disable native controls, use custom UI
             // Mobile-specific optimizations
             ...(isMobile && {
-              quality: 'auto',
-              controls: true
+              quality: 'auto'
             })
           })
           

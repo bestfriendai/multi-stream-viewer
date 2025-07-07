@@ -11,6 +11,7 @@ import { haptic } from '@/lib/haptics'
 import { cn } from '@/lib/utils'
 import { useStreamError, StreamErrorHandler } from '@/lib/streamErrorHandler'
 import { useMuteState, muteManager } from '@/lib/muteManager'
+import { useTranslation } from '@/contexts/LanguageContext'
 
 interface StreamEmbedProps {
   stream: Stream
@@ -25,7 +26,8 @@ declare global {
 function StreamEmbedInner({ stream }: StreamEmbedProps) {
   const embedRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
-  
+  const { t } = useTranslation()
+
   // Use new mute system
   const [streamMuted, toggleMute] = useMuteState(stream.id)
   
@@ -311,7 +313,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
                   ? "from-red-500/30 to-red-600/30 border-red-400/40 hover:from-red-500/40 hover:to-red-600/40 text-red-100"
                   : "from-blue-500/30 to-blue-600/30 border-blue-400/40 hover:from-blue-500/40 hover:to-blue-600/40 text-blue-100"
               )}
-              title={streamMuted ? 'Unmute' : 'Mute'}
+              title={streamMuted ? t('header.unmuteStream') : t('header.muteStream')}
             >
               {streamMuted ? <VolumeX size={16} className="sm:w-5 sm:h-5" /> : <Volume2 size={16} className="sm:w-5 sm:h-5" />}
             </button>
@@ -322,7 +324,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
                 haptic.light()
               }}
               className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-green-500/30 to-green-600/30 border border-green-400/40 hover:from-green-500/40 hover:to-green-600/40 text-green-100 shadow-lg transition-all duration-200 transform active:scale-95 min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px]"
-              title="Fullscreen"
+              title={t('header.fullscreen')}
             >
               <Maximize size={16} className="sm:w-5 sm:h-5" />
             </button>
@@ -334,7 +336,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
                   haptic.medium()
                 }}
                 className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-blue-500/30 to-blue-600/30 border border-blue-400/40 hover:from-blue-500/40 hover:to-blue-600/40 text-blue-100 shadow-lg transition-all duration-200 transform active:scale-95 min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px]"
-                title="Set as primary"
+                title={t('streams.setPrimary')}
               >
                 <Maximize2 size={16} className="sm:w-5 sm:h-5" />
               </button>
@@ -346,7 +348,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
                 haptic.heavy()
               }}
               className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-red-500/40 to-red-600/40 border border-red-400/50 hover:from-red-500/50 hover:to-red-600/50 text-red-100 shadow-lg transition-all duration-200 transform active:scale-95 min-w-[44px] min-h-[44px] sm:min-w-[48px] sm:min-h-[48px]"
-              title="Remove stream"
+              title={t('header.removeStream')}
             >
               <X size={16} className="sm:w-5 sm:h-5" />
             </button>
@@ -359,20 +361,20 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
         <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-10">
           <div className="text-center p-6 max-w-sm">
             <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-            <h3 className="text-white font-semibold mb-2">Stream Unavailable</h3>
+            <h3 className="text-white font-semibold mb-2">{t('streams.streamError')}</h3>
             <p className="text-white/80 text-sm mb-4">{userFriendlyMessage}</p>
             <div className="flex gap-2 justify-center">
               <button
                 onClick={clearError}
                 className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-lg transition-colors"
               >
-                Retry
+                {t('buttons.retry')}
               </button>
               <button
                 onClick={() => removeStream(stream.id)}
                 className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg transition-colors"
               >
-                Remove
+                {t('buttons.remove')}
               </button>
             </div>
           </div>
@@ -387,7 +389,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
               {twitchStatus.title}
             </p>
             <div className="flex items-center gap-2 text-white/80 text-xs">
-              <span className="truncate">Playing {twitchStatus.gameName}</span>
+              <span className="truncate">{t('streams.playing', { game: twitchStatus.gameName })}</span>
               {twitchStatus.viewerCount > 0 && (
                 <>
                   <span>•</span>

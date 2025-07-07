@@ -1,6 +1,7 @@
 'use client'
 
 import { useStreamStore } from '@/store/streamStore'
+import { useTranslation } from '@/contexts/LanguageContext'
 import { cn } from '@/lib/utils'
 import { 
   Square, 
@@ -20,75 +21,77 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-const layoutOptions = [
-  { 
-    value: '1x1', 
-    label: 'Single', 
+const getLayoutOptions = (t: (key: string) => string) => [
+  {
+    value: '1x1',
+    label: t('layouts.single'),
     icon: Square,
-    description: '1 stream',
+    description: t('layouts.singleDescription'),
     grid: [[1]]
   },
-  { 
-    value: '2x1', 
-    label: 'Side by Side', 
+  {
+    value: '2x1',
+    label: t('layouts.sideBySide'),
     icon: Columns,
-    description: '2 streams horizontal',
+    description: t('layouts.sideBySideDescription'),
     grid: [[1, 2]]
   },
-  { 
-    value: '1x2', 
-    label: 'Stacked', 
+  {
+    value: '1x2',
+    label: t('layouts.stacked'),
     icon: Rows,
-    description: '2 streams vertical',
+    description: t('layouts.stackedDescription'),
     grid: [[1], [2]]
   },
-  { 
-    value: '2x2', 
-    label: '2×2 Grid', 
+  {
+    value: '2x2',
+    label: t('layouts.grid2x2'),
     icon: Grid2x2,
-    description: '4 streams',
+    description: t('layouts.grid2x2Description'),
     grid: [[1, 2], [3, 4]]
   },
-  { 
-    value: '3x3', 
-    label: '3×3 Grid', 
+  {
+    value: '3x3',
+    label: t('layouts.grid3x3'),
     icon: Grid3x3,
-    description: '9 streams',
+    description: t('layouts.grid3x3Description'),
     grid: [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
   },
-  { 
-    value: '4x4', 
-    label: '4×4 Grid', 
+  {
+    value: '4x4',
+    label: t('layouts.grid4x4'),
     icon: LayoutGrid,
-    description: '16 streams',
+    description: t('layouts.grid4x4Description'),
     grid: [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
   },
-  { 
-    value: 'mosaic', 
-    label: 'Mosaic', 
+  {
+    value: 'mosaic',
+    label: t('layouts.mosaicLayout'),
     icon: Layers3,
-    description: 'Adaptive grid',
+    description: t('layouts.mosaicDescription'),
     grid: [[1, 2], [3, 4]]
   },
-  { 
-    value: 'focus', 
-    label: 'Focus Mode', 
+  {
+    value: 'focus',
+    label: t('layouts.focusMode'),
     icon: Focus,
-    description: '1 main + thumbnails',
+    description: t('layouts.focusDescription'),
     grid: [[1, 1, 2], [1, 1, 3], [1, 1, 4]]
   },
-  { 
-    value: 'pip', 
-    label: 'Picture-in-Picture', 
+  {
+    value: 'pip',
+    label: t('layouts.pip'),
     icon: PictureInPicture2,
-    description: '1 main + floating',
+    description: t('layouts.pipDescription'),
     grid: [[1, 1, 1], [1, 1, 1], [1, 1, 2]]
   }
 ] as const
 
 export default function LayoutSelector() {
   const { gridLayout, setGridLayout, streams } = useStreamStore()
-  
+  const { t } = useTranslation()
+  const layoutOptions = getLayoutOptions(t)
+
   return (
     <TooltipProvider>
       <div className="flex items-center gap-1 p-1 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl">

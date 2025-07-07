@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -19,6 +20,7 @@ import {
 import { useTwitchAutosuggest } from '@/hooks/useTwitchAutosuggest'
 import { useStreamStore } from '@/store/streamStore'
 import { useSubscription } from '@/hooks/useSubscription'
+import { useTranslation } from '@/contexts/LanguageContext'
 import { cn } from '@/lib/utils'
 
 interface EnhancedAddStreamDialogProps {
@@ -33,6 +35,9 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
   const inputRef = useRef<HTMLInputElement>(null)
   const { addStream, setGridLayout } = useStreamStore()
   const { subscription } = useSubscription()
+  const { t } = useTranslation()
+  
+
   
   const { suggestions, loading } = useTwitchAutosuggest(channelInput, {
     enabled: open && channelInput.length > 0
@@ -156,7 +161,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Add Streams</DialogTitle>
+          <DialogTitle>{t('streams.addStream')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4">
@@ -174,8 +179,8 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
                 <>
                   <TrendingUp className="w-6 h-6 text-primary" />
                   <div className="text-center">
-                    <div className="font-semibold">Top Lives</div>
-                    <div className="text-xs text-muted-foreground">Add top 4 live streams</div>
+                    <div className="font-semibold">{t('streams.popularStreams')}</div>
+                    <div className="text-xs text-muted-foreground">{t('discovery.addTopStreams')}</div>
                   </div>
                 </>
               )}
@@ -193,8 +198,8 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
                 <>
                   <Shuffle className="w-6 h-6 text-primary" />
                   <div className="text-center">
-                    <div className="font-semibold">Random Streamers</div>
-                    <div className="text-xs text-muted-foreground">Discover 4 random streams</div>
+                    <div className="font-semibold">{t('discovery.randomStreamers')}</div>
+                    <div className="text-xs text-muted-foreground">{t('discovery.discoverRandomStreams')}</div>
                   </div>
                 </>
               )}
@@ -203,7 +208,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
           
           <div className="relative">
             <div className="text-sm text-center text-muted-foreground mb-2">
-              or search for specific streams
+              {t('streams.searchPlaceholder')}
             </div>
           </div>
 
@@ -222,7 +227,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
                 value={channelInput}
                 onChange={(e) => setChannelInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Enter channel name or URL"
+                placeholder={t('streams.enterStreamUrl')}
                 className="pl-10"
                 disabled={isAddingBulk}
               />
@@ -268,11 +273,11 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
 
           {/* Help Text */}
           <div className="text-xs text-muted-foreground space-y-1">
-            <p>Supported formats:</p>
+            <p>{t('streams.supportedFormats')}:</p>
             <ul className="list-disc list-inside space-y-0.5 ml-2">
-              <li>Twitch: username or twitch.tv/username</li>
-              <li>YouTube: youtube.com/watch?v=VIDEO_ID</li>
-              <li>Rumble: rumble.com/v1234-title.html</li>
+              <li>{t('streams.formats.twitch')}</li>
+              <li>{t('streams.formats.youtube')}</li>
+              <li>{t('streams.formats.rumble')}</li>
             </ul>
           </div>
         </div>

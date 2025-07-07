@@ -11,6 +11,7 @@ import ResizableStreamGrid from './ResizableStreamGrid'
 import { injectSponsoredStream, getUserStreamCount } from '@/lib/sponsoredStreams'
 import StreamSkeleton, { StreamGridSkeleton } from './StreamSkeleton'
 import { muteManager } from '@/lib/muteManager'
+import { useTranslation } from '@/contexts/LanguageContext'
 import type { GridLayout } from '@/types/stream'
 import '@/styles/mobile-stream-grid.css'
 import '@/styles/layout-modes.css'
@@ -155,6 +156,7 @@ const emptyStateVariants = {
 
 const StreamGrid: React.FC = React.memo(() => {
   const { streams, gridLayout, primaryStreamId, setActiveStream, setPrimaryStream } = useStreamStore()
+  const { t } = useTranslation()
   const [currentMobileIndex, setCurrentMobileIndex] = useState(0)
   const [pipPosition] = useState('top-right')
   
@@ -231,8 +233,8 @@ const StreamGrid: React.FC = React.memo(() => {
       return (
         <div className="flex items-center justify-center h-full">
           <div className="text-center p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50">
-            <h2 className="text-2xl font-semibold mb-2">Focus Mode</h2>
-            <p className="text-muted-foreground">Add streams to use focus mode</p>
+            <h2 className="text-2xl font-semibold mb-2">{t('layouts.focusMode')}</h2>
+            <p className="text-muted-foreground">{t('streams.addFirstStream')}</p>
           </div>
         </div>
       )
@@ -319,8 +321,8 @@ const StreamGrid: React.FC = React.memo(() => {
       return (
         <div className="flex items-center justify-center h-full">
           <div className="text-center p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50">
-            <h2 className="text-2xl font-semibold mb-2">Picture-in-Picture Mode</h2>
-            <p className="text-muted-foreground">Add streams to use PiP mode</p>
+            <h2 className="text-2xl font-semibold mb-2">{t('layouts.pip')}</h2>
+            <p className="text-muted-foreground">{t('streams.addFirstStream')}</p>
           </div>
         </div>
       )
@@ -556,7 +558,7 @@ const StreamGrid: React.FC = React.memo(() => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
-            No streams added
+{t('header.noStreamsActive')}
           </motion.h2>
           <motion.p 
             className="text-muted-foreground"
@@ -564,7 +566,7 @@ const StreamGrid: React.FC = React.memo(() => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.5 }}
           >
-            Add a stream to start watching
+{t('streams.addFirstStream')}
           </motion.p>
         </motion.div>
       </motion.div>

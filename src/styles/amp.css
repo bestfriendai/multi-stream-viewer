@@ -142,7 +142,8 @@
 
 /* Show controls on hover and touch devices */
 @media (hover: hover) {
-  .amp-stream-container .group:hover .opacity-0 {
+  .amp-stream-container .group:hover .opacity-0,
+  .stream-grid .group:hover .opacity-0 {
     opacity: 1 !important;
   }
 }
@@ -155,7 +156,8 @@
 }
 
 /* Ensure mute button is always accessible */
-.amp-stream-container button {
+.amp-stream-container button,
+.stream-grid button {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   min-width: 44px;
@@ -167,17 +169,21 @@
 
 /* Make mute controls more visible on mobile */
 @media (max-width: 767px) {
-  .amp-stream-container .group .opacity-0 {
+  .amp-stream-container .group .opacity-0,
+  .stream-grid .group .opacity-0 {
     opacity: 0.7 !important;
   }
-  
+
   .amp-stream-container .group:hover .opacity-0,
-  .amp-stream-container .group:active .opacity-0 {
+  .amp-stream-container .group:active .opacity-0,
+  .stream-grid .group:hover .opacity-0,
+  .stream-grid .group:active .opacity-0 {
     opacity: 1 !important;
   }
   
   /* Larger touch targets on mobile */
-  .amp-stream-container button {
+  .amp-stream-container button,
+  .stream-grid button {
     padding: 12px;
   }
 }

@@ -5,12 +5,15 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import Footer from "@/components/Footer"
+
 import CookieConsent from "@/components/CookieConsent";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { SupabaseProvider } from "@/contexts/SupabaseContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import AutoSyncInitializer from "@/components/AutoSyncInitializer";
+import Footer from "@/components/Footer";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +31,9 @@ export const viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: 'cover',
+  // Additional Safari-specific settings
+  minimumScale: 1,
+  shrinkToFit: false,
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#6366f1" },
     { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" }
@@ -36,96 +42,7 @@ export const viewport = {
 
 export const metadata: Metadata = {
   title: "Streamyyy - Watch Multiple Streams at Once",
-  description: "Streamyyy is a free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously. Never miss a moment from your favorite creators. Watch multiple live streams at once and stay connected to all the action across platforms.",
-  metadataBase: new URL("https://streamyyy.com"),
-  alternates: {
-    canonical: "https://streamyyy.com",
-  },
-  manifest: "/manifest.json",
-  keywords: [
-    "streamyyy",
-    "streamy",
-    "streamyy",
-    "streamy app",
-    "streamy viewer",
-    "streamy watch",
-    "streamy streams",
-    "multitwitch",
-    "multi twitch",
-    "multitwitch.tv",
-    "multistre.am",
-    "multistream",
-    "watch multiple streams",
-    "multi stream viewer",
-    "watch multiple twitch streams",
-    "twitch multistream",
-    "youtube multistream",
-    "watch multiple streams at once",
-    "multi twitch viewer",
-    "multiple stream viewer",
-    "twitch squad stream",
-    "watch 4 streams at once",
-    "watch 8 streams at once",
-    "watch 16 streams at once",
-    "twitchtheater",
-    "twitch theater",
-    "multiwatch",
-    "teamstream",
-    "best multitwitch alternative",
-    "free multistream viewer",
-    "stream aggregator",
-    "live stream viewer",
-    "multi stream platform"
-  ],
-  authors: [{ name: "Streamyyy.com Team" }],
-  creator: "Streamyyy.com",
-  publisher: "Streamyyy.com",
-  applicationName: "Streamyyy Multi-Stream Viewer",
-  category: "entertainment",
-  openGraph: {
-    title: "Streamyyy - Watch Multiple Streams at Once",
-    description: "Streamyyy is a free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously. Never miss a moment from your favorite creators.",
-    url: "https://streamyyy.com",
-    siteName: "Streamyyy - Multi-Stream Viewer",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Streamyyy - Watch Multiple Streams at Once",
-        type: "image/png",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Streamyyy - Watch Multiple Streams at Once",
-    description: "Streamyyy is a free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously. Never miss a moment from your favorite creators.",
-    images: ["/twitter-card.png"],
-    creator: "@streamyyy",
-    site: "@streamyyy",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
-      index: true,
-      follow: true,
-      noimageindex: false,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  verification: {
-    google: "t7cKO1xHr9vSs0d_2wQzNjKxL8fM5pB3rX6yE4uVhWs",
-    other: {
-      'msvalidate.01': 'E4A5F0A21F7B8C9D3E6F2A8B5C7D9E1F4A6B8C2D5E3F',
-    },
-  },
+  description: "Streamyyy is a free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously.",
 };
 
 export default function RootLayout({
@@ -276,21 +193,23 @@ export default function RootLayout({
       >
         <ClerkProvider>
           <SupabaseProvider>
-            <AutoSyncInitializer />
-            <GoogleAnalytics />
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <div className="flex flex-col min-h-screen">
-                {children}
-                <Footer />
-              </div>
-              <Toaster />
-              <CookieConsent />
-            </ThemeProvider>
+            <LanguageProvider>
+              <AutoSyncInitializer />
+              <GoogleAnalytics />
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <div className="flex flex-col min-h-screen">
+                  {children}
+                  <Footer />
+                </div>
+                <Toaster />
+                <CookieConsent />
+              </ThemeProvider>
+            </LanguageProvider>
           </SupabaseProvider>
         </ClerkProvider>
       </body>

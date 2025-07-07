@@ -51,7 +51,54 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
   
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollY } = useScroll()
-  
+
+  // Detect mobile device
+  const isMobileDevice = () => {
+    if (typeof window === 'undefined') return false
+    return window.innerWidth < 768
+  }
+
+  // Prevent Safari mobile refresh
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+    const isMobile = window.innerWidth < 768
+
+    if (isSafari && isMobile) {
+      let startY = 0
+
+      const handleTouchStart = (e: TouchEvent) => {
+        if (e.touches && e.touches[0]) {
+          startY = e.touches[0].clientY
+        }
+      }
+
+      const handleTouchMove = (e: TouchEvent) => {
+        if (!e.touches || !e.touches[0]) return
+
+        const currentY = e.touches[0].clientY
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+
+        // Prevent pull-to-refresh when at top of page and pulling down
+        if (scrollTop <= 0 && currentY > startY) {
+          e.preventDefault()
+        }
+      }
+
+      document.addEventListener('touchstart', handleTouchStart, { passive: false })
+      document.addEventListener('touchmove', handleTouchMove, { passive: false })
+
+      return () => {
+        document.removeEventListener('touchstart', handleTouchStart)
+        document.removeEventListener('touchmove', handleTouchMove)
+      }
+    }
+
+    // Return undefined for non-Safari or non-mobile cases
+    return undefined
+  }, [])
+
   // Detect orientation changes
   useEffect(() => {
     const handleOrientationChange = () => {
@@ -107,9 +154,9 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
     trackFeatureUsage(`mobile_view_mode_${mode}`)
   }, [trackFeatureUsage])
 
-  // Mobile Stack Layout Component
-  const MobileStackLayout = () => (
-    <div className="space-y-4 p-4">
+  // Desktop Stack Layout Component - Full width square videos
+  const DesktopStackLayout = () => (
+    <div className="space-y-6 p-6 h-full overflow-y-auto">
       {streams.map((stream, index) => (
         <motion.div
           key={stream.id}
@@ -117,61 +164,57 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
           className={cn(
-            "relative bg-card rounded-xl overflow-hidden border border-border/50",
-            "touch-target shadow-sm hover:shadow-md transition-shadow stream-card"
+            "relative bg-card overflow-hidden rounded-lg border border-border/50",
+            "stream-card w-full"
           )}
           style={{
-            aspectRatio: '16/9',
-            minHeight: '180px',
-            maxHeight: '220px',
-            height: 'auto'
+            aspectRatio: '1/1', // Square aspect ratio
+            width: '100%', // Full width of container
+            height: 'auto',
+            minHeight: '70vh', // Larger minimum height
+            maxHeight: '90vh' // Larger maximum height
           }}
         >
           <div className="w-full h-full">
             <StreamEmbedOptimized stream={stream} />
           </div>
-          
-          {/* Stream overlay info */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-            <div className="text-white">
-              <div className="font-medium truncate">{stream.channelName}</div>
-              <div className="text-sm opacity-80">{stream.platform}</div>
-            </div>
+
+          {/* Stream info overlay */}
+          <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-sm rounded-lg px-3 py-2 text-white text-sm z-10">
+            <div className="font-medium">{stream.channelName}</div>
+            <div className="text-xs opacity-80 capitalize">{stream.platform}</div>
           </div>
-          
-          {/* Quick actions */}
-          <div className="absolute top-2 right-2 flex gap-1">
-            <Button
-              size="sm"
-              variant="secondary"
-              className="h-8 w-8 p-0 bg-black/50 hover:bg-black/70 text-white border-0"
-              onClick={(e) => {
-                e.stopPropagation()
-                toggleStreamMute(stream.id)
-              }}
-            >
-              {muteManager.getMuteState(stream.id) ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-            </Button>
-            <Button
-              size="sm"
-              variant="secondary"
-              className="h-8 w-8 p-0 bg-black/50 hover:bg-black/70 text-white border-0"
-              onClick={(e) => {
-                e.stopPropagation()
-                setCurrentStreamIndex(index)
-                setViewMode('focus')
-              }}
-            >
-              <Maximize2 className="h-4 w-4" />
-            </Button>
-            <Button
-              size="sm"
-              variant="secondary"
-              className="h-8 w-8 p-0 bg-black/50 hover:bg-black/70 text-white border-0"
-            >
-              <Share2 className="h-4 w-4" />
-            </Button>
+        </motion.div>
+      ))}
+    </div>
+  )
+
+  // Mobile Stack Layout Component
+  const MobileStackLayout = () => (
+    <div className="space-y-0">
+      {streams.map((stream, index) => (
+        <motion.div
+          key={stream.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+          className={cn(
+            "relative bg-card overflow-hidden",
+            "touch-target stream-card w-full"
+          )}
+          style={{
+            aspectRatio: '16/9',
+            minHeight: '200px',
+            maxHeight: '300px',
+            height: 'auto',
+            width: '100vw'
+          }}
+        >
+          <div className="w-full h-full">
+            <StreamEmbedOptimized stream={stream} />
           </div>
+
+          {/* StreamEmbedOptimized already has its own controls and channel info, no need to duplicate */}
         </motion.div>
       ))}
     </div>
@@ -208,26 +251,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
             <StreamEmbedOptimized stream={stream} />
           </div>
 
-          {/* Mute button */}
-          <div className="absolute top-2 right-2">
-            <Button
-              size="sm"
-              variant="secondary"
-              className="h-8 w-8 p-0 bg-black/50 hover:bg-black/70 text-white border-0"
-              onClick={(e) => {
-                e.stopPropagation()
-                toggleStreamMute(stream.id)
-              }}
-            >
-              {muteManager.getMuteState(stream.id) ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-            </Button>
-          </div>
-
-          <div className="absolute bottom-1 left-1 right-1">
-            <div className="bg-black/70 text-white text-xs p-1 rounded">
-              <div className="truncate">{stream.channelName}</div>
-            </div>
-          </div>
+          {/* StreamEmbedOptimized already has its own controls, no need to add more */}
         </motion.div>
       ))}
     </div>
@@ -480,7 +504,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <MobileStackLayout />
+            {isMobileDevice() ? <MobileStackLayout /> : <DesktopStackLayout />}
           </motion.div>
         )}
         

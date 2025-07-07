@@ -80,7 +80,7 @@ export const useStreamStore = create<StreamStore>()(
           // Initial state
           streams: [],
           activeStreamId: null,
-          gridLayout: '2x2' as GridLayout,
+          gridLayout: 'grid-2x2' as GridLayout,
           primaryStreamId: null,
           isLoading: false,
           error: null,
@@ -165,15 +165,17 @@ export const useStreamStore = create<StreamStore>()(
               setTimeout(() => {
                 const { streams } = get()
                 const userStreams = filterSponsoredStreams([...streams])
-                
+
                 // Only proceed if this is the first stream or all streams are muted
                 const allMuted = userStreams.every(s => muteManager.getMuteState(s.id))
-                if (userStreams.length > 0 && allMuted) {
-                  // For now, unmute the first stream added if all are muted
-                  // In the future, this will be based on viewer count when that data is available
-                  muteManager.toggleMute(userStreams[0]!.id)
+                if (userStreams.length === 1 && allMuted) {
+                  // Only auto-unmute if this is the very first stream
+                  muteManager.setOnlyUnmuted(userStreams[0]!.id)
+                } else if (userStreams.length > 1) {
+                  // Ensure only one stream is unmuted when multiple streams exist
+                  muteManager.enforceOnlyOneUnmuted()
                 }
-              }, 100)
+              }, 200) // Increased delay to ensure player registration
               
               // Track analytics
               trackEvent({

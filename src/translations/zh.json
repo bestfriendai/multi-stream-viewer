@@ -1,0 +1,300 @@
+{
+  "header": {
+    "addStream": "添加直播",
+    "discover": "发现",
+    "chat": "聊天",
+    "pricing": "价格",
+    "signIn": "登录",
+    "signUp": "注册",
+    "menu": "菜单",
+    "activeStreams": "活跃直播",
+    "clear": "清除",
+    "clearAllStreams": "清除所有直播",
+    "noStreamsActive": "没有活跃的直播",
+    "streamCount": "{{count}}个直播",
+    "removeStream": "移除直播",
+    "muteStream": "静音直播",
+    "unmuteStream": "取消静音",
+    "fullscreen": "全屏",
+    "settings": "设置"
+  },
+  "navigation": {
+    "signIn": "登录",
+    "signUp": "注册",
+    "pricing": "价格",
+    "home": "首页",
+    "about": "关于",
+    "contact": "联系",
+    "privacy": "隐私",
+    "terms": "条款"
+  },
+  "common": {
+    "clear": "清除",
+    "cancel": "取消",
+    "back": "返回",
+    "contact": "联系我们",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "close": "关闭",
+    "open": "打开",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "warning": "警告",
+    "info": "信息",
+    "yes": "是",
+    "no": "否",
+    "ok": "确定",
+    "apply": "应用",
+    "reset": "重置",
+    "search": "搜索",
+    "filter": "筛选",
+    "sort": "排序",
+    "view": "查看",
+    "share": "分享",
+    "copy": "复制",
+    "paste": "粘贴",
+    "cut": "剪切",
+    "undo": "撤销",
+    "redo": "重做"
+  },
+  "landing": {
+    "heroTitle": "同时观看多个直播流",
+    "heroSubtitle": "适用于Twitch、YouTube等平台的终极多流观看器。使用可自定义布局同时观看多达16个直播流。",
+    "startWatchingNow": "立即开始观看",
+    "signUpFree": "免费注册",
+    "noCreditCard": "无需信用卡",
+    "features": {
+      "multiPlatform": {
+        "title": "多平台支持",
+        "description": "支持Twitch、YouTube、Kick等多个平台"
+      },
+      "customLayouts": {
+        "title": "自定义布局",
+        "description": "可自定义的网格布局和画中画模式"
+      },
+      "realTime": {
+        "title": "实时同步",
+        "description": "实时聊天集成的同步观看"
+      },
+      "freeToUse": {
+        "title": "免费使用",
+        "description": "基本功能免费提供，高级用户可使用付费功能"
+      }
+    },
+    "stats": {
+      "streamsWatched": "观看的直播",
+      "activeUsers": "活跃用户",
+      "basicAccess": "基础访问",
+      "maxStreams": "最大直播数"
+    },
+    "testimonials": {
+      "title": "用户评价",
+      "subtitle": "加入数千名喜爱Streamyyy的用户"
+    }
+  },
+  "layouts": {
+    "single": "单个",
+    "stacked": "堆叠",
+    "grid2x2": "2x2网格",
+    "grid3x3": "3x3网格",
+    "grid4x4": "4x4网格",
+    "stackedLayout": "堆叠布局",
+    "mosaicLayout": "马赛克布局",
+    "focusMode": "专注模式",
+    "pip": "画中画",
+    "customLayout": "自定义布局",
+    "layoutSelector": "布局选择器",
+    "selectLayout": "选择布局",
+    "currentLayout": "当前布局",
+    "changeLayout": "更改布局"
+  },
+  "streams": {
+    "addStream": "添加直播",
+    "popularStreams": "热门直播",
+    "searchPlaceholder": "搜索主播或输入直播URL",
+    "enterStreamUrl": "输入主播名称或URL",
+    "noStreamsFound": "未找到直播",
+    "loadingStreams": "加载直播中...",
+    "streamOffline": "直播已离线",
+    "streamError": "加载直播时出错",
+    "addFirstStream": "添加您的第一个直播开始使用",
+    "maxStreamsReached": "已达到最大直播数量",
+    "duplicateStream": "直播已添加",
+    "invalidUrl": "无效的直播URL",
+    "platformNotSupported": "不支持的平台",
+    "categories": {
+      "gaming": "游戏",
+      "justChatting": "聊天",
+      "music": "音乐",
+      "creative": "创意",
+      "sports": "体育",
+      "talk": "脱口秀"
+    }
+  },
+  "footer": {
+    "freeMultiStreamViewer": "免费的多流观看器，用于同时观看多个Twitch直播、YouTube直播等。",
+    "termsOfService": "服务条款",
+    "privacyPolicy": "隐私政策",
+    "cookiePolicy": "Cookie政策",
+    "dmcaPolicy": "DMCA政策",
+    "compliance": "合规性",
+    "accessibility": "无障碍访问",
+    "aboutUs": "关于我们",
+    "contactUs": "联系我们",
+    "blog": "博客",
+    "advertise": "广告",
+    "allRightsReserved": "版权所有。",
+    "madeWithLove": "为直播社区用❤️制作",
+    "gdprCompliant": "符合GDPR、CCPA和PIPEDA • 我们尊重您的隐私",
+    "socialMedia": {
+      "followUs": "在社交媒体上关注我们",
+      "github": "GitHub",
+      "twitter": "Twitter",
+      "discord": "Discord"
+    },
+    "legal": {
+      "title": "法律",
+      "terms": "条款",
+      "privacy": "隐私",
+      "cookies": "Cookie",
+      "dmca": "DMCA"
+    },
+    "company": {
+      "title": "公司",
+      "about": "关于",
+      "contact": "联系",
+      "blog": "博客",
+      "advertise": "广告"
+    }
+  },
+  "about": {
+    "title": "关于Streamyyy",
+    "subtitle": "终极多流观看体验",
+    "description": "Streamyyy是一款顶级的多流观看器，让您可以同时观看多个直播流。无论您是在关注电竞比赛、跟上您最喜欢的主播，还是监控多个频道，我们都能为您提供支持。",
+    "features": {
+      "multiStream": {
+        "title": "多流观看",
+        "problem": "观看多个直播意味着要在多个标签页和窗口之间切换，容易错过重要时刻。",
+        "solution": "我们的统一界面让您可以使用可自定义的布局同时观看多达16个直播流。"
+      },
+      "customLayouts": {
+        "title": "自定义布局",
+        "problem": "在观看偏好方面，一种尺寸并不适合所有人。",
+        "solution": "从网格布局、画中画、专注模式等中选择，以适应您的观看风格。"
+      },
+      "realTimeSync": {
+        "title": "实时同步",
+        "problem": "直播流可能不同步，使协调观看变得困难。",
+        "solution": "我们的技术确保所有直播流保持同步，提供最佳的观看体验。"
+      }
+    },
+    "cta": {
+      "title": "准备开始了吗？",
+      "subtitle": "加入已经在使用Streamyyy的数千名用户",
+      "button": "立即开始观看"
+    }
+  },
+  "pricing": {
+    "title": "选择您的计划",
+    "subtitle": "免费开始，需要更多功能时升级",
+    "free": {
+      "title": "免费",
+      "price": "¥0",
+      "period": "永久",
+      "features": [
+        "最多4个直播",
+        "基础布局",
+        "标准画质",
+        "社区支持"
+      ],
+      "button": "开始使用"
+    },
+    "pro": {
+      "title": "专业版",
+      "price": "¥68",
+      "period": "每月",
+      "features": [
+        "最多9个直播",
+        "所有布局选项",
+        "高清画质",
+        "优先支持",
+        "自定义主题"
+      ],
+      "button": "升级到专业版"
+    },
+    "premium": {
+      "title": "高级版",
+      "price": "¥138",
+      "period": "每月",
+      "features": [
+        "最多16个直播",
+        "所有功能",
+        "4K画质",
+        "24/7支持",
+        "高级分析",
+        "API访问"
+      ],
+      "button": "升级到高级版"
+    }
+  },
+  "errors": {
+    "generic": "出现了问题。请重试。",
+    "network": "网络错误。请检查您的连接。",
+    "notFound": "页面未找到。",
+    "unauthorized": "您需要登录才能访问此功能。",
+    "forbidden": "您没有权限访问此资源。",
+    "serverError": "服务器错误。请稍后重试。",
+    "streamNotFound": "未找到直播或已离线。",
+    "invalidInput": "请输入有效的内容。",
+    "rateLimited": "请求过多。请稍等片刻。"
+  },
+  "notifications": {
+    "streamAdded": "直播添加成功",
+    "streamRemoved": "直播已移除",
+    "layoutChanged": "布局已更改",
+    "settingsSaved": "设置已保存",
+    "languageChanged": "语言已更改为{{language}}",
+    "copySuccess": "已复制到剪贴板",
+    "shareSuccess": "分享链接已复制"
+  },
+  "discovery": {
+    "title": "发现直播",
+    "subtitle": "寻找新的直播观看",
+    "searchPlaceholder": "搜索主播...",
+    "categories": "分类",
+    "topStreams": "热门直播",
+    "liveNow": "正在直播",
+    "viewers": "{{count}}观众",
+    "noResults": "未找到直播",
+    "loadMore": "加载更多",
+    "refresh": "刷新",
+    "addToGrid": "添加到网格",
+    "watchNow": "立即观看",
+    "following": "关注中",
+    "recommended": "推荐",
+    "trending": "热门",
+    "addTopStreams": "添加前4个热门直播",
+    "randomStreamers": "随机主播",
+    "discoverRandomStreams": "发现4个随机直播"
+  },
+  "chat": {
+    "title": "聊天",
+    "placeholder": "输入消息...",
+    "send": "发送",
+    "connecting": "连接聊天中...",
+    "connected": "已连接",
+    "disconnected": "已断开",
+    "reconnecting": "重新连接中...",
+    "error": "聊天错误",
+    "emotes": "表情",
+    "settings": "聊天设置",
+    "fontSize": "字体大小",
+    "showTimestamps": "显示时间戳",
+    "showBadges": "显示徽章",
+    "hideCommands": "隐藏命令",
+    "show": "显示聊天",
+    "hide": "隐藏聊天"
+  }
+}

@@ -1,6 +1,10 @@
 'use client'
 
+// Force dynamic rendering for this protected route
+export const dynamic = 'force-dynamic';
+
 import { useState } from 'react'
+import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -53,12 +57,25 @@ const layouts = [
 ]
 
 export default function LayoutsPage() {
+  const { isLoaded, isSignedIn } = useUser()
   const { setGridLayout, gridLayout, streams } = useStreamStore()
   const [selectedLayout, setSelectedLayout] = useState(gridLayout)
 
   const handleLayoutSelect = (layoutId: string) => {
     setSelectedLayout(layoutId as any)
     setGridLayout(layoutId as any)
+  }
+
+  // Show loading state while authentication is being determined
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -69,6 +86,11 @@ export default function LayoutsPage() {
           <p className="text-xl text-muted-foreground">
             Choose the perfect layout for your multi-stream viewing experience
           </p>
+          {isSignedIn && (
+            <p className="text-sm text-muted-foreground mt-2">
+              Welcome back! Your layout preferences are automatically saved.
+            </p>
+          )}
         </div>
 
         <div className="mb-6">

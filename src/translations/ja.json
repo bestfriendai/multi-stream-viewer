@@ -1,0 +1,848 @@
+{
+  "header": {
+    "addStream": "ストリーム追加",
+    "discover": "発見",
+    "chat": "チャット",
+    "pricing": "料金",
+    "signIn": "ログイン",
+    "signUp": "登録",
+    "menu": "メニュー",
+    "activeStreams": "アクティブストリーム",
+    "clear": "クリア",
+    "clearAllStreams": "全ストリームをクリア",
+    "noStreamsActive": "アクティブなストリームがありません",
+    "streamCount": "{{count}}ストリーム",
+    "removeStream": "ストリームを削除",
+    "muteStream": "ストリームをミュート",
+    "unmuteStream": "ミュート解除",
+    "fullscreen": "フルスクリーン",
+    "settings": "設定"
+  },
+  "navigation": {
+    "signIn": "ログイン",
+    "signUp": "登録",
+    "pricing": "料金",
+    "home": "ホーム",
+    "about": "について",
+    "contact": "お問い合わせ",
+    "privacy": "プライバシー",
+    "terms": "利用規約"
+  },
+  "common": {
+    "clear": "クリア",
+    "cancel": "キャンセル",
+    "back": "戻る",
+    "contact": "お問い合わせ",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "close": "閉じる",
+    "open": "開く",
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "warning": "警告",
+    "info": "情報",
+    "yes": "はい",
+    "no": "いいえ",
+    "ok": "OK",
+    "apply": "適用",
+    "reset": "リセット",
+    "search": "検索",
+    "filter": "フィルター",
+    "sort": "並び替え",
+    "view": "表示",
+    "share": "共有",
+    "copy": "コピー",
+    "paste": "貼り付け",
+    "cut": "切り取り",
+    "undo": "元に戻す",
+    "redo": "やり直し",
+    "confirmRemoveAllStreams": "すべてのストリームを削除してもよろしいですか？この操作は元に戻せません。",
+    "clearAll": "すべてクリア"
+  },
+  "landing": {
+    "heroTitle": "複数のライブストリームを同時に視聴",
+    "heroSubtitle": "Twitch、YouTube、その他のプラットフォーム向けの究極のマルチストリームビューア。カスタマイズ可能なレイアウトで最大16のストリームを同時に視聴できます。",
+    "startWatchingNow": "今すぐ視聴開始",
+    "signUpFree": "無料登録",
+    "noCreditCard": "クレジットカード不要",
+    "trustIndicators": {
+      "alwaysOnline": "常時オンライン",
+      "securePrivate": "安全・プライベート",
+      "fastStreaming": "高速ストリーミング"
+    },
+    "demo": {
+      "liveDemo": "ライブデモ",
+      "watchLiveNow": "今すぐライブ視聴",
+      "loadingChannels": "ライブチャンネル読み込み中...",
+      "realStreamers": "リアルなストリーマー、リアルなゲームプレイ、リアルなエンターテイメント - すべて完璧に同期",
+      "showingLiveStreams": "実際のライブストリーム表示中 - 『今すぐ視聴開始』をクリックしてお試しください！",
+      "loadingStreams": "ライブストリーム読み込み中...",
+      "layoutsAdjust": "レイアウトはストリーム数に応じて自動調整されます"
+    },
+    "quickStart": {
+      "badge": "クイックスタート",
+      "findStreamers": {
+        "title": "ストリーマーを見つける",
+        "description": "お気に入りのクリエイターを検索するか、チャンネルリンクを貼り付けてください"
+      },
+      "pickView": {
+        "title": "視聴方法を選択",
+        "description": "グリッド、フォーカス、ピクチャーインピクチャー - お好みの方法で視聴"
+      },
+      "watchChat": {
+        "title": "視聴とチャット",
+        "description": "ライブチャットで複数のストリームのアクションを追跡"
+      }
+    },
+    "pricing": {
+      "badge": "価格"
+    },
+    "benefits": {
+      "title": {
+        "main": "必要なすべてが揃った",
+        "highlight": "マルチストリーム視聴"
+      },
+      "subtitle": "複数のライブストリームを視聴するための完全なソリューション。イベント、エンターテイメント、そしてお気に入りのクリエイターすべてとつながり続けるのに最適です。",
+      "multiStream": {
+        "title": "マルチストリーム表示",
+        "description": "インテリジェントなレイアウト管理で最大16のストリームを同時視聴",
+        "benefit": "プラットフォーム間で起こることを何も見逃さない"
+      },
+      "unifiedChat": {
+        "title": "統合チャット",
+        "description": "すべてのストリームの会話を一つの便利な場所で追跡",
+        "benefit": "すべてのコミュニティとつながり続ける"
+      },
+      "smartLayouts": {
+        "title": "スマートレイアウト",
+        "description": "視聴ニーズに適応するグリッド、フォーカス、ピクチャーインピクチャーモード",
+        "benefit": "あらゆるコンテンツタイプに最適な視聴"
+      },
+      "platformSupport": {
+        "title": "プラットフォーム対応",
+        "description": "Twitch、YouTube、Kick、その他"
+      },
+      "mobileOptimized": {
+        "title": "モバイル最適化",
+        "description": "どのデバイスでも完璧な体験"
+      },
+      "lightningFast": {
+        "title": "高速",
+        "description": "バッファリングなし、瞬間読み込み"
+      }
+    },
+    "useCases": {
+      "badge": "使用例",
+      "title": "最適用途",
+      "subtitle": "何を視聴していても、私たちがサポートします"
+    },
+    "liveStreamers": {
+      "popularStreams": "人気ストリーム",
+      "liveNow": "現在ライブ",
+      "clickToAdd": "任意のストリームをクリックして瞬時に追加"
+    },
+    "finalCta": {
+      "title": {
+        "main": "準備はできましたか？",
+        "highlight": "ストリーミング体験を変革"
+      },
+      "subtitle": "マルチストリーム視聴にアップグレードした数千人に参加しましょう。お気に入りのクリエイター、イベント、ライブコンテンツの瞬間を一つの強力なプラットフォームで見逃すことはありません。",
+      "startButton": "今すぐストリーミング開始",
+      "welcomeBack": "おかえりなさい • すぐに開始",
+      "noSignup": "登録不要 • すぐに開始",
+      "trustElements": {
+        "free": "100%無料",
+        "noDownload": "ダウンロード不要",
+        "worksInstantly": "即座に動作"
+      }
+    },
+    "features": {
+      "multiPlatform": {
+        "title": "マルチプラットフォーム対応",
+        "description": "Twitch、YouTube、Kickなど複数のプラットフォームに対応"
+      },
+      "customLayouts": {
+        "title": "カスタムレイアウト",
+        "description": "カスタマイズ可能なグリッドレイアウトとピクチャーインピクチャーモード"
+      },
+      "realTime": {
+        "title": "リアルタイム同期",
+        "description": "リアルタイムチャット統合による同期視聴"
+      },
+      "freeToUse": {
+        "title": "無料で使用",
+        "description": "基本機能は無料、パワーユーザー向けのプレミアム機能"
+      },
+      "liveSync": "ライブ同期",
+      "unifiedChat": "統合チャット"
+    },
+    "stats": {
+      "streamsWatched": "視聴されたストリーム",
+      "activeUsers": "アクティブユーザー",
+      "basicAccess": "基本アクセス",
+      "maxStreams": "最大ストリーム数"
+    },
+    "testimonials": {
+      "title": "ユーザーの声",
+      "subtitle": "Streamyyyを愛用する数千人のユーザーに参加しよう"
+    },
+    "getStartedInSeconds": "数秒で開始",
+    "getStartedFree": "無料で開始",
+    "quickStart": "クイックスタート"
+  },
+  "layouts": {
+    "single": "シングル",
+    "stacked": "スタック",
+    "grid2x2": "2x2グリッド",
+    "grid3x3": "3x3グリッド",
+    "grid4x4": "4x4グリッド",
+    "stackedLayout": "スタックレイアウト",
+    "mosaicLayout": "モザイクレイアウト",
+    "focusMode": "フォーカスモード",
+    "pip": "ピクチャーインピクチャー",
+    "customLayout": "カスタムレイアウト",
+    "layoutSelector": "レイアウト選択",
+    "selectLayout": "レイアウトを選択",
+    "currentLayout": "現在のレイアウト",
+    "changeLayout": "レイアウト変更",
+    "singleDescription": "1ストリーム",
+    "sideBySide": "並列表示",
+    "sideBySideDescription": "2ストリーム横並び",
+    "stackedDescription": "2ストリーム縦並び",
+    "grid2x2Description": "4ストリーム",
+    "grid3x3Description": "9ストリーム",
+    "grid4x4Description": "16ストリーム",
+    "mosaicDescription": "適応グリッド",
+    "focusDescription": "1メイン+サムネイル",
+    "pipDescription": "1メイン+フローティング"
+  },
+  "streams": {
+    "addStream": "ストリーム追加",
+    "popularStreams": "人気ストリーム",
+    "searchPlaceholder": "ストリーマーを検索またはストリームURLを入力",
+    "enterStreamUrl": "ストリーマー名またはURLを入力",
+    "noStreamsFound": "ストリームが見つかりません",
+    "loadingStreams": "ストリーム読み込み中...",
+    "streamOffline": "ストリームはオフラインです",
+    "streamError": "ストリーム読み込みエラー",
+    "addFirstStream": "最初のストリームを追加して開始",
+    "maxStreamsReached": "最大ストリーム数に達しました",
+    "duplicateStream": "ストリームは既に追加されています",
+    "invalidUrl": "無効なストリームURL",
+    "platformNotSupported": "プラットフォームはサポートされていません",
+    "supportedFormats": "サポート形式",
+    "formats": {
+      "twitch": "Twitch: ユーザー名 または twitch.tv/ユーザー名",
+      "youtube": "YouTube: youtube.com/watch?v=VIDEO_ID",
+      "rumble": "Rumble: rumble.com/v1234-title.html"
+    },
+    "streamNumber": "ストリーム {{number}}",
+    "playing": "{{game}} をプレイ中",
+    "categories": {
+      "gaming": "ゲーム",
+      "justChatting": "雑談",
+      "music": "音楽",
+      "creative": "クリエイティブ",
+      "sports": "スポーツ",
+      "talk": "トークショー"
+    },
+    "setPrimary": "プライマリに設定",
+    "addToFavorites": "お気に入りに追加",
+    "removeFromFavorites": "お気に入りから削除"
+  },
+  "footer": {
+    "freeMultiStreamViewer": "複数のTwitchストリーム、YouTubeストリームなどを同時に視聴するための無料マルチストリームビューア。",
+    "termsOfService": "利用規約",
+    "privacyPolicy": "プライバシーポリシー",
+    "cookiePolicy": "クッキーポリシー",
+    "dmcaPolicy": "DMCAポリシー",
+    "compliance": "コンプライアンス",
+    "accessibility": "アクセシビリティ",
+    "aboutUs": "私たちについて",
+    "contactUs": "お問い合わせ",
+    "blog": "ブログ",
+    "advertise": "広告",
+    "allRightsReserved": "全著作権所有。",
+    "madeWithLove": "ストリーミングコミュニティのために❤️で作られました",
+    "gdprCompliant": "GDPR、CCPA、PIPEDA準拠 • プライバシーを尊重します",
+    "supportedPlatforms": "サポートプラットフォーム",
+    "platforms": {
+      "youtube": "YouTube Live"
+    },
+    "moreComingSoon": "さらに追加予定",
+    "socialMedia": {
+      "followUs": "ソーシャルメディアでフォロー",
+      "github": "GitHub",
+      "twitter": "Twitter",
+      "discord": "Discord"
+    },
+    "legal": {
+      "title": "法的事項",
+      "terms": "利用規約",
+      "privacy": "プライバシー",
+      "cookies": "クッキー",
+      "dmca": "DMCA"
+    },
+    "company": {
+      "title": "会社",
+      "about": "について",
+      "contact": "お問い合わせ",
+      "blog": "ブログ",
+      "advertise": "広告"
+    }
+  },
+  "about": {
+    "title": "Streamyyyについて",
+    "subtitle": "究極のマルチストリーム視聴体験",
+    "description": "Streamyyyは複数のライブストリームを同時に視聴できるプレミアムマルチストリームビューアです。eスポーツトーナメントを追跡したり、お気に入りのストリーマーに追いついたり、複数のチャンネルを監視したりする場合でも、私たちがサポートします。",
+    "hero": {
+      "title": "私たちが解決した",
+      "subtitle": "他の誰も解決しなかった問題",
+      "description": "他者がペイウォールを築いている間、私たちは架け橋を築きました。彼らがあなたを1つのストリームに制限している間、私たちは16個を提供しました。これが私たちの物語です。"
+    },
+    "problems": {
+      "title": "私たちが解決した問題",
+      "theProblem": "問題",
+      "ourSolution": "私たちの解決策",
+      "multiStream": {
+        "title": "マルチストリーム視聴",
+        "problem": "複数のストリームを視聴することは、複数のタブやウィンドウを操作し、重要な瞬間を見逃すことを意味します。",
+        "solution": "統一されたインターフェースにより、カスタマイズ可能なレイアウトで最大16のストリームを同時に視聴できます。"
+      },
+      "multiMonitor": {
+        "title": "マルチモニターの神話",
+        "problem": "複数のストリームを視聴するには4つのモニターと5000ドルのセットアップが必要だと思いますか？それは彼らがあなたに信じさせたいことです。",
+        "solution": "1つの画面、無限の可能性。私たちのスマートレイアウトはあらゆる表示サイズに適応します。ラップトップでのマルチモニターセットアップ？完了です。"
+      },
+      "tournament": {
+        "title": "トーナメント恐怖症",
+        "problem": "eスポーツトーナメントにはメインストリーム、プレイヤーPOV、キャスターストリーム、ウォッチパーティーがあります。あなたはアクションの80%を見逃しています。",
+        "solution": "カスタムトーナメントレイアウト。メイン放送、お気に入りのプレイヤーのPOV、最高の解説をすべて一度に視聴できます。"
+      },
+      "mobile": {
+        "title": "モバイルストリーミング牢獄",
+        "problem": "モバイルユーザーはストリーミング世界の二等市民です。一度に1つのストリーム？2025年に？本当に？",
+        "solution": "ジェスチャーコントロール、スマートレイアウト、バッテリー効率的なストリーミングによる完全なモバイル最適化。ポケットにデスクトップパワー。"
+      },
+      "platform": {
+        "title": "プラットフォーム分離",
+        "problem": "お気に入りのクリエイターはTwitch、YouTube、Kick、Rumbleに散らばっています。各プラットフォームはあなたを自分たちのエコシステムに閉じ込めたがっています。",
+        "solution": "プラットフォーム非依存の視聴。サポートされているプラットフォームを1つのビューで混在させることができます。私たちは好み分けをしません - あなたのコンテンツ、あなたの選択。"
+      },
+      "accessibility": {
+        "title": "アクセシビリティの課題",
+        "problem": "ほとんどのプラットフォームは視聴できるストリーム数を制限しています。プレミアム機能は異なるサービスに散らばっており、コストも様々です。",
+        "solution": "誰でもアクセスできるコアマルチストリーム視聴。強化された体験を求めるパワーユーザー向けのオプションプレミアム機能。"
+      }
+    },
+    "philosophy": {
+      "title": "私たちの哲学",
+      "subtitle": "根本的なシンプルさ",
+      "noAccount": {
+        "title": "アカウントなし？問題なし。",
+        "description": "ストリームを視聴するのになぜアカウントが必要なのですか？不要です。Streamyyyを開いて、ストリームを追加して、視聴してください。それだけです。レイアウトと設定を保存したい人のためのオプションサインアップ。"
+      },
+      "features": {
+        "title": "重要な機能",
+        "description": "できるからという理由で機能を追加することはありません。すべてのピクセル、すべてのボタン、すべてのコード行には一つの目的があります：マルチストリーム視聴をより良くすること。肥大化なし、無駄なし、企業的なたわごとなし。"
+      },
+      "built": {
+        "title": "違った方法で構築",
+        "description": "私たちはVC資金調達を受けていません。出口を追い求めていません。私たちは劣悪なソリューションにうんざりしたストリーム視聴者で、より良いものを構築することにしました。私たちのために。あなたのために。みんなのために。"
+      }
+    },
+    "stats": {
+      "title": "数字は嘘をつきません",
+      "streamsWatched": "視聴されたストリーム",
+      "activeUsers": "アクティブユーザー",
+      "basicAccess": "基本アクセス",
+      "maxStreams": "最大ストリーム数",
+      "free": "無料"
+    },
+    "features": {
+      "multiStream": {
+        "title": "マルチストリーム視聴",
+        "problem": "複数のストリームを視聴することは、複数のタブやウィンドウを操作し、重要な瞬間を見逃すことを意味します。",
+        "solution": "統一されたインターフェースにより、カスタマイズ可能なレイアウトで最大16のストリームを同時に視聴できます。"
+      },
+      "customLayouts": {
+        "title": "カスタムレイアウト",
+        "problem": "視聴の好みに関しては、ワンサイズですべてに対応することはできません。",
+        "solution": "グリッドレイアウト、ピクチャーインピクチャー、フォーカスモードなどから選択して、視聴スタイルに合わせることができます。"
+      },
+      "realTimeSync": {
+        "title": "リアルタイム同期",
+        "problem": "ストリームが同期していない場合があり、協調的な視聴が困難になります。",
+        "solution": "私たちの技術により、最高の視聴体験のためにすべてのストリームが同期されたままになります。"
+      }
+    },
+    "cta": {
+      "title": "始める準備はできましたか？",
+      "subtitle": "既にStreamyyyを使用している数千人のユーザーに参加しよう",
+      "button": "今すぐ視聴開始"
+    }
+  },
+  "pricing": {
+    "title": "プランを選択",
+    "subtitle": "無料で始めて、必要に応じてアップグレード",
+    "trialInfo": "すべてのプランには7日間の無料トライアルが含まれています。いつでもキャンセル可能。契約なし。",
+    "free": {
+      "title": "無料プラン",
+      "price": "¥0",
+      "period": "永続",
+      "description": "始めるのに最適",
+      "features": {
+        "streams": "同時に最大4ストリーム",
+        "layouts": "基本レイアウト（グリッド、フォーカス）",
+        "mobile": "モバイル対応デザイン",
+        "ads": "広告表示"
+      },
+      "button": "開始"
+    },
+    "pro": {
+      "title": "プロプラン",
+      "price": "¥1,200",
+      "period": "月額",
+      "description": "チャットメンバー特典",
+      "badge": "最も人気",
+      "features": {
+        "streams": "同時に最大9ストリーム",
+        "layouts": "PiPを含むすべてのレイアウト",
+        "adFree": "広告なし体験",
+        "customLayouts": "カスタムレイアウト保存",
+        "support": "優先サポート"
+      },
+      "button": "無料トライアル開始"
+    },
+    "premium": {
+      "title": "プレミアムプラン",
+      "price": "¥2,400",
+      "period": "月額",
+      "description": "スーパーチャットメンバー特典",
+      "features": {
+        "streams": "16ストリームすべて同時",
+        "layouts": "高度なカスタムレイアウト",
+        "chat": "全ストリーム統合チャット",
+        "analytics": "ストリーム分析・インサイト",
+        "support": "プレミアムサポート・機能",
+        "earlyAccess": "新機能への早期アクセス"
+      },
+      "button": "無料トライアル開始"
+    }
+  },
+  "errors": {
+    "generic": "何かが間違っています。もう一度お試しください。",
+    "network": "ネットワークエラー。接続を確認してください。",
+    "notFound": "ページが見つかりません。",
+    "unauthorized": "この機能にアクセスするにはサインインが必要です。",
+    "forbidden": "このリソースにアクセスする権限がありません。",
+    "serverError": "サーバーエラー。後でもう一度お試しください。",
+    "streamNotFound": "ストリームが見つからないか、オフラインです。",
+    "invalidInput": "有効な入力を入力してください。",
+    "rateLimited": "リクエストが多すぎます。しばらくお待ちください。",
+    "copyFailed": "クリップボードへのコピーに失敗しました"
+  },
+  "notifications": {
+    "streamAdded": "ストリームが正常に追加されました",
+    "streamRemoved": "ストリームが削除されました",
+    "layoutChanged": "レイアウトが変更されました",
+    "settingsSaved": "設定が保存されました",
+    "languageChanged": "言語が{{language}}に変更されました",
+    "copySuccess": "クリップボードにコピーされました",
+    "shareSuccess": "共有リンクがコピーされました"
+  },
+  "discovery": {
+    "title": "ストリームを発見",
+    "subtitle": "視聴する新しいストリームを見つける",
+    "searchPlaceholder": "ストリーマーを検索...",
+    "categories": "カテゴリー",
+    "topStreams": "トップストリーム",
+    "liveNow": "現在ライブ",
+    "viewers": "{{count}}視聴者",
+    "noResults": "ストリームが見つかりません",
+    "loadMore": "もっと読み込む",
+    "refresh": "更新",
+    "addToGrid": "グリッドに追加",
+    "watchNow": "今すぐ視聴",
+    "following": "フォロー中",
+    "recommended": "おすすめ",
+    "trending": "トレンド",
+    "addTopStreams": "トップ4のライブストリームを追加",
+    "randomStreamers": "ランダムストリーマー",
+    "discoverRandomStreams": "4つのランダムストリームを発見"
+  },
+  "chat": {
+    "title": "チャット",
+    "placeholder": "メッセージを入力...",
+    "send": "送信",
+    "connecting": "チャットに接続中...",
+    "connected": "接続済み",
+    "disconnected": "切断済み",
+    "reconnecting": "再接続中...",
+    "error": "チャットエラー",
+    "emotes": "エモート",
+    "settings": "チャット設定",
+    "fontSize": "フォントサイズ",
+    "showTimestamps": "タイムスタンプを表示",
+    "showBadges": "バッジを表示",
+    "hideCommands": "コマンドを非表示",
+    "show": "チャットを表示",
+    "hide": "チャットを非表示"
+  },
+  "settings": {
+    "title": "設定",
+    "general": "一般",
+    "display": "表示",
+    "audio": "オーディオ",
+    "keyboard": "キーボードショートカット",
+    "privacy": "プライバシー",
+    "account": "アカウント",
+    "theme": "テーマ",
+    "language": "言語",
+    "autoplay": "自動再生",
+    "quality": "デフォルト品質",
+    "volume": "デフォルト音量",
+    "notifications": "通知",
+    "analytics": "分析",
+    "accessibility": "アクセシビリティ",
+    "advanced": "詳細設定",
+    "reset": "デフォルトにリセット",
+    "save": "変更を保存",
+    "cancel": "キャンセル"
+  },
+  "share": {
+    "title": "共有",
+    "subtitle": "ストリーム設定を共有",
+    "copyLink": "リンクをコピー",
+    "shareOnTwitter": "Twitterで共有",
+    "shareOnFacebook": "Facebookで共有",
+    "shareOnReddit": "Redditで共有",
+    "shareOnDiscord": "Discordで共有",
+    "embed": "埋め込み",
+    "qrCode": "QRコード",
+    "linkCopied": "リンクをクリップボードにコピーしました",
+    "checkStreams": "これらのストリームをチェック！",
+    "linkIncludes": "このリンクには以下が含まれています",
+    "streamsCount": "{{count}}ストリーム",
+    "layoutInfo": "{{layout}}レイアウト",
+    "shareViaSystem": "システム経由で共有"
+  },
+  "keyboard": {
+    "title": "キーボードショートカット",
+    "subtitle": "ワークフローを高速化",
+    "addStream": "ストリーム追加",
+    "toggleChat": "チャット切り替え",
+    "toggleFullscreen": "フルスクリーン切り替え",
+    "muteAll": "すべてミュート",
+    "clearAll": "すべてクリア",
+    "nextLayout": "次のレイアウト",
+    "prevLayout": "前のレイアウト",
+    "focusSearch": "検索フォーカス",
+    "openSettings": "設定を開く",
+    "openHelp": "ヘルプを開く"
+  },
+  "help": {
+    "title": "ヘルプ・サポート",
+    "gettingStarted": "はじめに",
+    "addingStreams": "ストリームの追加",
+    "layouts": "レイアウト",
+    "shortcuts": "ショートカット",
+    "troubleshooting": "トラブルシューティング",
+    "contact": "サポートに連絡",
+    "documentation": "ドキュメント",
+    "tutorials": "チュートリアル",
+    "faq": "よくある質問",
+    "community": "コミュニティ"
+  },
+  "auth": {
+    "signIn": "ログイン",
+    "signUp": "登録",
+    "signOut": "ログアウト",
+    "email": "メール",
+    "password": "パスワード",
+    "confirmPassword": "パスワード確認",
+    "forgotPassword": "パスワードを忘れましたか？",
+    "resetPassword": "パスワードリセット",
+    "createAccount": "アカウント作成",
+    "alreadyHaveAccount": "すでにアカウントをお持ちですか？",
+    "dontHaveAccount": "アカウントをお持ちでない場合は？",
+    "signInWith": "ログイン方法",
+    "signUpWith": "登録方法",
+    "google": "Google",
+    "github": "GitHub",
+    "discord": "Discord",
+    "twitch": "Twitch"
+  },
+  "profile": {
+    "title": "プロフィール",
+    "subtitle": "アカウント設定とサブスクリプションの管理",
+    "settings": "プロフィール設定",
+    "avatar": "アバター",
+    "displayName": "表示名",
+    "username": "ユーザー名",
+    "bio": "自己紹介",
+    "location": "場所",
+    "website": "ウェブサイト",
+    "socialLinks": "ソーシャルリンク",
+    "preferences": "設定",
+    "subscription": "サブスクリプション",
+    "billing": "請求",
+    "usage": "使用状況",
+    "activity": "活動",
+    "pleaseSignIn": "プロフィールを表示するにはログインしてください",
+    "somethingWentWrong": "何かが間違っています。もう一度お試しください。"
+  },
+  "subscription": {
+    "title": "サブスクリプション",
+    "current": "現在のプラン",
+    "upgrade": "アップグレード",
+    "downgrade": "ダウングレード",
+    "cancel": "サブスクリプションをキャンセル",
+    "renews": "更新日",
+    "expires": "有効期限",
+    "billing": "請求",
+    "invoices": "請求書",
+    "paymentMethod": "支払い方法",
+    "updatePayment": "支払い方法を更新",
+    "features": "機能",
+    "usage": "使用状況",
+    "limits": "制限",
+    "premium": "プレミアム",
+    "pro": "プロ",
+    "free": "無料"
+  },
+  "dashboard": {
+    "title": "ダッシュボード",
+    "accessRequired": "ダッシュボードアクセスが必要",
+    "pleaseSignIn": "ダッシュボードにアクセスするにはログインしてください。",
+    "welcome": "ようこそ、{{name}}さん！",
+    "user": "ユーザー",
+    "email": "メール",
+    "userId": "ユーザーID",
+    "created": "作成日",
+    "na": "N/A"
+  },
+  "favorites": {
+    "title": "お気に入りストリーム",
+    "savedStreamers": "クイックアクセス用に保存されたストリーマー",
+    "saveStreamers": "お気に入りのストリーマーを保存（デバイス間で同期するにはログイン）",
+    "noFavorites": "お気に入りがありません",
+    "startAdding": "ストリームをお気に入りに追加して、ここに表示させましょう",
+    "browseStreams": "ストリームを閲覧",
+    "addToStream": "ストリームに追加",
+    "added": "追加済み",
+    "backToStreams": "ストリームに戻る"
+  },
+  "mobile": {
+    "menu": "メニュー",
+    "close": "閉じる",
+    "swipeUp": "上にスワイプしてもっと見る",
+    "swipeDown": "下にスワイプして閉じる",
+    "tapToFocus": "タップしてフォーカス",
+    "doubleTapFullscreen": "ダブルタップでフルスクリーン",
+    "pinchToZoom": "ピンチしてズーム",
+    "rotateDevice": "デバイスを回転してより良い視聴",
+    "installApp": "アプリをインストール",
+    "addToHomeScreen": "ホーム画面に追加",
+    "moreOptions": "その他のオプション",
+    "shareTitle": "Streamyyyで{{channel}}を視聴",
+    "shareText": "{{channel}}のストリームをチェック！",
+    "shareStream": "ストリームを共有"
+  },
+  "accessibility": {
+    "title": "アクセシビリティ",
+    "highContrast": "高コントラスト",
+    "largeText": "大きなテキスト",
+    "reducedMotion": "動きを減らす",
+    "screenReader": "スクリーンリーダー対応",
+    "keyboardNavigation": "キーボードナビゲーション",
+    "focusIndicators": "フォーカスインジケーター",
+    "colorBlindness": "色覚異常サポート",
+    "audioDescriptions": "音声説明"
+  },
+  "analytics": {
+    "title": "分析",
+    "overview": "概要",
+    "streams": "ストリーム",
+    "viewers": "視聴者",
+    "engagement": "エンゲージメント",
+    "performance": "パフォーマンス",
+    "reports": "レポート",
+    "export": "データエクスポート",
+    "timeRange": "期間",
+    "today": "今日",
+    "week": "今週",
+    "month": "今月",
+    "year": "今年",
+    "custom": "カスタム期間"
+  },
+  "buttons": {
+    "getStarted": "はじめる",
+    "learnMore": "詳しく見る",
+    "watchNow": "今すぐ視聴",
+    "tryFree": "無料で試す",
+    "upgrade": "アップグレード",
+    "subscribe": "登録",
+    "download": "ダウンロード",
+    "share": "共有",
+    "copy": "コピー",
+    "paste": "貼り付け",
+    "cut": "切り取り",
+    "undo": "元に戻す",
+    "redo": "やり直し",
+    "refresh": "更新",
+    "reload": "再読み込み",
+    "retry": "再試行",
+    "continue": "続行",
+    "finish": "完了",
+    "next": "次へ",
+    "previous": "前へ",
+    "skip": "スキップ",
+    "done": "完了",
+    "submit": "送信",
+    "send": "送信",
+    "create": "作成",
+    "update": "更新",
+    "modify": "変更",
+    "remove": "削除",
+    "add": "追加",
+    "insert": "挿入",
+    "import": "インポート",
+    "export": "エクスポート",
+    "backup": "バックアップ",
+    "restore": "復元",
+    "sync": "同期",
+    "connect": "接続",
+    "disconnect": "切断",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "register": "登録",
+    "verify": "確認",
+    "confirm": "確認",
+    "approve": "承認",
+    "reject": "拒否",
+    "accept": "承諾",
+    "decline": "辞退"
+  },
+  "status": {
+    "online": "オンライン",
+    "offline": "オフライン",
+    "live": "ライブ",
+    "ended": "終了",
+    "starting": "開始中",
+    "loading": "読み込み中",
+    "buffering": "バッファリング中",
+    "connecting": "接続中",
+    "connected": "接続済み",
+    "disconnected": "切断済み",
+    "reconnecting": "再接続中",
+    "failed": "失敗",
+    "success": "成功",
+    "error": "エラー",
+    "warning": "警告",
+    "info": "情報",
+    "pending": "保留中",
+    "processing": "処理中",
+    "completed": "完了",
+    "cancelled": "キャンセル済み",
+    "expired": "期限切れ",
+    "active": "アクティブ",
+    "inactive": "非アクティブ",
+    "enabled": "有効",
+    "disabled": "無効",
+    "available": "利用可能",
+    "unavailable": "利用不可",
+    "ready": "準備完了",
+    "busy": "ビジー",
+    "idle": "アイドル"
+  },
+  "time": {
+    "now": "今",
+    "today": "今日",
+    "yesterday": "昨日",
+    "tomorrow": "明日",
+    "thisWeek": "今週",
+    "lastWeek": "先週",
+    "nextWeek": "来週",
+    "thisMonth": "今月",
+    "lastMonth": "先月",
+    "nextMonth": "来月",
+    "thisYear": "今年",
+    "lastYear": "昨年",
+    "nextYear": "来年",
+    "seconds": "秒",
+    "minutes": "分",
+    "hours": "時間",
+    "days": "日",
+    "weeks": "週",
+    "months": "月",
+    "years": "年",
+    "ago": "前",
+    "in": "後",
+    "at": "時",
+    "on": "日",
+    "from": "から",
+    "to": "まで",
+    "until": "まで",
+    "since": "以来",
+    "during": "間",
+    "before": "前",
+    "after": "後"
+  },
+  "units": {
+    "viewers": "視聴者",
+    "streams": "ストリーム",
+    "channels": "チャンネル",
+    "users": "ユーザー",
+    "followers": "フォロワー",
+    "subscribers": "購読者",
+    "likes": "いいね",
+    "views": "視聴回数",
+    "comments": "コメント",
+    "shares": "シェア",
+    "downloads": "ダウンロード",
+    "uploads": "アップロード",
+    "files": "ファイル",
+    "folders": "フォルダ",
+    "items": "アイテム",
+    "results": "結果",
+    "matches": "一致",
+    "entries": "エントリー",
+    "records": "レコード",
+    "pages": "ページ",
+    "posts": "投稿",
+    "articles": "記事",
+    "messages": "メッセージ",
+    "notifications": "通知",
+    "alerts": "アラート",
+    "warnings": "警告",
+    "errors": "エラー"
+  },
+  "tabs": {
+    "streams": "ストリーム",
+    "discover": "発見",
+    "following": "フォロー中",
+    "features": "機能",
+    "new": "新機能"
+  },
+  "faq": {
+    "howManyStreams": {
+      "question": "一度に何個のストリームを視聴できますか？",
+      "answer": "Streamyyyを使用すると、最大16個のストリームを同時に視聴できます。レイアウトは追加したストリーム数に基づいて自動的に調整されます。"
+    },
+    "isFree": {
+      "question": "Streamyyyは無料で使用できますか？",
+      "answer": "はい！Streamyyyは完全に無料で使用できます。登録、サブスクリプション、隠れた料金は一切不要です。"
+    },
+    "mixPlatforms": {
+      "question": "TwitchとYouTubeのストリームを一緒に視聴できますか？",
+      "answer": "もちろんです！Twitch、YouTube、Rumble、その他のサポートされているプラットフォームのストリームを同じビューアで混在させることができます。"
+    },
+    "mobileSupport": {
+      "question": "モバイルデバイスで動作しますか？",
+      "answer": "はい、Streamyyyは完全にレスポンシブで、スマートフォン、タブレット、デスクトップコンピューターに最適化されています。"
+    }
+  }
+}

@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
+
 import { useStreamStore } from '@/store/streamStore'
 import { useSubscription } from '@/hooks/useSubscription'
 import { Button } from '@/components/ui/button'
@@ -14,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu'
-import { 
+import {
   Square,
   Grid2x2,
   Grid3x3,
@@ -25,7 +26,8 @@ import {
   Focus,
   Layers3,
   Move,
-  Sparkles
+  Sparkles,
+  AlignJustify
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import type { GridLayout } from '@/types/stream'
@@ -82,6 +84,14 @@ const layoutOptions: LayoutOption[] = [
     icon: LayoutGrid,
     description: '16 streams',
     gridClass: 'grid-cols-4 grid-rows-4'
+  },
+  {
+    id: 'stacked',
+    name: 'Stacked',
+    icon: AlignJustify,
+    description: 'Full width squares',
+    gridClass: 'stacked-layout',
+    isNew: true
   },
   {
     id: 'mosaic',
@@ -142,8 +152,27 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
   const { gridLayout, setGridLayout, streams } = useStreamStore()
   const { hasFeature } = useSubscription()
   const [isOpen, setIsOpen] = useState(false)
+  
+
 
   const currentLayout = layoutOptions.find(layout => layout.id === gridLayout) || layoutOptions[0]!
+  
+  // Get layout name
+  const getLayoutName = (layoutId: string) => {
+    switch (layoutId) {
+      case '1x1': return 'Single'
+      case '1x2': return 'Stacked'
+      case '2x2': return '2x2 Grid'
+      case '3x3': return '3x3 Grid'
+      case '4x4': return '4x4 Grid'
+      case 'stacked': return 'Stacked Layout'
+      case 'mosaic': return 'Mosaic Layout'
+      case 'focus': return 'Focus Mode'
+      case 'pip': return 'Picture-in-Picture'
+      case 'custom': return 'Custom Layout'
+      default: return layoutId
+    }
+  }
 
   const handleLayoutChange = (layoutId: GridLayout) => {
     const layout = layoutOptions.find(l => l.id === layoutId)
@@ -185,7 +214,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
           >
             <currentLayout.icon className="h-4 w-4" />
             <span className="ml-1.5 hidden xs:inline text-sm">
-              {currentLayout.name}
+{getLayoutName(currentLayout.id)}
             </span>
           </Button>
         </DropdownMenuTrigger>
@@ -196,7 +225,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
           sideOffset={8}
         >
           <DropdownMenuLabel className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
-            Layout Options
+            Layout Selector
           </DropdownMenuLabel>
           
           <div className="grid grid-cols-2 gap-2">
@@ -218,7 +247,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
                 >
                   <div className="flex flex-col items-center text-center gap-1 w-full">
                     <Icon size={20} />
-                    <div className="font-medium text-xs">{layout.name}</div>
+                    <div className="font-medium text-xs">{getLayoutName(layout.id)}</div>
                   </div>
                 </DropdownMenuItem>
               )

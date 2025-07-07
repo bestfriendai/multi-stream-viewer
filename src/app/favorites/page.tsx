@@ -1,6 +1,11 @@
 'use client'
 
+// Force dynamic rendering for this protected route
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect } from 'react'
+import { useUser } from '@clerk/nextjs'
+import { useTranslation } from '@/contexts/LanguageContext'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -15,6 +20,8 @@ interface FavoriteStream {
 }
 
 export default function FavoritesPage() {
+  const { isLoaded, isSignedIn } = useUser()
+  const { t } = useTranslation()
   const [favorites, setFavorites] = useState<FavoriteStream[]>([])
   const { addStream } = useStreamStore()
 
@@ -52,16 +59,28 @@ export default function FavoritesPage() {
     }
   }
 
+  // Show loading state while authentication is being determined
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">{t('common.loading')}</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-2">
             <Heart className="w-8 h-8 text-red-500" />
-            Favorite Streams
+            {t('favorites.title')}
           </h1>
           <p className="text-xl text-muted-foreground">
-            Your saved streamers for quick access
+            {isSignedIn ? t('favorites.savedStreamers') : t('favorites.saveStreamers')}
           </p>
         </div>
 
@@ -69,12 +88,12 @@ export default function FavoritesPage() {
           <Card>
             <CardContent className="text-center py-12">
               <Star className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-xl font-semibold mb-2">No favorites yet</h3>
+              <h3 className="text-xl font-semibold mb-2">{t('favorites.noFavorites')}</h3>
               <p className="text-muted-foreground mb-4">
-                Start adding streams to your favorites to see them here
+                {t('favorites.startAdding')}
               </p>
               <Button onClick={() => window.history.back()}>
-                Browse Streams
+                {t('favorites.browseStreams')}
               </Button>
             </CardContent>
           </Card>
@@ -111,7 +130,7 @@ export default function FavoritesPage() {
                       onClick={() => addFavoriteToStream(favorite)}
                       className="flex-1"
                     >
-                      Add to Stream
+                      {t('favorites.addToStream')}
                     </Button>
                     <Button
                       variant="outline"
@@ -129,7 +148,7 @@ export default function FavoritesPage() {
                     </Button>
                   </div>
                   <p className="text-xs text-muted-foreground mt-2">
-                    Added {new Date(favorite.addedAt).toLocaleDateString()}
+                    {t('favorites.added')} {new Date(favorite.addedAt).toLocaleDateString()}
                   </p>
                 </CardContent>
               </Card>
@@ -142,7 +161,7 @@ export default function FavoritesPage() {
             onClick={() => window.history.back()}
             variant="outline"
           >
-            Back to Streams
+            {t('favorites.backToStreams')}
           </Button>
         </div>
       </div>

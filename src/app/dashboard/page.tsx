@@ -1,23 +1,28 @@
 'use client';
 
+// Force dynamic rendering for this protected route
+export const dynamic = 'force-dynamic';
+
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function DashboardPage() {
   const { isLoaded, isSignedIn, user } = useUser();
+  const { t } = useTranslation();
 
   if (!isLoaded) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center">{t('common.loading')}</div>;
   }
 
   if (!isSignedIn) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <h1 className="text-2xl font-semibold">Dashboard Access Required</h1>
-          <p className="text-muted-foreground">Please sign in to access your dashboard.</p>
+          <h1 className="text-2xl font-semibold">{t('dashboard.accessRequired')}</h1>
+          <p className="text-muted-foreground">{t('dashboard.pleaseSignIn')}</p>
           <SignInButton mode="redirect">
-            <Button>Sign In</Button>
+            <Button>{t('auth.signIn')}</Button>
           </SignInButton>
         </div>
       </div>
@@ -27,13 +32,13 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-6">{t('dashboard.title')}</h1>
         <div className="bg-card rounded-lg p-6 shadow-sm border">
-          <h2 className="text-xl font-semibold mb-4">Welcome, {user?.firstName || user?.username || 'User'}!</h2>
+          <h2 className="text-xl font-semibold mb-4">{t('dashboard.welcome', { name: user?.firstName || user?.username || t('dashboard.user') })}</h2>
           <div className="space-y-2">
-            <p className="text-muted-foreground">Email: {user?.primaryEmailAddress?.emailAddress}</p>
-            <p className="text-muted-foreground">User ID: {user?.id}</p>
-            <p className="text-muted-foreground">Created: {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</p>
+            <p className="text-muted-foreground">{t('dashboard.email')}: {user?.primaryEmailAddress?.emailAddress}</p>
+            <p className="text-muted-foreground">{t('dashboard.userId')}: {user?.id}</p>
+            <p className="text-muted-foreground">{t('dashboard.created')}: {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : t('dashboard.na')}</p>
           </div>
         </div>
       </div>
