@@ -335,6 +335,7 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
   // No need for manual useEffect since registerPlayer handles state application
   
   const handleMuteToggle = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation()
     toggleMute()
   }, [toggleMute])

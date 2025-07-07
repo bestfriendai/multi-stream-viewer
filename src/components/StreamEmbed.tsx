@@ -214,6 +214,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
   // No longer need a separate effect for mute state - it's handled by muteManager
   
   const handleMuteToggle = (e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation()
     toggleMute()
   }

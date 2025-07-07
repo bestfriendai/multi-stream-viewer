@@ -106,12 +106,12 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
     onDrag: ({ down, movement: [mx, my], direction: [dx], velocity: [vx], cancel }) => {
       if (!enableSwipe || !enableGestures) return
       
-      // DISABLED: Vertical swipe to prevent scroll interference
-      // if (Math.abs(my) > Math.abs(mx) && Math.abs(my) > 50) {
-      //   setShowInfo(my < 0)
-      //   cancel()
-      //   return
-      // }
+      // Vertical swipe to show/hide info - Re-enabled with better detection
+      if (Math.abs(my) > Math.abs(mx) && Math.abs(my) > 80) {
+        setShowInfo(my < 0)
+        cancel()
+        return
+      }
       
       // Only handle horizontal swipe for navigation
       if (Math.abs(mx) > Math.abs(my)) {

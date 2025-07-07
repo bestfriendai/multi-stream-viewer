@@ -255,10 +255,10 @@ export default function HomePage() {
       <div className={cn(
         "flex-1 flex",
         "pb-16 md:pb-0", // Add padding for mobile nav
-        "overflow-auto md:overflow-hidden", // Allow scrolling on mobile, hidden on desktop
+        "overflow-hidden", // Prevent unwanted scrolling
         "relative" // Relative positioning for proper layout
       )}>
-        <main className="flex-1 overflow-auto md:overflow-hidden">
+        <main className="flex-1 overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
             {streams.length > 0 && (
               <div className="border-b px-4 py-0">
@@ -292,14 +292,14 @@ export default function HomePage() {
               </div>
             )}
 
-            <TabsContent value="streams" className="flex-1 m-0 p-0 flex flex-col overflow-auto md:overflow-hidden">
+            <TabsContent value="streams" className="flex-1 m-0 p-0 flex flex-col overflow-hidden">
               <ErrorBoundary>
                 {streams.length === 0 ? (
                   <LandingPage onAddStream={() => setShowAddStream(true)} />
                 ) : (
                   <>
                     <StreamStatusBar />
-                    <div className="flex-1 overflow-y-auto md:overflow-auto p-0">
+                    <div className="flex-1 overflow-hidden p-0">
                       {/* Route to appropriate component based on device and layout */}
                       {(() => {
                         // Use EnhancedMobileLayout for mobile devices

@@ -24,11 +24,11 @@ body {
   /* Prevent zoom on double tap */
   touch-action: manipulation;
   
-  /* Prevent text selection on mobile */
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  /* Allow text selection on mobile - don't over-restrict */
+  -webkit-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
 }
 
 /* Allow text selection only in specific elements */

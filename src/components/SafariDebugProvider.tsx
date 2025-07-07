@@ -64,15 +64,31 @@ function applySafariMobileFixes() {
     })
   })
 
-  // Prevent double-tap zoom - DISABLED to prevent touch interference
-  // let lastTouchEnd = 0
-  // document.addEventListener('touchend', (event) => {
-  //   const now = new Date().getTime()
-  //   if (now - lastTouchEnd <= 300) {
-  //     event.preventDefault()
-  //   }
-  //   lastTouchEnd = now
-  // }, { passive: false })
+  // Prevent double-tap zoom - Re-enabled with safer implementation
+  let lastTouchEnd = 0
+  let tapCount = 0
+  
+  document.addEventListener('touchend', (event) => {
+    const now = new Date().getTime()
+    
+    if (now - lastTouchEnd <= 300) {
+      tapCount++
+      // Only prevent if it's a double-tap on non-interactive elements
+      const target = event.target as Element
+      if (tapCount >= 2 && !target.closest('button, input, textarea, select, a, [role="button"]')) {
+        event.preventDefault()
+      }
+    } else {
+      tapCount = 0
+    }
+    
+    lastTouchEnd = now
+    
+    // Reset tap count after delay
+    setTimeout(() => {
+      tapCount = 0
+    }, 400)
+  }, { passive: false })
 
   // Handle orientation change
   window.addEventListener('orientationchange', () => {

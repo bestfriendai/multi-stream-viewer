@@ -58,45 +58,52 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
     return window.innerWidth < 768
   }
 
-  // Prevent Safari mobile refresh
+  // Prevent Safari mobile refresh - RESTORED with safer implementation
   useEffect(() => {
     if (typeof window === 'undefined') return
 
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
     const isMobile = window.innerWidth < 768
 
-    // Safari touch event handlers - DISABLED to prevent touch interference
-    // if (isSafari && isMobile) {
-    //   let startY = 0
+    if (isSafari && isMobile) {
+      let startY = 0
+      let isScrolling = false
 
-    //   const handleTouchStart = (e: TouchEvent) => {
-    //     if (e.touches && e.touches[0]) {
-    //       startY = e.touches[0].clientY
-    //     }
-    //   }
+      const handleTouchStart = (e: TouchEvent) => {
+        if (e.touches && e.touches[0]) {
+          startY = e.touches[0].clientY
+          isScrolling = false
+        }
+      }
 
-    //   const handleTouchMove = (e: TouchEvent) => {
-    //     if (!e.touches || !e.touches[0]) return
+      const handleTouchMove = (e: TouchEvent) => {
+        if (!e.touches || !e.touches[0]) return
 
-    //     const currentY = e.touches[0].clientY
-    //     const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+        const currentY = e.touches[0].clientY
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+        const deltaY = currentY - startY
 
-    //     // Prevent pull-to-refresh when at top of page and pulling down
-    //     if (scrollTop <= 0 && currentY > startY) {
-    //       e.preventDefault()
-    //     }
-    //   }
+        // Only prevent pull-to-refresh, not regular scrolling
+        if (scrollTop <= 0 && deltaY > 0 && !isScrolling) {
+          // Check if this is an intentional pull-to-refresh gesture (significant movement)
+          if (deltaY > 10) {
+            e.preventDefault()
+          }
+        } else {
+          isScrolling = true
+        }
+      }
 
-    //   document.addEventListener('touchstart', handleTouchStart, { passive: false })
-    //   document.addEventListener('touchmove', handleTouchMove, { passive: false })
+      // Use passive:false only when necessary for preventDefault
+      document.addEventListener('touchstart', handleTouchStart, { passive: true })
+      document.addEventListener('touchmove', handleTouchMove, { passive: false })
 
-    //   return () => {
-    //     document.removeEventListener('touchstart', handleTouchStart)
-    //     document.removeEventListener('touchmove', handleTouchMove)
-    //   }
-    // }
+      return () => {
+        document.removeEventListener('touchstart', handleTouchStart)
+        document.removeEventListener('touchmove', handleTouchMove)
+      }
+    }
 
-    // Return undefined for non-Safari or non-mobile cases
     return undefined
   }, [])
 
@@ -124,22 +131,34 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
     }
   }, [viewMode, streams.length])
 
-  // DISABLED: Compact mode based on scroll to prevent interference
-  // useMotionValueEvent(scrollY, "change", (latest) => {
-  //   setIsCompactMode(latest > 100)
-  // })
+  // Compact mode - Re-enabled with throttling to prevent excessive updates
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    // Throttle updates to prevent excessive re-renders
+    const throttledUpdate = () => {
+      setIsCompactMode(latest > 100)
+    }
+    
+    // Use requestAnimationFrame for smooth updates
+    requestAnimationFrame(throttledUpdate)
+  })
 
-  // Pull-to-refresh gesture - DISABLED to prevent touch interference
-  // const bind = useGesture({
-  //   onDrag: ({ down, movement: [, my], velocity: [, vy], direction: [, dy] }) => {
-  //     if (scrollY.get() === 0 && dy > 0 && my > 100) {
-  //       // Pull to refresh logic
-  //       if (!down && vy > 0.5) {
-  //         handleRefresh()
-  //       }
-  //     }
-  //   }
-  // })
+  // Pull-to-refresh gesture - Re-enabled with safer implementation
+  const bind = useGesture({
+    onDrag: ({ down, movement: [, my], velocity: [, vy], direction: [, dy] }) => {
+      // Only handle pull-to-refresh if at top of page
+      if (scrollY.get() <= 10 && dy > 0 && my > 100) {
+        if (!down && vy > 0.5) {
+          handleRefresh()
+        }
+      }
+    }
+  }, {
+    drag: {
+      axis: 'y', // Only allow vertical drag
+      filterTaps: true, // Filter out accidental taps
+      threshold: 10 // Minimum movement to trigger
+    }
+  })
 
   const handleRefresh = useCallback(() => {
     // Refresh stream data
@@ -493,7 +512,8 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
   return (
     <div 
       ref={containerRef}
-      className={cn("relative bg-background", "min-h-[calc(100vh-200px)]", className)}
+      {...bind()}
+      className={cn("relative bg-background", "min-h-screen overflow-hidden", className)}
     >
       {/* Content based on view mode */}
       <AnimatePresence mode="wait">

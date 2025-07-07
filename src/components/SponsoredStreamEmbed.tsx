@@ -139,6 +139,7 @@ const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, classN
   // mute state changes are now handled by muteManager internally
   
   const handleMuteToggle = (e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation()
     toggleMute()
   }
