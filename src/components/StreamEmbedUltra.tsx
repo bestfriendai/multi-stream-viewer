@@ -222,14 +222,7 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
             width: '100%',
             height: '100%',
             channel: stream.channelName,
-            parent: [
-              window.location.hostname, 
-              'localhost', 
-              '192.168.1.213',
-              'streamyyy.com', 
-              'www.streamyyy.com',
-              'vercel.app'
-            ],
+            parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'ampsummer.com'],
             autoplay: true,
             muted: true, // Always start muted, mute manager will control state
             layout: 'video',
