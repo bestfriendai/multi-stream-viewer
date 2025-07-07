@@ -1,0 +1,2290 @@
+
+> multi-stream-viewer@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.3.4 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.1.213:3000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ optimizeCss
+     · cssChunking
+
+ ✓ Starting...
+ ○ Compiling instrumentation Node.js ...
+ ✓ Compiled instrumentation Node.js in 781ms
+ ✓ Compiled instrumentation Edge in 120ms
+ ✓ Compiled middleware in 125ms
+Sentry Logger [log]: Initializing SDK...
+Sentry Logger [log]: Initializing Sentry: process: 45188, thread: main.
+Sentry Logger [log]: Integration installed: InboundFilters
+Sentry Logger [log]: Integration installed: FunctionToString
+Sentry Logger [log]: Integration installed: LinkedErrors
+Sentry Logger [log]: Integration installed: RequestData
+Sentry Logger [log]: Integration installed: Console
+Sentry Logger [log]: Integration installed: NodeFetch
+Sentry Logger [log]: Integration installed: OnUncaughtException
+Sentry Logger [log]: Integration installed: OnUnhandledRejection
+Sentry Logger [log]: Integration installed: ContextLines
+Sentry Logger [log]: Integration installed: LocalVariablesAsync
+Sentry Logger [log]: Integration installed: Context
+Sentry Logger [log]: Integration installed: ChildProcess
+Sentry Logger [log]: Integration installed: ProcessSession
+Sentry Logger [log]: Integration installed: Modules
+Sentry Logger [log]: Integration installed: Express
+Sentry Logger [log]: Integration installed: Fastify
+Sentry Logger [log]: Integration installed: Graphql
+Sentry Logger [log]: Integration installed: Mongo
+Sentry Logger [log]: Integration installed: Mongoose
+Sentry Logger [log]: Integration installed: Mysql
+Sentry Logger [log]: Integration installed: Mysql2
+Sentry Logger [log]: Integration installed: Redis
+Sentry Logger [log]: Integration installed: Postgres
+Sentry Logger [log]: Integration installed: Prisma
+Sentry Logger [log]: Integration installed: Hapi
+Sentry Logger [log]: Integration installed: Koa
+Sentry Logger [log]: Integration installed: Connect
+Sentry Logger [log]: Integration installed: Tedious
+Sentry Logger [log]: Integration installed: GenericPool
+Sentry Logger [log]: Integration installed: Kafka
+Sentry Logger [log]: Integration installed: Amqplib
+Sentry Logger [log]: Integration installed: LruMemoizer
+Sentry Logger [log]: Integration installed: VercelAI
+Sentry Logger [log]: Integration installed: PostgresJs
+Sentry Logger [log]: Integration installed: Http
+Sentry Logger [log]: Running in CommonJS mode.
+Sentry Logger [debug]: @opentelemetry/api: Registered a global for diag v1.9.0.
+Sentry Logger [debug]: @opentelemetry/api: Registered a global for trace v1.9.0.
+Sentry Logger [debug]: @opentelemetry/api: Registered a global for propagation v1.9.0.
+Sentry Logger [debug]: @opentelemetry/api: Registered a global for context v1.9.0.
+Sentry Logger [log]: SDK successfully initialized
+ ✓ Ready in 1930ms
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 1cf5f154b835bede
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 37382432d4f327c2
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 563cf0607977c220
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 45477d58ac3944d1
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: edcc1d8a8d5a1c29
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: fae73252829c44e6
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 5b0d15d73972d6bd
+  parent ID: 1cf5f154b835bede
+  root ID: 1cf5f154b835bede
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 36c570a911d9ea3c
+  parent ID: 37382432d4f327c2
+  root ID: 37382432d4f327c2
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 7e1ebab209d514cc
+  parent ID: 563cf0607977c220
+  root ID: 563cf0607977c220
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: cd8cd1746a901fe2
+  parent ID: 45477d58ac3944d1
+  root ID: 45477d58ac3944d1
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: c17cf2df78c597a6
+  parent ID: edcc1d8a8d5a1c29
+  root ID: edcc1d8a8d5a1c29
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 83ed867420c0d5b7
+  parent ID: fae73252829c44e6
+  root ID: fae73252829c44e6
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 36c570a911d9ea3c
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID 37382432d4f327c2
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 60968987abeb9fd7
+  parent ID: 37382432d4f327c2
+  root ID: 37382432d4f327c2
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID cd8cd1746a901fe2
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 7e1ebab209d514cc
+Sentry Logger [log]: SpanExporter exported 2 spans, 2 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 388a0bb306d4d357
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID 45477d58ac3944d1
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 050095cdeda05862
+  parent ID: 45477d58ac3944d1
+  root ID: 45477d58ac3944d1
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: SpanExporter exported 2 spans, 1 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID 563cf0607977c220
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: ceeece4c7e7682ba
+  parent ID: 563cf0607977c220
+  root ID: 563cf0607977c220
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: f8055b1a5d09e7a6
+Sentry Logger [log]: SpanExporter exported 2 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: edbd16e688b13e9b
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 83ed867420c0d5b7
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID fae73252829c44e6
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: a30b709b5bd574ad
+  parent ID: fae73252829c44e6
+  root ID: fae73252829c44e6
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: SpanExporter exported 2 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 5100fb134de06d38
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 60968987abeb9fd7
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID ceeece4c7e7682ba
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 050095cdeda05862
+Sentry Logger [log]: SpanExporter exported 2 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 5b0d15d73972d6bd
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID 1cf5f154b835bede
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 49392c1d75253038
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: b971479a460101ea
+  parent ID: 1cf5f154b835bede
+  root ID: 1cf5f154b835bede
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: SpanExporter exported 2 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID a30b709b5bd574ad
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID b971479a460101ea
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID c17cf2df78c597a6
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID edcc1d8a8d5a1c29
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 57fc4468f1fd1fd6
+  parent ID: edcc1d8a8d5a1c29
+  root ID: edcc1d8a8d5a1c29
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: SpanExporter exported 2 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 469abcae96783441
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 57fc4468f1fd1fd6
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+ ✓ Compiled /api/twitch/streams in 233ms
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: b791a6cbb5d4a56a
+  parent ID: edbd16e688b13e9b
+  root ID: edbd16e688b13e9b
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID b791a6cbb5d4a56a
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 5ac375c920477fe4
+  parent ID: edbd16e688b13e9b
+  root ID: edbd16e688b13e9b
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 5d46beed4421bc25
+  parent ID: 5ac375c920477fe4
+  root ID: edbd16e688b13e9b
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: dba7118d14d7779f
+  parent ID: 49392c1d75253038
+  root ID: 49392c1d75253038
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID dba7118d14d7779f
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: fc92aec8bfa7c029
+  parent ID: 49392c1d75253038
+  root ID: 49392c1d75253038
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 356c0c088a8a7462
+  parent ID: fc92aec8bfa7c029
+  root ID: 49392c1d75253038
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: df4a88690aa79eaf
+  parent ID: 5100fb134de06d38
+  root ID: 5100fb134de06d38
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID df4a88690aa79eaf
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 963f894fabc5dd4e
+  parent ID: 5100fb134de06d38
+  root ID: 5100fb134de06d38
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 6c71963322884d21
+  parent ID: 963f894fabc5dd4e
+  root ID: 5100fb134de06d38
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 3f5c094cbfa15276
+  parent ID: 388a0bb306d4d357
+  root ID: 388a0bb306d4d357
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 3f5c094cbfa15276
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: d0165dcdfa6e77ce
+  parent ID: 388a0bb306d4d357
+  root ID: 388a0bb306d4d357
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 4194295faa2d95ff
+  parent ID: d0165dcdfa6e77ce
+  root ID: 388a0bb306d4d357
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 2685a54485eb411b
+  parent ID: f8055b1a5d09e7a6
+  root ID: f8055b1a5d09e7a6
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 2685a54485eb411b
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: b8366657492ee4b0
+  parent ID: f8055b1a5d09e7a6
+  root ID: f8055b1a5d09e7a6
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: ed70acc37dbc8caa
+  parent ID: b8366657492ee4b0
+  root ID: f8055b1a5d09e7a6
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: d0c979de808d5e24
+  parent ID: 469abcae96783441
+  root ID: 469abcae96783441
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID d0c979de808d5e24
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 02b651e7041c4772
+  parent ID: 469abcae96783441
+  root ID: 469abcae96783441
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: b30fbf7a0170dd70
+  parent ID: 02b651e7041c4772
+  root ID: 469abcae96783441
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 356c0c088a8a7462
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 8e03ac78b8c39c6f
+  parent ID: fc92aec8bfa7c029
+  root ID: 49392c1d75253038
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID ed70acc37dbc8caa
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: b31cf30bca406f83
+  parent ID: b8366657492ee4b0
+  root ID: f8055b1a5d09e7a6
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID b30fbf7a0170dd70
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: b8f1f583192890d7
+  parent ID: 02b651e7041c4772
+  root ID: 469abcae96783441
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 4194295faa2d95ff
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: bfa3ee3ca35e980b
+  parent ID: d0165dcdfa6e77ce
+  root ID: 388a0bb306d4d357
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 6c71963322884d21
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 8e5b9d25a0a8131b
+  parent ID: 963f894fabc5dd4e
+  root ID: 5100fb134de06d38
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 5d46beed4421bc25
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: befc2520625d8ef8
+  parent ID: 5ac375c920477fe4
+  root ID: edbd16e688b13e9b
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 8e03ac78b8c39c6f
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID fc92aec8bfa7c029
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 39a2cad65143c4b0
+  parent ID: 49392c1d75253038
+  root ID: 49392c1d75253038
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 39a2cad65143c4b0
+ POST /api/twitch/streams 200 in 886ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID 49392c1d75253038
+Sentry Logger [log]: SpanExporter exported 6 spans, 10 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID b31cf30bca406f83
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID b8366657492ee4b0
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 44bccbf5923f0694
+  parent ID: f8055b1a5d09e7a6
+  root ID: f8055b1a5d09e7a6
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 44bccbf5923f0694
+ POST /api/twitch/streams 200 in 939ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID f8055b1a5d09e7a6
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID bfa3ee3ca35e980b
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID d0165dcdfa6e77ce
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 3d07f042749554cf
+  parent ID: 388a0bb306d4d357
+  root ID: 388a0bb306d4d357
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 3d07f042749554cf
+ POST /api/twitch/streams 200 in 946ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID 388a0bb306d4d357
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 8e5b9d25a0a8131b
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 963f894fabc5dd4e
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 2a7e653e6c560567
+  parent ID: 5100fb134de06d38
+  root ID: 5100fb134de06d38
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 2a7e653e6c560567
+ POST /api/twitch/streams 200 in 917ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID 5100fb134de06d38
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID b8f1f583192890d7
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 02b651e7041c4772
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 20a56b745d4da923
+  parent ID: 469abcae96783441
+  root ID: 469abcae96783441
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 20a56b745d4da923
+ POST /api/twitch/streams 200 in 871ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID 469abcae96783441
+Sentry Logger [log]: SpanExporter exported 24 spans, 2 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID befc2520625d8ef8
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 5ac375c920477fe4
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 3ed186c9c61024ba
+  parent ID: edbd16e688b13e9b
+  root ID: edbd16e688b13e9b
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 3ed186c9c61024ba
+ POST /api/twitch/streams 200 in 955ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID edbd16e688b13e9b
+Sentry Logger [log]: SpanExporter exported 6 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/debug-error?type=memory
+  ID: 8b388789783b6b2d
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/debug-error?type=memory" with ID 8b388789783b6b2d
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/debug-error?type=memory
+  ID: be73fcb93741c882
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 00c0847872523371
+  parent ID: 8b388789783b6b2d
+  root ID: 8b388789783b6b2d
+  root description: GET /api/debug-error?type=memory
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 00c0847872523371
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+ ○ Compiling /api/debug-error ...
+ ✓ Compiled /api/debug-error in 728ms
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: ac4c79b46d5e913c
+  parent ID: be73fcb93741c882
+  root ID: be73fcb93741c882
+  root description: GET /api/debug-error?type=memory
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID ac4c79b46d5e913c
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/debug-error/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/debug-error/route
+  ID: 0f91893a741e31a2
+  parent ID: be73fcb93741c882
+  root ID: be73fcb93741c882
+  root description: /api/debug-error
+Sentry Logger [log]: Captured error event `Memory allocation failed: 1000000 items`
+Sentry Logger [warn]: Event dropped due to not being matched by `allowUrls` option.
+Event: Error: Memory allocation failed: 1000000 items.
+Url: /Users/iamabillionaire/Desktop/untitled folder 2/multi-stream-viewer/.next/server/chunks/[root-of-the-server]__5452e244._.js
+Sentry Logger [log]: Event processor "InboundFilters" dropped event
+Sentry Logger [log]: Recording outcome: "event_processor:error"
+Sentry Logger [log]: An event processor returned `null`, will not send event.
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/debug-error/route" with ID 0f91893a741e31a2
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 58e0969299dab25e
+  parent ID: be73fcb93741c882
+  root ID: be73fcb93741c882
+  root description: /api/debug-error
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 58e0969299dab25e
+ GET /api/debug-error?type=memory 500 in 928ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/debug-error/route" with ID be73fcb93741c882
+Sentry Logger [log]: SpanExporter exported 4 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/debug-error?type=async
+  ID: 9ab6a0bfaae83430
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/debug-error?type=async" with ID 9ab6a0bfaae83430
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 96fa64d9479380a4
+  parent ID: 9ab6a0bfaae83430
+  root ID: 9ab6a0bfaae83430
+  root description: GET /api/debug-error?type=async
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/debug-error?type=async
+  ID: 7249e4d65fbae992
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 316e82e9ab37803d
+  parent ID: 7249e4d65fbae992
+  root ID: 7249e4d65fbae992
+  root description: GET /api/debug-error?type=async
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 316e82e9ab37803d
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/debug-error/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/debug-error/route
+  ID: 5e221f15e501dd48
+  parent ID: 7249e4d65fbae992
+  root ID: 7249e4d65fbae992
+  root description: /api/debug-error
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 96fa64d9479380a4
+Sentry Logger [log]: SpanExporter exported 1 spans, 1 spans are waiting for their parent spans to finish
+Sentry Logger [log]: Captured error event `Async operation timeout`
+Sentry Logger [warn]: Event dropped due to not being matched by `allowUrls` option.
+Event: Error: Async operation timeout.
+Url: /Users/iamabillionaire/Desktop/untitled folder 2/multi-stream-viewer/.next/server/chunks/[root-of-the-server]__5452e244._.js
+Sentry Logger [log]: Event processor "InboundFilters" dropped event
+Sentry Logger [log]: Recording outcome: "event_processor:error"
+Sentry Logger [log]: An event processor returned `null`, will not send event.
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/debug-error/route" with ID 5e221f15e501dd48
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 0c7f5cdfb28cd0db
+  parent ID: 7249e4d65fbae992
+  root ID: 7249e4d65fbae992
+  root description: /api/debug-error
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 0c7f5cdfb28cd0db
+ GET /api/debug-error?type=async 500 in 122ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/debug-error/route" with ID 7249e4d65fbae992
+Sentry Logger [log]: SpanExporter exported 4 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: Flushing client reports based on interval.
+Sentry Logger [log]: Flushing outcomes...
+Sentry Logger [log]: Sending outcomes: [ { reason: 'event_processor', category: 'error', quantity: 2 } ]
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/twitch/total-streams
+  ID: 53ecf208e624fbfe
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 5f7f4c1167424435
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 29fdb397f2411e0f
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: b665808f50ef0cac
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: edf37980f34b9174
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: efdd8d6997259dc5
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/twitch/total-streams" with ID 53ecf208e624fbfe
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 882b94644f9763ac
+  parent ID: 53ecf208e624fbfe
+  root ID: 53ecf208e624fbfe
+  root description: GET /api/twitch/total-streams
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID 5f7f4c1167424435
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID 29fdb397f2411e0f
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID b665808f50ef0cac
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID edf37980f34b9174
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: d1a231c7351abd32
+  parent ID: 5f7f4c1167424435
+  root ID: 5f7f4c1167424435
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 3639d1a5a7394748
+  parent ID: 5f7f4c1167424435
+  root ID: 5f7f4c1167424435
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: f40362ca4ec03e3b
+  parent ID: 5f7f4c1167424435
+  root ID: 5f7f4c1167424435
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID efdd8d6997259dc5
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/twitch/total-streams
+  ID: 6269f6f2ded5aa80
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 20a1def5736f89ff
+  parent ID: edf37980f34b9174
+  root ID: edf37980f34b9174
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: be879dda675c2555
+  parent ID: efdd8d6997259dc5
+  root ID: efdd8d6997259dc5
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: SpanExporter exported 5 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 4cb6f6d6866bb52e
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: a2778fadcd18609b
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 6415448f4b2cb50d
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 5e0ce90b9e40279b
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: e6e70ad2ac73d764
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 882b94644f9763ac
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID be879dda675c2555
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 3639d1a5a7394748
+Sentry Logger [log]: SpanExporter exported 2 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 20a1def5736f89ff
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 6debcf442bda95a5
+  parent ID: a2778fadcd18609b
+  root ID: a2778fadcd18609b
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 6debcf442bda95a5
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 087811d371c51e5a
+  parent ID: a2778fadcd18609b
+  root ID: a2778fadcd18609b
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 087811d371c51e5a
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 955bff4ce22a1b34
+  parent ID: a2778fadcd18609b
+  root ID: a2778fadcd18609b
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 955bff4ce22a1b34
+ POST /api/twitch/streams 200 in 53ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID a2778fadcd18609b
+Sentry Logger [log]: SpanExporter exported 4 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: deac538687368b58
+  parent ID: 5e0ce90b9e40279b
+  root ID: 5e0ce90b9e40279b
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID deac538687368b58
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 7517134fccf81837
+  parent ID: 5e0ce90b9e40279b
+  root ID: 5e0ce90b9e40279b
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 7517134fccf81837
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 0c62db2c311d7105
+  parent ID: 5e0ce90b9e40279b
+  root ID: 5e0ce90b9e40279b
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 0c62db2c311d7105
+ POST /api/twitch/streams 200 in 57ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID 5e0ce90b9e40279b
+Sentry Logger [log]: SpanExporter exported 4 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: cb3159963fd8969c
+  parent ID: 6415448f4b2cb50d
+  root ID: 6415448f4b2cb50d
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID cb3159963fd8969c
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 39730765c6540f41
+  parent ID: 6415448f4b2cb50d
+  root ID: 6415448f4b2cb50d
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 39730765c6540f41
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 81762ee2505c47d3
+  parent ID: 6415448f4b2cb50d
+  root ID: 6415448f4b2cb50d
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 81762ee2505c47d3
+ POST /api/twitch/streams 200 in 61ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID 6415448f4b2cb50d
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: c55bf3868fbbbb3b
+  parent ID: 4cb6f6d6866bb52e
+  root ID: 4cb6f6d6866bb52e
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID c55bf3868fbbbb3b
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: f521c11dbf94cc0b
+  parent ID: 4cb6f6d6866bb52e
+  root ID: 4cb6f6d6866bb52e
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID f521c11dbf94cc0b
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: cb9a8c183406a9d8
+  parent ID: 4cb6f6d6866bb52e
+  root ID: 4cb6f6d6866bb52e
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID cb9a8c183406a9d8
+ POST /api/twitch/streams 200 in 64ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID 4cb6f6d6866bb52e
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 35cfacd9bc0d30b0
+  parent ID: e6e70ad2ac73d764
+  root ID: e6e70ad2ac73d764
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 35cfacd9bc0d30b0
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 69ac7bbf84eb7409
+  parent ID: e6e70ad2ac73d764
+  root ID: e6e70ad2ac73d764
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 69ac7bbf84eb7409
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: d53d81bf29707605
+  parent ID: e6e70ad2ac73d764
+  root ID: e6e70ad2ac73d764
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID d53d81bf29707605
+ POST /api/twitch/streams 200 in 65ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID e6e70ad2ac73d764
+Sentry Logger [log]: SpanExporter exported 12 spans, 0 spans are waiting for their parent spans to finish
+ ✓ Compiled /api/twitch/total-streams in 143ms
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 3773555ed79b2ae1
+  parent ID: 6269f6f2ded5aa80
+  root ID: 6269f6f2ded5aa80
+  root description: GET /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 3773555ed79b2ae1
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/total-streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/total-streams/route
+  ID: eca5aa5b2d993aec
+  parent ID: 6269f6f2ded5aa80
+  root ID: 6269f6f2ded5aa80
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: e957217a9be8b216
+  parent ID: eca5aa5b2d993aec
+  root ID: 6269f6f2ded5aa80
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID d1a231c7351abd32
+Sentry Logger [log]: SpanExporter exported 1 spans, 1 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID f40362ca4ec03e3b
+Sentry Logger [log]: SpanExporter exported 1 spans, 1 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID e957217a9be8b216
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: d3b1e7c946d1143c
+  parent ID: eca5aa5b2d993aec
+  root ID: 6269f6f2ded5aa80
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID d3b1e7c946d1143c
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/total-streams/route" with ID eca5aa5b2d993aec
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: ff8f3d5af104993c
+  parent ID: 6269f6f2ded5aa80
+  root ID: 6269f6f2ded5aa80
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID ff8f3d5af104993c
+ GET /api/twitch/total-streams 200 in 776ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/twitch/total-streams/route" with ID 6269f6f2ded5aa80
+Sentry Logger [log]: SpanExporter exported 6 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: Flushing client reports based on interval.
+Sentry Logger [log]: Flushing outcomes...
+Sentry Logger [log]: No outcomes to send
+Sentry Logger [log]: Flushing client reports based on interval.
+Sentry Logger [log]: Flushing outcomes...
+Sentry Logger [log]: No outcomes to send
+Sentry Logger [log]: Flushing client reports based on interval.
+Sentry Logger [log]: Flushing outcomes...
+Sentry Logger [log]: No outcomes to send
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/twitch/total-streams
+  ID: 7f36aa5d592320cd
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/twitch/total-streams" with ID 7f36aa5d592320cd
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/twitch/total-streams
+  ID: efdba87d380e931c
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 0511523c31c0183a
+  parent ID: 7f36aa5d592320cd
+  root ID: 7f36aa5d592320cd
+  root description: GET /api/twitch/total-streams
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 0511523c31c0183a
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: e34dc263acc406a2
+  parent ID: efdba87d380e931c
+  root ID: efdba87d380e931c
+  root description: GET /api/twitch/total-streams
+Sentry Logger [debug]: @sentry/instrumentation-http Applying instrumentation patch for nodejs core module on require hook { module: 'http' }
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http Applying instrumentation patch for nodejs core module on require hook { module: 'http' }
+Sentry Logger [debug]: @sentry/instrumentation-http Applying instrumentation patch for nodejs core module on require hook { module: 'https' }
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http Applying instrumentation patch for nodejs core module on require hook { module: 'https' }
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID e34dc263acc406a2
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/total-streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/total-streams/route
+  ID: 64bfa0cc150715cb
+  parent ID: efdba87d380e931c
+  root ID: efdba87d380e931c
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 1595652d58247bb7
+  parent ID: 64bfa0cc150715cb
+  root ID: efdba87d380e931c
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 1595652d58247bb7
+Sentry Logger [log]: [Measurement] Setting measurement on root span: twitch_token_duration = 462 millisecond
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 4c7dcc0310640408
+  parent ID: 64bfa0cc150715cb
+  root ID: efdba87d380e931c
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 4c7dcc0310640408
+Sentry Logger [log]: [Measurement] Setting measurement on root span: twitch_api_duration = 116 millisecond
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/total-streams/route" with ID 64bfa0cc150715cb
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 7515a986050dfaa0
+  parent ID: efdba87d380e931c
+  root ID: efdba87d380e931c
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 7515a986050dfaa0
+ GET /api/twitch/total-streams 200 in 818ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/twitch/total-streams/route" with ID efdba87d380e931c
+Sentry Logger [log]: SpanExporter exported 6 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Patching server.emit
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/twitch/total-streams
+  ID: d536e77ce3b1c317
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/twitch/total-streams" with ID d536e77ce3b1c317
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 58f8c03c9056f7b7
+  parent ID: d536e77ce3b1c317
+  root ID: d536e77ce3b1c317
+  root description: GET /api/twitch/total-streams
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/twitch/total-streams
+  ID: fa503e3febc08ec5
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: be7054605fc06808
+  parent ID: fa503e3febc08ec5
+  root ID: fa503e3febc08ec5
+  root description: GET /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID be7054605fc06808
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/total-streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/total-streams/route
+  ID: 0f277a7890ad170c
+  parent ID: fa503e3febc08ec5
+  root ID: fa503e3febc08ec5
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/total-streams/route" with ID 0f277a7890ad170c
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: b17d292352c03875
+  parent ID: fa503e3febc08ec5
+  root ID: fa503e3febc08ec5
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID b17d292352c03875
+Sentry Logger [debug]: Recorded request session with status: ok
+Sentry Logger [debug]: Opened new request session aggregate.
+ GET /api/twitch/total-streams 200 in 23ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/twitch/total-streams/route" with ID fa503e3febc08ec5
+Sentry Logger [log]: SpanExporter exported 4 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 58f8c03c9056f7b7
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: Flushing client reports based on interval.
+Sentry Logger [log]: Flushing outcomes...
+Sentry Logger [log]: No outcomes to send
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/stripe/auto-sync
+  ID: 7b1cb21277fa67c4
+Sentry Logger [log]: @sentry/instrumentation-http Handling request.on("data") with maximum body size of 10000b
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/stripe/auto-sync
+  ID: 9acd6549ce56e604
+Sentry Logger [log]: @sentry/instrumentation-http Handling request.on("data") with maximum body size of 10000b
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/stripe/auto-sync" with ID 7b1cb21277fa67c4
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 33a35f299051d7db
+  parent ID: 7b1cb21277fa67c4
+  root ID: 7b1cb21277fa67c4
+  root description: POST /api/stripe/auto-sync
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/stripe/auto-sync
+  ID: 930ca32f60de0cf9
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/stripe/auto-sync
+  ID: 361ecfc16b762e8f
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/twitch/total-streams
+  ID: 7edc01a522855008
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/stripe/auto-sync" with ID 9acd6549ce56e604
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: af5f0e68199c8239
+  parent ID: 9acd6549ce56e604
+  root ID: 9acd6549ce56e604
+  root description: POST /api/stripe/auto-sync
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/stripe/auto-sync
+  ID: 194f88ca39544478
+Sentry Logger [log]: @sentry/instrumentation-http Handling request.on("data") with maximum body size of 10000b
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/stripe/auto-sync" with ID 361ecfc16b762e8f
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/twitch/total-streams" with ID 7edc01a522855008
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: c06e09ef38fb410e
+  parent ID: 361ecfc16b762e8f
+  root ID: 361ecfc16b762e8f
+  root description: POST /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: e124e23393c7d294
+  parent ID: 7edc01a522855008
+  root ID: 7edc01a522855008
+  root description: GET /api/twitch/total-streams
+Sentry Logger [log]: SpanExporter exported 2 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/stripe/auto-sync
+  ID: 5098722b0c459061
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/twitch/total-streams
+  ID: 6acb3f3bdd725847
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 33a35f299051d7db
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID af5f0e68199c8239
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 953280b9c310ea54
+  parent ID: 6acb3f3bdd725847
+  root ID: 6acb3f3bdd725847
+  root description: GET /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 953280b9c310ea54
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/total-streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/total-streams/route
+  ID: 671f538af5333900
+  parent ID: 6acb3f3bdd725847
+  root ID: 6acb3f3bdd725847
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/total-streams/route" with ID 671f538af5333900
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 2779e8f138e50a35
+  parent ID: 6acb3f3bdd725847
+  root ID: 6acb3f3bdd725847
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 2779e8f138e50a35
+Sentry Logger [debug]: Recorded request session with status: ok
+ GET /api/twitch/total-streams 200 in 37ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/twitch/total-streams/route" with ID 6acb3f3bdd725847
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID c06e09ef38fb410e
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/twitch/total-streams
+  ID: 8b51be9c849cbf57
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: SpanExporter exported 5 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID e124e23393c7d294
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/twitch/total-streams" with ID 8b51be9c849cbf57
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 8859e9fc4536ef7f
+  parent ID: 8b51be9c849cbf57
+  root ID: 8b51be9c849cbf57
+  root description: GET /api/twitch/total-streams
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: GET /api/twitch/total-streams
+  ID: d283b17532e91a9d
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 8859e9fc4536ef7f
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: SpanExporter exported 1 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 9f8e7635769f8209
+  parent ID: d283b17532e91a9d
+  root ID: d283b17532e91a9d
+  root description: GET /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 9f8e7635769f8209
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/total-streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/total-streams/route
+  ID: 983784e7d9245488
+  parent ID: d283b17532e91a9d
+  root ID: d283b17532e91a9d
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/total-streams/route" with ID 983784e7d9245488
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 5f517d46e04aa980
+  parent ID: d283b17532e91a9d
+  root ID: d283b17532e91a9d
+  root description: /api/twitch/total-streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 5f517d46e04aa980
+Sentry Logger [debug]: Recorded request session with status: ok
+ GET /api/twitch/total-streams 200 in 28ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "GET /api/twitch/total-streams/route" with ID d283b17532e91a9d
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: SpanExporter exported 4 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+ ✓ Compiled /api/stripe/auto-sync in 255ms
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 906623533393be2e
+  parent ID: 5098722b0c459061
+  root ID: 5098722b0c459061
+  root description: POST /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 906623533393be2e
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/stripe/auto-sync/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/stripe/auto-sync/route
+  ID: ba48b6b5dac8cc56
+  parent ID: 5098722b0c459061
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+🔄 Starting automatic subscription sync...
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 1959d22cd86d9dc5
+  parent ID: 194f88ca39544478
+  root ID: 194f88ca39544478
+  root description: POST /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 1959d22cd86d9dc5
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/stripe/auto-sync/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/stripe/auto-sync/route
+  ID: 048d691e95a1d472
+  parent ID: 194f88ca39544478
+  root ID: 194f88ca39544478
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/stripe/auto-sync/route" with ID 048d691e95a1d472
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 1d3b2738e475054d
+  parent ID: 194f88ca39544478
+  root ID: 194f88ca39544478
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 1d3b2738e475054d
+Sentry Logger [debug]: Recorded request session with status: ok
+ POST /api/stripe/auto-sync 200 in 322ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/stripe/auto-sync/route" with ID 194f88ca39544478
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 0b41b8a920def733
+  parent ID: 930ca32f60de0cf9
+  root ID: 930ca32f60de0cf9
+  root description: POST /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 0b41b8a920def733
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/stripe/auto-sync/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/stripe/auto-sync/route
+  ID: cf08d458dc388954
+  parent ID: 930ca32f60de0cf9
+  root ID: 930ca32f60de0cf9
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/stripe/auto-sync/route" with ID cf08d458dc388954
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: a627c6e77452dc5b
+  parent ID: 930ca32f60de0cf9
+  root ID: 930ca32f60de0cf9
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID a627c6e77452dc5b
+Sentry Logger [debug]: Recorded request session with status: ok
+ POST /api/stripe/auto-sync 200 in 335ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/stripe/auto-sync/route" with ID 930ca32f60de0cf9
+Sentry Logger [log]: SpanExporter exported 8 spans, 1 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 7ebd670375c6a556
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 7ebd670375c6a556
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: fd03b1bd7ff8f3c1
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID fd03b1bd7ff8f3c1
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: bc4cc67dc0b3c006
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID bc4cc67dc0b3c006
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 68a84c53666db5d4
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 68a84c53666db5d4
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 2bc7ea4a11ac68b8
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 2bc7ea4a11ac68b8
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+⚠️ Price price_1RhLeMKUMGTMjCZ47Kn0pKxr exists in Stripe but no matching product found in Supabase. Skipping sync.
+❌ Failed to sync subscription for 1patfrancis@gmail.com: Product not found for price price_1RhLeMKUMGTMjCZ47Kn0pKxr (skipped)
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: b634a11dc2917b1d
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID b634a11dc2917b1d
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: e7034b2794e6cf62
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID e7034b2794e6cf62
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 72090603d2818e68
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 72090603d2818e68
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: cb5b20d76c3c52eb
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID cb5b20d76c3c52eb
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: e98827872c39d60a
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID e98827872c39d60a
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 1d02cdb1b441bf0a
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 1d02cdb1b441bf0a
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: c2087ed699d6e3df
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID c2087ed699d6e3df
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: bc172a218a3f0ced
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID bc172a218a3f0ced
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 658c32a7a7157691
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 658c32a7a7157691
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 4b0b6f138c9c50c1
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 4b0b6f138c9c50c1
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 0c98ed964322fb86
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 0c98ed964322fb86
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 17242eb1c17a2f2a
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 17242eb1c17a2f2a
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 48ac013dfc536aeb
+  parent ID: ba48b6b5dac8cc56
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 48ac013dfc536aeb
+Auto-sync result: Sync completed: 0 synced, 1 errors
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/stripe/auto-sync/route" with ID ba48b6b5dac8cc56
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: adedd925cb4aff4b
+  parent ID: 5098722b0c459061
+  root ID: 5098722b0c459061
+  root description: /api/stripe/auto-sync
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID adedd925cb4aff4b
+Sentry Logger [debug]: Recorded request session with status: ok
+ POST /api/stripe/auto-sync 200 in 1676ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/stripe/auto-sync/route" with ID 5098722b0c459061
+Sentry Logger [log]: SpanExporter exported 22 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [debug]: Sending request session aggregate due to flushing schedule
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: Flushing client reports based on interval.
+Sentry Logger [log]: Flushing outcomes...
+Sentry Logger [log]: No outcomes to send
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 6f0904586c610e37
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: df7477f5094d15f8
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: c1df3b9ae2104803
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 078187c20d8679f7
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 87e7759361eb475f
+Sentry Logger [log]: @sentry/instrumentation-http Handling incoming request
+Sentry Logger [log]: @sentry/instrumentation-http Patching request.on
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 6a601a07333e2a8c
+Sentry Logger [log]: @sentry/instrumentation-http Handling request.on("data") with maximum body size of 10000b
+Sentry Logger [log]: @sentry/instrumentation-http Handling request.on("data") with maximum body size of 10000b
+Sentry Logger [log]: @sentry/instrumentation-http Handling request.on("data") with maximum body size of 10000b
+Sentry Logger [log]: @sentry/instrumentation-http Handling request.on("data") with maximum body size of 10000b
+Sentry Logger [log]: @sentry/instrumentation-http Handling request.on("data") with maximum body size of 10000b
+Sentry Logger [log]: @sentry/instrumentation-http Handling request.on("data") with maximum body size of 10000b
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 7d2feeea17195ac8
+  parent ID: 6f0904586c610e37
+  root ID: 6f0904586c610e37
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 2598369fcc4023fd
+  parent ID: df7477f5094d15f8
+  root ID: df7477f5094d15f8
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 173f6bfdaa1e3ae2
+  parent ID: c1df3b9ae2104803
+  root ID: c1df3b9ae2104803
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: ec74b4a240b34c0d
+  parent ID: 078187c20d8679f7
+  root ID: 078187c20d8679f7
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 4feafb20750e9630
+  parent ID: 87e7759361eb475f
+  root ID: 87e7759361eb475f
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: db4e5fc35655d5f0
+  parent ID: 6a601a07333e2a8c
+  root ID: 6a601a07333e2a8c
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 173f6bfdaa1e3ae2
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID c1df3b9ae2104803
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: b2c4387f0b265ddf
+  parent ID: c1df3b9ae2104803
+  root ID: c1df3b9ae2104803
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: SpanExporter exported 2 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 8b7bc1643ef87c22
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID ec74b4a240b34c0d
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 4feafb20750e9630
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID 87e7759361eb475f
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID 078187c20d8679f7
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: bf5eafd271d9e195
+  parent ID: 87e7759361eb475f
+  root ID: 87e7759361eb475f
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: e81c424d93fe8e14
+  parent ID: 078187c20d8679f7
+  root ID: 078187c20d8679f7
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: SpanExporter exported 4 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: ad6c13c16656e46a
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: ffec2ec97dc8396c
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID db4e5fc35655d5f0
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID 6a601a07333e2a8c
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 0a515719f79ab9ec
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 57db980942b46df3
+  parent ID: 6a601a07333e2a8c
+  root ID: 6a601a07333e2a8c
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: SpanExporter exported 2 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: da2364479faace2d
+  parent ID: 8b7bc1643ef87c22
+  root ID: 8b7bc1643ef87c22
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID da2364479faace2d
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 5372f88ae3d2897a
+  parent ID: 8b7bc1643ef87c22
+  root ID: 8b7bc1643ef87c22
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 6f11f376c39dd536
+  parent ID: 5372f88ae3d2897a
+  root ID: 8b7bc1643ef87c22
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID b2c4387f0b265ddf
+Sentry Logger [log]: SpanExporter exported 1 spans, 1 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 7d2feeea17195ac8
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID 6f0904586c610e37
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 178f4d97cef6a9b3
+  parent ID: 6f0904586c610e37
+  root ID: 6f0904586c610e37
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: SpanExporter exported 2 spans, 1 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 98591a3a14240f02
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID bf5eafd271d9e195
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID e81c424d93fe8e14
+Sentry Logger [log]: SpanExporter exported 2 spans, 1 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 178f4d97cef6a9b3
+Sentry Logger [log]: SpanExporter exported 1 spans, 1 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 07b0ceda03d5f447
+  parent ID: ad6c13c16656e46a
+  root ID: ad6c13c16656e46a
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 07b0ceda03d5f447
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 894402e0d13c3b35
+  parent ID: ad6c13c16656e46a
+  root ID: ad6c13c16656e46a
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 3b225aaac440fe80
+  parent ID: 894402e0d13c3b35
+  root ID: ad6c13c16656e46a
+  root description: /api/twitch/streams
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 57db980942b46df3
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 70935d85592d4b45
+  parent ID: ffec2ec97dc8396c
+  root ID: ffec2ec97dc8396c
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 70935d85592d4b45
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 6aa32364fd00b410
+  parent ID: ffec2ec97dc8396c
+  root ID: ffec2ec97dc8396c
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 988fe376caf1a119
+  parent ID: 6aa32364fd00b410
+  root ID: ffec2ec97dc8396c
+  root description: /api/twitch/streams
+Sentry Logger [log]: SpanExporter exported 1 spans, 3 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 1e1a5a93d476a054
+  parent ID: 0a515719f79ab9ec
+  root ID: 0a515719f79ab9ec
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 1e1a5a93d476a054
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: b2f687a1c1183e12
+  parent ID: 0a515719f79ab9ec
+  root ID: 0a515719f79ab9ec
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 8bdde07764941b3c
+  parent ID: b2f687a1c1183e12
+  root ID: 0a515719f79ab9ec
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 2598369fcc4023fd
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams" with ID df7477f5094d15f8
+Sentry Logger [log]: [Tracing] Starting sampled root span
+  op: < unknown op >
+  name: POST /api/twitch/streams
+  ID: 21cb5ccfc16d0e73
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for POST: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: POST
+  ID: 3b43ebdb5ad1bd82
+  parent ID: df7477f5094d15f8
+  root ID: df7477f5094d15f8
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: SpanExporter exported 2 spans, 4 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 1706a13f705f877a
+  parent ID: 98591a3a14240f02
+  root ID: 98591a3a14240f02
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 1706a13f705f877a
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 1057cb299d5fa48c
+  parent ID: 98591a3a14240f02
+  root ID: 98591a3a14240f02
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 32b3316d7c785eaf
+  parent ID: 1057cb299d5fa48c
+  root ID: 98591a3a14240f02
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "POST" with ID 3b43ebdb5ad1bd82
+Sentry Logger [log]: SpanExporter exported 1 spans, 5 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for resolve page components: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: resolve page components
+  ID: 945a4ad53af71b87
+  parent ID: 21cb5ccfc16d0e73
+  root ID: 21cb5ccfc16d0e73
+  root description: POST /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "resolve page components" with ID 945a4ad53af71b87
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for executing api route (app) /api/twitch/streams/route: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: executing api route (app) /api/twitch/streams/route
+  ID: 99639fe66d2e406a
+  parent ID: 21cb5ccfc16d0e73
+  root ID: 21cb5ccfc16d0e73
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for GET: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: GET
+  ID: 8ab3c8ac9bc3ad41
+  parent ID: 99639fe66d2e406a
+  root ID: 21cb5ccfc16d0e73
+  root description: /api/twitch/streams
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 6f11f376c39dd536
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 5372f88ae3d2897a
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: efe793f339f55215
+  parent ID: 8b7bc1643ef87c22
+  root ID: 8b7bc1643ef87c22
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID efe793f339f55215
+Sentry Logger [debug]: Recorded request session with status: ok
+Sentry Logger [debug]: Opened new request session aggregate.
+ POST /api/twitch/streams 200 in 161ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID 8b7bc1643ef87c22
+Sentry Logger [log]: SpanExporter exported 5 spans, 5 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 988fe376caf1a119
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 6aa32364fd00b410
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 13ef829e5c51ccbe
+  parent ID: ffec2ec97dc8396c
+  root ID: ffec2ec97dc8396c
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 13ef829e5c51ccbe
+Sentry Logger [debug]: Recorded request session with status: ok
+ POST /api/twitch/streams 200 in 156ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID ffec2ec97dc8396c
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: SpanExporter exported 5 spans, 4 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 8bdde07764941b3c
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID b2f687a1c1183e12
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 2812c4b48ccad930
+  parent ID: 0a515719f79ab9ec
+  root ID: 0a515719f79ab9ec
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 2812c4b48ccad930
+Sentry Logger [debug]: Recorded request session with status: ok
+ POST /api/twitch/streams 200 in 162ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID 0a515719f79ab9ec
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: SpanExporter exported 5 spans, 3 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 32b3316d7c785eaf
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 1057cb299d5fa48c
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: f6a54684385500dd
+  parent ID: 98591a3a14240f02
+  root ID: 98591a3a14240f02
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID f6a54684385500dd
+Sentry Logger [debug]: Recorded request session with status: ok
+ POST /api/twitch/streams 200 in 148ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID 98591a3a14240f02
+Sentry Logger [log]: SpanExporter exported 5 spans, 2 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 8ab3c8ac9bc3ad41
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 99639fe66d2e406a
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 34ed990fabfced87
+  parent ID: 21cb5ccfc16d0e73
+  root ID: 21cb5ccfc16d0e73
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 34ed990fabfced87
+Sentry Logger [debug]: Recorded request session with status: ok
+ POST /api/twitch/streams 200 in 125ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID 21cb5ccfc16d0e73
+Sentry Logger [log]: SpanExporter exported 5 spans, 1 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "GET" with ID 3b225aaac440fe80
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "executing api route (app) /api/twitch/streams/route" with ID 894402e0d13c3b35
+Sentry Logger [log]: [Tracing] Inheriting parent's sampled decision for start response: true
+Sentry Logger [log]: [Tracing] Starting sampled span
+  op: < unknown op >
+  name: start response
+  ID: 21f1a40876a52c30
+  parent ID: ad6c13c16656e46a
+  root ID: ad6c13c16656e46a
+  root description: /api/twitch/streams
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" span "start response" with ID 21f1a40876a52c30
+Sentry Logger [debug]: Recorded request session with status: ok
+ POST /api/twitch/streams 200 in 282ms
+Sentry Logger [log]: [Tracing] Finishing "< unknown op >" root span "POST /api/twitch/streams/route" with ID ad6c13c16656e46a
+Sentry Logger [log]: SpanExporter exported 5 spans, 0 spans are waiting for their parent spans to finish
+Sentry Logger [debug]: Instrumentation suppressed, returning Noop Span
+Sentry Logger [log]: [Tracing] Not injecting trace data for url because tracing is suppressed.
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http https instrumentation outgoingRequest
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http http.ClientRequest return request
+Sentry Logger [log]: @sentry/instrumentation-http Handling finished outgoing request
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on response()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on end()
+Sentry Logger [debug]: @opentelemetry_sentry-patched/instrumentation-http outgoingRequest on request close()
+Sentry Logger [log]: Flushing client reports based on interval.
+Sentry Logger [log]: Flushing outcomes...
+Sentry Logger [log]: No outcomes to send

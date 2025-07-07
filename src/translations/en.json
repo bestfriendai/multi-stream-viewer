@@ -216,7 +216,9 @@
     "grid4x4Description": "16 streams",
     "mosaicDescription": "Adaptive grid",
     "focusDescription": "1 main + thumbnails",
-    "pipDescription": "1 main + floating"
+    "pipDescription": "1 main + floating",
+    "appMobile": "App Mobile",
+    "appMobileDescription": "App-like mobile experience"
   },
   "streams": {
     "addStream": "Add Stream",

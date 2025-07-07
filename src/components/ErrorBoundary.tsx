@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import type { ErrorInfo, ReactNode } from 'react'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
+import * as Sentry from "@sentry/nextjs"
 
 interface Props {
   children: ReactNode
@@ -39,10 +40,19 @@ class ErrorBoundary extends Component<Props, State> {
       this.props.onError(error, errorInfo)
     }
 
-    // Log to external error reporting service in production
-    if (process.env.NODE_ENV === 'production') {
-      // Example: Sentry.captureException(error, { extra: errorInfo });
-    }
+    // Send error to Sentry
+    Sentry.captureException(error, {
+      contexts: {
+        react: {
+          componentStack: errorInfo.componentStack,
+        },
+      },
+      tags: {
+        errorBoundary: true,
+        component: 'ErrorBoundary',
+      },
+      extra: errorInfo,
+    })
   }
 
   handleReset = () => {

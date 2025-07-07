@@ -12,7 +12,8 @@ import {
   Columns,
   Rows,
   Focus,
-  Layers3
+  Layers3,
+  Smartphone
 } from 'lucide-react'
 import {
   Tooltip,
@@ -84,6 +85,13 @@ const getLayoutOptions = (t: (key: string) => string) => [
     icon: PictureInPicture2,
     description: t('layouts.pipDescription'),
     grid: [[1, 1, 1], [1, 1, 1], [1, 1, 2]]
+  },
+  {
+    value: 'app-mobile',
+    label: t('layouts.appMobile'),
+    icon: Smartphone,
+    description: t('layouts.appMobileDescription'),
+    grid: [[1], [2], [3]]
   }
 ] as const
 
