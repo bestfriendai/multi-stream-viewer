@@ -99,58 +99,72 @@
       "maxStreams": "최대 스트림"
     },
     "testimonials": {
-      "title": "사용자 리뷰",
-      "subtitle": "Streamyyy를 사랑하는 수천 명의 사용자와 함께하세요"
+      "title": "Отзывы пользователей",
+      "subtitle": "Присоединяйтесь к тысячам пользователей, которые любят Streamyyy"
     },
-    "getStartedInSeconds": "몇 초 만에 시작하기",
-    "getStartedFree": "무료로 시작하기",
-    "quickStart": "빠른 시작",
+    "quickStart": {
+      "badge": "Быстрый старт",
+      "findStreamers": {
+        "title": "Найти стримеров",
+        "description": "Ищите любимых создателей контента или просто вставьте ссылки на их каналы для начала"
+      },
+      "pickView": {
+        "title": "Выбрать макет",
+        "description": "Выберите из режимов сетки, фокуса или картинка-в-картинке - настройте свой опыт просмотра"
+      },
+      "watchChat": {
+        "title": "Стрим и взаимодействие",
+        "description": "Наслаждайтесь несколькими стримами одновременно, взаимодействуя с сообществами живого чата"
+      }
+    },
+    "getStartedInSeconds": "Начните за секунды",
+    "getStartedFree": "Начать бесплатно",
     "trustIndicators": {
-      "alwaysOnline": "항상 온라인",
-      "securePrivate": "안전하고 비공개",
-      "fastStreaming": "빠른 스트리밍"
+      "alwaysOnline": "Всегда онлайн",
+      "securePrivate": "Безопасно и приватно",
+      "fastStreaming": "Быстрая трансляция"
     },
     "demo": {
-      "title": "라이브 데모",
-      "subtitle": "실제 작동 모습을 확인하세요",
-      "watchLiveNow": "지금 라이브 보기"
+      "title": "Живая демонстрация",
+      "subtitle": "Посмотрите, как это работает в действии",
+      "watchLiveNow": "Смотреть прямо сейчас"
     },
     "benefits": {
-      "title": "왜 Streamyyy를 선택해야 할까요?",
+      "title": "Почему стоит выбрать Streamyyy?",
       "noDownload": {
-        "title": "다운로드 불필요",
-        "description": "브라우저에서 바로 작동합니다"
+        "title": "Без загрузки",
+        "description": "Работает прямо в вашем браузере"
       },
       "noSignup": {
-        "title": "가입 불필요",
-        "description": "즉시 스트림 시청을 시작하세요"
+        "title": "Без регистрации",
+        "description": "Начните смотреть стримы мгновенно"
       },
       "adFree": {
-        "title": "광고 없음",
-        "description": "방해받지 않는 시청 경험"
+        "title": "Без рекламы",
+        "description": "Непрерывный просмотр без отвлечений"
       },
       "mobileOptimized": {
-        "title": "모바일 최적화",
-        "description": "모든 기기에서 완벽하게 작동"
+        "title": "Оптимизировано для мобильных",
+        "description": "Идеально работает на всех устройствах"
       }
     },
     "useCases": {
-      "title": "사용 사례",
-      "tournament": "토너먼트 시청",
-      "multiMonitor": "멀티 모니터 경험",
-      "platform": "플랫폼 간 시청"
+      "title": "Варианты использования",
+      "tournament": "Просмотр турниров",
+      "multiMonitor": "Мульти-мониторный опыт",
+      "platform": "Кросс-платформенный просмотр"
     },
     "liveStreamers": {
-      "title": "실제 스트리머들",
-      "subtitle": "현재 라이브 스트림"
+      "title": "Настоящие стримеры",
+      "subtitle": "Сейчас в прямом эфире"
     },
     "finalCta": {
-      "title": "Streamyyy로 시작할 준비가 되셨나요?",
-      "subtitle": "수천 명의 사용자가 이미 사용하고 있습니다",
+      "title": "Готовы начать с Streamyyy?",
+      "subtitle": "Тысячи пользователей уже используют его",
       "trustElements": {
-        "worksInstantly": "즉시 작동",
-        "lightningFast": "초고속",
-        "smartLayouts": "스마트 레이아웃"
+        "worksInstantly": "Работает мгновенно",
+        "lightningFast": "Молниеносно быстро",
+        "smartLayouts": "Умные макеты"
       }
     }
   },
