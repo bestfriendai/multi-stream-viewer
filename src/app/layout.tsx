@@ -31,10 +31,10 @@ const geistMono = Geist_Mono({
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
+  userScalable: true,
   viewportFit: 'cover',
-  // Additional Safari-specific settings
+  // Safari mobile optimizations
   minimumScale: 1,
   shrinkToFit: false,
   themeColor: [
@@ -127,10 +127,12 @@ export default function RootLayout({
         <meta name="theme-color" content="#6366f1" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Streamyyy" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="apple-touch-fullscreen" content="yes" />
+        <meta name="apple-mobile-web-app-orientations" content="portrait-any landscape-any" />
         <link rel="apple-touch-icon" href="/favicon.png" />
         <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="shortcut icon" href="/favicon.png" />
@@ -191,9 +193,29 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+
+        {/* Safari Mobile Fixes */}
+        <Script
+          id="safari-mobile-fixes"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Immediate Safari mobile viewport fix
+              if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+                function setVH() {
+                  const vh = window.innerHeight * 0.01;
+                  document.documentElement.style.setProperty('--vh', vh + 'px');
+                }
+                setVH();
+                window.addEventListener('resize', setVH);
+                window.addEventListener('orientationchange', () => setTimeout(setVH, 300));
+              }
+            `
+          }}
+        />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased safari-mobile-fix`}
       >
         <ClerkProvider>
           <SupabaseProvider>

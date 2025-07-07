@@ -189,7 +189,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-background" {...(isMobile ? streamGestures.handlers : {})}>
+    <div className="flex flex-col min-h-screen bg-background mobile-container safari-mobile-scroll" {...(isMobile ? streamGestures.handlers : {})}>
       <SEOSchema faqs={faqItems} type="WebApplication" />
       <SEOContent
         keywords={[
