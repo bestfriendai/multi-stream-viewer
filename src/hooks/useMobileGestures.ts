@@ -261,11 +261,12 @@ export const useStreamGestures = () => {
         toggleStreamMute(streams[currentStreamIndex].id)
       }
     },
-    onPullToRefresh: () => {
-      // Refresh streams without full page reload
-      console.log('Pull to refresh triggered - implement stream refresh here')
-      // TODO: Implement proper stream refresh logic
-    }
+    // onPullToRefresh disabled to prevent unwanted page refreshes
+    // onPullToRefresh: () => {
+    //   // Refresh streams without full page reload
+    //   console.log('Pull to refresh triggered - implement stream refresh here')
+    //   // TODO: Implement proper stream refresh logic
+    // }
   })
 
   return {

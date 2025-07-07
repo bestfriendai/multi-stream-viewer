@@ -143,7 +143,18 @@ function StreamEmbedOptimizedInner({ stream }: StreamEmbedProps) {
             width: '100%',
             height: '100%',
             channel: stream.channelName,
-            parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'www.streamyyy.com'],
+            parent: [
+              window.location.hostname,
+              'localhost',
+              '127.0.0.1',
+              '192.168.1.213',
+              'streamyyy.com',
+              'www.streamyyy.com',
+              'ampsummer.com',
+              'www.ampsummer.com',
+              'vercel.app',
+              '*.vercel.app'
+            ],
             autoplay: true,
             muted: true, // Always start muted, we'll control via API
             layout: 'video',
@@ -231,16 +242,19 @@ function StreamEmbedOptimizedInner({ stream }: StreamEmbedProps) {
   // mute state changes are now handled by muteManager internally
   
   const handleMuteToggle = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation()
     toggleMute()
   }, [toggleMute])
   
   const handleRemove = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation()
     removeStream(stream.id)
   }, [stream.id, removeStream])
   
   const handleMaximize = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation()
     if (stream.id === primaryStreamId) {
       setPrimaryStream('')

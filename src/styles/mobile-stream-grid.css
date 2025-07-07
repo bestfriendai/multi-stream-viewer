@@ -1,7 +1,7 @@
 /* Mobile-optimized stream grid styles */
 .mobile-stream-grid {
-  /* Smooth scrolling for mobile with momentum */
-  scroll-behavior: smooth;
+  /* Remove smooth scrolling to prevent auto-scroll issues */
+  scroll-behavior: auto;
   -webkit-overflow-scrolling: touch;
   /* Add momentum scrolling for iOS */
   overscroll-behavior: contain;
@@ -9,7 +9,7 @@
   touch-action: pan-y;
   /* Ensure proper container sizing */
   position: relative;
-  min-height: 100vh;
+  min-height: calc(100vh - 200px); /* Leave space for footer */
   width: 100%;
   padding: 0;
   margin: 0;
@@ -33,7 +33,7 @@
   grid-template-columns: 1fr;
   grid-auto-rows: minmax(25vh, auto);
   gap: clamp(0.5rem, 2vw, 1rem);
-  min-height: 100vh;
+  min-height: calc(100vh - 200px); /* Leave space for footer */
   padding: clamp(0.5rem, 2vw, 1rem);
 }
 
@@ -49,7 +49,7 @@
   grid-template-columns: 1fr;
   grid-auto-rows: minmax(22vh, auto);
   gap: clamp(0.75rem, 3vw, 1.5rem);
-  min-height: 100vh;
+  min-height: calc(100vh - 200px); /* Leave space for footer */
   padding: clamp(0.5rem, 2vw, 1rem);
 }
 
@@ -65,7 +65,7 @@
   grid-template-columns: 1fr;
   grid-auto-rows: auto;
   gap: clamp(0.5rem, 2vw, 0.75rem);
-  min-height: 100vh;
+  min-height: calc(100vh - 200px); /* Leave space for footer */
   padding: clamp(0.5rem, 1.5vw, 0.75rem);
 }
 
@@ -79,7 +79,7 @@
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: minmax(18vh, auto);
   gap: clamp(0.5rem, 2vw, 0.75rem);
-  min-height: 100vh;
+  min-height: calc(100vh - 200px); /* Leave space for footer */
   padding: clamp(0.5rem, 1.5vw, 0.75rem);
 }
 
@@ -95,7 +95,7 @@
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: auto;
   gap: clamp(0.25rem, 1.5vw, 0.5rem);
-  min-height: 100vh;
+  min-height: calc(100vh - 200px); /* Leave space for footer */
   padding: clamp(0.25rem, 1vw, 0.5rem);
 }
 
@@ -111,7 +111,7 @@
   gap: 1.5rem; /* Increased gap */
   padding: 1rem;
   height: auto;
-  min-height: 100vh;
+  min-height: calc(100vh - 200px); /* Leave space for footer */
   /* Better scrolling experience */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -130,7 +130,7 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   gap: clamp(0.5rem, 2vw, 1rem);
-  height: 100vh;
+  height: calc(100vh - 200px); /* Leave space for footer */
   padding: clamp(0.5rem, 2vw, 1rem);
   align-items: center;
 }
@@ -147,7 +147,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
   gap: clamp(0.25rem, 1vw, 0.5rem);
-  height: 100vh;
+  height: calc(100vh - 200px); /* Leave space for footer */
   padding: clamp(0.25rem, 1vw, 0.5rem);
   align-items: center;
 }
@@ -164,7 +164,7 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: clamp(0.25rem, 1vw, 0.5rem);
-  height: 100vh;
+  height: calc(100vh - 200px); /* Leave space for footer */
   padding: clamp(0.25rem, 1vw, 0.5rem);
 }
 
@@ -180,7 +180,7 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(3, 1fr);
   gap: clamp(0.25rem, 1vw, 0.5rem);
-  height: 100vh;
+  height: calc(100vh - 200px); /* Leave space for footer */
   padding: clamp(0.25rem, 1vw, 0.5rem);
   overflow-y: auto;
 }
@@ -197,7 +197,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   gap: clamp(0.125rem, 0.5vw, 0.25rem);
-  height: 100vh;
+  height: calc(100vh - 200px); /* Leave space for footer */
   padding: clamp(0.125rem, 0.5vw, 0.25rem);
   overflow-y: auto;
 }
@@ -214,7 +214,7 @@
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
   gap: clamp(0.0625rem, 0.25vw, 0.125rem);
-  height: 100vh;
+  height: calc(100vh - 200px); /* Leave space for footer */
   padding: clamp(0.0625rem, 0.25vw, 0.125rem);
   overflow-y: auto;
 }
@@ -232,7 +232,7 @@
   grid-auto-rows: auto;
   gap: clamp(0.0625rem, 0.25vw, 0.125rem);
   padding: clamp(0.0625rem, 0.25vw, 0.125rem);
-  height: 100vh;
+  height: calc(100vh - 200px); /* Leave space for footer */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }

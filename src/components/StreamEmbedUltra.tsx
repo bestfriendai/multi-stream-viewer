@@ -225,6 +225,7 @@ const StreamEmbedUltra = memo(({ stream, priority = 'low', placeholder = false }
             parent: [
               window.location.hostname, 
               'localhost', 
+              '192.168.1.213',
               'streamyyy.com', 
               'www.streamyyy.com',
               'vercel.app'

@@ -65,35 +65,36 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
     const isMobile = window.innerWidth < 768
 
-    if (isSafari && isMobile) {
-      let startY = 0
+    // Safari touch event handlers - DISABLED to prevent touch interference
+    // if (isSafari && isMobile) {
+    //   let startY = 0
 
-      const handleTouchStart = (e: TouchEvent) => {
-        if (e.touches && e.touches[0]) {
-          startY = e.touches[0].clientY
-        }
-      }
+    //   const handleTouchStart = (e: TouchEvent) => {
+    //     if (e.touches && e.touches[0]) {
+    //       startY = e.touches[0].clientY
+    //     }
+    //   }
 
-      const handleTouchMove = (e: TouchEvent) => {
-        if (!e.touches || !e.touches[0]) return
+    //   const handleTouchMove = (e: TouchEvent) => {
+    //     if (!e.touches || !e.touches[0]) return
 
-        const currentY = e.touches[0].clientY
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+    //     const currentY = e.touches[0].clientY
+    //     const scrollTop = window.pageYOffset || document.documentElement.scrollTop
 
-        // Prevent pull-to-refresh when at top of page and pulling down
-        if (scrollTop <= 0 && currentY > startY) {
-          e.preventDefault()
-        }
-      }
+    //     // Prevent pull-to-refresh when at top of page and pulling down
+    //     if (scrollTop <= 0 && currentY > startY) {
+    //       e.preventDefault()
+    //     }
+    //   }
 
-      document.addEventListener('touchstart', handleTouchStart, { passive: false })
-      document.addEventListener('touchmove', handleTouchMove, { passive: false })
+    //   document.addEventListener('touchstart', handleTouchStart, { passive: false })
+    //   document.addEventListener('touchmove', handleTouchMove, { passive: false })
 
-      return () => {
-        document.removeEventListener('touchstart', handleTouchStart)
-        document.removeEventListener('touchmove', handleTouchMove)
-      }
-    }
+    //   return () => {
+    //     document.removeEventListener('touchstart', handleTouchStart)
+    //     document.removeEventListener('touchmove', handleTouchMove)
+    //   }
+    // }
 
     // Return undefined for non-Safari or non-mobile cases
     return undefined
@@ -123,22 +124,22 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
     }
   }, [viewMode, streams.length])
 
-  // Compact mode based on scroll
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsCompactMode(latest > 100)
-  })
+  // DISABLED: Compact mode based on scroll to prevent interference
+  // useMotionValueEvent(scrollY, "change", (latest) => {
+  //   setIsCompactMode(latest > 100)
+  // })
 
-  // Pull-to-refresh gesture
-  const bind = useGesture({
-    onDrag: ({ down, movement: [, my], velocity: [, vy], direction: [, dy] }) => {
-      if (scrollY.get() === 0 && dy > 0 && my > 100) {
-        // Pull to refresh logic
-        if (!down && vy > 0.5) {
-          handleRefresh()
-        }
-      }
-    }
-  })
+  // Pull-to-refresh gesture - DISABLED to prevent touch interference
+  // const bind = useGesture({
+  //   onDrag: ({ down, movement: [, my], velocity: [, vy], direction: [, dy] }) => {
+  //     if (scrollY.get() === 0 && dy > 0 && my > 100) {
+  //       // Pull to refresh logic
+  //       if (!down && vy > 0.5) {
+  //         handleRefresh()
+  //       }
+  //     }
+  //   }
+  // })
 
   const handleRefresh = useCallback(() => {
     // Refresh stream data
@@ -492,8 +493,7 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
   return (
     <div 
       ref={containerRef}
-      {...bind()}
-      className={cn("relative min-h-screen bg-background", className)}
+      className={cn("relative bg-background", "min-h-[calc(100vh-200px)]", className)}
     >
       {/* Content based on view mode */}
       <AnimatePresence mode="wait">

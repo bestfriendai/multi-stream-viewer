@@ -61,7 +61,18 @@ const SponsoredStreamEmbed = memo(function SponsoredStreamEmbed({ stream, classN
             width: '100%',
             height: '100%',
             channel: stream.channelName,
-            parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'ampsummer.com'],
+            parent: [
+          window.location.hostname,
+          'localhost',
+          '127.0.0.1',
+          '192.168.1.213',
+          'streamyyy.com',
+          'www.streamyyy.com',
+          'ampsummer.com',
+          'www.ampsummer.com',
+          'vercel.app',
+          '*.vercel.app'
+        ],
             autoplay: true, // Autoplay sponsored content
             muted: true, // Always start muted, mute manager will control state
             layout: 'video',

@@ -66,7 +66,18 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
             width: '100%',
             height: '100%',
             channel: stream.channelName,
-            parent: [window.location.hostname, 'localhost', 'streamyyy.com', 'ampsummer.com'],
+            parent: [
+              window.location.hostname,
+              'localhost',
+              '127.0.0.1',
+              '192.168.1.213',
+              'streamyyy.com',
+              'www.streamyyy.com',
+              'ampsummer.com',
+              'www.ampsummer.com',
+              'vercel.app',
+              '*.vercel.app'
+            ],
             autoplay: true,
             muted: true, // Always start muted, will be controlled separately
             layout: 'video',
@@ -214,21 +225,25 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
   // No longer need a separate effect for mute state - it's handled by muteManager
   
   const handleMuteToggle = (e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation()
     toggleMute()
   }
   
   const handleClose = (e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation()
     removeStream(stream.id)
   }
   
   const handleMaximize = (e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation()
     setPrimaryStream(stream.id)
   }
   
   const handleFullscreen = (e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation()
     if (embedRef.current) {
       if (embedRef.current.requestFullscreen) {

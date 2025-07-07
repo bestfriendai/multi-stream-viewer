@@ -106,25 +106,27 @@ const GestureStreamViewer: React.FC<GestureStreamViewerProps> = ({
     onDrag: ({ down, movement: [mx, my], direction: [dx], velocity: [vx], cancel }) => {
       if (!enableSwipe || !enableGestures) return
       
-      // Vertical swipe to show/hide info
-      if (Math.abs(my) > Math.abs(mx) && Math.abs(my) > 50) {
-        setShowInfo(my < 0)
-        cancel()
-        return
-      }
+      // DISABLED: Vertical swipe to prevent scroll interference
+      // if (Math.abs(my) > Math.abs(mx) && Math.abs(my) > 50) {
+      //   setShowInfo(my < 0)
+      //   cancel()
+      //   return
+      // }
       
-      // Horizontal swipe for navigation
-      if (down) {
-        x.set(mx)
-      } else {
-        if (Math.abs(mx) > 100 || Math.abs(vx) > 0.5) {
-          if (dx > 0) {
-            goToPrevious()
-          } else {
-            goToNext()
+      // Only handle horizontal swipe for navigation
+      if (Math.abs(mx) > Math.abs(my)) {
+        if (down) {
+          x.set(mx)
+        } else {
+          if (Math.abs(mx) > 100 || Math.abs(vx) > 0.5) {
+            if (dx > 0) {
+              goToPrevious()
+            } else {
+              goToNext()
+            }
           }
+          x.set(0)
         }
-        x.set(0)
       }
       
       resetControlsTimeout()

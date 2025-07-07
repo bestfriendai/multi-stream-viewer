@@ -59,7 +59,7 @@ export default function HomePage() {
   const [showMobileStreamViewer, setShowMobileStreamViewer] = useState(false)
   const [showDiscoverPopup, setShowDiscoverPopup] = useState(false)
   const [activeTab, setActiveTab] = useState('streams')
-  const [showGestureHints, setShowGestureHints] = useState(false)
+  const [showGestureHints, setShowGestureHints] = useState(false) // Always start with false to prevent tutorial blocking
   const [isMobile, setIsMobile] = useState(false)
   const { addStream, setGridLayout, streams, gridLayout } = useStreamStore()
   const { trackChatToggle, trackFeatureUsage, trackStreamAdded } = useAnalytics()
@@ -81,10 +81,17 @@ export default function HomePage() {
 
   // Separate effect for gesture hints to avoid re-renders on stream changes
   useEffect(() => {
-    if (isMobile && streams.length > 0 && !localStorage.getItem('gesture-hints-shown')) {
-      setShowGestureHints(true)
-      localStorage.setItem('gesture-hints-shown', 'true')
+    // Completely disable gesture hints tutorial to prevent interface blocking
+    setShowGestureHints(false)
+    // Clear any existing localStorage entries that might trigger the tutorial
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('gesture-hints-shown')
     }
+    // Disabled auto-showing gesture hints:
+    // if (isMobile && streams.length > 0 && !localStorage.getItem('gesture-hints-shown')) {
+    //   setShowGestureHints(true)
+    //   localStorage.setItem('gesture-hints-shown', 'true')
+    // }
   }, [isMobile, streams.length])
 
   // Enable keyboard shortcuts

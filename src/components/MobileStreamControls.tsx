@@ -38,27 +38,32 @@ export default function MobileStreamControls({
   const [isFavorite, setIsFavorite] = useState(false)
   const { t } = useTranslation()
 
-  const handleMuteToggle = () => {
+  const handleMuteToggle = (e?: React.MouseEvent) => {
+    e?.preventDefault()
     haptic.light()
     onMuteToggle()
   }
 
-  const handleFullscreen = () => {
+  const handleFullscreen = (e?: React.MouseEvent) => {
+    e?.preventDefault()
     haptic.medium()
     onFullscreen()
   }
 
-  const handleSetPrimary = () => {
+  const handleSetPrimary = (e?: React.MouseEvent) => {
+    e?.preventDefault()
     haptic.medium()
     onSetPrimary()
   }
 
-  const handleRemove = () => {
+  const handleRemove = (e?: React.MouseEvent) => {
+    e?.preventDefault()
     haptic.heavy()
     onRemove()
   }
 
-  const handleShare = () => {
+  const handleShare = (e?: React.MouseEvent) => {
+    e?.preventDefault()
     haptic.light()
     if (onShare) onShare()
     // Native share implementation
@@ -71,7 +76,8 @@ export default function MobileStreamControls({
     }
   }
 
-  const handleFavorite = () => {
+  const handleFavorite = (e?: React.MouseEvent) => {
+    e?.preventDefault()
     haptic.light()
     setIsFavorite(!isFavorite)
     if (onFavorite) onFavorite()

@@ -14,6 +14,8 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import AutoSyncInitializer from "@/components/AutoSyncInitializer";
 import Footer from "@/components/Footer";
 import DynamicLang from "@/components/DynamicLang";
+import { MobileLayoutProvider } from "@/contexts/MobileLayoutContext";
+import { SafariDebugProvider } from "@/components/SafariDebugProvider";
 
 
 const geistSans = Geist({
@@ -195,22 +197,26 @@ export default function RootLayout({
         <ClerkProvider>
           <SupabaseProvider>
             <LanguageProvider>
-              <DynamicLang />
-              <AutoSyncInitializer />
-              <GoogleAnalytics />
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="dark"
-                enableSystem
-                disableTransitionOnChange
-              >
-                <div className="flex flex-col min-h-screen">
-                  {children}
-                  <Footer />
-                </div>
-                <Toaster />
-                <CookieConsent />
-              </ThemeProvider>
+              <MobileLayoutProvider>
+                <SafariDebugProvider>
+                  <DynamicLang />
+                  <AutoSyncInitializer />
+                  <GoogleAnalytics />
+                  <ThemeProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    enableSystem
+                    disableTransitionOnChange
+                  >
+                    <div className="flex flex-col min-h-screen">
+                      {children}
+                      <Footer />
+                    </div>
+                    <Toaster />
+                    <CookieConsent />
+                  </ThemeProvider>
+                </SafariDebugProvider>
+              </MobileLayoutProvider>
             </LanguageProvider>
           </SupabaseProvider>
         </ClerkProvider>

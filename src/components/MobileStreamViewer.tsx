@@ -36,11 +36,17 @@ interface MobileStreamViewerProps {
 function MuteButton({ streamId }: { streamId: string }) {
   const [isMuted, toggleMute] = useMuteState(streamId)
   
+  const handleToggleMute = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    toggleMute()
+  }
+  
   return (
     <Button
       variant="ghost"
       size="sm"
-      onClick={toggleMute}
+      onClick={handleToggleMute}
       className="text-white hover:bg-white/20"
     >
       {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
@@ -114,7 +120,10 @@ export default function MobileStreamViewer({ show, onClose }: MobileStreamViewer
           <Button
             variant="ghost"
             size="sm"
-            onClick={onClose}
+            onClick={(e) => {
+              e.preventDefault()
+              onClose()
+            }}
             className="text-white hover:bg-white/20"
           >
             <X size={20} />
@@ -192,7 +201,10 @@ export default function MobileStreamViewer({ show, onClose }: MobileStreamViewer
           <Button
             variant="ghost"
             size="lg"
-            onClick={goToPrevious}
+            onClick={(e) => {
+              e.preventDefault()
+              goToPrevious()
+            }}
             disabled={currentIndex === 0}
             className={cn(
               "text-white hover:bg-white/20 w-16 h-16 rounded-full",
@@ -222,7 +234,10 @@ export default function MobileStreamViewer({ show, onClose }: MobileStreamViewer
           <Button
             variant="ghost"
             size="lg"
-            onClick={goToNext}
+            onClick={(e) => {
+              e.preventDefault()
+              goToNext()
+            }}
             disabled={currentIndex === activeStreams.length - 1}
             className={cn(
               "text-white hover:bg-white/20 w-16 h-16 rounded-full",
