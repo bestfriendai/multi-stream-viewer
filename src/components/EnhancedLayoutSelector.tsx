@@ -213,7 +213,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
             className="h-10 px-3 touch-manipulation border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm min-w-[44px] transition-all duration-300"
           >
             <currentLayout.icon className="h-4 w-4" />
-            <span className="ml-1.5 hidden xs:inline text-sm">
+            <span className="ml-1.5 hidden xs:inline text-responsive-sm">
 {getLayoutName(currentLayout.id)}
             </span>
           </Button>
@@ -224,7 +224,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
           className="w-72 p-3"
           sideOffset={8}
         >
-          <DropdownMenuLabel className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+          <DropdownMenuLabel className="text-responsive-xs uppercase tracking-wide text-muted-foreground mb-2">
             Layout Selector
           </DropdownMenuLabel>
           
@@ -247,7 +247,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
                 >
                   <div className="flex flex-col items-center text-center gap-1 w-full">
                     <Icon size={20} />
-                    <div className="font-medium text-xs">{getLayoutName(layout.id)}</div>
+                    <div className="font-medium text-responsive-xs">{getLayoutName(layout.id)}</div>
                   </div>
                 </DropdownMenuItem>
               )
@@ -272,7 +272,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
             className="h-9 gap-2"
           >
             <currentLayout.icon size={16} />
-            <span className="hidden sm:inline">{currentLayout.name}</span>
+            <span className="hidden sm:inline text-responsive-sm">{currentLayout.name}</span>
           </Button>
         </motion.div>
       </DropdownMenuTrigger>
@@ -282,7 +282,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
         className="w-64 p-2"
         sideOffset={8}
       >
-        <DropdownMenuLabel className="text-xs uppercase tracking-wide text-muted-foreground">
+        <DropdownMenuLabel className="text-responsive-xs uppercase tracking-wide text-muted-foreground">
           Layout Options
         </DropdownMenuLabel>
         
@@ -333,14 +333,14 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium text-sm">{layout.name}</span>
+                        <span className="font-medium text-responsive-sm">{layout.name}</span>
                         {layout.isNew && (
                           <motion.div
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ delay: 0.2 }}
                           >
-                            <span className="px-1.5 py-0.5 text-xs bg-green-500/20 text-green-700 dark:text-green-300 rounded-full">
+                            <span className="px-1.5 py-0.5 text-responsive-xs bg-green-500/20 text-green-700 dark:text-green-300 rounded-full">
                               NEW
                             </span>
                           </motion.div>
@@ -351,14 +351,14 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
                             animate={{ scale: 1 }}
                             transition={{ delay: 0.2 }}
                           >
-                            <span className="px-1.5 py-0.5 text-xs bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-700 dark:text-yellow-300 rounded-full flex items-center gap-1">
+                            <span className="px-1.5 py-0.5 text-responsive-xs bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-700 dark:text-yellow-300 rounded-full flex items-center gap-1">
                               <Sparkles size={10} />
                               PRO
                             </span>
                           </motion.div>
                         )}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-0.5">
+                      <p className="text-responsive-xs text-muted-foreground mt-0.5">
                         {layout.description}
                       </p>
                     </div>
@@ -385,7 +385,7 @@ export default function EnhancedLayoutSelector({ mobile = false }: EnhancedLayou
           transition={{ delay: 0.3 }}
           className="px-2 py-1"
         >
-          <p className="text-xs text-muted-foreground">
+          <p className="text-responsive-xs text-muted-foreground">
             {streams.length} stream{streams.length !== 1 ? 's' : ''} active
           </p>
         </motion.div>

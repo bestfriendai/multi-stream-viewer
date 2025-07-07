@@ -53,11 +53,11 @@ export default function MobileNav({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span className="text-sm text-muted-foreground">
+              <span className="text-responsive-sm text-muted-foreground">
                 {activeStreams} stream{activeStreams !== 1 ? 's' : ''} live
               </span>
             </div>
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-responsive-xs">
               {gridLayout.toUpperCase()}
             </Badge>
           </div>
@@ -86,7 +86,7 @@ export default function MobileNav({
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full" />
             )}
           </div>
-          <span className="text-xs font-medium">Add</span>
+          <span className="text-responsive-xs font-medium">Add</span>
         </Button>
 
         {/* Discover Button */}
@@ -100,7 +100,7 @@ export default function MobileNav({
           className="flex flex-col gap-1.5 h-auto py-4 min-h-[56px] rounded-xl transition-all active:scale-95 hover:bg-primary/10 hover:text-primary"
         >
           <TrendingUp size={22} />
-          <span className="text-xs font-medium">Discover</span>
+          <span className="text-responsive-xs font-medium">Discover</span>
         </Button>
 
         {/* Layout Dropdown - More prominent */}
@@ -116,20 +116,20 @@ export default function MobileNav({
                 {activeStreams > 0 && (
                   <Badge 
                     variant="secondary" 
-                    className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs"
+                    className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-responsive-xs"
                   >
                     {activeStreams}
                   </Badge>
                 )}
               </div>
-              <span className="text-xs font-medium">Layout</span>
+              <span className="text-responsive-xs font-medium">Layout</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="center" side="top" className="mb-2 w-56">
-            <div className="p-2 text-xs text-muted-foreground border-b">
+            <div className="p-2 text-responsive-xs text-muted-foreground border-b">
               Mobile Layout Options ({activeStreams} streams)
             </div>
-            <div className="p-2 text-xs text-muted-foreground">
+            <div className="p-2 text-responsive-xs text-muted-foreground">
               📱 Use the floating controls in the stream view to switch between Stack, Grid, and Swipe modes
             </div>
             {layoutOptions.map((option) => (
@@ -144,8 +144,8 @@ export default function MobileNav({
               >
                 <span className="font-mono mr-3 text-lg">{option.icon}</span>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground">{option.label}</span>
-                  <span className="text-xs text-muted-foreground">{option.description}</span>
+                  <span className="text-responsive-sm text-muted-foreground">{option.label}</span>
+                  <span className="text-responsive-xs text-muted-foreground">{option.description}</span>
                 </div>
               </DropdownMenuItem>
             ))}
@@ -159,8 +159,8 @@ export default function MobileNav({
             >
               <Layers className="mr-3 h-5 w-5" />
               <div className="flex flex-col">
-                <span>Enhanced Mobile Layouts</span>
-                <span className="text-xs text-muted-foreground">Look for floating controls in stream view</span>
+                <span className="text-responsive-sm">Enhanced Mobile Layouts</span>
+                <span className="text-responsive-xs text-muted-foreground">Look for floating controls in stream view</span>
               </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -177,7 +177,7 @@ export default function MobileNav({
           className="flex flex-col gap-1.5 h-auto py-4 min-h-[56px] rounded-xl transition-all active:scale-95 hover:bg-primary/10 hover:text-primary"
         >
           <Bookmark size={22} />
-          <span className="text-xs font-medium">Saved</span>
+          <span className="text-responsive-xs font-medium">Saved</span>
         </Button>
 
         {/* Chat Button */}
@@ -201,7 +201,7 @@ export default function MobileNav({
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse" />
             )}
           </div>
-          <span className="text-xs font-medium">{showChat ? 'Close' : 'Chat'}</span>
+          <span className="text-responsive-xs font-medium">{showChat ? 'Close' : 'Chat'}</span>
         </Button>
       </div>
     </div>

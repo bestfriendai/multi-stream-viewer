@@ -13,6 +13,7 @@ import { SupabaseProvider } from "@/contexts/SupabaseContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import AutoSyncInitializer from "@/components/AutoSyncInitializer";
 import Footer from "@/components/Footer";
+import DynamicLang from "@/components/DynamicLang";
 
 
 const geistSans = Geist({
@@ -194,6 +195,7 @@ export default function RootLayout({
         <ClerkProvider>
           <SupabaseProvider>
             <LanguageProvider>
+              <DynamicLang />
               <AutoSyncInitializer />
               <GoogleAnalytics />
               <ThemeProvider

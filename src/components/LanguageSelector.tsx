@@ -64,8 +64,8 @@ export default function LanguageSelector() {
         >
           <Globe className="h-4 w-4 mr-1" />
           <span className="hidden sm:inline mr-1">{current.flag}</span>
-          <span className="hidden md:inline">{current.name}</span>
-          <span className="md:hidden">{current.code.toUpperCase()}</span>
+          <span className="hidden md:inline text-responsive-sm truncate max-w-20">{current.name}</span>
+          <span className="md:hidden text-responsive-xs font-medium">{current.code.toUpperCase()}</span>
           <ChevronDown className="h-3 w-3 ml-1" />
         </Button>
       </DropdownMenuTrigger>
@@ -79,9 +79,9 @@ export default function LanguageSelector() {
             }`}
           >
             <span className="text-lg">{language.flag}</span>
-            <span className="flex-1">{language.name}</span>
+            <span className="flex-1 text-responsive-sm truncate">{language.name}</span>
             {currentLanguage === language.code && (
-              <span className="text-xs text-muted-foreground">✓</span>
+              <span className="text-responsive-xs text-muted-foreground">✓</span>
             )}
           </DropdownMenuItem>
         ))}

@@ -48,6 +48,7 @@ import BentoStreamGrid from '@/components/BentoStreamGrid'
 import GestureStreamViewer from '@/components/GestureStreamViewer'
 import EnhancedMobileLayout from '@/components/EnhancedMobileLayout'
 import MobileFAB from '@/components/MobileFAB'
+import ResponsiveTextDemo from '@/components/ResponsiveTextDemo'
 
 export default function HomePage() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -335,7 +336,10 @@ export default function HomePage() {
 
             <TabsContent value="features" className="flex-1 overflow-y-auto p-4">
               <ErrorBoundary>
-                <FeaturesShowcase />
+                <div className="space-y-8">
+                  <ResponsiveTextDemo />
+                  <FeaturesShowcase />
+                </div>
               </ErrorBoundary>
             </TabsContent>
           </Tabs>

@@ -190,7 +190,7 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-0">
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-responsive-lg">
             <Star className="w-5 h-5 text-yellow-500" />
             {t('discovery.title')}
           </DialogTitle>
@@ -220,24 +220,24 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
               variant={selectedCategory === 'trending' ? 'default' : 'outline'}
               size="sm"
               onClick={() => handleCategorySelect('trending')}
-              className="gap-2"
+              className="gap-2 text-responsive-sm"
             >
               <TrendingUp className="w-4 h-4" />
-              {t('discovery.trending')}
+              <span className="text-responsive-sm">{t('discovery.trending')}</span>
             </Button>
             {quickCategories.map((category) => {
               const Icon = category.icon
               return (
                 <Button
-                  key={category.key}
-                  variant={selectedCategory === category.key ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => handleCategorySelect(category.key)}
-                  className="gap-2"
-                >
-                  <Icon className="w-4 h-4" />
-                  {category.name}
-                </Button>
+                    key={category.key}
+                    variant={selectedCategory === category.key ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => handleCategorySelect(category.key)}
+                    className="gap-2 text-responsive-sm"
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span className="text-responsive-sm">{category.name}</span>
+                  </Button>
               )
             })}
           </div>
@@ -259,7 +259,7 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
             ) : currentStreams.length === 0 ? (
               <div className="text-center py-12">
                 <Search className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-muted-foreground">
+                <p className="text-responsive-base text-muted-foreground">
                   {searchQuery ? t('discovery.noResults') : t('streams.addFirstStream')}
                 </p>
               </div>
@@ -278,18 +278,18 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
                       
                       {/* Overlay info */}
                       <div className="absolute top-2 left-2 flex items-center gap-1">
-                        <Badge className="bg-red-600 text-white border-0 text-xs">
+                        <Badge className="bg-red-600 text-white border-0 text-responsive-xs">
                           <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse mr-1" />
                           {t('status.live')}
                         </Badge>
-                        <Badge variant="secondary" className="bg-black/70 text-white border-0 text-xs">
+                        <Badge variant="secondary" className="bg-black/70 text-white border-0 text-responsive-xs">
                           <Clock className="w-3 h-3 mr-1" />
                           {formatDuration(stream.started_at)}
                         </Badge>
                       </div>
 
                       <div className="absolute top-2 right-2">
-                        <Badge variant="secondary" className="bg-black/70 text-white border-0 text-xs">
+                        <Badge variant="secondary" className="bg-black/70 text-white border-0 text-responsive-xs">
                           <Users className="w-3 h-3 mr-1" />
                           {formatViewerCount(stream.viewer_count)}
                         </Badge>
@@ -299,11 +299,11 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
                         <Button
                           size="sm"
-                          className="bg-white/90 text-black hover:bg-white"
+                          className="bg-white/90 text-black hover:bg-white text-responsive-sm"
                           onClick={() => handleAddStream(stream.user_login)}
                         >
                           <Play className="w-4 h-4 mr-2" />
-                          {t('streams.addStream')}
+                          <span className="text-responsive-sm">{t('streams.addStream')}</span>
                         </Button>
                       </div>
                     </div>
@@ -322,13 +322,13 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
                         )}
                         
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-sm truncate" title={stream.title}>
+                          <h3 className="font-medium text-responsive-sm truncate" title={stream.title}>
                             {stream.title}
                           </h3>
-                          <p className="text-xs text-muted-foreground truncate">
+                          <p className="text-responsive-xs text-muted-foreground truncate">
                             {stream.user_name}
                           </p>
-                          <p className="text-xs text-muted-foreground truncate">
+                          <p className="text-responsive-xs text-muted-foreground truncate">
                             {stream.game_name}
                           </p>
                         </div>

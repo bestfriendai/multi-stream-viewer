@@ -168,7 +168,7 @@ export default function MobileHeader({
             </Link>
             
             {activeStreams.length > 0 && (
-              <Badge variant="secondary" className="text-xs">
+              <Badge variant="secondary" className="text-responsive-xs">
                 <Users className="w-3 h-3 mr-1" />
                 {activeStreams.length}
               </Badge>
@@ -182,7 +182,7 @@ export default function MobileHeader({
               variant="ghost"
               size="sm"
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="h-10 w-10 p-0 min-w-[44px] touch-manipulation hover:bg-muted/60"
+              className="h-10 w-10 p-0 min-w-[44px] touch-manipulation hover:bg-muted/60 text-responsive-sm"
             >
               {isSearchOpen ? <X size={18} /> : <Search size={18} />}
             </Button>
@@ -192,7 +192,7 @@ export default function MobileHeader({
               variant="ghost"
               size="sm"
               onClick={onAddStream}
-              className="h-10 w-10 p-0 min-w-[44px] touch-manipulation hover:bg-primary/10 text-primary"
+              className="h-10 w-10 p-0 min-w-[44px] touch-manipulation hover:bg-primary/10 text-primary text-responsive-sm"
               disabled={streams.length >= 16}
             >
               <Plus size={18} />
@@ -227,7 +227,7 @@ export default function MobileHeader({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuLabel>Quick Actions</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-responsive-sm">Quick Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 
                 <DropdownMenuItem 
@@ -236,7 +236,7 @@ export default function MobileHeader({
                   }}
                   asChild
                 >
-                  <Link href="/amp-summer" className="flex items-center w-full">
+                  <Link href="/amp-summer" className="flex items-center w-full text-responsive-sm">
                     <Zap className="mr-2 h-4 w-4 text-yellow-500" />
                     AMP Summer
                   </Link>
@@ -247,7 +247,7 @@ export default function MobileHeader({
                     <DropdownMenuSeparator />
                     <DropdownMenuItem 
                       onClick={handleClearAll}
-                      className="text-destructive focus:text-destructive"
+                      className="text-destructive focus:text-destructive text-responsive-sm"
                     >
                       Clear All Streams
                     </DropdownMenuItem>
@@ -267,13 +267,13 @@ export default function MobileHeader({
                 ) : (
                   <>
                     <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
-                      <DropdownMenuItem className="flex items-center">
+                      <DropdownMenuItem className="flex items-center text-responsive-sm">
                         <LogIn className="mr-2 h-4 w-4" />
                         Sign In
                       </DropdownMenuItem>
                     </SignInButton>
                     <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
-                      <DropdownMenuItem className="flex items-center">
+                      <DropdownMenuItem className="flex items-center text-responsive-sm">
                         <UserPlus className="mr-2 h-4 w-4" />
                         Sign Up
                       </DropdownMenuItem>
@@ -299,7 +299,7 @@ export default function MobileHeader({
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                   placeholder="Search live streams or paste URL..."
-                  className="h-9 text-sm pr-8"
+                  className="h-9 text-responsive-sm pr-8"
                   autoFocus
                   onFocus={() => searchInput.trim() && setShowSuggestions(true)}
                   onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
@@ -321,7 +321,7 @@ export default function MobileHeader({
             {/* Search Suggestions */}
             {showSuggestions && searchSuggestions.length > 0 && (
               <div className="absolute top-full left-0 right-0 mt-1 bg-background/95 backdrop-blur-md border border-border/50 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
-                <div className="p-2 text-xs text-muted-foreground border-b">
+                <div className="p-2 text-responsive-xs text-muted-foreground border-b">
                   Live Streams
                 </div>
                 {searchSuggestions.map((suggestion, index) => (

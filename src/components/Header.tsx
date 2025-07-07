@@ -118,14 +118,14 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
             <div className="flex items-center gap-1.5 sm:gap-2 md:hidden transition-all duration-300">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
-                  onClick={() => setShowAddStream(true)}
-                  size="sm"
-                  className="h-10 px-3 sm:px-4 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg border-0 min-w-[44px] touch-manipulation transition-all duration-300"
-                  disabled={streams.length >= 16}
-                >
-                  <Plus className="h-4 w-4" />
-                  <span className="ml-1.5 hidden xs:inline transition-opacity duration-300">{t('header.addStream')}</span>
-                </Button>
+                    onClick={() => setShowAddStream(true)}
+                    size="sm"
+                    className="h-10 px-3 sm:px-4 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg border-0 min-w-[44px] touch-manipulation transition-all duration-300 text-responsive-sm"
+                    disabled={streams.length >= 16}
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span className="ml-1.5 hidden xs:inline transition-opacity duration-300 text-responsive-sm">{t('header.addStream')}</span>
+                  </Button>
               </motion.div>
 
               {/* Mobile Layout Selector - Show when streams exist */}
@@ -143,14 +143,14 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-10 w-10 sm:px-3 sm:w-auto border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm min-w-[44px] touch-manipulation transition-all duration-300"
-                  onClick={() => setShowDiscovery(true)}
-                >
-                  <Compass className="h-4 w-4" />
-                  <span className="ml-1.5 hidden sm:inline transition-opacity duration-300">{t('header.discover')}</span>
-                </Button>
+                    variant="outline"
+                    size="sm"
+                    className="h-10 w-10 sm:px-3 sm:w-auto border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm min-w-[44px] touch-manipulation transition-all duration-300 text-responsive-sm"
+                    onClick={() => setShowDiscovery(true)}
+                  >
+                    <Compass className="h-4 w-4" />
+                    <span className="ml-1.5 hidden sm:inline transition-opacity duration-300 text-responsive-sm">{t('header.discover')}</span>
+                  </Button>
               </motion.div>
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -182,23 +182,23 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                   <Button
                     onClick={() => setShowAddStream(true)}
                     size="sm"
-                    className="h-8 px-3 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 border-0 shadow-md"
+                    className="h-8 px-3 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 border-0 shadow-md text-responsive-sm"
                     disabled={streams.length >= 16}
                   >
                     <Plus className="h-4 w-4" />
-                    <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">{t('header.addStream')}</span>
+                    <span className="ml-1.5 text-responsive-sm transition-all duration-300">{t('header.addStream')}</span>
                   </Button>
                 </motion.div>
 
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 px-3 hover:bg-background/60 rounded-lg"
-                    onClick={() => setShowDiscovery(true)}
-                  >
-                    <Compass className="h-4 w-4" />
-                    <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">Discover</span>
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-3 hover:bg-background/60 rounded-lg text-responsive-sm"
+                      onClick={() => setShowDiscovery(true)}
+                    >
+                      <Compass className="h-4 w-4" />
+                    <span className="ml-1.5 text-responsive-sm transition-all duration-300">Discover</span>
                   </Button>
                 </motion.div>
 
@@ -215,7 +215,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     )}
                   >
                     <MessageSquare className="h-4 w-4" />
-                    <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">{t('header.chat')}</span>
+                    <span className="ml-1.5 text-responsive-sm transition-all duration-300">{t('header.chat')}</span>
                   </Button>
                 </motion.div>
               </motion.div>
@@ -236,7 +236,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                       className="h-8 px-3 text-yellow-600 hover:bg-yellow-500/10"
                     >
                       <Zap className="h-4 w-4" />
-                      <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">AMP</span>
+                      <span className="ml-1.5 text-responsive-sm transition-all duration-300">AMP</span>
                     </Button>
                   </motion.div>
                 </Link>
@@ -249,7 +249,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                       className="h-8 px-3 text-purple-600 hover:bg-purple-500/10"
                     >
                       <Crown className="h-4 w-4" />
-                      <span className="ml-1.5 text-sm lg:text-base transition-all duration-300">{t('header.pricing')}</span>
+                      <span className="ml-1.5 text-responsive-sm transition-all duration-300">{t('header.pricing')}</span>
                     </Button>
                   </motion.div>
                 </Link>
@@ -315,7 +315,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                       >
                         <Badge 
                           variant={isPremium ? "premium" : "gradient"}
-                          className="text-xs font-semibold"
+                          className="text-responsive-xs font-semibold"
                         >
                           <Crown className="h-3 w-3" />
                           {isPremium ? "Premium" : "Pro"}
@@ -393,7 +393,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1, duration: 0.3 }}
               >
-                <h2 className="text-lg font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                <h2 className="text-responsive-lg font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
                   {t('header.menu')}
                 </h2>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -421,8 +421,8 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.3 }}
                 >
-                  <div className="text-sm text-muted-foreground">{t('header.activeStreams')}</div>
-                  <div className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                  <div className="text-responsive-sm text-muted-foreground">{t('header.activeStreams')}</div>
+                  <div className="text-responsive-xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
                     {streams.length} / 16
                   </div>
                 </motion.div>
@@ -461,7 +461,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
 
                 {/* Layout Controls */}
                 <div className="pt-4 border-t border-border">
-                  <div className="text-sm font-medium mb-3">Layout & Controls</div>
+                  <div className="text-responsive-sm font-medium mb-3">Layout & Controls</div>
                   <div className="space-y-2">
                     <EnhancedLayoutSelector mobile />
                     <SavedLayoutsDialog mobile />
@@ -496,7 +496,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                       {!subscriptionLoading && (isPro || isPremium) && (
                         <Badge 
                           variant={isPremium ? "premium" : "gradient"}
-                          className="text-xs font-semibold"
+                          className="text-responsive-xs font-semibold"
                         >
                           <Crown className="h-3 w-3" />
                           {isPremium ? "Premium" : "Pro"}
@@ -513,7 +513,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                           className="h-9"
                         >
                           <LogIn className="h-4 w-4" />
-                          <span className="ml-2">Sign In</span>
+                          <span className="ml-2 text-responsive-sm">Sign In</span>
                         </Button>
                       </SignInButton>
                       <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
@@ -522,7 +522,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                           size="sm"
                           className="h-9"
                         >
-                          <span>Sign Up</span>
+                          <span className="text-responsive-sm">Sign Up</span>
                         </Button>
                       </SignUpButton>
                     </div>

@@ -1,0 +1,334 @@
+/* Responsive Text Utilities for Multi-Language Support */
+
+/* Fluid Typography Scale */
+:root {
+  /* Base font sizes with improved fluid scaling */
+  --text-xs: clamp(0.75rem, 2vw + 0.5rem, 0.875rem);     /* 12px - 14px */
+  --text-sm: clamp(0.875rem, 2.5vw + 0.5rem, 1rem);      /* 14px - 16px */
+  --text-base: clamp(1rem, 3vw + 0.5rem, 1.125rem);      /* 16px - 18px */
+  --text-lg: clamp(1.125rem, 3.5vw + 0.5rem, 1.25rem);   /* 18px - 20px */
+  --text-xl: clamp(1.25rem, 4vw + 0.5rem, 1.5rem);       /* 20px - 24px */
+  --text-2xl: clamp(1.5rem, 4.5vw + 0.5rem, 1.875rem);   /* 24px - 30px */
+  --text-3xl: clamp(1.875rem, 5.5vw + 0.5rem, 2.25rem);  /* 30px - 36px */
+  --text-4xl: clamp(2.25rem, 6.5vw + 0.5rem, 3rem);      /* 36px - 48px */
+  
+  /* Line heights for different languages */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* Letter spacing adjustments */
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+}
+
+/* Responsive Text Size Classes */
+.text-responsive-xs {
+  font-size: var(--text-xs);
+  line-height: var(--line-height-normal);
+}
+
+.text-responsive-sm {
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+}
+
+.text-responsive-base {
+  font-size: var(--text-base);
+  line-height: var(--line-height-normal);
+}
+
+.text-responsive-lg {
+  font-size: var(--text-lg);
+  line-height: var(--line-height-normal);
+}
+
+.text-responsive-xl {
+  font-size: var(--text-xl);
+  line-height: var(--line-height-tight);
+}
+
+.text-responsive-2xl {
+  font-size: var(--text-2xl);
+  line-height: var(--line-height-tight);
+}
+
+.text-responsive-3xl {
+  font-size: var(--text-3xl);
+  line-height: var(--line-height-tight);
+}
+
+.text-responsive-4xl {
+  font-size: var(--text-4xl);
+  line-height: var(--line-height-tight);
+}
+
+/* Text Overflow and Wrapping Utilities */
+.text-ellipsis-responsive {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.text-wrap-responsive {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-break: auto;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Multi-line text truncation */
+.text-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Language-specific adjustments */
+[lang="zh"], [lang="zh-CN"], [lang="zh-TW"] {
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+[lang="ja"] {
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+[lang="ko"] {
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+[lang="ru"] {
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+[lang="es"], [lang="es-ES"], [lang="es-MX"] {
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+[lang="fr"], [lang="fr-FR"] {
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+[lang="de"], [lang="de-DE"] {
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+[lang="pt"], [lang="pt-BR"], [lang="pt-PT"] {
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+[lang="ar"] {
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-normal);
+  direction: rtl;
+}
+
+/* Container Query Support for Text */
+@container (max-width: 300px) {
+  .text-container-responsive {
+    font-size: var(--text-sm);
+  }
+  
+  .text-container-responsive-lg {
+    font-size: var(--text-base);
+  }
+}
+
+@container (min-width: 301px) and (max-width: 500px) {
+  .text-container-responsive {
+    font-size: var(--text-base);
+  }
+  
+  .text-container-responsive-lg {
+    font-size: var(--text-lg);
+  }
+}
+
+@container (min-width: 501px) {
+  .text-container-responsive {
+    font-size: var(--text-lg);
+  }
+  
+  .text-container-responsive-lg {
+    font-size: var(--text-xl);
+  }
+}
+
+/* Responsive Text Spacing */
+.text-spacing-responsive {
+  margin-bottom: clamp(0.5rem, 2vw, 1rem);
+}
+
+.text-spacing-responsive-lg {
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+/* Button Text Responsive */
+.btn-text-responsive {
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
+  line-height: 1.2;
+}
+
+/* Navigation Text Responsive */
+.nav-text-responsive {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  line-height: 1.4;
+}
+
+/* Card Title Responsive */
+.card-title-responsive {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  line-height: var(--line-height-tight);
+  font-weight: 600;
+}
+
+/* Card Description Responsive */
+.card-description-responsive {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  line-height: var(--line-height-normal);
+  color: hsl(var(--muted-foreground));
+}
+
+/* Mobile-specific text adjustments */
+@media (max-width: 768px) {
+  /* Ensure minimum touch target sizes for text elements */
+  .touch-text {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+  }
+  
+  /* Ensure readable text on mobile while maintaining responsiveness */
+  .text-responsive-xs {
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
+  }
+  
+  .text-responsive-sm {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  }
+  
+  .text-responsive-base {
+    font-size: clamp(1rem, 3vw, 1.125rem);
+  }
+  
+  .text-responsive-lg {
+    font-size: clamp(1.125rem, 3.5vw, 1.25rem);
+  }
+  
+  /* Better line spacing for mobile reading */
+  p, .text-content {
+    line-height: var(--line-height-relaxed);
+  }
+  
+  /* Prevent horizontal scrolling from long text */
+  .mobile-text-container {
+    max-width: 100vw;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+}
+
+/* High contrast mode text adjustments */
+@media (prefers-contrast: high) {
+  .text-responsive-xs,
+  .text-responsive-sm,
+  .text-responsive-base,
+  .text-responsive-lg,
+  .text-responsive-xl,
+  .text-responsive-2xl,
+  .text-responsive-3xl,
+  .text-responsive-4xl {
+    font-weight: 500;
+    letter-spacing: 0.025em;
+  }
+}
+
+/* Large text mode for accessibility */
+.large-text .text-responsive-xs { font-size: calc(var(--text-xs) * 1.2); }
+.large-text .text-responsive-sm { font-size: calc(var(--text-sm) * 1.2); }
+.large-text .text-responsive-base { font-size: calc(var(--text-base) * 1.2); }
+.large-text .text-responsive-lg { font-size: calc(var(--text-lg) * 1.2); }
+.large-text .text-responsive-xl { font-size: calc(var(--text-xl) * 1.2); }
+.large-text .text-responsive-2xl { font-size: calc(var(--text-2xl) * 1.2); }
+.large-text .text-responsive-3xl { font-size: calc(var(--text-3xl) * 1.2); }
+.large-text .text-responsive-4xl { font-size: calc(var(--text-4xl) * 1.2); }
+
+/* Reduced motion text animations */
+@media (prefers-reduced-motion: reduce) {
+  .text-animate {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Print styles for text */
+@media print {
+  .text-responsive-xs,
+  .text-responsive-sm,
+  .text-responsive-base,
+  .text-responsive-lg,
+  .text-responsive-xl,
+  .text-responsive-2xl,
+  .text-responsive-3xl,
+  .text-responsive-4xl {
+    font-size: revert;
+    color: black !important;
+  }
+}
+
+/* Focus states for text elements */
+.text-focusable:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Text selection styling */
+::selection {
+  background-color: hsl(var(--primary) / 0.2);
+  color: hsl(var(--foreground));
+}
+
+::-moz-selection {
+  background-color: hsl(var(--primary) / 0.2);
+  color: hsl(var(--foreground));
+}

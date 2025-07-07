@@ -12,54 +12,54 @@ interface StreamyyyLogoProps {
 
 const sizeConfig = {
   sm: {
-    icon: 'w-6 h-6',
-    headerIcon: 'w-12 h-3', // 4:1 aspect ratio for header logo
+    icon: 'w-6 h-6 sm:w-8 sm:h-8',
+    headerIcon: 'w-12 h-3 sm:w-16 sm:h-4', // Responsive 4:1 aspect ratio for header logo
     width: 24,
     height: 24,
     headerWidth: 48,
     headerHeight: 12,
-    text: 'text-base',
+    text: 'text-responsive-sm',
     gap: 'gap-2'
   },
   md: {
-    icon: 'w-8 h-8',
-    headerIcon: 'w-16 h-4', // 4:1 aspect ratio for header logo
+    icon: 'w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12',
+    headerIcon: 'w-16 h-4 sm:w-20 sm:h-5 md:w-24 md:h-6', // Responsive 4:1 aspect ratio
     width: 32,
     height: 32,
     headerWidth: 64,
     headerHeight: 16,
-    text: 'text-lg',
-    gap: 'gap-2'
+    text: 'text-responsive-base',
+    gap: 'gap-2 sm:gap-3'
   },
   lg: {
-    icon: 'w-12 h-12',
-    headerIcon: 'w-32 h-8', // 4:1 aspect ratio for header logo - increased size
+    icon: 'w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16',
+    headerIcon: 'w-24 h-6 sm:w-28 sm:h-7 md:w-32 md:h-8', // Responsive 4:1 aspect ratio
     width: 48,
     height: 48,
     headerWidth: 128,
     headerHeight: 32,
-    text: 'text-2xl',
-    gap: 'gap-3'
+    text: 'text-responsive-lg',
+    gap: 'gap-2 sm:gap-3 md:gap-4'
   },
   xl: {
-    icon: 'w-16 h-16',
-    headerIcon: 'w-40 h-10', // 4:1 aspect ratio for header logo - increased size
+    icon: 'w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20',
+    headerIcon: 'w-28 h-7 sm:w-32 sm:h-8 md:w-36 md:h-9 lg:w-40 lg:h-10', // Responsive 4:1 aspect ratio
     width: 64,
     height: 64,
     headerWidth: 160,
     headerHeight: 40,
-    text: 'text-3xl',
-    gap: 'gap-4'
+    text: 'text-responsive-xl',
+    gap: 'gap-2 sm:gap-3 md:gap-4'
   },
   '2xl': {
-    icon: 'w-20 h-20',
-    headerIcon: 'w-48 h-12', // 4:1 aspect ratio for header logo - new larger size
+    icon: 'w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 lg:w-24 lg:h-24',
+    headerIcon: 'w-32 h-8 sm:w-36 sm:h-9 md:w-40 md:h-10 lg:w-48 lg:h-12', // Responsive 4:1 aspect ratio
     width: 80,
     height: 80,
     headerWidth: 192,
     headerHeight: 48,
-    text: 'text-4xl',
-    gap: 'gap-5'
+    text: 'text-responsive-2xl',
+    gap: 'gap-2 sm:gap-3 md:gap-4 lg:gap-5'
   }
 };
 
@@ -127,6 +127,7 @@ export default function StreamyyyLogo({
           'font-black tracking-wide font-mono',
           'drop-shadow-sm',
           'hover:tracking-wider transition-all duration-300',
+          'text-wrap-responsive',
           getTextClasses()
         )}>
           STREAMYYY

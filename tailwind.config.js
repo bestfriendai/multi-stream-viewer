@@ -20,6 +20,26 @@ module.exports = {
       screens: {
         'xs': '475px',
       },
+      fontSize: {
+        'responsive-xs': 'var(--text-xs)',
+        'responsive-sm': 'var(--text-sm)',
+        'responsive-base': 'var(--text-base)',
+        'responsive-lg': 'var(--text-lg)',
+        'responsive-xl': 'var(--text-xl)',
+        'responsive-2xl': 'var(--text-2xl)',
+        'responsive-3xl': 'var(--text-3xl)',
+        'responsive-4xl': 'var(--text-4xl)',
+      },
+      lineHeight: {
+        'tight': 'var(--line-height-tight)',
+        'normal': 'var(--line-height-normal)',
+        'relaxed': 'var(--line-height-relaxed)',
+      },
+      letterSpacing: {
+        'tight': 'var(--letter-spacing-tight)',
+        'normal': 'var(--letter-spacing-normal)',
+        'wide': 'var(--letter-spacing-wide)',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -76,5 +96,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require('@tailwindcss/container-queries'),
+  ],
 }

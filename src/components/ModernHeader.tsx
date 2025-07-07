@@ -113,11 +113,11 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
           
           {activeStreams.length > 0 && (
             <div className="hidden md:flex items-center gap-2">
-              <Badge variant="secondary" className="gap-1">
+              <Badge variant="secondary" className="gap-1 text-responsive-xs">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                 {activeStreams.length} active
               </Badge>
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-responsive-xs">
                 {gridLayout.replace('-', ' ')}
               </Badge>
             </div>
@@ -149,7 +149,7 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
                   <X className="w-4 h-4" />
                 </Button>
               </div>
-              <Button type="submit" size="sm" disabled={!channelInput.trim()}>
+              <Button type="submit" size="sm" disabled={!channelInput.trim()} className="text-responsive-sm">
                 Add
               </Button>
             </form>
@@ -157,12 +157,12 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
             <Button
               variant="outline"
               onClick={() => setShowSearch(true)}
-              className="w-full justify-start text-muted-foreground"
+              className="w-full justify-start text-muted-foreground text-responsive-sm"
             >
               <Search className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">Add stream...</span>
-              <span className="sm:hidden">Add...</span>
-              <kbd className="ml-auto hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+              <span className="hidden sm:inline text-responsive-sm">Add stream...</span>
+              <span className="sm:hidden text-responsive-sm">Add...</span>
+              <kbd className="ml-auto hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-responsive-xs font-medium text-muted-foreground">
                 <Command className="h-3 w-3" />K
               </kbd>
             </Button>
@@ -176,31 +176,31 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
             variant={showChat ? "default" : "ghost"}
             size="sm"
             onClick={handleToggleChat}
-            className="hidden md:flex gap-2"
+            className="hidden md:flex gap-2 text-responsive-sm"
           >
             <MessageSquare className="w-4 h-4" />
-            Chat
+            <span className="text-responsive-sm">Chat</span>
           </Button>
 
           {/* Quick Actions Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="gap-2">
+              <Button variant="ghost" size="sm" className="gap-2 text-responsive-sm">
                 <MoreVertical className="w-4 h-4" />
-                <span className="hidden md:inline">More</span>
+                <span className="hidden md:inline text-responsive-sm">More</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>Quick Actions</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-responsive-sm">Quick Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               
-              <DropdownMenuItem onClick={() => setShowAddStream(true)}>
+              <DropdownMenuItem onClick={() => setShowAddStream(true)} className="text-responsive-sm">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Stream
                 <DropdownMenuShortcut>⌘A</DropdownMenuShortcut>
               </DropdownMenuItem>
               
-              <DropdownMenuItem onClick={() => trackFeatureUsage('discovery_opened')}>
+              <DropdownMenuItem onClick={() => trackFeatureUsage('discovery_opened')} className="text-responsive-sm">
                 <Compass className="w-4 h-4 mr-2" />
                 Discover Streams
               </DropdownMenuItem>
@@ -208,7 +208,7 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
               <DropdownMenuSeparator />
               
               <DropdownMenuItem asChild>
-                <Link href="/amp-summer">
+                <Link href="/amp-summer" className="text-responsive-sm">
                   <Zap className="w-4 h-4 mr-2 text-yellow-500" />
                   AMP Summer
                 </Link>
@@ -216,14 +216,14 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
               
               <DropdownMenuSeparator />
               
-              <DropdownMenuItem onClick={() => trackFeatureUsage('layout_selector')}>
+              <DropdownMenuItem onClick={() => trackFeatureUsage('layout_selector')} className="text-responsive-sm">
                 <Layout className="w-4 h-4 mr-2" />
                 Change Layout
               </DropdownMenuItem>
               
               {activeStreams.length > 0 && (
                 <>
-                  <DropdownMenuItem onClick={() => trackFeatureUsage('share_opened')}>
+                  <DropdownMenuItem onClick={() => trackFeatureUsage('share_opened')} className="text-responsive-sm">
                     <Share2 className="w-4 h-4 mr-2" />
                     Share Setup
                   </DropdownMenuItem>
@@ -232,7 +232,7 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
                   
                   <DropdownMenuItem 
                     onClick={handleClearAll}
-                    className="text-destructive focus:text-destructive"
+                    className="text-destructive focus:text-destructive text-responsive-sm"
                   >
                     <X className="w-4 h-4 mr-2" />
                     Clear All Streams
@@ -244,7 +244,7 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
               
               <DropdownMenuItem asChild>
                 <div className="flex items-center justify-between w-full">
-                  <span>Theme</span>
+                  <span className="text-responsive-sm">Theme</span>
                   <ThemeToggle />
                 </div>
               </DropdownMenuItem>
@@ -257,8 +257,8 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
       <Dialog open={showAddStream} onOpenChange={setShowAddStream}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Add Stream</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-responsive-lg">Add Stream</DialogTitle>
+            <DialogDescription className="text-responsive-sm">
               Enter a channel name or paste a stream URL to add it to your viewer.
             </DialogDescription>
           </DialogHeader>
@@ -271,7 +271,7 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
                 placeholder="twitch.tv/username or youtube.com/watch?v=..."
                 autoFocus
               />
-              <div className="text-xs text-muted-foreground space-y-1">
+              <div className="text-responsive-xs text-muted-foreground space-y-1">
                 <p>Supported formats:</p>
                 <ul className="list-disc list-inside space-y-0.5 ml-2">
                   <li>Twitch: username or twitch.tv/username</li>
@@ -286,12 +286,14 @@ export default function ModernHeader({ onToggleChat, showChat, className }: Mode
                 type="button" 
                 variant="outline" 
                 onClick={() => setShowAddStream(false)}
+                className="text-responsive-sm"
               >
                 Cancel
               </Button>
               <Button 
                 type="submit" 
                 disabled={!channelInput.trim()}
+                className="text-responsive-sm"
               >
                 Add Stream
               </Button>
