@@ -84,16 +84,16 @@
     "quickStart": {
       "badge": "Quick Start",
       "findStreamers": {
-        "title": "Find Your Streamers",
-        "description": "Search for your favorite creators or paste their channel links"
+        "title": "Discover Streamers",
+        "description": "Search for your favorite creators or simply paste their channel links to get started"
       },
       "pickView": {
-        "title": "Pick Your View",
-        "description": "Grid, focus, or picture-in-picture - however you like to watch"
+        "title": "Choose Your Layout",
+        "description": "Select from grid, focus, or picture-in-picture modes - customize your viewing experience"
       },
       "watchChat": {
-        "title": "Watch & Chat",
-        "description": "Follow the action across multiple streams with live chat"
+        "title": "Stream & Interact",
+        "description": "Enjoy multiple streams simultaneously while engaging with live chat communities"
       }
     },
     "pricing": {

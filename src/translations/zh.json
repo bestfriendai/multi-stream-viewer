@@ -92,7 +92,83 @@
     "testimonials": {
       "title": "用户评价",
       "subtitle": "加入数千名喜爱Streamyyy的用户"
-    }
+    },
+    "quickStart": {
+      "badge": "快速开始",
+      "findStreamers": {
+        "title": "发现主播",
+        "description": "搜索您喜爱的创作者或直接粘贴他们的频道链接即可开始"
+      },
+      "pickView": {
+        "title": "选择布局",
+        "description": "从网格、焦点或画中画模式中选择 - 自定义您的观看体验"
+      },
+      "watchChat": {
+        "title": "直播与互动",
+        "description": "同时享受多个直播流，并与实时聊天社区互动"
+      }
+    },
+    "benefits": {
+      "title": {
+        "main": "多流观看所需的",
+        "highlight": "一切功能"
+      },
+      "subtitle": "观看多个直播流的完整解决方案。非常适合活动、娱乐以及与所有喜爱的创作者保持联系。",
+      "multiStream": {
+        "title": "多流显示",
+        "description": "通过智能布局管理同时观看多达16个流",
+        "benefit": "不错过跨平台发生的任何事情"
+      },
+      "unifiedChat": {
+        "title": "统一聊天",
+        "description": "在一个便捷的地方跟踪所有流的对话",
+        "benefit": "与每个社区保持联系"
+      },
+      "smartLayouts": {
+        "title": "智能布局",
+        "description": "适应您观看需求的网格、焦点和画中画模式",
+        "benefit": "适合任何内容类型的完美视图"
+      },
+      "platformSupport": {
+        "title": "平台支持",
+        "description": "Twitch、YouTube、Kick等"
+      },
+      "mobileOptimized": {
+        "title": "移动优化",
+        "description": "在任何设备上都有完美体验"
+      },
+      "lightningFast": {
+        "title": "闪电般快速",
+        "description": "零缓冲，即时加载"
+      }
+    },
+    "useCases": {
+      "badge": "使用场景",
+      "title": "完美适用于",
+      "subtitle": "无论您在观看什么，我们都能为您提供支持"
+    },
+    "liveStreamers": {
+      "popularStreams": "热门直播",
+      "liveNow": "正在直播",
+      "clickToAdd": "点击任何直播即可立即添加"
+    },
+    "finalCta": {
+      "title": {
+        "main": "准备好改变您的",
+        "highlight": "流媒体体验了吗？"
+      },
+      "subtitle": "加入已升级到多流观看的数千用户。不要错过您喜爱的创作者、活动和直播内容的任何时刻 - 全部在一个强大的平台上。",
+      "startButton": "立即开始流媒体",
+      "welcomeBack": "欢迎回来 • 立即开始",
+      "noSignup": "无需注册 • 立即开始",
+      "trustElements": {
+        "free": "100%免费",
+        "noDownload": "无需下载",
+        "worksInstantly": "即时工作"
+      }
+    },
+    "getStartedInSeconds": "几秒钟内开始",
+    "getStartedFree": "免费开始"
   },
   "layouts": {
     "single": "单个",

@@ -94,7 +94,83 @@
     "testimonials": {
       "title": "O que os Usuários Dizem",
       "subtitle": "Junte-se a milhares de usuários que amam o Streamyyy"
-    }
+    },
+    "quickStart": {
+      "badge": "Início Rápido",
+      "findStreamers": {
+        "title": "Descobrir Streamers",
+        "description": "Pesquise seus criadores favoritos ou simplesmente cole os links dos canais para começar"
+      },
+      "pickView": {
+        "title": "Escolher Layout",
+        "description": "Selecione entre modos de grade, foco ou picture-in-picture - personalize sua experiência de visualização"
+      },
+      "watchChat": {
+        "title": "Transmitir e Interagir",
+        "description": "Desfrute de múltiplos streams simultaneamente enquanto interage com comunidades de chat ao vivo"
+      }
+    },
+    "benefits": {
+      "title": {
+        "main": "Tudo o que Você Precisa para",
+        "highlight": "Visualização Multi-Stream"
+      },
+      "subtitle": "A solução completa para assistir múltiplos streams ao vivo. Perfeito para eventos, entretenimento e manter-se conectado com todos os seus criadores favoritos.",
+      "multiStream": {
+        "title": "Exibição Multi-Stream",
+        "description": "Assista até 16 streams simultaneamente com gerenciamento inteligente de layout",
+        "benefit": "Nunca perca nada acontecendo entre plataformas"
+      },
+      "unifiedChat": {
+        "title": "Chat Unificado",
+        "description": "Acompanhe conversas de todos os seus streams em um local conveniente",
+        "benefit": "Mantenha-se conectado com cada comunidade"
+      },
+      "smartLayouts": {
+        "title": "Layouts Inteligentes",
+        "description": "Modos de grade, foco e picture-in-picture que se adaptam às suas necessidades de visualização",
+        "benefit": "Visualização perfeita para qualquer tipo de conteúdo"
+      },
+      "platformSupport": {
+        "title": "Suporte a Plataformas",
+        "description": "Twitch, YouTube, Kick e mais"
+      },
+      "mobileOptimized": {
+        "title": "Otimizado para Mobile",
+        "description": "Experiência perfeita em qualquer dispositivo"
+      },
+      "lightningFast": {
+        "title": "Ultrarrápido",
+        "description": "Zero buffering, carregamento instantâneo"
+      }
+    },
+    "useCases": {
+      "badge": "Casos de Uso",
+      "title": "Perfeito Para",
+      "subtitle": "Seja o que você estiver assistindo, nós temos você coberto"
+    },
+    "liveStreamers": {
+      "popularStreams": "Streams Populares",
+      "liveNow": "Ao Vivo Agora",
+      "clickToAdd": "Clique em qualquer stream para adicionar instantaneamente"
+    },
+    "finalCta": {
+      "title": {
+        "main": "Pronto para Transformar Sua",
+        "highlight": "Experiência de Streaming?"
+      },
+      "subtitle": "Junte-se a milhares que fizeram upgrade para visualização multi-stream. Nunca perca um momento dos seus criadores favoritos, eventos e conteúdo ao vivo - tudo em uma plataforma poderosa.",
+      "startButton": "Começar a Transmitir Agora",
+      "welcomeBack": "Bem-vindo de volta • Comece imediatamente",
+      "noSignup": "Sem necessidade de cadastro • Comece imediatamente",
+      "trustElements": {
+        "free": "100% Gratuito",
+        "noDownload": "Sem Download Necessário",
+        "worksInstantly": "Funciona Instantaneamente"
+      }
+    },
+    "getStartedInSeconds": "Comece em Segundos",
+    "getStartedFree": "Comece Gratuitamente"
   },
   "layouts": {
     "single": "Único",

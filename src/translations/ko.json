@@ -102,9 +102,82 @@
       "title": "사용자 리뷰",
       "subtitle": "Streamyyy를 사랑하는 수천 명의 사용자와 함께하세요"
     },
+    "quickStart": {
+      "badge": "빠른 시작",
+      "findStreamers": {
+        "title": "스트리머 발견하기",
+        "description": "좋아하는 크리에이터를 검색하거나 채널 링크를 붙여넣어 시작하세요"
+      },
+      "pickView": {
+        "title": "레이아웃 선택하기",
+        "description": "그리드, 포커스, 또는 PIP 모드 중에서 선택하여 시청 경험을 맞춤 설정하세요"
+      },
+      "watchChat": {
+        "title": "스트리밍 & 상호작용",
+        "description": "라이브 채팅 커뮤니티와 소통하며 여러 스트림을 동시에 즐기세요"
+      }
+    },
+    "benefits": {
+      "title": {
+        "main": "멀티 스트림 시청을 위한",
+        "highlight": "모든 것"
+      },
+      "subtitle": "여러 라이브 스트림을 시청하기 위한 완전한 솔루션. 이벤트, 엔터테인먼트, 그리고 모든 좋아하는 크리에이터와 연결되기에 완벽합니다.",
+      "multiStream": {
+        "title": "멀티 스트림 디스플레이",
+        "description": "지능적인 레이아웃 관리로 최대 16개의 스트림을 동시에 시청하세요",
+        "benefit": "플랫폼 전반에서 일어나는 모든 것을 놓치지 마세요"
+      },
+      "unifiedChat": {
+        "title": "통합 채팅",
+        "description": "모든 스트림의 대화를 한 곳에서 편리하게 팔로우하세요",
+        "benefit": "모든 커뮤니티와 연결된 상태를 유지하세요"
+      },
+      "smartLayouts": {
+        "title": "스마트 레이아웃",
+        "description": "시청 요구에 맞춰 적응하는 그리드, 포커스, PIP 모드",
+        "benefit": "모든 콘텐츠 유형에 완벽한 뷰"
+      },
+      "platformSupport": {
+        "title": "플랫폼 지원",
+        "description": "Twitch, YouTube, Kick 등"
+      },
+      "mobileOptimized": {
+        "title": "모바일 최적화",
+        "description": "모든 기기에서 완벽한 경험"
+      },
+      "lightningFast": {
+        "title": "초고속",
+        "description": "버퍼링 없음, 즉시 로딩"
+      }
+    },
+    "useCases": {
+      "badge": "사용 사례",
+      "title": "완벽한 용도",
+      "subtitle": "무엇을 시청하든, 저희가 도와드립니다"
+    },
+    "liveStreamers": {
+      "popularStreams": "인기 스트림",
+      "liveNow": "현재 라이브",
+      "clickToAdd": "아무 스트림이나 클릭하여 즉시 추가하세요"
+    },
+    "finalCta": {
+      "title": {
+        "main": "스트리밍 경험을",
+        "highlight": "변화시킬 준비가 되셨나요?"
+      },
+      "subtitle": "멀티 스트림 시청으로 업그레이드한 수천 명과 함께하세요. 좋아하는 크리에이터, 이벤트, 라이브 콘텐츠의 순간을 놓치지 마세요 - 모든 것이 하나의 강력한 플랫폼에서.",
+      "startButton": "지금 스트리밍 시작",
+      "welcomeBack": "다시 오신 것을 환영합니다 • 즉시 시작",
+      "noSignup": "가입 불필요 • 즉시 시작",
+      "trustElements": {
+        "free": "100% 무료",
+        "noDownload": "다운로드 불필요",
+        "worksInstantly": "즉시 작동"
+      }
+    },
     "getStartedInSeconds": "몇 초 만에 시작하기",
     "getStartedFree": "무료로 시작하기",
-    "quickStart": "빠른 시작",
     "trustIndicators": {
       "alwaysOnline": "항상 온라인",
       "securePrivate": "안전하고 비공개",
