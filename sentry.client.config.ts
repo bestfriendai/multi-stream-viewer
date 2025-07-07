@@ -9,7 +9,7 @@ import { sentryCronMonitor } from './src/lib/sentry-cron-monitoring';
 import { sentryAttachments, attachmentUtils } from './src/lib/sentry-attachments';
 
 Sentry.init({
-  dsn: "https://cb0c99be8431b823967fd7e441ae7924@o4509628501262336.ingest.us.sentry.io/4509628733390848",
+  dsn: "https://9b0201ee70b67c58b7e2fb38595e773f@o4509628501262336.ingest.us.sentry.io/4509628501983232",
   
   // Environment configuration
   environment: process.env.NODE_ENV || 'development',
@@ -28,8 +28,15 @@ Sentry.init({
   replaysSessionSampleRate: process.env.NODE_ENV === 'production' ? 0.05 : 0.3,
   replaysOnErrorSampleRate: 1.0,
   
+  // Enable experimental logging features
+  _experiments: {
+    enableLogs: true,
+  },
+  
   // Comprehensive integrations
   integrations: [
+    // Console logging integration for automatic log capture
+    Sentry.consoleLoggingIntegration({ levels: ["log", "error", "warn"] }),
     // Session Replay with privacy controls
     Sentry.replayIntegration({
       maskAllText: false,

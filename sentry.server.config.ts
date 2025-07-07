@@ -2,7 +2,12 @@
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: "https://cb0c99be8431b823967fd7e441ae7924@o4509628501262336.ingest.us.sentry.io/4509628733390848",
+  dsn: "https://9b0201ee70b67c58b7e2fb38595e773f@o4509628501262336.ingest.us.sentry.io/4509628501983232",
+  
+  // Enable experimental logging features
+  _experiments: {
+    enableLogs: true,
+  },
   
   // Environment configuration
   environment: process.env.NODE_ENV || 'development',
