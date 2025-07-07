@@ -1,11 +1,14 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { Volume2, VolumeX, X, Maximize2, Maximize, MoreVertical, Share2, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createMuteButtonHandler, createMobileButtonHandler } from '@/utils/eventHandlers'
 import { useTranslation } from '@/contexts/LanguageContext'
 import { motion, AnimatePresence } from 'framer-motion'
+import { StreamMonitor, UserJourneyTracker, PerformanceMonitor } from '@/lib/sentry-insights'
+import { trackMobileError, setCustomMetrics } from '@/lib/sentry-wrapper'
+import * as Sentry from "@sentry/nextjs"
 
 interface MobileStreamControlsProps {
   streamId: string
@@ -36,47 +39,150 @@ export default function MobileStreamControls({
 }: MobileStreamControlsProps) {
   const [showQuickActions, setShowQuickActions] = useState(false)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [isActionInProgress, setIsActionInProgress] = useState(false)
   const { t } = useTranslation()
 
-  const handleMuteToggle = createMuteButtonHandler(onMuteToggle)
+  // Track mobile control usage
+  useEffect(() => {
+    const journey = UserJourneyTracker.getInstance()
+    journey.trackAction('mobile_controls_rendered', {
+      streamId,
+      platform,
+      channelName,
+      isPrimary,
+      muted
+    })
 
-  const handleFullscreen = createMobileButtonHandler(onFullscreen, {
-    hapticFeedback: 'medium',
-    analytics: { event: 'fullscreen_toggle', properties: { source: 'mobile_controls' } }
-  })
+    // Track mobile performance context
+    setCustomMetrics({
+      'mobile.controls_render_time': performance.now(),
+      'mobile.viewport_width': window.innerWidth,
+      'mobile.viewport_height': window.innerHeight
+    })
 
-  const handleSetPrimary = createMobileButtonHandler(onSetPrimary, {
-    hapticFeedback: 'medium',
-    analytics: { event: 'set_primary', properties: { source: 'mobile_controls' } }
-  })
-
-  const handleRemove = createMobileButtonHandler(onRemove, {
-    hapticFeedback: 'heavy',
-    analytics: { event: 'remove_stream', properties: { source: 'mobile_controls' } }
-  })
-
-  const handleShare = createMobileButtonHandler(() => {
-    if (onShare) onShare()
-    // Native share implementation
-    if (navigator.share) {
-      navigator.share({
-        title: t('mobile.shareTitle', { channel: channelName }),
-        text: t('mobile.shareText', { channel: channelName }),
-        url: window.location.href
-      })
+    return () => {
+      journey.trackAction('mobile_controls_unmounted', { streamId })
     }
-  }, {
-    hapticFeedback: 'light',
-    analytics: { event: 'share_stream', properties: { source: 'mobile_controls', platform } }
-  })
+  }, [streamId, platform, channelName, isPrimary, muted])
 
-  const handleFavorite = createMobileButtonHandler(() => {
-    setIsFavorite(!isFavorite)
-    if (onFavorite) onFavorite()
-  }, {
-    hapticFeedback: 'light',
-    analytics: { event: 'favorite_toggle', properties: { source: 'mobile_controls', favorited: !isFavorite } }
-  })
+  // Enhanced error handling for mobile actions
+  const handleMobileAction = useCallback(async (action: string, callback: () => void | Promise<void>) => {
+    if (isActionInProgress) return
+
+    setIsActionInProgress(true)
+    const startTime = performance.now()
+
+    try {
+      // Track action start
+      StreamMonitor.trackStreamInteraction(streamId, platform, `mobile_${action}`)
+      
+      await callback()
+      
+      // Track successful action
+      const duration = performance.now() - startTime
+      setCustomMetrics({
+        [`mobile.${action}_duration`]: duration,
+        [`mobile.${action}_success`]: 1
+      })
+
+      Sentry.addBreadcrumb({
+        message: `Mobile action completed: ${action}`,
+        category: 'mobile.interaction',
+        level: 'info',
+        data: {
+          streamId,
+          platform,
+          action,
+          duration,
+          success: true
+        }
+      })
+
+    } catch (error) {
+      // Track failed action
+      setCustomMetrics({
+        [`mobile.${action}_error`]: 1
+      })
+
+      if (error instanceof Error) {
+        trackMobileError(error, {
+          viewport: `${window.innerWidth}x${window.innerHeight}`,
+          orientation: window.innerWidth > window.innerHeight ? 'landscape' : 'portrait',
+          touchDevice: true,
+          component: 'MobileStreamControls',
+          action,
+          streamId,
+          platform
+        })
+      }
+
+      console.error(`Mobile action failed: ${action}`, error)
+    } finally {
+      setIsActionInProgress(false)
+    }
+  }, [isActionInProgress, streamId, platform])
+
+  const handleMuteToggle = useCallback(() => {
+    handleMobileAction('mute_toggle', onMuteToggle)
+  }, [handleMobileAction, onMuteToggle])
+
+  const handleFullscreen = useCallback(() => {
+    handleMobileAction('fullscreen', onFullscreen)
+  }, [handleMobileAction, onFullscreen])
+
+  const handleSetPrimary = useCallback(() => {
+    handleMobileAction('set_primary', onSetPrimary)
+  }, [handleMobileAction, onSetPrimary])
+
+  const handleRemove = useCallback(() => {
+    handleMobileAction('remove_stream', onRemove)
+  }, [handleMobileAction, onRemove])
+
+  const handleShare = useCallback(async () => {
+    await handleMobileAction('share', async () => {
+      if (onShare) onShare()
+      
+      // Enhanced native share with error handling
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: t('mobile.shareTitle', { channel: channelName }),
+            text: t('mobile.shareText', { channel: channelName }),
+            url: window.location.href
+          })
+          
+          Sentry.addBreadcrumb({
+            message: 'Native share completed successfully',
+            category: 'mobile.share',
+            level: 'info',
+            data: { streamId, platform, channelName }
+          })
+        } catch (shareError) {
+          // User cancelled share or share failed
+          if (shareError instanceof Error && shareError.name !== 'AbortError') {
+            throw shareError
+          }
+        }
+      } else {
+        // Fallback for browsers without native share
+        await navigator.clipboard.writeText(window.location.href)
+        
+        Sentry.addBreadcrumb({
+          message: 'URL copied to clipboard (fallback)',
+          category: 'mobile.share',
+          level: 'info',
+          data: { streamId, platform, channelName }
+        })
+      }
+    })
+  }, [handleMobileAction, onShare, t, channelName, streamId, platform])
+
+  const handleFavorite = useCallback(() => {
+    handleMobileAction('favorite_toggle', () => {
+      setIsFavorite(!isFavorite)
+      if (onFavorite) onFavorite()
+    })
+  }, [handleMobileAction, isFavorite, onFavorite])
 
   return (
     <>
@@ -87,9 +193,11 @@ export default function MobileStreamControls({
           <div className="flex gap-2">
             <button
               onClick={handleMuteToggle}
+              disabled={isActionInProgress}
               className={cn(
                 "relative p-3 rounded-full backdrop-blur-md transition-all duration-200 transform active:scale-90",
                 "flex items-center justify-center",
+                "disabled:opacity-50 disabled:cursor-not-allowed",
                 muted 
                   ? "bg-red-500/20 border border-red-400/30 text-red-100"
                   : "bg-white/20 border border-white/30 text-white"
@@ -104,9 +212,11 @@ export default function MobileStreamControls({
 
             <button
               onClick={handleFullscreen}
+              disabled={isActionInProgress}
               className={cn(
                 "relative p-3 rounded-full backdrop-blur-md transition-all duration-200 transform active:scale-90",
                 "flex items-center justify-center",
+                "disabled:opacity-50 disabled:cursor-not-allowed",
                 "bg-white/20 border border-white/30 text-white"
               )}
               style={{ minWidth: '56px', minHeight: '56px' }}
@@ -119,9 +229,11 @@ export default function MobileStreamControls({
             {!isPrimary && (
               <button
                 onClick={handleSetPrimary}
+                disabled={isActionInProgress}
                 className={cn(
                   "relative p-3 rounded-full backdrop-blur-md transition-all duration-200 transform active:scale-90",
                   "flex items-center justify-center",
+                  "disabled:opacity-50 disabled:cursor-not-allowed",
                   "bg-blue-500/20 border border-blue-400/30 text-blue-100"
                 )}
                 style={{ minWidth: '56px', minHeight: '56px' }}

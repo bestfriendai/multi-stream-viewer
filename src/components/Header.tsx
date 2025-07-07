@@ -7,7 +7,12 @@ import Link from 'next/link'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
 import { useTranslation } from '@/contexts/LanguageContext'
+import { useMobileLayoutManager } from '@/hooks/useMobileLayoutManager'
+import { useSentryPerformance, useSentryMemoryTracking, useSentryApiTracking } from '@/hooks/useSentryPerformance'
 import { cn } from '@/lib/utils'
+import { StreamMonitor, UserJourneyTracker } from '@/lib/sentry-insights'
+import { trackMobileError, setCustomMetrics } from '@/lib/sentry-wrapper'
+import * as Sentry from "@sentry/nextjs"
 import {
   Plus,
   Menu,
@@ -63,6 +68,11 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [showClearConfirm, setShowClearConfirm] = useState(false)
 
+  // Sentry performance monitoring
+  const { trackRender, trackInteraction, trackAsyncOperation } = useSentryPerformance('Header')
+  const { trackApiCall } = useSentryApiTracking()
+  useSentryMemoryTracking('Header', 30000)
+
   const {
     streams,
     clearAllStreams
@@ -73,7 +83,133 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
   const { t } = useTranslation()
   const { subscription, isPro, isPremium, loading: subscriptionLoading } = useSubscription()
   
+  // Enhanced mobile layout management with Sentry tracking
+  const {
+    mobile,
+    currentLayout,
+    recommendedLayout,
+    isOptimalLayout,
+    refreshLayout,
+    handleMobileLayoutError,
+    isMobileOptimized,
+    shouldShowMobileControls,
+    deviceMetrics
+  } = useMobileLayoutManager()
 
+  // Track mobile header usage and render performance
+  React.useEffect(() => {
+    // Track render performance
+    trackRender({ 
+      streams: streams.length, 
+      showChat, 
+      mobile: mobile.isMobile,
+      layout: currentLayout 
+    })
+
+    if (mobile.isMobile) {
+      const journey = UserJourneyTracker.getInstance()
+      journey.trackAction('mobile_header_rendered', {
+        currentLayout,
+        recommendedLayout,
+        isOptimalLayout,
+        deviceMetrics
+      })
+
+      // Set mobile-specific context for debugging
+      setCustomMetrics({
+        'mobile.header_render_time': performance.now(),
+        'mobile.is_optimal_layout': isOptimalLayout ? 1 : 0,
+        'mobile.stream_count': streams.length
+      })
+
+      Sentry.addBreadcrumb({
+        message: 'Mobile header rendered',
+        category: 'mobile.header',
+        level: 'info',
+        data: {
+          currentLayout,
+          recommendedLayout,
+          streamCount: streams.length,
+          viewport: `${mobile.screenWidth}x${mobile.screenHeight}`,
+          orientation: mobile.orientation
+        }
+      })
+    }
+  }, [mobile.isMobile, currentLayout, recommendedLayout, isOptimalLayout, streams.length, deviceMetrics])
+  
+
+
+  // Enhanced mobile action handlers with Sentry tracking
+  const handleMobileAction = React.useCallback(async (action: string, callback: () => void | Promise<void>) => {
+    const endInteraction = trackInteraction(`mobile_${action}`, 'header')
+    
+    try {
+      // Track mobile action start
+      if (mobile.isMobile) {
+        StreamMonitor.trackStreamInteraction(
+          `header-${Date.now()}`,
+          'mobile',
+          `header_${action}`
+        )
+      }
+      
+      await trackAsyncOperation(`mobile_${action}`, async () => {
+        await callback()
+      })
+      
+      // Track successful mobile action
+      if (mobile.isMobile) {
+        setCustomMetrics({
+          [`mobile.header_${action}_success`]: 1
+        })
+
+        Sentry.addBreadcrumb({
+          message: `Mobile header action completed: ${action}`,
+          category: 'mobile.header',
+          level: 'info',
+          data: {
+            action,
+            streamCount: streams.length,
+            layout: currentLayout
+          }
+        })
+      }
+      
+    } catch (error) {
+      // Track mobile action errors
+      if (mobile.isMobile && error instanceof Error) {
+        handleMobileLayoutError(error, { action, component: 'Header' })
+        setCustomMetrics({
+          [`mobile.header_${action}_error`]: 1
+        })
+      }
+      console.error(`Header action failed: ${action}`, error)
+    } finally {
+      endInteraction()
+    }
+  }, [mobile.isMobile, currentLayout, streams.length, handleMobileLayoutError, trackInteraction, trackAsyncOperation])
+
+  // Enhanced mobile menu handlers
+  const handleAddStream = React.useCallback(() => {
+    handleMobileAction('add_stream', () => {
+      setShowAddStream(true)
+      trackFeatureUsage('add_stream', { source: 'header' })
+    })
+  }, [handleMobileAction, trackFeatureUsage])
+
+  const handleDiscovery = React.useCallback(() => {
+    handleMobileAction('discovery', () => {
+      setShowDiscovery(true)
+      trackFeatureUsage('discovery', { source: 'header' })
+    })
+  }, [handleMobileAction, trackFeatureUsage])
+
+  const handleMobileMenuToggle = React.useCallback(() => {
+    handleMobileAction('mobile_menu_toggle', () => {
+      setShowMobileMenu(!showMobileMenu)
+      trackMenuItemClick('mobile_menu', { opened: !showMobileMenu })
+    })
+  }, [handleMobileAction, showMobileMenu, trackMenuItemClick])
 
   // Debug logging
   console.log('Header - Clerk state:', { isLoaded, isSignedIn, user: user?.id })
@@ -118,7 +254,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
             <div className="flex items-center gap-1.5 sm:gap-2 md:hidden transition-all duration-300">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
-                    onClick={() => setShowAddStream(true)}
+                    onClick={handleAddStream}
                     size="sm"
                     className="h-10 px-3 sm:px-4 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg border-0 min-w-[44px] touch-manipulation transition-all duration-300 text-responsive-sm"
                     disabled={streams.length >= 16}
@@ -133,11 +269,20 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="flex-shrink-0"
+                  className="flex-shrink-0 relative"
                 >
                   <div className="h-10 flex items-center">
                     <EnhancedLayoutSelector mobile />
                   </div>
+                  {/* Layout optimization indicator */}
+                  {mobile.isMobile && !isOptimalLayout && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-500 rounded-full border border-background"
+                      title="Layout can be optimized for mobile"
+                    />
+                  )}
                 </motion.div>
               )}
 
@@ -146,7 +291,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                     variant="outline"
                     size="sm"
                     className="h-10 w-10 sm:px-3 sm:w-auto border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm min-w-[44px] touch-manipulation transition-all duration-300 text-responsive-sm"
-                    onClick={() => setShowDiscovery(true)}
+                    onClick={handleDiscovery}
                   >
                     <Compass className="h-4 w-4" />
                     <span className="ml-1.5 hidden sm:inline transition-opacity duration-300 text-responsive-sm">{t('header.discover')}</span>
@@ -158,7 +303,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                   variant="ghost"
                   size="sm"
                   className="h-10 w-10 p-0 hover:bg-muted/60 rounded-lg min-w-[44px] touch-manipulation"
-                  onClick={() => setShowMobileMenu(true)}
+                  onClick={handleMobileMenuToggle}
                 >
                   <Menu className="h-4 w-4" />
                 </Button>
@@ -462,6 +607,38 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
                 {/* Layout Controls */}
                 <div className="pt-4 border-t border-border">
                   <div className="text-responsive-sm font-medium mb-3">Layout & Controls</div>
+                  
+                  {/* Mobile Layout Optimization */}
+                  {mobile.isMobile && !isOptimalLayout && streams.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mb-3 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-2 h-2 bg-yellow-500 rounded-full" />
+                        <span className="text-responsive-sm font-medium text-yellow-700 dark:text-yellow-300">
+                          Layout Optimization
+                        </span>
+                      </div>
+                      <p className="text-xs text-yellow-600 dark:text-yellow-400 mb-2">
+                        Your current layout ({currentLayout}) can be optimized for mobile viewing.
+                      </p>
+                      <Button
+                        onClick={() => {
+                          refreshLayout()
+                          setShowMobileMenu(false)
+                          handleMobileAction('optimize_layout', () => {})
+                        }}
+                        size="sm"
+                        variant="outline"
+                        className="w-full h-8 text-xs border-yellow-500/30 hover:border-yellow-500/50 hover:bg-yellow-500/10"
+                      >
+                        Switch to {recommendedLayout}
+                      </Button>
+                    </motion.div>
+                  )}
+                  
                   <div className="space-y-2">
                     <EnhancedLayoutSelector mobile />
                     <SavedLayoutsDialog mobile />
@@ -564,10 +741,17 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               </Button>
               <Button
                 variant="destructive"
-                onClick={() => {
-                  clearAllStreams()
-                  setShowClearConfirm(false)
-                  trackFeatureUsage('clear_all_streams_confirmed')
+                onClick={async () => {
+                  const endInteraction = trackInteraction('clear_all_streams', 'confirmation_dialog')
+                  try {
+                    await trackAsyncOperation('clear_all_streams', async () => {
+                      clearAllStreams()
+                      setShowClearConfirm(false)
+                      trackFeatureUsage('clear_all_streams_confirmed')
+                    })
+                  } finally {
+                    endInteraction()
+                  }
                 }}
               >
                 <Trash2 className="h-4 w-4 mr-2" />

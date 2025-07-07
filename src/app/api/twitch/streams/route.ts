@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { twitchAPI } from '@/lib/twitch/api';
 import { twitchCache } from '@/lib/twitch/cache';
+import { sentryApiMonitor } from '@/lib/sentry-api-monitor';
+import * as Sentry from '@sentry/nextjs';
 
 // Rate limiting with more conservative limits
 const requestCounts = new Map<string, { count: number; resetTime: number }>();
@@ -55,10 +57,20 @@ function checkRateLimit(ip: string): boolean {
 }
 
 export async function POST(request: NextRequest) {
-  try {
-    // Check rate limit
-    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
-    if (!checkRateLimit(ip)) {
+  return await sentryApiMonitor.monitorApiCall(
+    'twitch.streams',
+    'POST',
+    '/api/twitch/streams',
+    async () => {
+      // Check rate limit
+      const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+      const userAgent = request.headers.get('user-agent') || 'unknown';
+      
+      // Add request context to Sentry
+      Sentry.setTag('request.ip', ip);
+      Sentry.setTag('request.user_agent', userAgent.substring(0, 100));
+      
+      if (!checkRateLimit(ip)) {
       const retryAfter = Math.ceil((globalResetTime - Date.now()) / 1000);
       return NextResponse.json(
         { 
@@ -203,40 +215,14 @@ export async function POST(request: NextRequest) {
         },
       }
     );
-  } catch (error: any) {
-    console.error('Twitch API endpoint error:', error);
-    console.error('Error details:', error.message);
-    console.error('Stack:', error.stack);
-    
-    // Try to parse request body for graceful fallback
-    try {
-      const body = await request.json().catch(() => ({ channels: [] }));
-      const channels = body.channels || [];
-      
-      const fallbackResults = channels.map((channel: string) => ({
-        channel: channel.toLowerCase(),
-        isLive: false,
-        data: null
-      }));
-      
-      return NextResponse.json(
-        { 
-          results: fallbackResults,
-          error: 'Twitch service temporarily unavailable'
-        },
-        { status: 200 }
-      );
-    } catch {
-      // If all else fails, return empty results
-      return NextResponse.json(
-        { 
-          results: [],
-          error: 'Service error'
-        },
-        { status: 200 }
-      );
+    },
+    {
+      timeout: 3000,
+      retryCount: 1,
+      expectedDuration: 800,
+      critical: true
     }
-  }
+  );
 }
 
 // OPTIONS for CORS preflight

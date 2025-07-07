@@ -50,6 +50,9 @@ import EnhancedMobileLayout from '@/components/EnhancedMobileLayout'
 import AppLikeMobileLayout from '@/components/AppLikeMobileLayout'
 import MobileFAB from '@/components/MobileFAB'
 import ResponsiveTextDemo from '@/components/ResponsiveTextDemo'
+import MobilePerformanceMonitor from '@/components/MobilePerformanceMonitor'
+import MobileLoadingOptimizer from '@/components/MobileLoadingOptimizer'
+import { useMobileLayoutManager } from '@/hooks/useMobileLayoutManager'
 
 export default function HomePage() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -64,6 +67,12 @@ export default function HomePage() {
   const [isMobile, setIsMobile] = useState(false)
   const { addStream, setGridLayout, streams, gridLayout } = useStreamStore()
   const { trackChatToggle, trackFeatureUsage, trackStreamAdded } = useAnalytics()
+  
+  // Store previous stream count to detect when new streams are added
+  const [prevStreamCount, setPrevStreamCount] = useState(0)
+
+  // Enhanced mobile layout management
+  const mobileLayoutManager = useMobileLayoutManager()
 
   // Mobile gesture support
   const streamGestures = useStreamGestures()
@@ -133,6 +142,16 @@ export default function HomePage() {
     loadStreams()
   }, [])
 
+  // Scroll to top when new streams are added (from landing page)
+  useEffect(() => {
+    if (streams.length > prevStreamCount && prevStreamCount === 0) {
+      // Only scroll if going from 0 streams to 1+ streams (landing page -> stream view)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      setActiveTab('streams') // Ensure we're on the streams tab
+    }
+    setPrevStreamCount(streams.length)
+  }, [streams.length, prevStreamCount])
+
   const faqItems = [
     {
       question: t('faq.howManyStreams.question'),
@@ -190,8 +209,14 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-background mobile-container safari-mobile-scroll" {...(isMobile ? streamGestures.handlers : {})}>
-      <SEOSchema faqs={faqItems} type="WebApplication" />
+    <MobilePerformanceMonitor
+      trackScrollPerformance={mobileLayoutManager.mobile.isMobile}
+      trackTouchPerformance={mobileLayoutManager.mobile.isMobile}
+      trackRenderPerformance={mobileLayoutManager.mobile.isMobile}
+      trackMemoryUsage={mobileLayoutManager.mobile.isMobile}
+    >
+      <div className="flex flex-col min-h-screen bg-background mobile-container safari-mobile-scroll" {...(isMobile ? streamGestures.handlers : {})}>
+        <SEOSchema faqs={faqItems} type="WebApplication" />
       <SEOContent
         keywords={[
           "streamyyy",
@@ -419,5 +444,6 @@ export default function HomePage() {
       {/* Mobile Floating Action Button */}
       {isMobile && streams.length > 0 && <MobileFAB />}
     </div>
+    </MobilePerformanceMonitor>
   );
 }

@@ -1,5 +1,9 @@
 // This file configures the initialization of Sentry on the browser/client side
 import * as Sentry from "@sentry/nextjs";
+import { customSentryIntegrations, beforeSend, beforeSendTransaction } from './src/lib/sentry-custom-integrations';
+import { sentryAdvancedDebugger } from './src/lib/sentry-advanced-debugging';
+import { sentryProfilingReplay } from './src/lib/sentry-profiling-replay';
+import { sentryDebugUtilities } from './src/lib/sentry-debug-utilities';
 
 Sentry.init({
   dsn: "https://cb0c99be8431b823967fd7e441ae7924@o4509628501262336.ingest.us.sentry.io/4509628733390848",
@@ -33,7 +37,7 @@ Sentry.init({
       ignoreClass: 'sentry-ignore',
       // Capture console logs in replays
       networkDetailAllowUrls: [
-        window.location.origin,
+        typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000',
         /^https:\/\/api\.twitch\.tv/,
         /^https:\/\/.*\.youtube\.com/,
         /^https:\/\/.*\.supabase\.co/,
@@ -41,6 +45,17 @@ Sentry.init({
       networkCaptureBodies: true,
       networkRequestHeaders: ['User-Agent', 'Accept', 'Content-Type'],
       networkResponseHeaders: ['Content-Type', 'Content-Length'],
+      
+      // Advanced replay configuration
+      sampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 0.5,
+      errorSampleRate: 1.0,
+      maskTextClass: 'sentry-mask-text',
+      blockClass: 'sentry-block',
+      ignoreClass: 'sentry-ignore',
+      
+      // Privacy controls
+      maskTextSelector: '.password, .credit-card, .sensitive',
+      blockSelector: '.private-content, .admin-panel',
     }),
     
     // Browser Tracing for performance monitoring
@@ -59,12 +74,31 @@ Sentry.init({
       enableLongAnimationFrame: true,
       enableInp: true,
       
+      // Track user interactions
+      tracePropagationTargets: [
+        'localhost',
+        /^https:\/\/streamyyy\.com/,
+        /^https:\/\/.*\.vercel\.app/,
+      ],
+      
       // Disable automatic route change tracking for Next.js (handled by Next.js integration)
       routingInstrumentation: undefined,
+      
+      // Advanced performance monitoring
+      markBackgroundTransactions: true,
+      enableLongTask: true,
+      enableUserTiming: true,
     }),
     
-    // Browser Profiling
-    Sentry.browserProfilingIntegration(),
+    // Browser Profiling with enhanced configuration
+    Sentry.browserProfilingIntegration({
+      // Sample rate for profiling
+      profilesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+      
+      // Advanced profiling options
+      captureNumFrames: 100,
+      maxProfileDurationMs: 30000,
+    }),
     
     // Feedback integration for user reports
     Sentry.feedbackIntegration({
@@ -89,17 +123,41 @@ Sentry.init({
         border: '#d1d5db',
         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
       },
+      
+      // Enhanced feedback options
+      isNameRequired: false,
+      isEmailRequired: false,
+      showName: true,
+      showEmail: true,
+      useSentryUser: {
+        name: 'displayName',
+        email: 'email',
+      },
     }),
     
     // Context Lines for better stack traces
-    Sentry.contextLinesIntegration(),
+    Sentry.contextLinesIntegration({
+      frameContextLines: 10,
+    }),
     
     // HTTP Context for request details
-    Sentry.httpContextIntegration(),
+    Sentry.httpContextIntegration({
+      keys: ['url', 'method', 'headers', 'cookies', 'query_string'],
+    }),
+    
+    // Metrics integration for custom metrics
+    Sentry.metricsIntegration(),
+    
+    // Custom integrations for advanced monitoring
+    ...customSentryIntegrations,
   ],
   
   // Advanced error filtering with comprehensive insights
-  beforeSend(event, hint) {
+  beforeSend: beforeSend,
+  beforeSendTransaction: beforeSendTransaction,
+  
+  // Legacy beforeSend for additional processing
+  _beforeSend(event, hint) {
     // Capture comprehensive debugging context
     const originalError = hint.originalException;
     
@@ -269,3 +327,53 @@ Sentry.init({
     /^http:\/\/127\.0\.0\.1/,
   ],
 });
+
+// Initialize advanced debugging features
+if (typeof window !== 'undefined') {
+  // Initialize advanced debugger
+  sentryAdvancedDebugger.enableDebugMode();
+  
+  // Initialize profiling and replay
+  sentryProfilingReplay.startReplay();
+  
+  // Initialize debug utilities in development
+  if (process.env.NODE_ENV === 'development') {
+    sentryDebugUtilities.exposeGlobalDebugAPI();
+    sentryDebugUtilities.startPerformanceMonitoring();
+    sentryDebugUtilities.enableRealTimeMonitoring();
+  }
+  
+  // Set up error boundary for unhandled errors
+  window.addEventListener('error', (event) => {
+    sentryAdvancedDebugger.captureAdvancedError(event.error, {
+      level: 'error',
+      tags: { source: 'window.error' },
+      extra: { 
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno
+      }
+    });
+  });
+  
+  // Set up unhandled promise rejection handler
+  window.addEventListener('unhandledrejection', (event) => {
+    sentryAdvancedDebugger.captureAdvancedError(
+      new Error(`Unhandled Promise Rejection: ${event.reason}`), 
+      {
+        level: 'error',
+        tags: { source: 'unhandled.promise' },
+        extra: { reason: event.reason }
+      }
+    );
+  });
+  
+  // Track page load performance
+  if (document.readyState === 'complete') {
+    sentryAdvancedDebugger.trackPageLoad(window.location.pathname);
+  } else {
+    window.addEventListener('load', () => {
+      sentryAdvancedDebugger.trackPageLoad(window.location.pathname);
+    });
+  }
+}
