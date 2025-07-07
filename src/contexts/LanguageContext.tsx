@@ -5,7 +5,7 @@ import { useLanguage } from '@/hooks/useLanguage'
 
 // Create the context
 const LanguageContext = createContext<{
-  t: (key: string, fallback?: string) => string
+  t: (key: string, params?: Record<string, any> | string) => string
   currentLanguage: string
   changeLanguage: (languageCode: string) => Promise<void>
   isLoaded: boolean

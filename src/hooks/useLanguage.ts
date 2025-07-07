@@ -102,9 +102,9 @@ export function useLanguage() {
   }
 
   // Translation function that looks up translations from loaded files
-  const t = (key: string, fallback?: string): string => {
+  const t = (key: string, params?: Record<string, any> | string): string => {
     if (!translations || Object.keys(translations).length === 0) {
-      return fallback || key
+      return typeof params === 'string' ? params : key
     }
 
     // Navigate through nested keys (e.g., "header.addStream")
@@ -116,11 +116,31 @@ export function useLanguage() {
         value = value[k]
       } else {
         // Key not found, return fallback or key
-        return fallback || key
+        return typeof params === 'string' ? params : key
       }
     }
 
-    return typeof value === 'string' ? value : (fallback || key)
+    if (typeof value !== 'string') {
+      return typeof params === 'string' ? params : key
+    }
+
+    // Handle interpolation if params is an object
+    if (params && typeof params === 'object') {
+      let result = value
+      Object.entries(params).forEach(([paramKey, paramValue]) => {
+        // Handle both {{key}} and {key} patterns
+        const patterns = [
+          new RegExp(`\{\{${paramKey}\}\}`, 'g'),
+          new RegExp(`\{${paramKey}\}`, 'g')
+        ]
+        patterns.forEach(pattern => {
+          result = result.replace(pattern, String(paramValue || ''))
+        })
+      })
+      return result
+    }
+
+    return value
   }
 
   return {
