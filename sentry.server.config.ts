@@ -13,9 +13,9 @@ Sentry.init({
            process.env.npm_package_version ||
            'unknown',
   
-  // Performance monitoring - adjust for production
-  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
-  profilesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+  // Performance monitoring - maximized for insights
+  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.3 : 1.0,
+  profilesSampleRate: process.env.NODE_ENV === 'production' ? 0.3 : 1.0,
   
   // Server-side integrations
   integrations: [
@@ -27,17 +27,74 @@ Sentry.init({
     // Spotlight disabled to avoid connection issues
   ],
   
-  // Enhanced server-side error filtering - temporarily disabled for debugging
+  // Enhanced server-side error filtering with comprehensive insights
   beforeSend(event, hint) {
-    // Allow all errors for debugging purposes
-    console.log('🔍 Sentry capturing error:', event.exception?.values?.[0]?.value);
+    console.log('🔍 Sentry capturing server error:', event.exception?.values?.[0]?.value);
     
-    // Only filter out these specific noisy errors
+    // Add comprehensive server-side error categorization
     if (event.exception) {
       const error = event.exception.values?.[0];
       const errorMessage = error?.value || '';
       
-      // Minimal filtering for debugging
+      // API endpoint categorization
+      if (event.request?.url) {
+        const url = event.request.url;
+        event.tags = {
+          ...event.tags,
+          'api.endpoint': url.split('?')[0],
+          'api.hasQuery': url.includes('?').toString(),
+        };
+        
+        // Specific API categorization
+        if (url.includes('/twitch/')) {
+          event.tags = {
+            ...event.tags,
+            'api.service': 'twitch',
+            'api.category': 'streaming',
+          };
+        } else if (url.includes('/stripe/')) {
+          event.tags = {
+            ...event.tags,
+            'api.service': 'stripe',
+            'api.category': 'payment',
+          };
+        } else if (url.includes('/supabase/') || url.includes('/auth/')) {
+          event.tags = {
+            ...event.tags,
+            'api.service': 'supabase',
+            'api.category': 'database',
+          };
+        }
+      }
+      
+      // Error type categorization
+      if (errorMessage.includes('timeout') || errorMessage.includes('ETIMEDOUT')) {
+        event.tags = {
+          ...event.tags,
+          'error.category': 'timeout',
+          'error.network': 'true',
+        };
+      } else if (errorMessage.includes('rate limit') || errorMessage.includes('429')) {
+        event.tags = {
+          ...event.tags,
+          'error.category': 'rate_limit',
+          'error.external': 'true',
+        };
+      } else if (errorMessage.includes('database') || errorMessage.includes('SQL')) {
+        event.tags = {
+          ...event.tags,
+          'error.category': 'database',
+          'error.data': 'true',
+        };
+      } else if (errorMessage.includes('validation') || errorMessage.includes('invalid')) {
+        event.tags = {
+          ...event.tags,
+          'error.category': 'validation',
+          'error.input': 'true',
+        };
+      }
+      
+      // Minimal filtering for maximum insights
       const criticalIgnored = [
         'ECONNRESET',
         'socket hang up',

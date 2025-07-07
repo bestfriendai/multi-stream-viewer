@@ -12,9 +12,29 @@ interface SentryHookOptions {
 }
 
 export function useSentry(options: SentryHookOptions = {}) {
-  const { user, isLoaded } = useUser();
+  // Safely handle Clerk during SSR/Static Generation
+  let user = null;
+  let isLoaded = false;
+  
+  try {
+    const userData = useUser();
+    user = userData.user;
+    isLoaded = userData.isLoaded;
+  } catch (error) {
+    // Clerk not available during SSR/Static Generation - this is expected
+    console.log('Clerk not available during SSR/Static Generation');
+  }
+  
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  
+  // Safely handle search params during SSR/Static Generation
+  let searchParams;
+  try {
+    searchParams = useSearchParams();
+  } catch (error) {
+    // useSearchParams not available during SSR/Static Generation
+    searchParams = null;
+  }
   const performanceObserverRef = useRef<PerformanceObserver | null>(null);
   const navigationStartTime = useRef<number>(Date.now());
 
@@ -55,7 +75,8 @@ export function useSentry(options: SentryHookOptions = {}) {
   useEffect(() => {
     if (!enableNavigationTracking) return;
 
-    const url = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+    const searchString = searchParams?.toString() || '';
+    const url = `${pathname}${searchString ? `?${searchString}` : ''}`;
     
     // Add navigation breadcrumb
     Sentry.addBreadcrumb({
@@ -64,7 +85,7 @@ export function useSentry(options: SentryHookOptions = {}) {
       level: 'info',
       data: {
         pathname,
-        search: searchParams.toString(),
+        search: searchString,
         timestamp: new Date().toISOString(),
       },
     });
@@ -175,9 +196,9 @@ export function useSentry(options: SentryHookOptions = {}) {
       },
       extra: {
         pathname,
-        searchParams: searchParams.toString(),
+        searchParams: searchParams?.toString() || '',
         timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent,
+        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
         ...context?.extra,
       },
       level: context?.level || 'error',
@@ -252,10 +273,10 @@ export function useSentry(options: SentryHookOptions = {}) {
       Sentry.setMeasurement(`${name}_items`, context.itemCount, 'none');
     }
 
-    const transaction = Sentry.startTransaction({
+    const span = Sentry.startInactiveSpan({
       name: `Performance: ${name}`,
       op: 'custom.performance',
-      tags: {
+      attributes: {
         'performance.operation': name,
         'performance.success': context?.success ? 'true' : 'false',
         'page.pathname': pathname,
@@ -263,8 +284,8 @@ export function useSentry(options: SentryHookOptions = {}) {
       },
     });
 
-    transaction.setMeasurement('duration', duration, 'millisecond');
-    transaction.finish();
+    Sentry.setMeasurement('duration', duration, 'millisecond');
+    span.end();
   }, [pathname]);
 
   // Custom message tracking
@@ -281,7 +302,7 @@ export function useSentry(options: SentryHookOptions = {}) {
       },
       extra: {
         pathname,
-        searchParams: searchParams.toString(),
+        searchParams: searchParams?.toString() || '',
         timestamp: new Date().toISOString(),
         ...context?.extra,
       },

@@ -21,10 +21,10 @@ export function withSentry<T extends any[]>(
     const pathname = url ? new URL(url).pathname : 'unknown';
     
     // Start transaction
-    const transaction = Sentry.startTransaction({
+    const transaction = Sentry.startInactiveSpan({
       name: options?.name || `API ${method} ${pathname}`,
       op: 'http.server',
-      tags: {
+      attributes: {
         'http.method': method || 'unknown',
         'http.url': pathname,
         'request.id': requestId,
@@ -84,8 +84,8 @@ export function withSentry<T extends any[]>(
       const duration = Date.now() - startTime;
       const status = result.status;
       
-      transaction.setTag('http.status_code', status.toString());
-      transaction.setTag('response.time', `${duration}ms`);
+      Sentry.setTag('http.status_code', status.toString());
+      Sentry.setTag('response.time', `${duration}ms`);
       
       // Add response breadcrumb
       Sentry.addBreadcrumb({
@@ -126,8 +126,7 @@ export function withSentry<T extends any[]>(
         level: 'error',
       });
       
-      transaction.setTag('error', 'true');
-      transaction.setStatus('internal_error');
+      Sentry.setTag('error', 'true');
       
       // Return appropriate error response
       return NextResponse.json(
@@ -142,7 +141,7 @@ export function withSentry<T extends any[]>(
       );
       
     } finally {
-      transaction.finish();
+      transaction.end();
     }
   };
 }
@@ -186,10 +185,10 @@ export function trackStreamPerformance(
     success?: boolean;
   }
 ) {
-  const transaction = Sentry.startTransaction({
+  const transaction = Sentry.startInactiveSpan({
     name: `Stream ${operation}`,
     op: 'stream.operation',
-    tags: {
+    attributes: {
       'stream.platform': context.platform || 'unknown',
       'stream.operation': operation,
       'stream.success': context.success ? 'true' : 'false',
@@ -197,13 +196,13 @@ export function trackStreamPerformance(
   });
   
   if (context.streamCount) {
-    transaction.setTag('stream.count', context.streamCount.toString());
+    Sentry.setTag('stream.count', context.streamCount.toString());
     Sentry.setMeasurement('stream_count', context.streamCount, 'none');
   }
   
   Sentry.setMeasurement(`${operation}_duration`, duration, 'millisecond');
   
-  transaction.finish();
+  transaction.end();
 }
 
 // User interaction tracking

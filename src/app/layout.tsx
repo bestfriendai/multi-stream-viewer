@@ -17,6 +17,7 @@ import Footer from "@/components/Footer";
 import DynamicLang from "@/components/DynamicLang";
 import { MobileLayoutProvider } from "@/contexts/MobileLayoutContext";
 import { SafariDebugProvider } from "@/components/SafariDebugProvider";
+import SentryProvider from "@/components/SentryProvider";
 
 
 const geistSans = Geist({
@@ -230,20 +231,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased safari-mobile-fix`}
       >
-        <ClerkProvider>
-          <SupabaseProvider>
-            <LanguageProvider>
-              <MobileLayoutProvider>
-                <SafariDebugProvider>
-                  <DynamicLang />
-                  <AutoSyncInitializer />
-                  <GoogleAnalytics />
-                  <ThemeProvider
-                    attribute="class"
-                    defaultTheme="dark"
-                    enableSystem
-                    disableTransitionOnChange
-                  >
+        <SentryProvider enableFeedback={true} enableSpotlight={process.env.NODE_ENV === 'development'}>
+          <ClerkProvider>
+            <SupabaseProvider>
+              <LanguageProvider>
+                <MobileLayoutProvider>
+                  <SafariDebugProvider>
+                    <DynamicLang />
+                    <AutoSyncInitializer />
+                    <GoogleAnalytics />
+                    <ThemeProvider
+                      attribute="class"
+                      defaultTheme="dark"
+                      enableSystem
+                      disableTransitionOnChange
+                    >
                     <div className="flex flex-col min-h-screen">
                       {children}
                       <Footer />
@@ -256,6 +258,7 @@ export default function RootLayout({
             </LanguageProvider>
           </SupabaseProvider>
         </ClerkProvider>
+        </SentryProvider>
       </body>
     </html>
   );

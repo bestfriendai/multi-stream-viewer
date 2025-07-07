@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, ReactNode } from 'react';
 import * as Sentry from "@sentry/nextjs";
 import { useSentry } from '@/hooks/useSentry';
 import { setPerformanceContext } from '@/lib/sentry-wrapper';
+import { initializeSentryInsights } from '@/lib/sentry-insights';
 
 interface SentryContextType {
   captureError: (error: Error, context?: any) => void;
@@ -35,6 +36,9 @@ export function SentryProvider({
   });
 
   useEffect(() => {
+    // Initialize comprehensive Sentry insights
+    initializeSentryInsights();
+    
     // Set up performance context
     setPerformanceContext();
 

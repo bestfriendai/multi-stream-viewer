@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 import { useStreamError, StreamErrorHandler } from '@/lib/streamErrorHandler'
 import { useMuteState, muteManager } from '@/lib/muteManager'
 import { useTranslation } from '@/contexts/LanguageContext'
+import { StreamMonitor, UserJourneyTracker } from '@/lib/sentry-insights'
 
 interface StreamEmbedProps {
   stream: Stream
@@ -50,6 +51,17 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
   
   useEffect(() => {
     if (!embedRef.current) return
+    
+    // Track stream load start time for performance monitoring
+    const loadStartTime = Date.now()
+    
+    // Track user journey
+    const journey = UserJourneyTracker.getInstance()
+    journey.trackAction('stream_embed_start', { 
+      streamId: stream.id, 
+      platform: stream.platform, 
+      channelName: stream.channelName 
+    })
     
     // Clear previous content
     embedRef.current.innerHTML = ''
@@ -93,6 +105,15 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
           
           embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
             playerRef.current = embed.getPlayer()
+            
+            // Track successful stream load
+            StreamMonitor.trackStreamLoad(stream.id, stream.platform, loadStartTime)
+            journey.trackAction('stream_embed_ready', { 
+              streamId: stream.id, 
+              platform: stream.platform,
+              loadTime: Date.now() - loadStartTime
+            })
+            
             // Register with mute manager
             if (playerRef.current) {
               muteManager.registerPlayer(stream.id, playerRef.current, 'twitch')
@@ -101,6 +122,9 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
           
           // Handle offline streams and errors
           embed.addEventListener(window.Twitch.Embed.OFFLINE, () => {
+            const error = new Error('Stream is offline')
+            StreamMonitor.trackStreamError(stream.id, stream.platform, error)
+            
             registerError({
               type: 'offline',
               message: 'Stream is offline',
@@ -216,21 +240,37 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
   const handleMuteToggle = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
+    
+    // Track interaction
+    StreamMonitor.trackStreamInteraction(stream.id, stream.platform, streamMuted ? 'unmute' : 'mute')
+    
     toggleMute()
   }
   
   const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation()
+    
+    // Track interaction
+    StreamMonitor.trackStreamInteraction(stream.id, stream.platform, 'close')
+    
     removeStream(stream.id)
   }
   
   const handleMaximize = (e: React.MouseEvent) => {
     e.stopPropagation()
+    
+    // Track interaction
+    StreamMonitor.trackStreamInteraction(stream.id, stream.platform, 'maximize')
+    
     setPrimaryStream(stream.id)
   }
   
   const handleFullscreen = (e: React.MouseEvent) => {
     e.stopPropagation()
+    
+    // Track interaction
+    StreamMonitor.trackStreamInteraction(stream.id, stream.platform, 'fullscreen')
+    
     if (embedRef.current) {
       if (embedRef.current.requestFullscreen) {
         embedRef.current.requestFullscreen()

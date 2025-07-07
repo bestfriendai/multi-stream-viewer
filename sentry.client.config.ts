@@ -13,12 +13,12 @@ Sentry.init({
            process.env.npm_package_version ||
            'unknown',
   
-  // Performance monitoring - adjust for production
-  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
-  profilesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+  // Performance monitoring - maximized for insights
+  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.3 : 1.0,
+  profilesSampleRate: process.env.NODE_ENV === 'production' ? 0.3 : 1.0,
   
-  // Session Replay configuration
-  replaysSessionSampleRate: process.env.NODE_ENV === 'production' ? 0.01 : 0.1,
+  // Session Replay configuration - maximized for debugging
+  replaysSessionSampleRate: process.env.NODE_ENV === 'production' ? 0.05 : 0.3,
   replaysOnErrorSampleRate: 1.0,
   
   // Comprehensive integrations
@@ -98,40 +98,58 @@ Sentry.init({
     Sentry.httpContextIntegration(),
   ],
   
-  // Advanced error filtering
+  // Advanced error filtering with comprehensive insights
   beforeSend(event, hint) {
-    // Filter out common false positives
+    // Capture comprehensive debugging context
+    const originalError = hint.originalException;
+    
+    // Add detailed error context
     if (event.exception) {
       const error = event.exception.values?.[0];
       const errorMessage = error?.value || '';
       
-      // Common browser errors to ignore
-      const ignoredErrors = [
-        'Non-Error promise rejection',
-        'ResizeObserver loop limit exceeded',
-        'ResizeObserver loop completed with undelivered notifications',
-        'Script error',
-        'Network request failed',
-        'Failed to fetch',
-        'Load failed',
-        'The operation was aborted',
-        'AbortError',
-        'ChunkLoadError',
-        'Loading chunk',
-        'Loading CSS chunk',
-        'NetworkError',
-        'The request timed out',
-        'Timeout',
-        // Stream-specific errors that are expected
-        'Twitch embed failed to load',
-        'YouTube embed failed to load',
-        'Stream is offline',
-        'Stream not found',
-      ];
-      
-      if (ignoredErrors.some(ignored => errorMessage.includes(ignored))) {
-        return null;
+      // Stream-specific error categorization
+      if (errorMessage.includes('Twitch') || errorMessage.includes('YouTube')) {
+        event.tags = {
+          ...event.tags,
+          'error.category': 'stream_embed',
+          'error.platform': errorMessage.includes('Twitch') ? 'twitch' : 'youtube',
+        };
       }
+      
+      // API error categorization
+      if (errorMessage.includes('API') || errorMessage.includes('fetch')) {
+        event.tags = {
+          ...event.tags,
+          'error.category': 'api',
+          'error.network': 'true',
+        };
+      }
+      
+      // UI/UX error categorization
+      if (errorMessage.includes('render') || errorMessage.includes('component')) {
+        event.tags = {
+          ...event.tags,
+          'error.category': 'ui',
+          'error.component': 'true',
+        };
+      }
+      
+      // Performance error categorization
+      if (errorMessage.includes('timeout') || errorMessage.includes('slow') || errorMessage.includes('memory')) {
+        event.tags = {
+          ...event.tags,
+          'error.category': 'performance',
+          'error.performance': 'true',
+        };
+      }
+      
+      // Only filter out these critical false positives
+      const criticalIgnored = [
+        'ResizeObserver loop limit exceeded',
+        'Script error',
+        'Non-Error promise rejection',
+      ];
       
       // Filter out errors from browser extensions
       if (error?.stacktrace?.frames?.some((frame: any) => 
@@ -141,19 +159,45 @@ Sentry.init({
       )) {
         return null;
       }
+      
+      if (criticalIgnored.some(ignored => errorMessage.includes(ignored))) {
+        return null;
+      }
     }
     
-    // Add additional context
+    // Add comprehensive debugging context
+    const viewport = `${window.innerWidth}x${window.innerHeight}`;
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth > 768 && window.innerWidth <= 1024;
+    const deviceType = isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop';
+    
     event.tags = {
       ...event.tags,
+      // Device & Browser Context
       userAgent: navigator.userAgent,
-      viewport: `${window.innerWidth}x${window.innerHeight}`,
+      viewport,
       screen: `${screen.width}x${screen.height}`,
+      deviceType,
+      isMobile: isMobile.toString(),
+      isTablet: isTablet.toString(),
       connection: (navigator as any).connection?.effectiveType || 'unknown',
       language: navigator.language,
       platform: navigator.platform,
-      cookieEnabled: navigator.cookieEnabled,
-      onLine: navigator.onLine,
+      cookieEnabled: navigator.cookieEnabled.toString(),
+      onLine: navigator.onLine.toString(),
+      
+      // App-specific context
+      page: window.location.pathname,
+      hash: window.location.hash,
+      search: window.location.search,
+      
+      // Performance context
+      loadTime: performance.timing ? 
+        (performance.timing.loadEventEnd - performance.timing.navigationStart).toString() : 'unknown',
+      
+      // Stream-specific context
+      streamsCount: document.querySelectorAll('[data-stream-id]').length.toString(),
+      hasStreams: (document.querySelectorAll('[data-stream-id]').length > 0).toString(),
     };
     
     // Add performance context
