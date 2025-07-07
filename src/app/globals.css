@@ -719,12 +719,41 @@ body.force-desktop-mode .stream-grid {
   }
 
   /* Mobile streams are always full width and stacked vertically */
-  .stream-grid[data-count] > * {
-    width: 100vw !important;
+  .stream-grid.mobile-stack-layout,
+  .stream-grid[data-mobile="true"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+  }
+
+  .stream-grid.mobile-stack-layout > *,
+  .stream-grid[data-mobile="true"] > * {
+    width: 100% !important;
     aspect-ratio: 16 / 9 !important;
     min-height: 200px !important;
     max-height: 300px !important;
-    margin-left: calc(-50vw + 50%) !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+  }
+
+  /* Override any grid-specific classes on mobile */
+  @media (max-width: 768px) {
+    .stream-grid.grid-cols-2,
+    .stream-grid.grid-cols-3,
+    .stream-grid.grid-cols-4,
+    .stream-grid[class*="grid-cols-"] {
+      display: flex !important;
+      flex-direction: column !important;
+      grid-template-columns: none !important;
+    }
   }
 
   /* Add mobile layout indicator */

@@ -20,17 +20,10 @@ import '@/styles/layout-modes.css'
 const calculateGridConfig = (count: number, gridLayout?: GridLayout, isMobile?: boolean) => {
   if (count === 0) return { cols: 1, rows: 1, class: 'grid-cols-1' }
   
-  // Mobile-optimized layouts - Use square aspect ratios for better space utilization
+  // Mobile-optimized layouts - Force single column stack for better mobile experience
   if (isMobile) {
-    if (count === 1) return { cols: 1, rows: 1, class: 'mobile-grid-single' }
-    if (count === 2) return { cols: 2, rows: 1, class: 'mobile-grid-2x1-square' }
-    if (count === 3) return { cols: 3, rows: 1, class: 'mobile-grid-3x1-square' }
-    if (count === 4) return { cols: 2, rows: 2, class: 'mobile-grid-2x2-square' }
-    if (count <= 6) return { cols: 2, rows: 3, class: 'mobile-grid-2x3-square' }
-    if (count <= 9) return { cols: 3, rows: 3, class: 'mobile-grid-3x3-square' }
-    if (count <= 16) return { cols: 4, rows: 4, class: 'mobile-grid-4x4-square' }
-    // For 17+ streams, use scrollable 4-column grid with optimized sizing
-    return { cols: 4, rows: Math.ceil(count / 4), class: 'mobile-grid-4-col-square' }
+    // Always use single column stack layout on mobile for better usability
+    return { cols: 1, rows: count, class: 'mobile-stack-layout grid-cols-1' }
   }
   
   // Handle specific layout requests first
@@ -479,7 +472,7 @@ const StreamGrid: React.FC = React.memo(() => {
         onPanEnd={handlePanEnd}
         className={cn(
           'stream-grid w-full',
-          isMosaicLayout ? getMosaicClasses() : `grid ${gridConfig.class}`,
+          isMosaicLayout ? getMosaicClasses() : isMobileDevice() ? 'mobile-stack-layout' : `grid ${gridConfig.class}`,
           'touch-pan-y',
           isMobileDevice() ? 'touch-pan-x mobile-stream-grid' : '',
           isMosaicLayout ? 'h-full' : !isMobileDevice() ? 'min-h-full relative gap-2 p-2' : '',

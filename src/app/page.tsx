@@ -299,26 +299,25 @@ export default function HomePage() {
                   <>
                     <StreamStatusBar />
                     <div className="flex-1 p-0">
-                      {/* Route to appropriate component based on device and layout */}
+                      {/* Route to appropriate component based on layout */}
                       {(() => {
-                        // Use EnhancedMobileLayout for mobile devices
-                        if (isMobile) {
-                          return <EnhancedMobileLayout />
-                        }
-
-                        // Desktop routing
+                        // Route based on layout type, not device
                         switch (gridLayout) {
                           case 'custom':
                             return <BentoStreamGrid />
                           case 'focus':
                             return <StreamGrid />
                           case 'pip':
-                            return <EnhancedMobileLayout />
+                            return <StreamGrid />
                           case 'stacked':
                             return <StreamGrid />
                           case 'mosaic':
                             return <StreamGrid />
+                          case 'carousel':
+                            // Only use EnhancedMobileLayout for carousel mode
+                            return isMobile ? <EnhancedMobileLayout /> : <StreamGrid />
                           default:
+                            // Use StreamGrid for all default cases - it has built-in mobile handling
                             return <StreamGrid />
                         }
                       })()}
