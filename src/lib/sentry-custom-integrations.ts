@@ -19,8 +19,8 @@ export class StreamMonitoringIntegration implements Integration {
     totalViewTime: number
   }> = new Map()
 
-  setupOnce(addGlobalEventProcessor: (callback: (event: Event, hint?: EventHint) => Event | null) => void) {
-    addGlobalEventProcessor((event: Event, hint?: EventHint) => {
+  setupOnce() {
+    Sentry.addEventProcessor((event: Event, hint?: EventHint) => {
       // Add stream context to all events
       if (this.streamMetrics.size > 0) {
         event.contexts = event.contexts || {}
@@ -125,8 +125,8 @@ export class APIPerformanceIntegration implements Integration {
     lastCall: number
   }> = new Map()
 
-  setupOnce(addGlobalEventProcessor: (callback: (event: Event, hint?: EventHint) => Event | null) => void) {
-    addGlobalEventProcessor((event: Event, hint?: EventHint) => {
+  setupOnce() {
+    Sentry.addEventProcessor((event: Event, hint?: EventHint) => {
       // Add API performance context
       if (this.apiMetrics.size > 0) {
         event.contexts = event.contexts || {}
@@ -215,8 +215,8 @@ export class UserJourneyIntegration implements Integration {
 
   private sessionStart: number = Date.now()
 
-  setupOnce(addGlobalEventProcessor: (callback: (event: Event, hint?: EventHint) => Event | null) => void) {
-    addGlobalEventProcessor((event: Event, hint?: EventHint) => {
+  setupOnce() {
+    Sentry.addEventProcessor((event: Event, hint?: EventHint) => {
       // Add user journey context to all events
       event.contexts = event.contexts || {}
       event.contexts.user_journey = {
@@ -277,8 +277,8 @@ export class ErrorFilteringIntegration implements Integration {
   private errorCounts: Map<string, number> = new Map()
   private readonly maxErrorsPerType = 10 // Max same errors per session
 
-  setupOnce(addGlobalEventProcessor: (callback: (event: Event, hint?: EventHint) => Event | null) => void) {
-    addGlobalEventProcessor((event: Event, hint?: EventHint) => {
+  setupOnce() {
+    Sentry.addEventProcessor((event: Event, hint?: EventHint) => {
       // Filter out known spam errors
       if (this.shouldFilterError(event)) {
         return null
@@ -344,7 +344,7 @@ export class PerformanceSamplingIntegration implements Integration {
 
   setupOnce() {
     // Dynamic sampling based on performance impact
-    Sentry.configureScope((scope) => {
+    Sentry.withScope((scope) => {
       // Sample more frequently for slow devices
       const isSlowDevice = this.detectSlowDevice()
       const sampleRate = isSlowDevice ? 0.3 : 0.1
@@ -379,8 +379,8 @@ export class DataEnrichmentIntegration implements Integration {
   public static id = 'DataEnrichment'
   public name = DataEnrichmentIntegration.id
 
-  setupOnce(addGlobalEventProcessor: (callback: (event: Event, hint?: EventHint) => Event | null) => void) {
-    addGlobalEventProcessor((event: Event, hint?: EventHint) => {
+  setupOnce() {
+    Sentry.addEventProcessor((event: Event, hint?: EventHint) => {
       // Enrich all events with additional context
       event.contexts = event.contexts || {}
       

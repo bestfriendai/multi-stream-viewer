@@ -1,12 +1,12 @@
 // This file configures the initialization of Sentry on the browser/client side
 import * as Sentry from "@sentry/nextjs";
 import { customSentryIntegrations, beforeSend, beforeSendTransaction } from './src/lib/sentry-custom-integrations';
-import { sentryAdvancedDebugger } from './src/lib/sentry-advanced-debugging';
-import { sentryProfilingReplay } from './src/lib/sentry-profiling-replay';
-import { sentryDebugUtilities } from './src/lib/sentry-debug-utilities';
-import { sentryUptimeMonitor } from './src/lib/sentry-uptime-monitoring';
-import { sentryCronMonitor } from './src/lib/sentry-cron-monitoring';
-import { sentryAttachments, attachmentUtils } from './src/lib/sentry-attachments';
+// import { sentryAdvancedDebugger } from './src/lib/sentry-advanced-debugging';
+// import { sentryProfilingReplay } from './src/lib/sentry-profiling-replay';
+// import { sentryDebugUtilities } from './src/lib/sentry-debug-utilities';
+// import { sentryUptimeMonitor } from './src/lib/sentry-uptime-monitoring';
+// import { sentryCronMonitor } from './src/lib/sentry-cron-monitoring';
+// import { sentryAttachments, attachmentUtils } from './src/lib/sentry-attachments';
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -155,8 +155,8 @@ Sentry.init({
       keys: ['url', 'method', 'headers', 'cookies', 'query_string'],
     }),
     
-    // Metrics integration for custom metrics
-    Sentry.metricsIntegration(),
+    // Metrics integration for custom metrics (disabled - not available in current SDK version)
+    // Sentry.metricsIntegration(),
     
     // Custom integrations for advanced monitoring
     ...customSentryIntegrations,
@@ -340,6 +340,10 @@ Sentry.init({
 
 // Initialize advanced debugging features
 if (typeof window !== 'undefined') {
+  // Advanced debugging temporarily disabled due to SDK compatibility issues
+  // TODO: Update advanced debugging modules to use Sentry SDK v8 APIs
+  
+  /*
   // Initialize advanced debugger
   sentryAdvancedDebugger.enableDebugMode();
   
@@ -352,22 +356,11 @@ if (typeof window !== 'undefined') {
     sentryDebugUtilities.startPerformanceMonitoring();
     sentryDebugUtilities.enableRealTimeMonitoring();
   }
+  */
   
-  // Initialize uptime monitoring (auto-configured in the uptime monitoring file)
-  // The uptime monitor auto-initializes and sets up default checks
-  
-  // Set up error boundary for unhandled errors
+  // Set up basic error boundary for unhandled errors
   window.addEventListener('error', (event) => {
-    // Attach comprehensive debug context for critical errors
-    attachmentUtils.attachFullDebugContext(event.error, {
-      filename: event.filename,
-      lineno: event.lineno,
-      colno: event.colno,
-      source: 'window.error'
-    });
-    
-    sentryAdvancedDebugger.captureAdvancedError(event.error, {
-      level: 'error',
+    Sentry.captureException(event.error, {
       tags: { source: 'window.error' },
       extra: { 
         filename: event.filename,
@@ -380,26 +373,9 @@ if (typeof window !== 'undefined') {
   // Set up unhandled promise rejection handler
   window.addEventListener('unhandledrejection', (event) => {
     const error = new Error(`Unhandled Promise Rejection: ${event.reason}`)
-    
-    // Attach debug context for promise rejections
-    attachmentUtils.attachMinimalDebugInfo(error, { 
-      reason: event.reason,
-      source: 'unhandled.promise'
-    });
-    
-    sentryAdvancedDebugger.captureAdvancedError(error, {
-      level: 'error',
+    Sentry.captureException(error, {
       tags: { source: 'unhandled.promise' },
       extra: { reason: event.reason }
     });
   });
-  
-  // Track page load performance
-  if (document.readyState === 'complete') {
-    sentryAdvancedDebugger.trackPageLoad(window.location.pathname);
-  } else {
-    window.addEventListener('load', () => {
-      sentryAdvancedDebugger.trackPageLoad(window.location.pathname);
-    });
-  }
 }
