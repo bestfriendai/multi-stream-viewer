@@ -53,7 +53,6 @@ import ResponsiveTextDemo from '@/components/ResponsiveTextDemo'
 import MobilePerformanceMonitor from '@/components/MobilePerformanceMonitor'
 import MobileLoadingOptimizer from '@/components/MobileLoadingOptimizer'
 import { useMobileLayoutManager } from '@/hooks/useMobileLayoutManager'
-import SentryTestButton from '@/components/SentryTestButton'
 
 export default function HomePage() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -381,7 +380,6 @@ export default function HomePage() {
             <TabsContent value="features" className="flex-1 overflow-y-auto p-4">
               <ErrorBoundary>
                 <div className="space-y-8">
-                  <SentryTestButton />
                   <ResponsiveTextDemo />
                   <FeaturesShowcase />
                 </div>
