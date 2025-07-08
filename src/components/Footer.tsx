@@ -12,9 +12,22 @@ import { Github, Twitter, MessageCircle, Mail } from 'lucide-react';
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const pathname = usePathname();
-  const { t } = useTranslation();
+  const { t, isLoaded: translationsLoaded } = useTranslation();
 
   const { createLocalePath } = useLocaleNavigation();
+
+  // Don't render until translations are loaded
+  if (!translationsLoaded) {
+    return (
+      <footer className="border-t border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mt-auto">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center">
+            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        </div>
+      </footer>
+    )
+  }
 
   return (
     <footer className="border-t border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mt-auto">

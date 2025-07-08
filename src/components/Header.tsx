@@ -56,7 +56,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
 
   const { streams, clearAllStreams } = useStreamStore()
   const { trackFeatureUsage, trackMenuItemClick } = useAnalytics()
-  const { t } = useTranslation()
+  const { t, isLoaded: translationsLoaded } = useTranslation()
   
   // Enhanced mobile layout management with Sentry tracking
   const {
@@ -112,10 +112,19 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
     }
   }, [mobile.isMobile, currentLayout, recommendedLayout, isOptimalLayout, streams.length, deviceMetrics])
   
-
-
-
-
+  // Don't render until translations are loaded
+  if (!translationsLoaded) {
+    return (
+      <header className="relative sticky top-0 z-50 border-b border-border/20">
+        <div className="absolute inset-0 bg-background/85 backdrop-blur-2xl" />
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-16 flex items-center justify-center">
+            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        </div>
+      </header>
+    )
+  }
 
   return (
     <div>

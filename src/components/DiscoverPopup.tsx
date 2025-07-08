@@ -53,7 +53,7 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
   const [loading, setLoading] = useState(false)
   const [searching, setSearching] = useState(false)
   const { addStream } = useStreamStore()
-  const { t } = useTranslation()
+  const { t, isLoaded: translationsLoaded } = useTranslation()
   const quickCategories = getQuickCategories(t)
 
   // Fetch trending streams
@@ -185,6 +185,18 @@ export default function DiscoverPopup({ open, onOpenChange }: DiscoverPopupProps
   }
 
   const currentStreams = selectedCategory === 'trending' ? trendingStreams : searchResults
+
+  if (!translationsLoaded) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-4xl max-h-[90vh] p-0">
+          <div className="flex items-center justify-center p-6">
+            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        </DialogContent>
+      </Dialog>
+    )
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

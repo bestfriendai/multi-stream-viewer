@@ -17,6 +17,25 @@
   isolation: isolate;
 }
 
+/* Mobile stack layout - Force single column on mobile */
+.mobile-stack-layout {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-auto-rows: minmax(22vh, auto);
+  gap: clamp(0.75rem, 3vw, 1.5rem);
+  min-height: calc(100vh - 200px);
+  padding: clamp(0.5rem, 2vw, 1rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-stack-layout .stream-card {
+  aspect-ratio: 16/9;
+  width: 100%;
+  min-height: 22vh;
+  max-height: 30vh;
+}
+
 /* Hide scrollbar but maintain functionality */
 .scrollbar-hide {
   -ms-overflow-style: none;
@@ -244,8 +263,40 @@
   min-height: calc(25vh - 0.125rem);
 }
 
-/* Mobile stream controls */
+/* Force single column layout on mobile - Override any grid layouts */
 @media (max-width: 768px) {
+  /* Override any multi-column grid layouts on mobile */
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4,
+  .grid-rows-2,
+  .grid-rows-3,
+  .grid-rows-4,
+  .mobile-grid-2x2,
+  .mobile-grid-2x3,
+  .mobile-grid-3x3,
+  .mobile-grid-4x4 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-auto-rows: minmax(22vh, auto) !important;
+    gap: clamp(0.75rem, 3vw, 1.5rem) !important;
+    padding: clamp(0.5rem, 2vw, 1rem) !important;
+  }
+  
+  /* Ensure all stream cards in mobile use proper stacked styling */
+  .grid-cols-2 .stream-card,
+  .grid-cols-3 .stream-card,
+  .grid-cols-4 .stream-card,
+  .mobile-grid-2x2 .stream-card,
+  .mobile-grid-2x3 .stream-card,
+  .mobile-grid-3x3 .stream-card,
+  .mobile-grid-4x4 .stream-card {
+    aspect-ratio: 16/9 !important;
+    width: 100% !important;
+    min-height: 22vh !important;
+    max-height: 30vh !important;
+  }
+
   .stream-embed-container {
     position: relative;
     overflow: hidden;

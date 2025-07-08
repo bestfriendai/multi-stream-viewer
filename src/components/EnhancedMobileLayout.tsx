@@ -155,13 +155,12 @@ const EnhancedMobileLayout: React.FC<EnhancedMobileLayoutProps> = ({
     <div className={cn(
       "grid gap-3",
       isMobile ? "p-4" : "p-6",
-      orientation === 'portrait' && isMobile
+      // Always use single column on mobile for better UX
+      isMobile
         ? "grid-cols-1"
         : streams.length <= 2
           ? "grid-cols-2"
-          : isMobile
-            ? "grid-cols-2"
-            : "grid-cols-3"
+          : "grid-cols-3"
     )}>
       {streams.map((stream, index) => (
         <motion.div

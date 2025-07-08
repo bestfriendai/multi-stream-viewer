@@ -23,7 +23,11 @@ const calculateGridConfig = (count: number, gridLayout?: GridLayout, isMobile?: 
   // Mobile-optimized layouts - Force single column stack for better mobile experience
   if (isMobile) {
     // Always use single column stack layout on mobile for better usability
-    return { cols: 1, rows: count, class: 'mobile-stack-layout grid-cols-1' }
+    if (count === 1) return { cols: 1, rows: 1, class: 'mobile-grid-single' }
+    if (count === 2) return { cols: 1, rows: 2, class: 'mobile-grid-1x2' }
+    if (count === 3) return { cols: 1, rows: 3, class: 'mobile-grid-1x3' }
+    // For 4+ streams, use scrollable single column layout
+    return { cols: 1, rows: count, class: 'mobile-grid-scroll' }
   }
   
   // Handle specific layout requests first
@@ -476,7 +480,7 @@ const StreamGrid: React.FC = React.memo(() => {
         onPanEnd={handlePanEnd}
         className={cn(
           'stream-grid w-full',
-          isMosaicLayout ? getMosaicClasses() : isMobileDevice() ? 'mobile-stack-layout' : `grid ${gridConfig.class}`,
+          isMosaicLayout ? getMosaicClasses() : isMobileDevice() ? gridConfig.class : `grid ${gridConfig.class}`,
           'touch-pan-y',
           isMobileDevice() ? 'touch-pan-x mobile-stream-grid' : '',
           isMosaicLayout ? 'h-full' : !isMobileDevice() ? 'min-h-full relative gap-2 p-2' : '',

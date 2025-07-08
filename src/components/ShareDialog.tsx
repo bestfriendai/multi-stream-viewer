@@ -17,7 +17,7 @@ interface ShareDialogProps {
 export default function ShareDialog({ mobile = false }: ShareDialogProps) {
   const [copied, setCopied] = useState(false)
   const { streams, gridLayout } = useStreamStore()
-  const { t } = useTranslation()
+  const { t, isLoaded: translationsLoaded } = useTranslation()
   
   const shareableLink = generateShareableLink([...streams], gridLayout)
   
@@ -48,6 +48,20 @@ export default function ShareDialog({ mobile = false }: ShareDialogProps) {
     }
   }
   
+  if (!translationsLoaded) {
+    return mobile ? (
+      <Button variant="outline" className="w-full justify-start h-12" disabled>
+        <Share2 className="mr-3 h-5 w-5" />
+        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+      </Button>
+    ) : (
+      <Button variant="outline" size="sm" className="h-9" disabled>
+        <Share2 size={16} className="mr-2" />
+        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+      </Button>
+    )
+  }
+
   const trigger = mobile ? (
     <Button variant="outline" className="w-full justify-start h-12" disabled={streams.length === 0}>
       <Share2 className="mr-3 h-5 w-5" />

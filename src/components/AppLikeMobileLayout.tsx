@@ -24,19 +24,26 @@ interface AppLikeMobileLayoutProps {
 const AppLikeMobileLayout: React.FC<AppLikeMobileLayoutProps> = ({ className }) => {
   const { streams, gridLayout, setGridLayout } = useStreamStore()
   const { trackMobileGesture, trackLayoutChange } = useAnalytics()
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const [pullDistance, setPullDistance] = useState(0)
+  
   const [showLayoutSelector, setShowLayoutSelector] = useState(false)
+  const [pullDistance, setPullDistance] = useState(0)
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const [visibleStreams, setVisibleStreams] = useState<string[]>([])
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollY } = useScroll({ container: containerRef })
 
+  // Force stacked layout on mobile for better UX
+  useEffect(() => {
+    if (gridLayout !== 'stack' && gridLayout !== 'grid-1x3') {
+      setGridLayout('stack')
+    }
+  }, [gridLayout, setGridLayout])
+
   // Mobile layout options
   const mobileLayouts = [
     { id: 'stack', name: 'Stack', cols: 1, icon: '📱' },
-    { id: 'grid-2x1', name: '2×1', cols: 2, icon: '📐' },
-    { id: 'grid-2x2', name: '2×2', cols: 2, icon: '🔲' },
     { id: 'grid-1x3', name: '1×3', cols: 1, icon: '📋' },
+    // Removed 2x2 and 2x1 grids for better mobile UX - force stacked layout
   ]
 
   // Track scroll for header transparency
@@ -128,19 +135,15 @@ const AppLikeMobileLayout: React.FC<AppLikeMobileLayoutProps> = ({ className }) 
 
   const gridConfig = {
     'stack': 'grid-cols-1 gap-4',
-    'grid-2x1': 'grid-cols-2 gap-2',
-    'grid-2x2': 'grid-cols-2 gap-2',
     'grid-1x3': 'grid-cols-1 gap-3',
+    // Removed 2x2 and 2x1 grid configs for mobile - always use single column
   }
 
   const getStreamCardHeight = () => {
     switch (gridLayout) {
-      case 'grid-2x1':
-      case 'grid-2x2':
-        return 'h-[45vw] max-h-[200px]'
       case 'grid-1x3':
         return 'h-[30vh] max-h-[250px]'
-      default: // stack
+      default: // stack - always use stacked layout for mobile
         return 'h-[56vw] max-h-[320px]'
     }
   }

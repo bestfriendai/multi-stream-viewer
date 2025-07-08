@@ -11,10 +11,10 @@ import { LogIn, Crown } from 'lucide-react'
 
 export function UserAuth() {
   const { isSignedIn, isLoaded } = useUser()
-  const { t } = useTranslation()
+  const { t, isLoaded: translationsLoaded } = useTranslation()
   const { isPro, isPremium, loading: subscriptionLoading } = useSubscription()
 
-  if (!isLoaded) {
+  if (!isLoaded || !translationsLoaded) {
     return (
       <div className="flex items-center gap-2">
         <div className="w-8 h-8 bg-muted rounded-full animate-pulse" />

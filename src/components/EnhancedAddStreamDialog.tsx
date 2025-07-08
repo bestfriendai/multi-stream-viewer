@@ -23,6 +23,12 @@ import { useSubscription } from '@/hooks/useSubscription'
 import { useTranslation } from '@/contexts/LanguageContext'
 import { cn } from '@/lib/utils'
 
+// Mobile device detection utility
+const isMobileDevice = (): boolean => {
+  if (typeof window === 'undefined') return false
+  return window.innerWidth < 768
+}
+
 interface EnhancedAddStreamDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -35,7 +41,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
   const inputRef = useRef<HTMLInputElement>(null)
   const { addStream, setGridLayout } = useStreamStore()
   const { subscription } = useSubscription()
-  const { t } = useTranslation()
+  const { t, isLoaded: translationsLoaded } = useTranslation()
   
 
   
@@ -72,8 +78,9 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
               await addStream(stream.user_login, subscription)
             }
           }
-          // Set layout to 2x2
-          setGridLayout('grid-2x2')
+          // Set appropriate layout based on device
+          const layout = isMobileDevice() ? 'stacked' : 'grid-2x2'
+          setGridLayout(layout)
           onOpenChange(false)
         }
       }
@@ -106,8 +113,9 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
               await addStream(stream.user_login, subscription)
             }
           }
-          // Set layout to 2x2
-          setGridLayout('grid-2x2')
+          // Set appropriate layout based on device
+          const layout = isMobileDevice() ? 'stacked' : 'grid-2x2'
+          setGridLayout(layout)
           onOpenChange(false)
         }
       }
@@ -157,21 +165,33 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
     }
   }, [open])
 
+  if (!translationsLoaded) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+          <div className="flex items-center justify-center p-6">
+            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t('streams.addStream')}</DialogTitle>
+          <DialogTitle className="text-center sm:text-left">{t('streams.addStream')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4">
           {/* Quick Actions */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Button
               variant="outline"
               onClick={handleAddTopLives}
               disabled={isAddingBulk}
-              className="h-auto flex flex-col items-center gap-2 p-4"
+              className="h-auto flex flex-col items-center gap-2 p-4 min-h-[80px] touch-manipulation"
             >
               {isAddingBulk ? (
                 <Loader2 className="w-6 h-6 animate-spin" />
@@ -190,7 +210,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
               variant="outline"
               onClick={handleAddRandomStreamers}
               disabled={isAddingBulk}
-              className="h-auto flex flex-col items-center gap-2 p-4"
+              className="h-auto flex flex-col items-center gap-2 p-4 min-h-[80px] touch-manipulation"
             >
               {isAddingBulk ? (
                 <Loader2 className="w-6 h-6 animate-spin" />
@@ -228,7 +248,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
                 onChange={(e) => setChannelInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={t('streams.enterStreamUrl')}
-                className="pl-10"
+                className="pl-10 h-12 text-base touch-manipulation"
                 disabled={isAddingBulk}
               />
             </div>
