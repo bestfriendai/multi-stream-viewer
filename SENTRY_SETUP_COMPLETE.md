@@ -44,7 +44,6 @@ NEXT_PUBLIC_SENTRY_DSN="https://cb0c99be8431b823967fd7e441ae7924@o45096285012623
 - Contextual information and tagging
 
 ### 6. Test Components
-- `SentryTestButton.tsx` - Simple test component
 - `/test-sentry` page - Comprehensive testing interface
 
 ## 🎨 Features Enabled
