@@ -234,7 +234,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased safari-mobile-fix`}
       >
         <SentryProvider enableFeedback={true} enableSpotlight={process.env.NODE_ENV === 'development'}>
-          <ClerkProvider>
+          <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}>
             <SupabaseProvider>
               <LanguageProvider>
                 <MobileLayoutProvider>
