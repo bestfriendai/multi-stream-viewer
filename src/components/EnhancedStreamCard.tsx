@@ -15,7 +15,8 @@ import {
   MoreVertical,
   ExternalLink,
   Bookmark,
-  Share2
+  Share2,
+  Info
 } from 'lucide-react'
 import { muteManager } from '@/lib/muteManager'
 import { 
@@ -25,9 +26,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { StreamError } from '@/components/ui/error-boundary'
+import TwitchStatsCard from '@/components/TwitchStatsCard'
 import type { Stream } from '@/types/stream'
 
 interface EnhancedStreamCardProps {
@@ -194,7 +197,35 @@ export default function EnhancedStreamCard({
             {/* Bottom Controls */}
             <div className="flex justify-between items-end">
               <div className="flex items-center gap-2">
-                {/* Viewer count would come from external API data */}
+                {/* Twitch Stats Info Button */}
+                {stream.platform === 'twitch' && (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 text-white hover:bg-white/20"
+                            aria-label="View channel stats"
+                          >
+                            <Info className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          View {stream.channelName} stats
+                        </TooltipContent>
+                      </Tooltip>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-md p-0">
+                      <TwitchStatsCard 
+                        channel={stream.channelName}
+                        compact={false}
+                        showExtendedInfo={true}
+                      />
+                    </DialogContent>
+                  </Dialog>
+                )}
               </div>
 
               <div className="flex items-center gap-1">

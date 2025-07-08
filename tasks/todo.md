@@ -1,104 +1,100 @@
-# Subscription Data Flow Analysis - TODO
+# Scrolling and Twitch Stats Investigation - TODO
 
 ## Problem Analysis
-We need to verify how the subscription status from the Supabase database is being reflected in the app. The goal is to understand the complete flow of how a user's subscription status gets from the Supabase database to being displayed in the app interface.
+
+### Issue 1: Scroll to Bottom Problem
+The "start watching" functionality is causing unwanted scrolling behavior on both desktop and mobile. This affects user experience when adding streams.
+
+### Issue 2: Missing Twitch Stats
+Some Twitch API stats/data have disappeared. Need to identify what's missing and restore/enhance the Twitch stats display.
+
+## Investigation Findings
+
+### Scroll Issue Root Cause
+Found the problematic code in `/src/app/page.tsx` lines 145-153:
+
+```typescript
+// Scroll to top when new streams are added (from landing page)
+useEffect(() => {
+  if (streams.length > prevStreamCount && prevStreamCount === 0) {
+    // Only scroll if going from 0 streams to 1+ streams (landing page -> stream view)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setActiveTab('streams') // Ensure we're on the streams tab
+  }
+  setPrevStreamCount(streams.length)
+}, [streams.length, prevStreamCount])
+```
+
+**Issue**: This scrolls to TOP, not bottom, but still causes unwanted scrolling behavior on desktop and mobile when streams are added.
+
+### Current Twitch API Data Available
+From `/src/lib/twitch/api.ts`, the StreamData interface includes:
+- `id`, `user_id`, `user_login`, `user_name`
+- `game_id`, `game_name`, `type`, `title`
+- `viewer_count`, `started_at`, `language`
+- `thumbnail_url`, `tag_ids`, `tags`, `is_mature`
+
+Additional data available from other endpoints:
+- User data: `view_count`, `created_at`, `description`, `profile_image_url`
+- Game data: `box_art_url`, `igdb_id`
+- Channel info: `broadcaster_language`, `delay`, `tags`
+- Videos/VODs: `view_count`, `duration`, `created_at`
+- Clips: `view_count`, `creator_name`, `duration`
+- Follows: `followed_at` relationships
 
 ## Todo Items
 
-### 1. Database Schema Analysis
-- [x] **COMPLETED** - Review Supabase database structure in `/src/lib/supabase.ts`
-- [x] **COMPLETED** - Check profiles table schema for subscription fields
-- [x] **COMPLETED** - Check subscriptions table schema and relationships
-- [x] **COMPLETED** - Check products table schema
+### 1. Fix Scroll Behavior
+- [ ] **Remove or modify scroll to top behavior** - The current useEffect causes unwanted scrolling
+- [ ] **Test scroll behavior on mobile and desktop** - Ensure no unwanted scrolling occurs
+- [ ] **Consider alternative UX for stream transitions** - Maybe use animations instead of scrolling
 
-### 2. API Endpoints Analysis
-- [x] **COMPLETED** - Analyze `/api/subscription/status` endpoint implementation
-- [x] **COMPLETED** - Analyze `/api/subscription/get-active` endpoint implementation
-- [x] **COMPLETED** - Document the differences between these two endpoints
-- [ ] **PENDING** - Test both endpoints to verify they return consistent data
+### 2. Investigate Missing Twitch Stats
+- [ ] **Audit current stats display** - Check what Twitch stats are currently shown
+- [ ] **Compare with what was previously available** - Identify what stats disappeared
+- [ ] **Check if any API endpoints are unused** - Many endpoints available but may not be utilized
+- [ ] **Review UI components for stats display** - Find where stats should be shown
 
-### 3. Subscription Library Analysis
-- [x] **COMPLETED** - Review `/lib/subscription.ts` implementation
-- [x] **COMPLETED** - Check `getUserSubscription()` function
-- [x] **COMPLETED** - Check `getSubscriptionLimits()` function
-- [x] **COMPLETED** - Check feature access functions
+### 3. Enhance Twitch Stats Display
+- [ ] **Add follower count** - Use `/api/twitch/` to get user view_count
+- [ ] **Add stream uptime** - Calculate from `started_at` field
+- [ ] **Add game/category info** - Already available in `game_name`
+- [ ] **Add stream tags** - Available in `tags` field
+- [ ] **Add stream quality/language** - Available in `language` field
+- [ ] **Add stream maturity rating** - Available in `is_mature` field
 
-### 4. useSubscription Hook Analysis
-- [x] **COMPLETED** - Review `useSubscription` hook implementation
-- [x] **COMPLETED** - Check how it fetches subscription data
-- [x] **COMPLETED** - Check auto-sync functionality
-- [ ] **PENDING** - Test the hook's error handling
+### 4. Create Enhanced Stats API
+- [ ] **Create comprehensive stats endpoint** - Combine multiple Twitch API calls
+- [ ] **Add caching for stats** - Prevent rate limiting
+- [ ] **Add error handling** - Graceful degradation when stats unavailable
 
-### 5. UI Components Analysis
-- [x] **COMPLETED** - Review Header component subscription badge logic
-- [x] **COMPLETED** - Review Profile page subscription display
-- [ ] **PENDING** - Check if subscription data is displayed correctly in both components
-- [ ] **PENDING** - Verify that subscription changes are reflected in real-time
+### 5. Update UI Components
+- [ ] **Add stats to StreamCard components** - Show enhanced stream information
+- [ ] **Add stats to stream overlays** - Display when hovering or in mobile view
+- [ ] **Add stats dashboard** - Dedicated view for detailed stream stats
+- [ ] **Update mobile layouts** - Ensure stats display well on mobile
 
-### 6. Data Flow Verification
-- [ ] **PENDING** - Test the complete flow: Database → API → Hook → UI
-- [ ] **PENDING** - Verify subscription status updates are propagated correctly
-- [ ] **PENDING** - Check sync service integration
-- [ ] **PENDING** - Test edge cases (expired subscriptions, sync failures)
+### 6. Test and Validate
+- [ ] **Test scroll behavior fixes** - Verify no unwanted scrolling occurs
+- [ ] **Test stats display** - Ensure all stats show correctly
+- [ ] **Test mobile responsiveness** - Stats should work on all devices
+- [ ] **Test API rate limits** - Ensure enhanced stats don't hit rate limits
 
-### 7. Integration Points Analysis
-- [x] **COMPLETED** - Review subscription sync service
-- [ ] **PENDING** - Check Stripe webhook integration
-- [ ] **PENDING** - Verify data consistency between different sources
+## Key Files to Modify
 
-## Key Findings So Far
+### For Scroll Fix:
+- `/src/app/page.tsx` - Remove/modify scroll behavior in useEffect
+- Test with landing page to stream view transitions
 
-### Database Structure
-The Supabase database has:
-- `profiles` table with subscription-related fields (subscription_status, subscription_tier, subscription_expires_at, stripe_subscription_id)
-- `subscriptions` table with detailed subscription data
-- `products` table with plan information
-
-### API Endpoints
-There are two subscription endpoints:
-1. `/api/subscription/status` - Returns subscription status directly from profiles table
-2. `/api/subscription/get-active` - Uses a database function `get_active_subscription`
-
-### Data Flow
-The current flow appears to be:
-1. `useSubscription` hook calls `getUserSubscription()` from `/lib/subscription.ts`
-2. `getUserSubscription()` calls `/api/subscription/get-active` endpoint
-3. The endpoint uses the `get_active_subscription` database function
-4. The hook provides subscription data to UI components
-5. Header and Profile components display subscription badges/status
-
-### API Endpoint Differences
-
-**`/api/subscription/status`:**
-- Uses service role key for direct database access
-- Queries profiles table directly using `clerk_user_id`
-- Returns subscription status from profiles table fields:
-  - `subscription_status`
-  - `subscription_tier` 
-  - `subscription_expires_at`
-  - `stripe_subscription_id`
-- Performs expiration check client-side
-- Returns structured response with boolean flags
-- Includes profile information in response
-
-**`/api/subscription/get-active`:**
-- Uses standard Supabase client with RLS
-- First gets profile by `clerk_user_id` to get UUID
-- Then calls database function `get_active_subscription(user_uuid)`
-- Returns raw subscription data from subscriptions table
-- Depends on database function existing
-- Returns subscription object directly or null
-
-### Potential Issues Identified
-1. **Two different API endpoints** - `/status` and `/get-active` return different data formats and use different database access patterns
-2. **Missing database fields** - The profiles table schema in TypeScript types doesn't include subscription fields (subscription_status, subscription_tier, subscription_expires_at)
-3. **Sync complexity** - Auto-sync functionality adds complexity that could cause inconsistencies
-4. **Database function dependency** - `/get-active` depends on `get_active_subscription` function existing in database
-5. **RLS vs Service Role** - Different endpoints use different authentication methods which could cause permission issues
-6. **Data source inconsistency** - One endpoint uses profiles table, other uses subscriptions table via database function
+### For Stats Enhancement:
+- `/src/lib/twitch/api.ts` - Add enhanced stats methods
+- `/src/app/api/twitch/stats/route.ts` - Enhance stats endpoint
+- `/src/components/StreamCard.tsx` - Add stats display
+- `/src/components/StreamGrid.tsx` - Update grid to show stats
+- Mobile components - Ensure stats work on mobile
 
 ## Next Steps
-1. Test both API endpoints to understand differences
-2. Check if the database migration for subscription fields in profiles table was applied
-3. Verify that the database function `get_active_subscription` exists and works correctly
-4. Test the complete data flow end-to-end
+1. **Remove problematic scroll behavior** - Priority fix for UX
+2. **Audit current vs missing stats** - Understand what was lost
+3. **Plan enhanced stats implementation** - Design comprehensive stats display
+4. **Implement and test** - Deploy fixes and enhancements

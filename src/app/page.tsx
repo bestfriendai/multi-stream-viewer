@@ -142,11 +142,11 @@ export default function HomePage() {
     loadStreams()
   }, [])
 
-  // Scroll to top when new streams are added (from landing page)
+  // Navigate to streams tab when new streams are added (from landing page)
   useEffect(() => {
     if (streams.length > prevStreamCount && prevStreamCount === 0) {
-      // Only scroll if going from 0 streams to 1+ streams (landing page -> stream view)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      // Only switch to streams tab if going from 0 streams to 1+ streams (landing page -> stream view)
+      // Remove the scroll behavior that was causing UX issues
       setActiveTab('streams') // Ensure we're on the streams tab
     }
     setPrevStreamCount(streams.length)

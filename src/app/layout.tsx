@@ -18,6 +18,7 @@ import DynamicLang from "@/components/DynamicLang";
 import { MobileLayoutProvider } from "@/contexts/MobileLayoutContext";
 import { SafariDebugProvider } from "@/components/SafariDebugProvider";
 import SentryProvider from "@/components/SentryProvider";
+import MobileSentryInitializer from "@/components/MobileSentryInitializer";
 
 
 const geistSans = Geist({
@@ -239,6 +240,7 @@ export default function RootLayout({
                   <SafariDebugProvider>
                     <DynamicLang />
                     <AutoSyncInitializer />
+                    <MobileSentryInitializer />
                     <GoogleAnalytics />
                     <ThemeProvider
                       attribute="class"

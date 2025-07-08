@@ -1,8 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "../styles/layout-modes.css";
-@import "../styles/mobile-fixes.css";
-@import "../styles/safari-mobile-fixes.css";
+@import "../styles/mobile-unified.css";
 @import "../styles/responsive-text.css";
 @import "../styles/amp.css";
 
@@ -212,15 +211,7 @@
     font-size: clamp(14px, 4vw, 16px);
   }
 
-  /* Improved touch targets */
-  button,
-  [role="button"],
-  input,
-  select,
-  textarea {
-    min-height: 48px;
-    min-width: 48px;
-  }
+  /* Touch targets now handled in mobile-unified.css */
 
   /* Smooth scrolling with momentum */
   * {

@@ -6,6 +6,7 @@ import { Badge } from './ui/badge'
 import { cn } from '@/lib/utils'
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { useMobileSentryDebugger } from '@/hooks/useMobileSentryDebugger'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +35,7 @@ export default function MobileNav({
 }: MobileNavProps) {
   const { gridLayout, setGridLayout, streams } = useStreamStore()
   const { trackMobileGesture, trackFeatureUsage } = useAnalytics()
+  const { trackUIInteraction, trackTouchEvent } = useMobileSentryDebugger('MobileNav')
   
   const activeStreams = streams.filter(stream => stream.isActive).length
   
@@ -72,6 +74,10 @@ export default function MobileNav({
           onClick={() => {
             onAddStream()
             trackMobileGesture('tap', 'add_stream_button')
+            trackUIInteraction('tap', 'add_stream_button', { 
+              current_stream_count: streamCount,
+              at_limit: streamCount >= 16 
+            })
           }}
           disabled={streamCount >= 16}
           className={cn(
@@ -139,21 +145,18 @@ export default function MobileNav({
               📱 Use the floating controls in the stream view to switch between Stack, Grid, and Swipe modes
             </div>
             {layoutOptions.map((option) => (
-              <DropdownMenuItem
+              <div
                 key={option.value}
-                onClick={() => {
-                  // These are informational - actual mode switching happens in EnhancedMobileLayout
-                  trackFeatureUsage(`mobile_layout_info_${option.value}`)
-                }}
-                className="text-base py-4 min-h-[48px] cursor-default"
-                disabled
+                className="text-base py-4 min-h-[48px] px-3 flex items-center cursor-default"
+                role="presentation"
+                aria-label={`${option.label}: ${option.description}`}
               >
-                <span className="font-mono mr-3 text-lg">{option.icon}</span>
+                <span className="font-mono mr-3 text-lg" aria-hidden="true">{option.icon}</span>
                 <div className="flex flex-col">
                   <span className="text-responsive-sm text-muted-foreground">{option.label}</span>
                   <span className="text-responsive-xs text-muted-foreground">{option.description}</span>
                 </div>
-              </DropdownMenuItem>
+              </div>
             ))}
             <div className="border-t my-1" />
             <DropdownMenuItem

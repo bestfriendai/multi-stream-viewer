@@ -5,8 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useStreamStore } from '@/store/streamStore'
 import { useTwitchStatus } from '@/hooks/useTwitchStatus'
 import LiveIndicator from './LiveIndicator'
-import { Users, Eye, TrendingUp, Activity } from 'lucide-react'
+import TwitchStatsCard from './TwitchStatsCard'
+import { Users, Eye, TrendingUp, Activity, Info } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 
 export default function StreamStatusBar() {
   const { streams } = useStreamStore()
@@ -160,8 +162,9 @@ export default function StreamStatusBar() {
           <AnimatePresence>
             {streams.map((stream, index) => {
               const streamStatus = stream.platform === 'twitch' ? status.get(stream.channelName) : null
+              const isTwitchStream = stream.platform === 'twitch'
               
-              return (
+              const streamPill = (
                 <motion.div
                   key={stream.id}
                   initial={{ opacity: 0, scale: 0.8, x: 20 }}
@@ -173,7 +176,7 @@ export default function StreamStatusBar() {
                     "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs whitespace-nowrap",
                     "bg-secondary/50 text-secondary-foreground border border-border/50",
                     "hover:bg-secondary/70 hover:border-border transition-all duration-200 cursor-pointer",
-                    "backdrop-blur-sm"
+                    "backdrop-blur-sm group"
                   )}
                   style={{
                     boxShadow: streamStatus?.isLive ? "var(--elevation-2)" : "var(--elevation-1)"
@@ -203,8 +206,32 @@ export default function StreamStatusBar() {
                       {streamStatus.viewerCount.toLocaleString()}
                     </motion.span>
                   )}
+                  {isTwitchStream && (
+                    <Info className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                  )}
                 </motion.div>
               )
+
+              // Wrap Twitch streams with enhanced stats dialog
+              if (isTwitchStream) {
+                return (
+                  <Dialog key={stream.id}>
+                    <DialogTrigger asChild>
+                      {streamPill}
+                    </DialogTrigger>
+                    <DialogContent className="max-w-md p-0">
+                      <TwitchStatsCard 
+                        channel={stream.channelName}
+                        compact={false}
+                        showExtendedInfo={true}
+                      />
+                    </DialogContent>
+                  </Dialog>
+                )
+              }
+
+              // Return normal pill for non-Twitch streams
+              return streamPill
             })}
           </AnimatePresence>
         </motion.div>
