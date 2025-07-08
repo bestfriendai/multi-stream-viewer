@@ -11,6 +11,46 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
+// In-memory cache for processed events (in production, use Redis or database)
+const processedEvents = new Map<string, { timestamp: number; processed: boolean }>();
+const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+
+// Clean up old entries periodically
+setInterval(() => {
+  const now = Date.now();
+  for (const [eventId, data] of processedEvents.entries()) {
+    if (now - data.timestamp > CACHE_DURATION) {
+      processedEvents.delete(eventId);
+    }
+  }
+}, 60 * 60 * 1000); // Clean every hour
+
+async function isEventProcessed(eventId: string): Promise<boolean> {
+  // Check in-memory cache first
+  const cached = processedEvents.get(eventId);
+  if (cached) {
+    return cached.processed;
+  }
+
+  // In production, you might want to check a database table
+  // For now, we'll use the in-memory cache
+  return false;
+}
+
+async function markEventAsProcessed(eventId: string): Promise<void> {
+  processedEvents.set(eventId, {
+    timestamp: Date.now(),
+    processed: true
+  });
+
+  // In production, you might want to store this in a database
+  // Example:
+  // await supabase.from('processed_webhook_events').insert({
+  //   event_id: eventId,
+  //   processed_at: new Date().toISOString()
+  // });
+}
+
 export async function POST(request: NextRequest) {
   const body = await request.text();
   const headersList = await headers();
@@ -23,6 +63,12 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error('Webhook signature verification failed:', err);
     return NextResponse.json({ error: 'Webhook signature verification failed' }, { status: 400 });
+  }
+
+  // Check if event has already been processed (idempotency)
+  if (await isEventProcessed(event.id)) {
+    console.log(`Event ${event.id} already processed, skipping`);
+    return NextResponse.json({ received: true, message: 'Event already processed' }, { status: 200 });
   }
 
   const supabase = await createClient();
@@ -165,6 +211,9 @@ export async function POST(request: NextRequest) {
       default:
         console.log(`Unhandled event type: ${event.type}`);
     }
+
+    // Mark event as processed after successful processing
+    await markEventAsProcessed(event.id);
   } catch (error) {
     console.error('Error processing webhook:', error);
     return NextResponse.json({ error: 'Webhook processing failed' }, { status: 500 });

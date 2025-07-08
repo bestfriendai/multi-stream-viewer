@@ -9,6 +9,16 @@ const CACHE_DURATION = 2 * 60 * 1000; // 2 minutes
 
 // Auto-sync endpoint that can be called periodically or on app startup
 export async function POST(request: NextRequest) {
+  // Graceful degradation for missing Stripe configuration
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return NextResponse.json({
+      success: true,
+      message: 'Stripe not configured, skipping auto-sync',
+      type: 'auto_sync',
+      timestamp: new Date().toISOString()
+    });
+  }
+
   return await sentryApiMonitor.monitorApiCall(
     'stripe.auto-sync',
     'POST',
@@ -52,7 +62,18 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      const syncService = getSubscriptionSyncService();
+      try {
+        var syncService = getSubscriptionSyncService();
+      } catch (error) {
+        Sentry.captureException(error);
+        return NextResponse.json({
+          success: false,
+          message: 'Stripe service initialization failed',
+          error: error instanceof Error ? error.message : 'Unknown error',
+          type: 'auto_sync',
+          timestamp: new Date().toISOString()
+        }, { status: 500 });
+      }
       
       if (forceSync) {
         // Force a full sync with monitoring
@@ -127,6 +148,16 @@ export async function POST(request: NextRequest) {
 
 // Get sync status
 export async function GET() {
+  // Graceful degradation for missing Stripe configuration
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return NextResponse.json({
+      success: true,
+      status: { lastSync: null, inProgress: false },
+      message: 'Stripe not configured',
+      timestamp: new Date().toISOString()
+    });
+  }
+
   try {
     const syncService = getSubscriptionSyncService();
     const status = syncService.getSyncStatus();
@@ -139,6 +170,7 @@ export async function GET() {
     });
     
   } catch (error) {
+    Sentry.captureException(error);
     return NextResponse.json(
       { 
         success: false, 

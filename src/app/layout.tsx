@@ -19,6 +19,7 @@ import { MobileLayoutProvider } from "@/contexts/MobileLayoutContext";
 import { SafariDebugProvider } from "@/components/SafariDebugProvider";
 import SentryProvider from "@/components/SentryProvider";
 import MobileSentryInitializer from "@/components/MobileSentryInitializer";
+import { ToastProvider } from "@/components/Providers/ToastProvider";
 
 
 const geistSans = Geist({
@@ -253,6 +254,7 @@ export default function RootLayout({
                       <Footer />
                     </div>
                     <Toaster />
+                    <ToastProvider />
                     <CookieConsent />
                   </ThemeProvider>
                 </SafariDebugProvider>

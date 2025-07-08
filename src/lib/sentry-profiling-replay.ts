@@ -355,7 +355,7 @@ export class SentryProfilingReplay {
     this.isRecording = true
     this.samples = []
 
-    const transaction = Sentry.startTransaction({
+    const span = Sentry.startInactiveSpan({
       name: `profile.${name}`,
       op: 'profiling'
     })
@@ -507,48 +507,44 @@ export class SentryProfilingReplay {
    * Performance Monitoring
    */
   public measurePerformance<T>(name: string, fn: () => T | Promise<T>): T | Promise<T> {
-    const transaction = Sentry.startTransaction({
+    return Sentry.startSpan({
       name: `performance.${name}`,
       op: 'measure'
-    })
+    }, (span) => {
+      const startTime = performance.now()
 
-    const startTime = performance.now()
+        try {
+          const result = fn()
 
-    try {
-      const result = fn()
-
-      if (result instanceof Promise) {
-        return result.then(
-          (value) => {
+          if (result instanceof Promise) {
+            return result.then(
+              (value) => {
+                const duration = performance.now() - startTime
+                Sentry.setMeasurement(`performance.${name}.duration`, duration, 'millisecond')
+                span?.setStatus({ code: 1 })
+                return value
+              },
+              (error) => {
+                const duration = performance.now() - startTime
+                Sentry.setMeasurement(`performance.${name}.duration`, duration, 'millisecond')
+                span?.setStatus({ code: 2 })
+                throw error
+              }
+            )
+          } else {
             const duration = performance.now() - startTime
-            transaction.setMeasurement('duration', duration, 'millisecond')
-            transaction.setStatus('ok')
-            transaction.finish()
-            return value
-          },
-          (error) => {
-            const duration = performance.now() - startTime
-            transaction.setMeasurement('duration', duration, 'millisecond')
-            transaction.setStatus('internal_error')
-            transaction.finish()
-            throw error
+            Sentry.setMeasurement(`performance.${name}.duration`, duration, 'millisecond')
+            span?.setStatus({ code: 1 })
+            return result
           }
-        )
-      } else {
-        const duration = performance.now() - startTime
-        transaction.setMeasurement('duration', duration, 'millisecond')
-        transaction.setStatus('ok')
-        transaction.finish()
-        return result
-      }
-    } catch (error) {
-      const duration = performance.now() - startTime
-      transaction.setMeasurement('duration', duration, 'millisecond')
-      transaction.setStatus('internal_error')
-      transaction.finish()
-      throw error
+        } catch (error) {
+          const duration = performance.now() - startTime
+          Sentry.setMeasurement(`performance.${name}.duration`, duration, 'millisecond')
+          span?.setStatus({ code: 2 })
+          throw error
+        }
+      })
     }
-  }
 
   /**
    * Cleanup

@@ -33,7 +33,13 @@ export class SentryApiMonitor {
       critical?: boolean
     } = {}
   ): Promise<T> {
-    const transactionId = sentryPerformance.startApiCall(apiName, method, url)
+    let transactionId: string | null = null
+    try {
+      transactionId = sentryPerformance.startApiCall(apiName, method, url)
+    } catch (error) {
+      console.warn('Failed to start Sentry performance tracking:', error)
+    }
+    
     const startTime = performance.now()
     let retryAttempt = 0
     
@@ -88,13 +94,19 @@ export class SentryApiMonitor {
         // Track successful call
         updateMetrics(callDuration, true)
         
-        sentryPerformance.finishApiCall(transactionId, {
-          success: true,
-          statusCode: 200,
-          responseSize: typeof result === 'string' ? result.length : JSON.stringify(result).length,
-          cacheHit: false,
-          retryCount: retryAttempt
-        })
+        if (transactionId) {
+          try {
+            sentryPerformance.finishApiCall(transactionId, {
+              success: true,
+              statusCode: 200,
+              responseSize: typeof result === 'string' ? result.length : JSON.stringify(result).length,
+              cacheHit: false,
+              retryCount: retryAttempt
+            })
+          } catch (error) {
+            console.warn('Failed to finish Sentry performance tracking:', error)
+          }
+        }
 
         // Alert on critical API slowness
         if (options.critical && callDuration > (options.expectedDuration || 1000)) {
@@ -157,12 +169,18 @@ export class SentryApiMonitor {
       // Track failed call
       updateMetrics(duration, false)
       
-      sentryPerformance.finishApiCall(transactionId, {
-        success: false,
-        statusCode: 500,
-        errorMessage,
-        retryCount: retryAttempt
-      })
+      if (transactionId) {
+        try {
+          sentryPerformance.finishApiCall(transactionId, {
+            success: false,
+            statusCode: 500,
+            errorMessage,
+            retryCount: retryAttempt
+          })
+        } catch (perfError) {
+          console.warn('Failed to finish Sentry performance tracking on error:', perfError)
+        }
+      }
 
       // Capture API failure
       Sentry.captureException(error, {

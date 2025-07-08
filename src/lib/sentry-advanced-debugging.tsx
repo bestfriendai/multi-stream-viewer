@@ -1,3 +1,4 @@
+import React from 'react'
 import * as Sentry from '@sentry/nextjs'
 import { User } from '@sentry/types'
 
@@ -450,22 +451,17 @@ export class SentryAdvancedDebugger {
    * Advanced Transaction and Span Management
    */
   public startAdvancedTransaction(name: string, operation: string, context?: any) {
-    const transaction = Sentry.startTransaction({
+    const span = Sentry.startInactiveSpan({
       name,
       op: operation,
-      tags: {
+      attributes: {
         sessionId: this.sessionId,
-        timestamp: new Date().toISOString()
-      },
-      metadata: context
+        timestamp: new Date().toISOString(),
+        ...context
+      }
     })
 
-    // Set transaction context
-    if (context) {
-      transaction.setContext('operation_context', context)
-    }
-
-    return transaction
+    return span
   }
 
   public createAdvancedSpan(transaction: any, operation: string, description: string, data?: any) {
@@ -530,28 +526,36 @@ export class SentryAdvancedDebugger {
    */
   public trackPageLoad(pageName: string) {
     if (typeof window !== 'undefined') {
-      const transaction = this.startAdvancedTransaction(`pageload.${pageName}`, 'pageload', {
-        page: pageName
+      Sentry.startSpan({
+        name: `pageload.${pageName}`,
+        op: 'pageload',
+        attributes: {
+          page: pageName,
+          sessionId: this.sessionId
+        }
+      }, (span) => {
+        // Track navigation timing
+        const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
+        if (navigation) {
+          Sentry.setMeasurement('navigation.dns_lookup', navigation.domainLookupEnd - navigation.domainLookupStart, 'millisecond')
+          Sentry.setMeasurement('navigation.tcp_connect', navigation.connectEnd - navigation.connectStart, 'millisecond')
+          Sentry.setMeasurement('navigation.request', navigation.responseStart - navigation.requestStart, 'millisecond')
+          Sentry.setMeasurement('navigation.response', navigation.responseEnd - navigation.responseStart, 'millisecond')
+          Sentry.setMeasurement('navigation.dom_load', navigation.domContentLoadedEventEnd - navigation.navigationStart, 'millisecond')
+        }
+        
+        // Track page load performance
+        Sentry.addBreadcrumb({
+          message: `Page loaded: ${pageName}`,
+          category: 'performance.pageload',
+          level: 'info',
+          data: {
+            page: pageName,
+            sessionId: this.sessionId
+          }
+        })
       })
-
-      // Track navigation timing
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
-      if (navigation) {
-        transaction.setMeasurement('navigation.dns_lookup', navigation.domainLookupEnd - navigation.domainLookupStart, 'millisecond')
-        transaction.setMeasurement('navigation.tcp_connect', navigation.connectEnd - navigation.connectStart, 'millisecond')
-        transaction.setMeasurement('navigation.request', navigation.responseStart - navigation.requestStart, 'millisecond')
-        transaction.setMeasurement('navigation.response', navigation.responseEnd - navigation.responseStart, 'millisecond')
-        transaction.setMeasurement('navigation.dom_load', navigation.domContentLoadedEventEnd - navigation.navigationStart, 'millisecond')
-      }
-
-      // Finish transaction when page is fully loaded
-      window.addEventListener('load', () => {
-        transaction.finish()
-      })
-
-      return transaction
     }
-    return null
   }
 
   /**

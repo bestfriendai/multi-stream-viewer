@@ -3,59 +3,40 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 
 import { useStreamStore } from '@/store/streamStore'
 import { useAnalytics } from '@/hooks/useAnalytics'
 import { useTranslation } from '@/contexts/LanguageContext'
 import { useMobileLayoutManager } from '@/hooks/useMobileLayoutManager'
 import { useSentryPerformance, useSentryMemoryTracking, useSentryApiTracking } from '@/hooks/useSentryPerformance'
-import { cn } from '@/lib/utils'
 import { StreamMonitor, UserJourneyTracker } from '@/lib/sentry-insights'
 import { trackMobileError, setCustomMetrics } from '@/lib/sentry-wrapper'
 import * as Sentry from "@sentry/nextjs"
-import {
-  Plus,
-  Menu,
-  MessageSquare,
-  Compass,
-  Zap,
-  Trash2,
-  Keyboard,
-  Share2,
-  BookmarkPlus,
-  MoreVertical,
-  LogIn,
-  X,
-  Crown
-} from 'lucide-react'
+
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from './theme-toggle'
 import SavedLayoutsDialog from './SavedLayoutsDialog'
 import ShareDialog from './ShareDialog'
 import EnhancedLayoutSelector from './EnhancedLayoutSelector'
 import LanguageSelector from './LanguageSelector'
+import StreamyyyLogo from './StreamyyyLogo'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Separator } from "@/components/ui/separator"
+
+// Import refactored components
+import { UserAuth } from './Header/UserAuth'
+import { NavigationActions } from './Header/NavigationActions'
+import { MobileControls } from './Header/MobileControls'
+
+import { X, Trash2 } from 'lucide-react'
+
 const EnhancedAddStreamDialog = dynamic(() => import('./EnhancedAddStreamDialog'), {
   loading: () => <div className="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg h-32" />
 })
 const DiscoverPopup = dynamic(() => import('./DiscoverPopup'), {
   loading: () => <div className="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg h-96" />
 })
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import dynamic from 'next/dynamic'
-import StreamyyyLogo from './StreamyyyLogo'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuShortcut,
-} from "@/components/ui/dropdown-menu"
-import { Separator } from "@/components/ui/separator"
-import { UserButton, SignInButton, SignUpButton, useUser } from "@clerk/nextjs"
-import { Badge } from "@/components/ui/badge"
-import { useSubscription } from "@/hooks/useSubscription"
 
 interface HeaderProps {
   onToggleChat: () => void
@@ -73,15 +54,9 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
   const { trackApiCall } = useSentryApiTracking()
   useSentryMemoryTracking('Header', 30000)
 
-  const {
-    streams,
-    clearAllStreams
-  } = useStreamStore()
-
+  const { streams, clearAllStreams } = useStreamStore()
   const { trackFeatureUsage, trackMenuItemClick } = useAnalytics()
-  const { isSignedIn, user, isLoaded } = useUser()
   const { t } = useTranslation()
-  const { subscription, isPro, isPremium, loading: subscriptionLoading } = useSubscription()
   
   // Enhanced mobile layout management with Sentry tracking
   const {
@@ -139,80 +114,7 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
   
 
 
-  // Enhanced mobile action handlers with Sentry tracking
-  const handleMobileAction = React.useCallback(async (action: string, callback: () => void | Promise<void>) => {
-    const endInteraction = trackInteraction(`mobile_${action}`, 'header')
-    
-    try {
-      // Track mobile action start
-      if (mobile.isMobile) {
-        StreamMonitor.trackStreamInteraction(
-          `header-${Date.now()}`,
-          'mobile',
-          `header_${action}`
-        )
-      }
-      
-      await trackAsyncOperation(`mobile_${action}`, async () => {
-        await callback()
-      })
-      
-      // Track successful mobile action
-      if (mobile.isMobile) {
-        setCustomMetrics({
-          [`mobile.header_${action}_success`]: 1
-        })
 
-        Sentry.addBreadcrumb({
-          message: `Mobile header action completed: ${action}`,
-          category: 'mobile.header',
-          level: 'info',
-          data: {
-            action,
-            streamCount: streams.length,
-            layout: currentLayout
-          }
-        })
-      }
-      
-    } catch (error) {
-      // Track mobile action errors
-      if (mobile.isMobile && error instanceof Error) {
-        handleMobileLayoutError(error, { action, component: 'Header' })
-        setCustomMetrics({
-          [`mobile.header_${action}_error`]: 1
-        })
-      }
-      console.error(`Header action failed: ${action}`, error)
-    } finally {
-      endInteraction()
-    }
-  }, [mobile.isMobile, currentLayout, streams.length, handleMobileLayoutError, trackInteraction, trackAsyncOperation])
-
-  // Enhanced mobile menu handlers
-  const handleAddStream = React.useCallback(() => {
-    handleMobileAction('add_stream', () => {
-      setShowAddStream(true)
-      trackFeatureUsage('add_stream', { source: 'header' })
-    })
-  }, [handleMobileAction, trackFeatureUsage])
-
-  const handleDiscovery = React.useCallback(() => {
-    handleMobileAction('discovery', () => {
-      setShowDiscovery(true)
-      trackFeatureUsage('discovery', { source: 'header' })
-    })
-  }, [handleMobileAction, trackFeatureUsage])
-
-  const handleMobileMenuToggle = React.useCallback(() => {
-    handleMobileAction('mobile_menu_toggle', () => {
-      setShowMobileMenu(!showMobileMenu)
-      trackMenuItemClick('mobile_menu', { opened: !showMobileMenu })
-    })
-  }, [handleMobileAction, showMobileMenu, trackMenuItemClick])
-
-  // Debug logging
-  console.log('Header - Clerk state:', { isLoaded, isSignedIn, user: user?.id })
 
 
   return (
@@ -250,65 +152,17 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               </Link>
             </motion.div>
 
-            {/* Enhanced Mobile Actions - More responsive */}
-            <div className="flex items-center gap-1.5 sm:gap-2 md:hidden transition-all duration-300">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                    onClick={handleAddStream}
-                    size="sm"
-                    className="h-10 px-3 sm:px-4 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg border-0 min-w-[44px] touch-manipulation transition-all duration-300 text-responsive-sm"
-                    disabled={streams.length >= 16}
-                  >
-                    <Plus className="h-4 w-4" />
-                    <span className="ml-1.5 hidden xs:inline transition-opacity duration-300 text-responsive-sm">{t('header.addStream')}</span>
-                  </Button>
-              </motion.div>
-
-              {/* Mobile Layout Selector - Show when streams exist */}
-              {streams.length > 0 && (
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex-shrink-0 relative"
-                >
-                  <div className="h-10 flex items-center">
-                    <EnhancedLayoutSelector mobile />
-                  </div>
-                  {/* Layout optimization indicator */}
-                  {mobile.isMobile && !isOptimalLayout && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-500 rounded-full border border-background"
-                      title="Layout can be optimized for mobile"
-                    />
-                  )}
-                </motion.div>
-              )}
-
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-10 w-10 sm:px-3 sm:w-auto border-border/40 hover:border-primary/40 hover:bg-primary/5 backdrop-blur-sm min-w-[44px] touch-manipulation transition-all duration-300 text-responsive-sm"
-                    onClick={handleDiscovery}
-                  >
-                    <Compass className="h-4 w-4" />
-                    <span className="ml-1.5 hidden sm:inline transition-opacity duration-300 text-responsive-sm">{t('header.discover')}</span>
-                  </Button>
-              </motion.div>
-
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-10 w-10 p-0 hover:bg-muted/60 rounded-lg min-w-[44px] touch-manipulation"
-                  onClick={handleMobileMenuToggle}
-                >
-                  <Menu className="h-4 w-4" />
-                </Button>
-              </motion.div>
-            </div>
+            {/* Mobile Controls */}
+            <MobileControls
+              onAddStream={() => setShowAddStream(true)}
+              onDiscovery={() => setShowDiscovery(true)}
+              onToggleChat={onToggleChat}
+              onClearAllStreams={clearAllStreams}
+              showChat={showChat}
+              streamCount={streams.length}
+              showMobileMenu={showMobileMenu}
+              onToggleMobileMenu={() => setShowMobileMenu(!showMobileMenu)}
+            />
 
             {/* Desktop Actions */}
             <motion.div
@@ -317,89 +171,13 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              {/* Enhanced Primary Actions Group */}
-              <motion.div
-                className="flex items-center gap-1 bg-gradient-to-r from-muted/30 via-muted/40 to-muted/30 backdrop-blur-md rounded-xl p-1.5 border border-border/30 shadow-lg"
-                whileHover={{ scale: 1.01, y: -1, boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}
-                transition={{ duration: 0.2 }}
-              >
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                    onClick={() => setShowAddStream(true)}
-                    size="sm"
-                    className="h-8 px-3 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 border-0 shadow-md text-responsive-sm"
-                    disabled={streams.length >= 16}
-                  >
-                    <Plus className="h-4 w-4" />
-                    <span className="ml-1.5 text-responsive-sm transition-all duration-300">{t('header.addStream')}</span>
-                  </Button>
-                </motion.div>
-
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-3 hover:bg-background/60 rounded-lg text-responsive-sm"
-                      onClick={() => setShowDiscovery(true)}
-                    >
-                      <Compass className="h-4 w-4" />
-                    <span className="ml-1.5 text-responsive-sm transition-all duration-300">Discover</span>
-                  </Button>
-                </motion.div>
-
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                    variant={showChat ? "default" : "ghost"}
-                    size="sm"
-                    onClick={onToggleChat}
-                    className={cn(
-                      "h-8 px-3 rounded-lg",
-                      showChat
-                        ? "bg-gradient-to-r from-primary to-primary/90 border-0"
-                        : "hover:bg-background/60"
-                    )}
-                  >
-                    <MessageSquare className="h-4 w-4" />
-                    <span className="ml-1.5 text-responsive-sm transition-all duration-300">{t('header.chat')}</span>
-                  </Button>
-                </motion.div>
-              </motion.div>
-
-              {/* Navigation Links */}
-              <motion.div
-                className="flex items-center gap-1 bg-gradient-to-r from-muted/20 via-muted/25 to-muted/20 backdrop-blur-sm rounded-lg p-1 border border-border/20"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1, duration: 0.3 }}
-                whileHover={{ scale: 1.01 }}
-              >
-                <Link href="/amp-summer">
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-3 text-yellow-600 hover:bg-yellow-500/10"
-                    >
-                      <Zap className="h-4 w-4" />
-                      <span className="ml-1.5 text-responsive-sm transition-all duration-300">AMP</span>
-                    </Button>
-                  </motion.div>
-                </Link>
-
-                <Link href="/pricing">
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-3 text-purple-600 hover:bg-purple-500/10"
-                    >
-                      <Crown className="h-4 w-4" />
-                      <span className="ml-1.5 text-responsive-sm transition-all duration-300">{t('header.pricing')}</span>
-                    </Button>
-                  </motion.div>
-                </Link>
-
-              </motion.div>
+              <NavigationActions
+                onAddStream={() => setShowAddStream(true)}
+                onDiscovery={() => setShowDiscovery(true)}
+                onToggleChat={onToggleChat}
+                showChat={showChat}
+                streamCount={streams.length}
+              />
 
               {/* Controls Group */}
               <motion.div
@@ -447,269 +225,13 @@ const Header = React.memo(function Header({ onToggleChat, showChat }: HeaderProp
               >
                 <LanguageSelector />
                 <ThemeToggle />
-
-                {isSignedIn ? (
-                  <div className="flex items-center gap-2">
-                    {/* Subscription Badge */}
-                    {!subscriptionLoading && (isPro || isPremium) && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <Badge 
-                          variant={isPremium ? "premium" : "gradient"}
-                          className="text-responsive-xs font-semibold"
-                        >
-                          <Crown className="h-3 w-3" />
-                          {isPremium ? "Premium" : "Pro"}
-                        </Badge>
-                      </motion.div>
-                    )}
-                    
-                    <motion.div whileHover={{ scale: 1.05 }}>
-                      <UserButton />
-                    </motion.div>
-                  </div>
-                ) : (
-                  <div className="flex gap-1.5">
-                    <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 px-3"
-                        >
-                          <LogIn className="h-4 w-4" />
-                          <span className="ml-1.5">{t('navigation.signIn')}</span>
-                        </Button>
-                      </motion.div>
-                    </SignInButton>
-                    <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Button
-                          variant="default"
-                          size="sm"
-                          className="h-8 px-3 shadow-sm"
-                        >
-                          <span>{t('navigation.signUp')}</span>
-                        </Button>
-                      </motion.div>
-                    </SignUpButton>
-                  </div>
-                )}
+                <UserAuth />
               </motion.div>
             </motion.div>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {showMobileMenu && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 md:hidden"
-              onClick={() => setShowMobileMenu(false)}
-            />
-
-            {/* Mobile Menu Panel */}
-            <motion.div
-              initial={{ x: "100%", opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: "100%", opacity: 0 }}
-              transition={{
-                type: "spring",
-                damping: 30,
-                stiffness: 400,
-                opacity: { duration: 0.2 }
-              }}
-              className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-background/95 backdrop-blur-xl border-l border-border/50 z-50 md:hidden shadow-2xl"
-            >
-              <motion.div
-                className="flex items-center justify-between p-4 border-b border-border/50"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, duration: 0.3 }}
-              >
-                <h2 className="text-responsive-lg font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                  {t('header.menu')}
-                </h2>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowMobileMenu(false)}
-                    className="h-8 w-8 p-0 hover:bg-muted/60"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </motion.div>
-              </motion.div>
-
-              <motion.div
-                className="p-4 space-y-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.3 }}
-              >
-                {/* Stream Count */}
-                <motion.div
-                  className="bg-gradient-to-br from-muted/50 to-muted/30 rounded-lg p-3 border border-border/30"
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.3, duration: 0.3 }}
-                >
-                  <div className="text-responsive-sm text-muted-foreground">{t('header.activeStreams')}</div>
-                  <div className="text-responsive-xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                    {streams.length} / 16
-                  </div>
-                </motion.div>
-
-                {/* Quick Actions */}
-                <motion.div
-                  className="space-y-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.3 }}
-                >
-                  <Button
-                    onClick={() => {
-                      onToggleChat()
-                      setShowMobileMenu(false)
-                    }}
-                    variant={showChat ? "default" : "outline"}
-                    className="w-full justify-start h-12"
-                  >
-                    <MessageSquare className="mr-3 h-5 w-5" />
-                    {showChat ? t('chat.hide') : t('chat.show')}
-                  </Button>
-
-                  <Link href="/amp-summer" className="block">
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start h-12 border-yellow-500/30 hover:border-yellow-500/50 hover:bg-yellow-500/10"
-                      onClick={() => setShowMobileMenu(false)}
-                    >
-                      <Zap className="mr-3 h-5 w-5 text-yellow-600" />
-                      AMP Summer
-                    </Button>
-                  </Link>
-
-                </motion.div>
-
-                {/* Layout Controls */}
-                <div className="pt-4 border-t border-border">
-                  <div className="text-responsive-sm font-medium mb-3">Layout & Controls</div>
-                  
-                  {/* Mobile Layout Optimization */}
-                  {mobile.isMobile && !isOptimalLayout && streams.length > 0 && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mb-3 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg"
-                    >
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full" />
-                        <span className="text-responsive-sm font-medium text-yellow-700 dark:text-yellow-300">
-                          Layout Optimization
-                        </span>
-                      </div>
-                      <p className="text-xs text-yellow-600 dark:text-yellow-400 mb-2">
-                        Your current layout ({currentLayout}) can be optimized for mobile viewing.
-                      </p>
-                      <Button
-                        onClick={() => {
-                          refreshLayout()
-                          setShowMobileMenu(false)
-                          handleMobileAction('optimize_layout', () => {})
-                        }}
-                        size="sm"
-                        variant="outline"
-                        className="w-full h-8 text-xs border-yellow-500/30 hover:border-yellow-500/50 hover:bg-yellow-500/10"
-                      >
-                        Switch to {recommendedLayout}
-                      </Button>
-                    </motion.div>
-                  )}
-                  
-                  <div className="space-y-2">
-                    <EnhancedLayoutSelector mobile />
-                    <SavedLayoutsDialog mobile />
-                    <ShareDialog mobile />
-                  </div>
-                </div>
-
-                {/* Stream Management */}
-                {streams.length > 0 && (
-                  <div className="pt-4 border-t border-border">
-                    <Button
-                      onClick={() => {
-                        clearAllStreams()
-                        setShowMobileMenu(false)
-                      }}
-                      variant="destructive"
-                      className="w-full justify-start h-12"
-                    >
-                      <Trash2 className="mr-3 h-5 w-5" />
-                      {t('header.clearAllStreams')}
-                    </Button>
-                  </div>
-                )}
-
-                {/* Theme Toggle */}
-                <div className="pt-4 border-t border-border flex justify-center gap-3">
-                  <LanguageSelector />
-                  <ThemeToggle />
-                  {isSignedIn ? (
-                    <div className="flex items-center gap-2">
-                      {/* Mobile Subscription Badge */}
-                      {!subscriptionLoading && (isPro || isPremium) && (
-                        <Badge 
-                          variant={isPremium ? "premium" : "gradient"}
-                          className="text-responsive-xs font-semibold"
-                        >
-                          <Crown className="h-3 w-3" />
-                          {isPremium ? "Premium" : "Pro"}
-                        </Badge>
-                      )}
-                      <UserButton />
-                    </div>
-                  ) : (
-                    <div className="flex gap-2">
-                      <SignInButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-9"
-                        >
-                          <LogIn className="h-4 w-4" />
-                          <span className="ml-2 text-responsive-sm">Sign In</span>
-                        </Button>
-                      </SignInButton>
-                      <SignUpButton mode="redirect" forceRedirectUrl="/" fallbackRedirectUrl="/">
-                        <Button
-                          variant="default"
-                          size="sm"
-                          className="h-9"
-                        >
-                          <span className="text-responsive-sm">Sign Up</span>
-                        </Button>
-                      </SignUpButton>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
 
       {/* Dialogs */}
       <EnhancedAddStreamDialog

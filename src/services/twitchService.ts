@@ -113,9 +113,6 @@ class TwitchService {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ channels })
-      }).catch(error => {
-        console.error('Network error calling Twitch API:', error);
-        throw new Error('Network error');
       });
 
       if (!response.ok) {
@@ -154,7 +151,27 @@ class TwitchService {
           
           return;
         }
-        throw new Error(`Failed to fetch stream data: ${response.status}`);
+        
+        // For other non-200 responses, log but don't throw
+        console.warn(`Twitch API returned ${response.status} for channels:`, channels, 'treating streams as offline');
+        
+        // Return offline status instead of throwing
+        channels.forEach(channel => {
+          const offlineInfo: StreamInfo = {
+            isLive: false,
+            viewerCount: 0,
+            gameName: '',
+            title: '',
+            thumbnailUrl: '',
+            startedAt: null
+          };
+          
+          const resolvers = this.resolvers.get(channel) || [];
+          resolvers.forEach(resolve => resolve(offlineInfo));
+          this.resolvers.delete(channel);
+        });
+        
+        return; // Exit early instead of throwing
       }
 
       const data = await response.json();
@@ -189,9 +206,9 @@ class TwitchService {
         this.resolvers.delete(result.channel);
       });
     } catch (error) {
-      console.error('Twitch service error:', error);
+      console.warn('Twitch service error (degrading gracefully):', error);
       
-      // Resolve with offline status on error
+      // Resolve with offline status on error (graceful degradation)
       channels.forEach(channel => {
         const offlineInfo: StreamInfo = {
           isLive: false,

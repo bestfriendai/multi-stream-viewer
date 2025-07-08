@@ -158,7 +158,11 @@ const StreamGrid: React.FC = React.memo(() => {
     return typeof window !== 'undefined' && window.innerWidth < 768
   }
   
-  // Get streams with sponsored stream injected - memoize based on essential stream properties only
+  // Optimized memoization - only depend on stream count and essential properties
+  const streamCount = streams.length
+  const streamIds = useMemo(() => streams.map(s => s.id).join(','), [streams])
+  
+  // Get streams with sponsored stream injected - simplified dependencies
   const streamsWithSponsored = useMemo(() => {
     try {
       return injectSponsoredStream([...streams])
@@ -166,15 +170,15 @@ const StreamGrid: React.FC = React.memo(() => {
       console.error('Error injecting sponsored stream:', error)
       return [...streams] // Fallback to original streams
     }
-  }, [streams.length, streams.map(s => `${s.id}-${s.channelName}-${s.platform}`).join(',')])
+  }, [streamCount, streamIds])
   
+  // Simplified grid config memoization
   const gridConfig = useMemo(() => {
     const isMobile = isMobileDevice()
     const config = calculateGridConfig(streamsWithSponsored.length, gridLayout, isMobile)
     console.log('🔧 Grid config calculated:', {
       layout: gridLayout,
       streamCount: streamsWithSponsored.length,
-      userStreamCount: getUserStreamCount(streamsWithSponsored),
       config,
       timestamp: new Date().toLocaleTimeString()
     })

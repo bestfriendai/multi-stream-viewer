@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import { useStreamStore } from '@/store/streamStore'
 import { useMobileDetection } from './useMobileDetection'
 import { StreamMonitor, ErrorContextManager } from '@/lib/sentry-insights'
@@ -23,6 +23,7 @@ export const useMobileLayoutManager = (options: MobileLayoutManagerOptions = {})
 
   const { gridLayout, setGridLayout, streams } = useStreamStore()
   const mobile = useMobileDetection()
+  const layoutChangeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Track device changes and layout preferences
   useEffect(() => {
@@ -52,54 +53,69 @@ export const useMobileLayoutManager = (options: MobileLayoutManagerOptions = {})
 
   }, [mobile, trackAnalytics])
 
-  // Auto-switch layout based on device changes
+  // Auto-switch layout based on device changes (debounced to prevent infinite loops)
   useEffect(() => {
     if (!enableAutoSwitch) return
 
-    const shouldUseStackedLayout = mobile.isMobile && forceStackOnMobile
-    const isCurrentlyStacked = gridLayout === 'stacked' || gridLayout === '1x1'
+    // Clear any existing timeout
+    if (layoutChangeTimeoutRef.current) {
+      clearTimeout(layoutChangeTimeoutRef.current)
+    }
 
-    if (shouldUseStackedLayout && !isCurrentlyStacked) {
-      // Switch to stacked layout for mobile
-      setGridLayout('stacked')
-      
-      if (trackAnalytics) {
-        Sentry.addBreadcrumb({
-          message: 'Auto-switched to stacked layout for mobile device',
-          category: 'layout.auto_switch',
-          level: 'info',
-          data: {
-            fromLayout: gridLayout,
-            toLayout: 'stacked',
-            trigger: 'mobile_detection',
-            device: {
-              width: mobile.screenWidth,
-              height: mobile.screenHeight,
-              orientation: mobile.orientation
+    // Debounce layout changes to prevent infinite loops during rapid resize events
+    layoutChangeTimeoutRef.current = setTimeout(() => {
+      const shouldUseStackedLayout = mobile.isMobile && forceStackOnMobile
+      const isCurrentlyStacked = gridLayout === 'stacked' || gridLayout === '1x1'
+
+      if (shouldUseStackedLayout && !isCurrentlyStacked) {
+        // Switch to stacked layout for mobile
+        setGridLayout('stacked')
+        
+        if (trackAnalytics) {
+          Sentry.addBreadcrumb({
+            message: 'Auto-switched to stacked layout for mobile device',
+            category: 'layout.auto_switch',
+            level: 'info',
+            data: {
+              fromLayout: gridLayout,
+              toLayout: 'stacked',
+              trigger: 'mobile_detection',
+              device: {
+                width: mobile.screenWidth,
+                height: mobile.screenHeight,
+                orientation: mobile.orientation
+              }
             }
-          }
-        })
+          })
+        }
+      } else if (!mobile.isMobile && isCurrentlyStacked && streams.length > 1) {
+        // Switch to appropriate grid layout for desktop/tablet
+        const newLayout: GridLayout = mobile.isTablet ? 'grid-2x2' : 'grid-3x3'
+        setGridLayout(newLayout)
+        
+        if (trackAnalytics) {
+          Sentry.addBreadcrumb({
+            message: `Auto-switched to ${newLayout} for ${mobile.isTablet ? 'tablet' : 'desktop'} device`,
+            category: 'layout.auto_switch',
+            level: 'info',
+            data: {
+              fromLayout: gridLayout,
+              toLayout: newLayout,
+              trigger: 'desktop_detection',
+              streamCount: streams.length
+            }
+          })
+        }
       }
-    } else if (!mobile.isMobile && isCurrentlyStacked && streams.length > 1) {
-      // Switch to appropriate grid layout for desktop/tablet
-      const newLayout: GridLayout = mobile.isTablet ? 'grid-2x2' : 'grid-3x3'
-      setGridLayout(newLayout)
-      
-      if (trackAnalytics) {
-        Sentry.addBreadcrumb({
-          message: `Auto-switched to ${newLayout} for ${mobile.isTablet ? 'tablet' : 'desktop'} device`,
-          category: 'layout.auto_switch',
-          level: 'info',
-          data: {
-            fromLayout: gridLayout,
-            toLayout: newLayout,
-            trigger: 'desktop_detection',
-            streamCount: streams.length
-          }
-        })
+    }, 250) // 250ms debounce delay
+
+    // Cleanup function to clear timeout
+    return () => {
+      if (layoutChangeTimeoutRef.current) {
+        clearTimeout(layoutChangeTimeoutRef.current)
       }
     }
-  }, [mobile.isMobile, mobile.isTablet, mobile.screenWidth, mobile.screenHeight, enableAutoSwitch, forceStackOnMobile, gridLayout, setGridLayout, streams.length, trackAnalytics])
+  }, [mobile.isMobile, mobile.isTablet, enableAutoSwitch, forceStackOnMobile, gridLayout, setGridLayout, streams.length, trackAnalytics])
 
   // Track orientation changes with performance impact
   useEffect(() => {

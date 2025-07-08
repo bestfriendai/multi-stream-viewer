@@ -7,8 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Check, Star, Zap, Crown } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { stripeService } from '@/services/stripe';
+import { supabaseService } from '@/services/supabase';
 import Header from '@/components/Header';
+import toast from 'react-hot-toast';
 
 interface Product {
   id: string;
@@ -46,16 +48,11 @@ export default function PricingPage() {
 
   const fetchProducts = async () => {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('active', true)
-        .order('price_monthly', { ascending: true });
-
-      if (error) throw error;
-      setProducts(data || []);
+      const products = await supabaseService.product.getProducts();
+      setProducts(products);
     } catch (error) {
       console.error('Error fetching products:', error);
+      toast.error('Failed to load pricing information');
     } finally {
       setLoading(false);
     }
@@ -65,15 +62,11 @@ export default function PricingPage() {
     if (!user) return;
 
     try {
-      // Use API route to fetch subscription instead of direct Supabase call
-      const response = await fetch('/api/subscription/get-active');
-      if (!response.ok) {
-        throw new Error('Failed to fetch subscription');
-      }
-      const data = await response.json();
-      setSubscription(data.subscription);
+      const subscription = await supabaseService.subscription.getUserSubscription(user.id);
+      setSubscription(subscription);
     } catch (error) {
       console.error('Error fetching subscription:', error);
+      toast.error('Failed to load subscription information');
     }
   };
 
@@ -110,6 +103,7 @@ export default function PricingPage() {
         if (response.status === 401) {
           // User not authenticated
           console.log('User not authenticated, redirecting to sign in');
+          toast.error('Please sign in to continue');
           window.location.href = data.redirectUrl || '/sign-in?redirect_url=' + encodeURIComponent('/pricing');
           return;
         }
@@ -119,12 +113,12 @@ export default function PricingPage() {
     } catch (error) {
       console.error('Error creating checkout session:', error);
       
-      // Show more specific error message
+      // Show more specific error message with toast
       const errorMessage = error instanceof Error 
         ? error.message 
         : 'Something went wrong. Please try again.';
         
-      alert(`Checkout Error: ${errorMessage}`);
+      toast.error(`Checkout Error: ${errorMessage}`);
     } finally {
       setSubscribing(null);
     }

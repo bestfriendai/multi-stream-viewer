@@ -4,7 +4,13 @@ import * as Sentry from '@sentry/nextjs'
 
 export class SentryPerformanceTracker {
   private static instance: SentryPerformanceTracker
-  private transactions: Map<string, any> = new Map()
+  private transactions: Map<string, {
+    span: any
+    startTime: number
+    apiName: string
+    method: string
+    url: string
+  }> = new Map()
 
   public static getInstance(): SentryPerformanceTracker {
     if (!SentryPerformanceTracker.instance) {
@@ -19,7 +25,7 @@ export class SentryPerformanceTracker {
   public startApiCall(apiName: string, method: string, url: string): string {
     const transactionId = `${apiName}-${Date.now()}-${Math.random()}`
     
-    const transaction = Sentry.startTransaction({
+    const span = Sentry.startInactiveSpan({
       name: `API ${method.toUpperCase()} ${apiName}`,
       op: 'http.client',
       data: {
@@ -27,7 +33,7 @@ export class SentryPerformanceTracker {
         method: method.toUpperCase(),
         apiName
       },
-      tags: {
+      attributes: {
         component: 'api-client',
         endpoint: apiName,
         method: method.toUpperCase()
@@ -35,7 +41,7 @@ export class SentryPerformanceTracker {
     })
 
     this.transactions.set(transactionId, {
-      transaction,
+      span,
       startTime: performance.now(),
       apiName,
       method,
@@ -60,23 +66,20 @@ export class SentryPerformanceTracker {
     if (!tracking) return
 
     const duration = performance.now() - tracking.startTime
-    const { transaction, apiName, method, url } = tracking
+    const { span, apiName, method, url } = tracking
 
-    // Set transaction status
-    transaction.setStatus(options.success ? 'ok' : 'internal_error')
+    // Set span status
+    span?.setStatus(options.success ? { code: 1 } : { code: 2 })
     
-    // Add performance tags
-    transaction.setTag('success', options.success.toString())
-    transaction.setTag('cache_hit', options.cacheHit?.toString() || 'false')
-    
-    if (options.statusCode) {
-      transaction.setTag('status_code', options.statusCode.toString())
-    }
-
-    // Add performance data
-    transaction.setData('duration_ms', Math.round(duration))
-    transaction.setData('response_size', options.responseSize || 0)
-    transaction.setData('retry_count', options.retryCount || 0)
+    // Add performance attributes
+    span?.setAttributes({
+      'success': options.success,
+      'cache_hit': options.cacheHit || false,
+      'status_code': options.statusCode || 0,
+      'duration_ms': Math.round(duration),
+      'response_size': options.responseSize || 0,
+      'retry_count': options.retryCount || 0
+    })
 
     // Set performance metrics
     Sentry.setMeasurement(`api.${apiName}.duration`, duration, 'millisecond')
@@ -122,8 +125,8 @@ export class SentryPerformanceTracker {
       })
     }
 
-    // Finish transaction
-    transaction.finish()
+    // Finish span
+    span?.end()
     this.transactions.delete(transactionId)
   }
 

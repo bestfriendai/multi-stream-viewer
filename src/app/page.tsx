@@ -53,6 +53,7 @@ import ResponsiveTextDemo from '@/components/ResponsiveTextDemo'
 import MobilePerformanceMonitor from '@/components/MobilePerformanceMonitor'
 import MobileLoadingOptimizer from '@/components/MobileLoadingOptimizer'
 import { useMobileLayoutManager } from '@/hooks/useMobileLayoutManager'
+import SentryTestButton from '@/components/SentryTestButton'
 
 export default function HomePage() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -77,16 +78,25 @@ export default function HomePage() {
   // Mobile gesture support
   const streamGestures = useStreamGestures()
 
-  // Mobile detection
+  // Mobile detection (debounced to prevent excessive updates)
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null
+
     const checkMobile = () => {
-      const mobile = window.innerWidth < 768
-      setIsMobile(mobile)
+      if (timeoutId) clearTimeout(timeoutId)
+      
+      timeoutId = setTimeout(() => {
+        const mobile = window.innerWidth < 768
+        setIsMobile(mobile)
+      }, 100) // 100ms debounce
     }
 
     checkMobile()
     window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+      if (timeoutId) clearTimeout(timeoutId)
+    }
   }, [])
 
   // Separate effect for gesture hints to avoid re-renders on stream changes
@@ -371,6 +381,7 @@ export default function HomePage() {
             <TabsContent value="features" className="flex-1 overflow-y-auto p-4">
               <ErrorBoundary>
                 <div className="space-y-8">
+                  <SentryTestButton />
                   <ResponsiveTextDemo />
                   <FeaturesShowcase />
                 </div>
