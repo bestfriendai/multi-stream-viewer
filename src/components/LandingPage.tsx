@@ -699,22 +699,22 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             {[
               {
                 step: "1",
-                title: "Find Streamers",
-                description: "Search for your favorite creators or paste their channel links to get started",
+                title: t('landing.quickStart.findStreamers.title'),
+                description: t('landing.quickStart.findStreamers.description'),
                 icon: Plus,
                 color: "from-purple-500 to-purple-600"
               },
               {
                 step: "2",
-                title: "Pick Your View",
-                description: "Choose from grid, focus, or picture-in-picture layouts to customize your experience",
+                title: t('landing.quickStart.pickView.title'),
+                description: t('landing.quickStart.pickView.description'),
                 icon: Layout,
                 color: "from-purple-500 to-purple-600"
               },
               {
                 step: "3",
-                title: "Watch & Chat",
-                description: "Enjoy multiple streams while engaging with live chat communities across platforms",
+                title: t('landing.quickStart.watchChat.title'),
+                description: t('landing.quickStart.watchChat.description'),
                 icon: PlayCircle,
                 color: "from-green-500 to-emerald-500"
               }
