@@ -50,3 +50,6 @@ iOS/
 
 # macOS
 .DS_Store
+
+# clerk configuration (can include secrets)
+/.clerk/
