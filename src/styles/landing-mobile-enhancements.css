@@ -1,0 +1,300 @@
+/* Enhanced Mobile Landing Page Improvements */
+
+/* =================================================================== */
+/* 1. IMPROVED TOUCH TARGETS */
+/* =================================================================== */
+
+/* Ensure all interactive elements meet minimum touch target size */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+/* Enhanced button touch experience */
+.enhanced-button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.enhanced-button:active {
+  transform: scale(0.98);
+}
+
+/* =================================================================== */
+/* 2. IMPROVED VISUAL HIERARCHY */
+/* =================================================================== */
+
+/* Better spacing for mobile content */
+.mobile-content-spacing {
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .mobile-content-spacing {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-content-spacing {
+    padding: 2rem;
+  }
+}
+
+/* Enhanced gradient text for better readability */
+.enhanced-gradient-text {
+  background: linear-gradient(135deg, 
+    hsl(var(--foreground)) 0%, 
+    hsl(var(--foreground)) 60%, 
+    hsl(var(--foreground) / 0.8) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* =================================================================== */
+/* 3. IMPROVED ANIMATIONS FOR MOBILE */
+/* =================================================================== */
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .landing-animation {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .motion-safe-only {
+    transform: none !important;
+  }
+}
+
+/* Smooth micro-interactions */
+.smooth-interaction {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.smooth-interaction:hover {
+  transform: translateY(-1px);
+}
+
+.smooth-interaction:active {
+  transform: translateY(0);
+}
+
+/* =================================================================== */
+/* 4. ENHANCED MOBILE CARDS */
+/* =================================================================== */
+
+.mobile-card-enhanced {
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.mobile-card-enhanced:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Mobile-specific card adjustments */
+@media (max-width: 768px) {
+  .mobile-card-enhanced {
+    border-radius: 8px;
+  }
+  
+  .mobile-card-enhanced:hover {
+    transform: none;
+  }
+  
+  .mobile-card-enhanced:active {
+    transform: scale(0.98);
+  }
+}
+
+/* =================================================================== */
+/* 5. IMPROVED LOADING STATES */
+/* =================================================================== */
+
+.skeleton-loading {
+  background: linear-gradient(90deg, 
+    hsl(var(--muted)) 25%, 
+    hsl(var(--muted) / 0.5) 50%, 
+    hsl(var(--muted)) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* =================================================================== */
+/* 6. ENHANCED FOCUS STATES */
+/* =================================================================== */
+
+.enhanced-focus {
+  outline: none;
+  position: relative;
+}
+
+.enhanced-focus:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 2px solid hsl(var(--primary));
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* =================================================================== */
+/* 7. MOBILE-OPTIMIZED GRID LAYOUTS */
+/* =================================================================== */
+
+.mobile-grid-responsive {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .mobile-grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .mobile-grid-responsive {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* =================================================================== */
+/* 8. IMPROVED TYPOGRAPHY FOR MOBILE */
+/* =================================================================== */
+
+.mobile-typography-enhanced {
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 768px) {
+  .mobile-typography-enhanced {
+    line-height: 1.5;
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  }
+}
+
+/* Better text contrast for mobile */
+.mobile-text-contrast {
+  color: hsl(var(--foreground) / 0.9);
+}
+
+.mobile-text-muted {
+  color: hsl(var(--muted-foreground) / 0.8);
+}
+
+/* =================================================================== */
+/* 9. ENHANCED MOBILE NAVIGATION */
+/* =================================================================== */
+
+.mobile-nav-enhanced {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid hsl(var(--border) / 0.5);
+}
+
+/* =================================================================== */
+/* 10. PERFORMANCE OPTIMIZATIONS */
+/* =================================================================== */
+
+/* GPU acceleration for smooth animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Optimize for mobile rendering */
+@media (max-width: 768px) {
+  .mobile-optimized {
+    contain: layout style paint;
+    content-visibility: auto;
+  }
+}
+
+/* =================================================================== */
+/* 11. ACCESSIBILITY IMPROVEMENTS */
+/* =================================================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .enhanced-contrast {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Dark mode optimizations */
+@media (prefers-color-scheme: dark) {
+  .dark-mode-enhanced {
+    background: hsl(var(--background) / 0.95);
+    backdrop-filter: blur(8px);
+  }
+}
+
+/* =================================================================== */
+/* 12. MOBILE SECTION SPACING */
+/* =================================================================== */
+
+.mobile-section-spacing {
+  padding: 2rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .mobile-section-spacing {
+    padding: 3rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-section-spacing {
+    padding: 4rem 2rem;
+  }
+}
+
+/* =================================================================== */
+/* 13. ENHANCED LOADING STATES */
+/* =================================================================== */
+
+.loading-fade-in {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
