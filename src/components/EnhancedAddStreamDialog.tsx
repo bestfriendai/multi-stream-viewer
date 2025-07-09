@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import BottomSheet from '@/components/ui/bottom-sheet'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -176,7 +177,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-[500px]">
+      <DialogContent className="overflow-y-auto sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-center sm:text-left">{t('streams.addStream')}</DialogTitle>
         </DialogHeader>
