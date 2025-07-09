@@ -46,8 +46,7 @@ import MobileGestureOverlay from '@/components/MobileGestureOverlay'
 import { useStreamGestures } from '@/hooks/useMobileGestures'
 import BentoStreamGrid from '@/components/BentoStreamGrid'
 import GestureStreamViewer from '@/components/GestureStreamViewer'
-import EnhancedMobileLayout from '@/components/EnhancedMobileLayout'
-import AppLikeMobileLayout from '@/components/AppLikeMobileLayout'
+import OptimizedMobileLayout from '@/components/OptimizedMobileLayout'
 import MobileFAB from '@/components/MobileFAB'
 import ResponsiveTextDemo from '@/components/ResponsiveTextDemo'
 import MobilePerformanceMonitor from '@/components/MobilePerformanceMonitor'
@@ -348,15 +347,12 @@ export default function HomePage() {
                             return <StreamGrid />
                           case 'mosaic':
                             return <StreamGrid />
-                          case 'carousel':
-                            // Only use EnhancedMobileLayout for carousel mode
-                            return isMobile ? <EnhancedMobileLayout /> : <StreamGrid />
                           case 'app-mobile':
-                            // New app-like mobile layout
-                            return isMobile ? <AppLikeMobileLayout /> : <StreamGrid />
+                            // New optimized mobile layout
+                            return isMobile ? <OptimizedMobileLayout /> : <StreamGrid />
                           default:
-                            // Use AppLikeMobileLayout for mobile, StreamGrid for desktop
-                            return isMobile ? <AppLikeMobileLayout /> : <StreamGrid />
+                            // Use OptimizedMobileLayout for mobile, StreamGrid for desktop
+                            return isMobile ? <OptimizedMobileLayout /> : <StreamGrid />
                         }
                       })()}
                     </div>

@@ -78,7 +78,7 @@ export function MobileControls({
           <Button
             onClick={handleAddStream}
             size="sm"
-            className="h-10 px-3 sm:px-4 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg border-0 min-w-[44px] touch-manipulation transition-all duration-300 text-responsive-sm"
+            className="h-11 px-3 sm:px-4 font-medium bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 shadow-lg border-0 min-w-[44px] min-h-[44px] touch-manipulation transition-all duration-300 text-responsive-sm"
             disabled={streamCount >= maxStreams}
           >
             <Plus className="h-4 w-4" />
@@ -93,7 +93,7 @@ export function MobileControls({
             whileTap={{ scale: 0.95 }}
             className="flex-shrink-0 relative"
           >
-            <div className="h-10 flex items-center">
+            <div className="h-11 min-h-[44px] flex items-center">
               <EnhancedLayoutSelector mobile />
             </div>
             {/* Layout optimization indicator */}

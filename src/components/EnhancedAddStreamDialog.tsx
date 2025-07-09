@@ -7,15 +7,12 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { 
-  Search, 
-  TrendingUp, 
-  Shuffle, 
-  Eye, 
-  X,
+import {
+  Search,
+  TrendingUp,
+  Shuffle,
   Loader2,
-  Plus,
-  Grid3x3
+  Plus
 } from 'lucide-react'
 import { useTwitchAutosuggest } from '@/hooks/useTwitchAutosuggest'
 import { useStreamStore } from '@/store/streamStore'
@@ -45,7 +42,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
   
 
   
-  const { suggestions, loading } = useTwitchAutosuggest(channelInput, {
+  const { suggestions } = useTwitchAutosuggest(channelInput, {
     enabled: open && channelInput.length > 0
   })
 
@@ -168,7 +165,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
   if (!translationsLoaded) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-[500px]">
           <div className="flex items-center justify-center p-6">
             <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           </div>
@@ -179,7 +176,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-center sm:text-left">{t('streams.addStream')}</DialogTitle>
         </DialogHeader>
@@ -191,7 +188,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
               variant="outline"
               onClick={handleAddTopLives}
               disabled={isAddingBulk}
-              className="h-auto flex flex-col items-center gap-2 p-4 min-h-[80px] touch-manipulation"
+              className="h-auto flex flex-col items-center gap-2 p-4 min-h-[80px] min-w-[44px] touch-manipulation"
             >
               {isAddingBulk ? (
                 <Loader2 className="w-6 h-6 animate-spin" />
@@ -210,7 +207,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
               variant="outline"
               onClick={handleAddRandomStreamers}
               disabled={isAddingBulk}
-              className="h-auto flex flex-col items-center gap-2 p-4 min-h-[80px] touch-manipulation"
+              className="h-auto flex flex-col items-center gap-2 p-4 min-h-[80px] min-w-[44px] touch-manipulation"
             >
               {isAddingBulk ? (
                 <Loader2 className="w-6 h-6 animate-spin" />
@@ -248,7 +245,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
                 onChange={(e) => setChannelInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={t('streams.enterStreamUrl')}
-                className="pl-10 h-12 text-base touch-manipulation"
+                className="pl-10 h-12 min-h-[44px] text-base touch-manipulation"
                 disabled={isAddingBulk}
               />
             </div>
