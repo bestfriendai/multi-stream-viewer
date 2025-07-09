@@ -44,3 +44,9 @@ next-env.d.ts
 .codersinflow/
 .env*.local
 .env
+
+# iOS folder - ignore entire iOS directory
+iOS/
+
+# macOS
+.DS_Store
