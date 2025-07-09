@@ -187,7 +187,7 @@ export default function MobileStreamControls({
   return (
     <>
       {/* Floating Control Bar - Always visible on mobile */}
-      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 via-black/70 to-transparent md:opacity-0 md:group-hover:opacity-100 transition-all duration-200">
+      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 via-black/70 to-transparent opacity-100 transition-all duration-200 z-20">
         <div className="flex items-center justify-between gap-2">
           {/* Primary Controls */}
           <div className="flex gap-2">

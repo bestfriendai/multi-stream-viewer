@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import BottomSheet from '@/components/ui/bottom-sheet'
+import { BottomSheet } from '@/components/ui/bottom-sheet'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -19,13 +19,8 @@ import { useTwitchAutosuggest } from '@/hooks/useTwitchAutosuggest'
 import { useStreamStore } from '@/store/streamStore'
 import { useSubscription } from '@/hooks/useSubscription'
 import { useTranslation } from '@/contexts/LanguageContext'
+import { useMobileDetection } from '@/hooks/useMobileDetection'
 import { cn } from '@/lib/utils'
-
-// Mobile device detection utility
-const isMobileDevice = (): boolean => {
-  if (typeof window === 'undefined') return false
-  return window.innerWidth < 768
-}
 
 interface EnhancedAddStreamDialogProps {
   open: boolean
@@ -40,8 +35,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
   const { addStream, setGridLayout } = useStreamStore()
   const { subscription } = useSubscription()
   const { t, isLoaded: translationsLoaded } = useTranslation()
-  
-
+  const { isMobile } = useMobileDetection()
   
   const { suggestions } = useTwitchAutosuggest(channelInput, {
     enabled: open && channelInput.length > 0
@@ -77,7 +71,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
             }
           }
           // Set appropriate layout based on device
-          const layout = isMobileDevice() ? 'stacked' : 'grid-2x2'
+          const layout = isMobile ? 'stacked' : 'grid-2x2'
           setGridLayout(layout)
           onOpenChange(false)
         }
@@ -112,7 +106,7 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
             }
           }
           // Set appropriate layout based on device
-          const layout = isMobileDevice() ? 'stacked' : 'grid-2x2'
+          const layout = isMobile ? 'stacked' : 'grid-2x2'
           setGridLayout(layout)
           onOpenChange(false)
         }
@@ -164,142 +158,155 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
   }, [open])
 
   if (!translationsLoaded) {
+    return null
+  }
+
+  const dialogContent = (
+    <>
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <Button
+          variant="outline"
+          onClick={handleAddTopLives}
+          disabled={isAddingBulk}
+          className="h-auto flex flex-col items-center gap-2 p-4 min-h-[80px] min-w-[44px] touch-manipulation"
+        >
+          {isAddingBulk ? (
+            <Loader2 className="w-6 h-6 animate-spin" />
+          ) : (
+            <>
+              <TrendingUp className="w-6 h-6 text-primary" />
+              <div className="text-center">
+                <div className="font-semibold">{t('streams.popularStreams')}</div>
+                <div className="text-xs text-muted-foreground">{t('discovery.addTopStreams')}</div>
+              </div>
+            </>
+          )}
+        </Button>
+        
+        <Button
+          variant="outline"
+          onClick={handleAddRandomStreamers}
+          disabled={isAddingBulk}
+          className="h-auto flex flex-col items-center gap-2 p-4 min-h-[80px] min-w-[44px] touch-manipulation"
+        >
+          {isAddingBulk ? (
+            <Loader2 className="w-6 h-6 animate-spin" />
+          ) : (
+            <>
+              <Shuffle className="w-6 h-6 text-primary" />
+              <div className="text-center">
+                <div className="font-semibold">{t('discovery.randomStreamers')}</div>
+                <div className="text-xs text-muted-foreground">{t('discovery.discoverRandomStreams')}</div>
+              </div>
+            </>
+          )}
+        </Button>
+      </div>
+      
+      <div className="relative">
+        <div className="text-sm text-center text-muted-foreground mb-2">
+          {t('streams.searchPlaceholder')}
+        </div>
+      </div>
+
+      {/* Search Input */}
+      <form onSubmit={(e) => {
+        e.preventDefault()
+        if (channelInput.trim()) {
+          handleAddStream(channelInput.trim())
+        }
+      }}>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            ref={inputRef}
+            type="text"
+            value={channelInput}
+            onChange={(e) => setChannelInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={t('streams.enterStreamUrl')}
+            className="pl-10 h-12 min-h-[44px] text-base touch-manipulation"
+            disabled={isAddingBulk}
+          />
+        </div>
+      </form>
+
+      {/* Autosuggest Dropdown */}
+      {channelInput && suggestions.length > 0 && (
+        <Card className="p-2 max-h-[200px] overflow-y-auto">
+          {suggestions.map((channel, index) => (
+            <div
+              key={channel.id}
+              className={cn(
+                "flex items-center gap-3 p-2 rounded-md cursor-pointer transition-colors",
+                index === selectedIndex && "bg-accent"
+              )}
+              onClick={() => handleAddStream(channel.login)}
+              onMouseEnter={() => setSelectedIndex(index)}
+            >
+              {channel.profile_image_url && (
+                <img 
+                  src={channel.profile_image_url} 
+                  alt={channel.display_name}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              )}
+              <div className="flex-1 min-w-0">
+                <div className="font-medium truncate">{channel.display_name}</div>
+                <div className="text-xs text-muted-foreground flex items-center gap-2">
+                  {channel.game_name && <span className="truncate">{channel.game_name}</span>}
+                  {channel.is_live && (
+                    <Badge variant="destructive" className="h-4 px-1 text-[10px]">
+                      LIVE
+                    </Badge>
+                  )}
+                </div>
+              </div>
+              <Plus className="w-4 h-4 text-muted-foreground" />
+            </div>
+          ))}
+        </Card>
+      )}
+
+      {/* Help Text */}
+      <div className="text-xs text-muted-foreground space-y-1">
+        <p>{t('streams.supportedFormats')}:</p>
+        <ul className="list-disc list-inside space-y-0.5 ml-2">
+          <li>{t('streams.formats.twitch')}</li>
+          <li>{t('streams.formats.youtube')}</li>
+          <li>{t('streams.formats.rumble')}</li>
+        </ul>
+      </div>
+    </>
+  )
+
+  // Render BottomSheet for mobile, Dialog for desktop
+  if (isMobile) {
     return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-[500px]">
-          <div className="flex items-center justify-center p-6">
-            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-          </div>
-        </DialogContent>
-      </Dialog>
+      <BottomSheet
+        isOpen={open}
+        onClose={() => onOpenChange(false)}
+        title={t('streams.addStream')}
+        snapPoints={[40, 70, 90]}
+        initialSnap={1}
+        className="max-h-[90vh]"
+      >
+        {dialogContent}
+      </BottomSheet>
     )
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="overflow-y-auto sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle className="text-center sm:text-left">{t('streams.addStream')}</DialogTitle>
-        </DialogHeader>
-        
-        <div className="space-y-4">
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Button
-              variant="outline"
-              onClick={handleAddTopLives}
-              disabled={isAddingBulk}
-              className="h-auto flex flex-col items-center gap-2 p-4 min-h-[80px] min-w-[44px] touch-manipulation"
-            >
-              {isAddingBulk ? (
-                <Loader2 className="w-6 h-6 animate-spin" />
-              ) : (
-                <>
-                  <TrendingUp className="w-6 h-6 text-primary" />
-                  <div className="text-center">
-                    <div className="font-semibold">{t('streams.popularStreams')}</div>
-                    <div className="text-xs text-muted-foreground">{t('discovery.addTopStreams')}</div>
-                  </div>
-                </>
-              )}
-            </Button>
-            
-            <Button
-              variant="outline"
-              onClick={handleAddRandomStreamers}
-              disabled={isAddingBulk}
-              className="h-auto flex flex-col items-center gap-2 p-4 min-h-[80px] min-w-[44px] touch-manipulation"
-            >
-              {isAddingBulk ? (
-                <Loader2 className="w-6 h-6 animate-spin" />
-              ) : (
-                <>
-                  <Shuffle className="w-6 h-6 text-primary" />
-                  <div className="text-center">
-                    <div className="font-semibold">{t('discovery.randomStreamers')}</div>
-                    <div className="text-xs text-muted-foreground">{t('discovery.discoverRandomStreams')}</div>
-                  </div>
-                </>
-              )}
-            </Button>
+     <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-md mx-auto max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-center">{t('streams.addStream')}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            {dialogContent}
           </div>
-          
-          <div className="relative">
-            <div className="text-sm text-center text-muted-foreground mb-2">
-              {t('streams.searchPlaceholder')}
-            </div>
-          </div>
-
-          {/* Search Input */}
-          <form onSubmit={(e) => {
-            e.preventDefault()
-            if (channelInput.trim()) {
-              handleAddStream(channelInput.trim())
-            }
-          }}>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                ref={inputRef}
-                type="text"
-                value={channelInput}
-                onChange={(e) => setChannelInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={t('streams.enterStreamUrl')}
-                className="pl-10 h-12 min-h-[44px] text-base touch-manipulation"
-                disabled={isAddingBulk}
-              />
-            </div>
-          </form>
-
-          {/* Autosuggest Dropdown */}
-          {channelInput && suggestions.length > 0 && (
-            <Card className="p-2 max-h-[200px] overflow-y-auto">
-              {suggestions.map((channel, index) => (
-                <div
-                  key={channel.id}
-                  className={cn(
-                    "flex items-center gap-3 p-2 rounded-md cursor-pointer transition-colors",
-                    index === selectedIndex && "bg-accent"
-                  )}
-                  onClick={() => handleAddStream(channel.login)}
-                  onMouseEnter={() => setSelectedIndex(index)}
-                >
-                  {channel.profile_image_url && (
-                    <img 
-                      src={channel.profile_image_url} 
-                      alt={channel.display_name}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <div className="font-medium truncate">{channel.display_name}</div>
-                    <div className="text-xs text-muted-foreground flex items-center gap-2">
-                      {channel.game_name && <span className="truncate">{channel.game_name}</span>}
-                      {channel.is_live && (
-                        <Badge variant="destructive" className="h-4 px-1 text-[10px]">
-                          LIVE
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                  <Plus className="w-4 h-4 text-muted-foreground" />
-                </div>
-              ))}
-            </Card>
-          )}
-
-          {/* Help Text */}
-          <div className="text-xs text-muted-foreground space-y-1">
-            <p>{t('streams.supportedFormats')}:</p>
-            <ul className="list-disc list-inside space-y-0.5 ml-2">
-              <li>{t('streams.formats.twitch')}</li>
-              <li>{t('streams.formats.youtube')}</li>
-              <li>{t('streams.formats.rumble')}</li>
-            </ul>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  )
+        </DialogContent>
+      </Dialog>
+   )
 }

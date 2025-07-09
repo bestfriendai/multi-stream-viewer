@@ -394,17 +394,31 @@ const StreamGrid: React.FC = React.memo(() => {
     if (!isMobileDevice() || streamsWithSponsored.length <= 2) return null
 
     return (
-      <div className="mobile-swipe-container">
+      <div className="mobile-swipe-container" style={{ width: '100vw', maxWidth: '100vw', overflow: 'hidden' }}>
         <motion.div 
           className="mobile-swipe-wrapper"
-          style={{ 
-            transform: `translateX(-${currentMobileIndex * 100}%)`,
-            width: `${streamsWithSponsored.length * 100}%`
+          animate={{ 
+            x: `-${currentMobileIndex * 100}vw`
           }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          style={{
+            display: 'flex',
+            width: `${streamsWithSponsored.length * 100}vw`,
+            height: '100%'
+          }}
         >
           {streamsWithSponsored.map((stream, index) => (
-            <div key={`mobile-${stream.id}`} className="mobile-swipe-item">
+            <div 
+              key={`mobile-${stream.id}`} 
+              className="mobile-swipe-item"
+              style={{
+                flex: '0 0 100vw',
+                width: '100vw',
+                maxWidth: '100vw',
+                height: '100%',
+                overflow: 'hidden'
+              }}
+            >
               <motion.div
                 className="w-full h-full rounded-xl overflow-hidden bg-black"
                 variants={streamCardVariants}
@@ -412,6 +426,7 @@ const StreamGrid: React.FC = React.memo(() => {
                 animate="visible"
                 whileTap="tap"
                 onTap={() => setActiveStream(stream.id)}
+                style={{ width: '100%', height: '100%', overflow: 'hidden' }}
               >
                 {stream.isSponsored ? (
                   <SponsoredStreamEmbed 

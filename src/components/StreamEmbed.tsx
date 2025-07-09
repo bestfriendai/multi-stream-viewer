@@ -92,19 +92,19 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
             })
           })
           
-          // Additional mobile iframe styling after embed creation
-          setTimeout(() => {
+          embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
+            playerRef.current = embed.getPlayer()
+            
+            // Apply mobile iframe styling immediately when embed is ready
             if (embedRef.current && isMobileDevice()) {
               const iframe = embedRef.current.querySelector('iframe')
               if (iframe) {
                 iframe.style.objectFit = 'cover'
                 iframe.style.objectPosition = 'center'
+                iframe.style.transition = 'none'
+                iframe.style.willChange = 'auto'
               }
             }
-          }, 100)
-          
-          embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
-            playerRef.current = embed.getPlayer()
             
             // Track successful stream load
             StreamMonitor.trackStreamLoad(stream.id, stream.platform, loadStartTime)
@@ -177,6 +177,10 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
       iframe.style.left = '0'
       iframe.style.width = '100%'
       iframe.style.height = '100%'
+      iframe.style.transition = 'none'
+      iframe.style.willChange = 'auto'
+      iframe.style.objectFit = 'cover'
+      iframe.style.objectPosition = 'center'
       iframe.src = `https://www.youtube.com/embed/${stream.channelId}?autoplay=1&mute=1&enablejsapi=1&modestbranding=1&rel=0&playsinline=1&origin=${window.location.origin}&widget_referrer=${window.location.href}`
       iframe.setAttribute('frameborder', '0')
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
@@ -205,6 +209,10 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
       iframe.style.left = '0'
       iframe.style.width = '100%'
       iframe.style.height = '100%'
+      iframe.style.transition = 'none'
+      iframe.style.willChange = 'auto'
+      iframe.style.objectFit = 'cover'
+      iframe.style.objectPosition = 'center'
       iframe.src = `https://rumble.com/embed/${stream.channelId}/?pub=4`
       iframe.setAttribute('frameborder', '0')
       iframe.setAttribute('allowfullscreen', 'true')
@@ -296,7 +304,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
   }
   
   return (
-    <div className="relative w-full h-full group rounded-2xl overflow-hidden bg-black transform-gpu">
+    <div className="relative w-full h-full group rounded-2xl overflow-hidden bg-black transform-gpu" style={{ maxWidth: '100%', width: '100%' }}>
       {/* Properly sized embed container */}
       <div 
         className="w-full h-full rounded-2xl overflow-hidden relative stream-embed-container"
@@ -341,7 +349,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
           onRemove={() => removeStream(stream.id)}
         />
       ) : (
-        <div className="absolute top-0 right-0 p-2 sm:p-3 opacity-100 group-hover:opacity-100 transition-all duration-200 z-20">
+        <div className="absolute top-0 right-0 p-2 sm:p-3 opacity-100 transition-all duration-200 z-20">
           <div className="flex gap-1.5 sm:gap-2">
             <button
               onClick={(e) => {
@@ -424,7 +432,7 @@ function StreamEmbedInner({ stream }: StreamEmbedProps) {
       
       {/* Stream Info Overlay */}
       {stream.platform === 'twitch' && twitchStatus?.isLive && twitchStatus.gameName && (
-        <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none">
+        <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 bg-gradient-to-t from-black/80 to-transparent opacity-100 transition-all duration-200 pointer-events-none">
           <div className="space-y-1">
             <p className="text-white text-xs sm:text-sm font-medium truncate">
               {twitchStatus.title}

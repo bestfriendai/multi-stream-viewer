@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { BottomSheet } from "@/components/ui/bottom-sheet"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
@@ -9,6 +10,7 @@ import { Bookmark, Save, Trash2, Play, Clock } from 'lucide-react'
 import { useStreamStore } from '@/store/streamStore'
 import { getSavedLayouts, saveLayout, deleteLayout, DEFAULT_PRESETS } from '@/lib/savedLayouts'
 import type { SavedLayout } from '@/lib/savedLayouts'
+import { useMobileDetection } from '@/hooks/useMobileDetection'
 import { toast } from 'sonner'
 
 interface SavedLayoutsDialogProps {
@@ -19,7 +21,9 @@ export default function SavedLayoutsDialog({ mobile = false }: SavedLayoutsDialo
   const [layouts, setLayouts] = useState<SavedLayout[]>([])
   const [newLayoutName, setNewLayoutName] = useState('')
   const [showSaveForm, setShowSaveForm] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const { streams, gridLayout, clearAllStreams, addStream, setGridLayout } = useStreamStore()
+  const { isMobile } = useMobileDetection()
   
   useEffect(() => {
     setLayouts(getSavedLayouts())
@@ -67,29 +71,28 @@ export default function SavedLayoutsDialog({ mobile = false }: SavedLayoutsDialo
   const allLayouts = [...DEFAULT_PRESETS, ...layouts]
   
   const trigger = mobile ? (
-    <Button variant="outline" className="w-full justify-start h-12">
+    <Button 
+      variant="outline" 
+      className="w-full justify-start h-12"
+      onClick={() => setIsOpen(true)}
+    >
       <Bookmark className="mr-3 h-5 w-5" />
       Saved Layouts
     </Button>
   ) : (
-    <Button variant="outline" size="sm" className="h-9">
+    <Button 
+      variant="outline" 
+      size="sm" 
+      className="h-9"
+      onClick={() => setIsOpen(true)}
+    >
       <Bookmark size={16} className="mr-2" />
       Layouts
     </Button>
   )
 
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        {trigger}
-      </DialogTrigger>
-      
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Saved Layouts</DialogTitle>
-        </DialogHeader>
-        
-        <div className="space-y-4">
+  const dialogContent = (
+    <>
           {/* Save current layout */}
           <div className="border rounded-lg p-4">
             {showSaveForm ? (
@@ -185,6 +188,43 @@ export default function SavedLayoutsDialog({ mobile = false }: SavedLayoutsDialo
               </Card>
             ))}
           </div>
+    </>
+  )
+
+  // Render BottomSheet for mobile, Dialog for desktop
+  if (isMobile) {
+    return (
+      <>
+        {trigger}
+        <BottomSheet
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          title="Saved Layouts"
+          snapPoints={[50, 80, 95]}
+          initialSnap={1}
+          className="max-h-[95vh]"
+        >
+          <div className="space-y-4 p-4">
+            {dialogContent}
+          </div>
+        </BottomSheet>
+      </>
+    )
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        {trigger}
+      </DialogTrigger>
+      
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Saved Layouts</DialogTitle>
+        </DialogHeader>
+        
+        <div className="space-y-4">
+          {dialogContent}
         </div>
       </DialogContent>
     </Dialog>
