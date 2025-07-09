@@ -30,8 +30,7 @@ const DiscoverPopup = dynamic(() => import('@/components/DiscoverPopup'), {
   loading: () => <div className="p-8 text-center">Loading discover...</div>
 })
 import StreamStatusBar from '@/components/StreamStatusBar'
-import EnhancedLandingPage from '@/components/EnhancedLandingPage'
-import '@/styles/enhanced-landing.css'
+import LandingPage from '@/components/LandingPage'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import EnhancedAddStreamDialog from '@/components/EnhancedAddStreamDialog'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
@@ -329,7 +328,7 @@ export default function HomePage() {
             <TabsContent value="streams" className="flex-1 m-0 p-0 flex flex-col">
               <ErrorBoundary>
                 {streams.length === 0 ? (
-                  <EnhancedLandingPage onAddStream={() => setShowAddStream(true)} />
+                  <LandingPage onAddStream={() => setShowAddStream(true)} />
                 ) : (
                   <>
                     <StreamStatusBar />
