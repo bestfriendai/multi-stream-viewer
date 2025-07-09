@@ -432,7 +432,7 @@ export default function SentryInsightsPage() {
                   <h4 className="font-semibold">Stream Load Performance</h4>
                   <div className="text-sm text-muted-foreground space-y-1">
                     <div>• Track load times for Twitch/YouTube embeds</div>
-                    <div>• Monitor slow stream loads (>3s)</div>
+                    <div>• Monitor slow stream loads (&gt;3s)</div>
                     <div>• Platform-specific performance metrics</div>
                   </div>
                 </div>
