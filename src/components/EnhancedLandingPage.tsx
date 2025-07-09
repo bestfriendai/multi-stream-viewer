@@ -59,54 +59,54 @@ interface EnhancedLandingPageProps {
 }
 
 // Enhanced features with more sophisticated descriptions
-const enhancedFeatures = [
+const getEnhancedFeatures = (t: any) => [
   {
     icon: Monitor,
-    title: "Multi-Stream Mastery",
-    description: "Watch up to 16 streams with intelligent layout optimization",
+    title: t('landing.enhanced.features.multiStreamMastery.title'),
+    description: t('landing.enhanced.features.multiStreamMastery.description'),
     gradient: "from-blue-500 via-blue-600 to-cyan-500",
-    stats: "16 Streams",
-    details: "Advanced grid layouts with smart resizing"
+    stats: t('landing.enhanced.features.multiStreamMastery.stats'),
+    details: t('landing.enhanced.features.multiStreamMastery.details')
   },
   {
     icon: Globe,
-    title: "Universal Platform Support",
-    description: "Seamlessly integrate Twitch, YouTube, Kick, and emerging platforms",
+    title: t('landing.enhanced.features.universalPlatform.title'),
+    description: t('landing.enhanced.features.universalPlatform.description'),
     gradient: "from-green-500 via-emerald-600 to-teal-500",
-    stats: "5+ Platforms",
-    details: "Cross-platform synchronization"
+    stats: t('landing.enhanced.features.universalPlatform.stats'),
+    details: t('landing.enhanced.features.universalPlatform.details')
   },
   {
     icon: MessageSquare,
-    title: "Unified Chat Experience",
-    description: "Aggregate and filter conversations across all your streams",
+    title: t('landing.enhanced.features.unifiedChat.title'),
+    description: t('landing.enhanced.features.unifiedChat.description'),
     gradient: "from-purple-500 via-violet-600 to-indigo-500",
-    stats: "Real-time",
-    details: "Smart chat filtering and moderation"
+    stats: t('landing.enhanced.features.unifiedChat.stats'),
+    details: t('landing.enhanced.features.unifiedChat.details')
   },
   {
     icon: Layout,
-    title: "Adaptive Layouts",
-    description: "AI-powered layout suggestions based on content type",
+    title: t('landing.enhanced.features.adaptiveLayouts.title'),
+    description: t('landing.enhanced.features.adaptiveLayouts.description'),
     gradient: "from-orange-500 via-red-500 to-pink-500",
-    stats: "Smart",
-    details: "Automatic layout optimization"
+    stats: t('landing.enhanced.features.adaptiveLayouts.stats'),
+    details: t('landing.enhanced.features.adaptiveLayouts.details')
   },
   {
     icon: SmartphoneIcon,
-    title: "Mobile-First Design",
-    description: "Optimized touch controls and gesture navigation",
+    title: t('landing.enhanced.features.mobileFirst.title'),
+    description: t('landing.enhanced.features.mobileFirst.description'),
     gradient: "from-blue-500 via-indigo-600 to-purple-500",
-    stats: "Touch-Ready",
-    details: "Gesture-based controls"
+    stats: t('landing.enhanced.features.mobileFirst.stats'),
+    details: t('landing.enhanced.features.mobileFirst.details')
   },
   {
     icon: Zap,
-    title: "Lightning Performance",
-    description: "Sub-second loading with intelligent stream preloading",
+    title: t('landing.enhanced.features.lightningPerformance.title'),
+    description: t('landing.enhanced.features.lightningPerformance.description'),
     gradient: "from-yellow-500 via-orange-500 to-red-500",
-    stats: "<1s Load",
-    details: "Predictive content loading"
+    stats: t('landing.enhanced.features.lightningPerformance.stats'),
+    details: t('landing.enhanced.features.lightningPerformance.details')
   }
 ]
 
@@ -464,7 +464,7 @@ export default function EnhancedLandingPage({ onAddStream }: EnhancedLandingPage
                 >
                   <Badge className="px-4 py-2 text-sm bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400">
                     <Sparkles className="w-4 h-4 mr-2" />
-                    Next-Gen Streaming Platform
+                    {t('landing.enhanced.badge')}
                   </Badge>
                 </motion.div>
                 
@@ -476,11 +476,11 @@ export default function EnhancedLandingPage({ onAddStream }: EnhancedLandingPage
                 >
                   <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight leading-tight">
                     <span className="bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
-                      Watch Multiple
+                      {t('landing.enhanced.heroTitle')}
                     </span>
                     <br />
                     <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
-                      Streams Together
+                      {t('landing.enhanced.heroTitleHighlight')}
                     </span>
                   </h1>
                 </motion.div>
@@ -492,8 +492,7 @@ export default function EnhancedLandingPage({ onAddStream }: EnhancedLandingPage
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                 >
-                  Experience the future of live streaming with intelligent multi-view layouts, 
-                  unified chat, and seamless cross-platform integration.
+                  {t('landing.enhanced.heroSubtitle')}
                 </motion.p>
                 
                 {/* Features List */}
@@ -504,9 +503,9 @@ export default function EnhancedLandingPage({ onAddStream }: EnhancedLandingPage
                   transition={{ delay: 0.5 }}
                 >
                   {[
-                    { icon: Monitor, text: "Up to 16 simultaneous streams" },
-                    { icon: Zap, text: "Lightning-fast performance" },
-                    { icon: Smartphone, text: "Perfect mobile experience" }
+                    { icon: Monitor, text: t('landing.enhanced.featuresList.simultaneousStreams') },
+                    { icon: Zap, text: t('landing.enhanced.featuresList.lightningFast') },
+                    { icon: Smartphone, text: t('landing.enhanced.featuresList.mobileExperience') }
                   ].map((item, index) => (
                     <motion.div
                       key={index}
@@ -537,7 +536,7 @@ export default function EnhancedLandingPage({ onAddStream }: EnhancedLandingPage
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                     <PlayCircle className="w-6 h-6 relative z-10" />
-                    <span className="relative z-10">Start Watching Now</span>
+                    <span className="relative z-10">{t('landing.enhanced.buttons.startWatchingNow')}</span>
                   </MagneticButton>
                   
                   {!isSignedIn && (
@@ -547,7 +546,7 @@ export default function EnhancedLandingPage({ onAddStream }: EnhancedLandingPage
                       onClick={() => window.location.href = '/sign-up'}
                       className="gap-3 text-lg px-8 py-6 border-2 border-border/60 hover:border-primary/50 hover:bg-primary/5 font-medium rounded-2xl backdrop-blur-sm min-h-[60px] group"
                     >
-                      <span>Get Started Free</span>
+                      <span>{t('landing.enhanced.buttons.getStartedFree')}</span>
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </MagneticButton>
                   )}
@@ -562,15 +561,15 @@ export default function EnhancedLandingPage({ onAddStream }: EnhancedLandingPage
                 >
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                    <span>99.9% Uptime</span>
+                    <span>{t('landing.enhanced.trustIndicators.uptime')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Shield className="w-4 h-4 text-blue-500" />
-                    <span>Enterprise Security</span>
+                    <span>{t('landing.enhanced.trustIndicators.security')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-purple-500" />
-                    <span>2M+ Active Users</span>
+                    <span>{t('landing.enhanced.trustIndicators.users')}</span>
                   </div>
                 </motion.div>
               </motion.div>
@@ -627,7 +626,7 @@ export default function EnhancedLandingPage({ onAddStream }: EnhancedLandingPage
                   >
                     <div className="flex items-center gap-2 text-sm">
                       <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                      <span className="font-semibold">Live Sync</span>
+                      <span className="font-semibold">{t('landing.enhanced.badges.liveSync')}</span>
                     </div>
                   </motion.div>
                   
@@ -639,7 +638,7 @@ export default function EnhancedLandingPage({ onAddStream }: EnhancedLandingPage
                   >
                     <div className="flex items-center gap-2 text-sm">
                       <MessageSquare className="w-4 h-4 text-blue-500" />
-                      <span className="font-semibold">Unified Chat</span>
+                      <span className="font-semibold">{t('landing.enhanced.badges.unifiedChat')}</span>
                     </div>
                   </motion.div>
                 </GlassCard>
@@ -670,20 +669,20 @@ export default function EnhancedLandingPage({ onAddStream }: EnhancedLandingPage
               >
                 <Badge className="mb-6 px-6 py-3 text-sm bg-gradient-to-r from-purple-500/10 to-pink-500/10 border-purple-500/20 text-purple-600 dark:text-purple-400">
                   <Rocket className="w-4 h-4 mr-2" />
-                  Powerful Features
+                  {t('landing.enhanced.featuresSection.badge')}
                 </Badge>
                 <h2 className="text-4xl lg:text-6xl font-bold mb-6">
                   <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                    Everything You Need
+                    {t('landing.enhanced.featuresSection.title')}
                   </span>
                 </h2>
                 <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                  Discover the advanced features that make Streamyyy the ultimate platform for multi-stream viewing
+                  {t('landing.enhanced.featuresSection.subtitle')}
                 </p>
               </motion.div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                {enhancedFeatures.map((feature, index) => (
+                {getEnhancedFeatures(t).map((feature, index) => (
                   <EnhancedFeatureCard key={index} feature={feature} index={index} />
                 ))}
               </div>
@@ -704,10 +703,10 @@ export default function EnhancedLandingPage({ onAddStream }: EnhancedLandingPage
             transition={{ duration: 0.8 }}
           >
             {[
-              { value: "2M+", label: "Active Users", icon: Users, gradient: "from-blue-500 to-cyan-500" },
-              { value: "50M+", label: "Hours Watched", icon: Eye, gradient: "from-green-500 to-emerald-500" },
-              { value: "99.9%", label: "Uptime", icon: TrendingUp, gradient: "from-purple-500 to-pink-500" },
-              { value: "16x", label: "Max Streams", icon: Monitor, gradient: "from-orange-500 to-red-500" }
+              { value: "2M+", label: t('landing.enhanced.stats.activeUsers'), icon: Users, gradient: "from-blue-500 to-cyan-500" },
+              { value: "50M+", label: t('landing.enhanced.stats.hoursWatched'), icon: Eye, gradient: "from-green-500 to-emerald-500" },
+              { value: "99.9%", label: t('landing.enhanced.stats.uptime'), icon: TrendingUp, gradient: "from-purple-500 to-pink-500" },
+              { value: "16x", label: t('landing.enhanced.stats.maxStreams'), icon: Monitor, gradient: "from-orange-500 to-red-500" }
             ].map((stat, index) => (
               <motion.div
                 key={index}

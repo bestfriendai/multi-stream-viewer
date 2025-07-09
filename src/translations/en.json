@@ -190,7 +190,142 @@
     },
     "getStartedInSeconds": "Get Started in Seconds",
     "getStartedFree": "Get Started Free",
-    "quickStart": "Quick Start"
+    "quickStart": "Quick Start",
+    "enhanced": {
+      "badge": "Next-Gen Streaming Platform",
+      "heroTitle": "Watch Multiple",
+      "heroTitleHighlight": "Streams Together",
+      "heroSubtitle": "Experience the future of live streaming with intelligent multi-view layouts, unified chat, and seamless cross-platform integration.",
+      "features": {
+        "multiStreamMastery": {
+          "title": "Multi-Stream Mastery",
+          "description": "Watch up to 16 streams with intelligent layout optimization",
+          "stats": "16 Streams",
+          "details": "Advanced grid layouts with smart resizing"
+        },
+        "universalPlatform": {
+          "title": "Universal Platform Support",
+          "description": "Seamlessly integrate Twitch, YouTube, Kick, and emerging platforms",
+          "stats": "5+ Platforms",
+          "details": "Cross-platform synchronization"
+        },
+        "unifiedChat": {
+          "title": "Unified Chat Experience",
+          "description": "Aggregate and filter conversations across all your streams",
+          "stats": "Real-time",
+          "details": "Smart chat filtering and moderation"
+        },
+        "adaptiveLayouts": {
+          "title": "Adaptive Layouts",
+          "description": "AI-powered layout suggestions based on content type",
+          "stats": "Smart",
+          "details": "Automatic layout optimization"
+        },
+        "mobileFirst": {
+          "title": "Mobile-First Design",
+          "description": "Optimized touch controls and gesture navigation",
+          "stats": "Touch-Ready",
+          "details": "Gesture-based controls"
+        },
+        "lightningPerformance": {
+          "title": "Lightning Performance",
+          "description": "Sub-second loading with intelligent stream preloading",
+          "stats": "<1s Load",
+          "details": "Predictive content loading"
+        }
+      },
+      "featuresList": {
+        "simultaneousStreams": "Up to 16 simultaneous streams",
+        "lightningFast": "Lightning-fast performance",
+        "mobileExperience": "Perfect mobile experience"
+      },
+      "buttons": {
+        "startWatchingNow": "Start Watching Now",
+        "getStartedFree": "Get Started Free"
+      },
+      "trustIndicators": {
+        "uptime": "99.9% Uptime",
+        "security": "Enterprise Security",
+        "users": "2M+ Active Users"
+      },
+      "badges": {
+      "liveSync": "Live Sync",
+      "unifiedChat": "Unified Chat"
+    },
+    "featuresSection": {
+      "badge": "Powerful Features",
+      "title": "Everything You Need",
+      "subtitle": "Discover the advanced features that make Streamyyy the ultimate platform for multi-stream viewing"
+    },
+    "stats": {
+      "activeUsers": "Active Users",
+      "hoursWatched": "Hours Watched",
+      "uptime": "Uptime",
+      "maxStreams": "Max Streams"
+    },
+    "mobile": {
+      "badge": "Mobile Optimized",
+      "title": "Everything You Need",
+      "subtitle": "Powerful features designed for mobile-first streaming",
+      "statsSection": {
+        "title": "Trusted by Millions",
+        "subtitle": "Join the streaming revolution"
+      },
+      "cta": {
+        "startWatching": "Start Watching Now",
+        "getStartedFree": "Get Started Free",
+        "trustIndicators": {
+          "uptime": "99.9% Uptime",
+          "secure": "Secure",
+          "users": "2M+ Users"
+        }
+      },
+      "features": {
+        "multiStream": {
+          "title": "Multi-Stream",
+          "subtitle": "Watch up to 16 streams",
+          "description": "Intelligent layout optimization for any screen size",
+          "stats": "16 Streams"
+        },
+        "touchFirst": {
+          "title": "Touch-First",
+          "subtitle": "Mobile optimized",
+          "description": "Gesture controls and responsive design",
+          "stats": "Touch Ready"
+        },
+        "unifiedChat": {
+          "title": "Unified Chat",
+          "subtitle": "All platforms",
+          "description": "Aggregate conversations across streams",
+          "stats": "Real-time"
+        },
+        "lightningFast": {
+          "title": "Lightning Fast",
+          "subtitle": "Sub-second loading",
+          "description": "Optimized performance for mobile",
+          "stats": "<1s Load"
+        },
+        "crossPlatform": {
+          "title": "Cross-Platform",
+          "subtitle": "5+ platforms",
+          "description": "Twitch, YouTube, Kick, and more",
+          "stats": "Universal"
+        },
+        "smartLayouts": {
+          "title": "Smart Layouts",
+          "subtitle": "AI-powered",
+          "description": "Automatic optimization for content",
+          "stats": "Adaptive"
+        }
+      },
+      "mobileStats": {
+        "users": "Users",
+        "hours": "Hours",
+        "uptime": "Uptime",
+        "streams": "Streams"
+      }
+    }
+    }
   },
   "layouts": {
     "single": "Single",
