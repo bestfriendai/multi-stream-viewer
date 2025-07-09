@@ -23,7 +23,6 @@ import {
   Music,
   Video,
   Mic,
-  ChevronRight,
   ExternalLink,
   Plus,
   Grid3x3,
@@ -40,7 +39,9 @@ import {
   Command,
   Layers,
   BarChart3,
-  X
+  X,
+  Check,
+  Crown
 } from 'lucide-react'
 import { useStreamStore } from '@/store/streamStore'
 import { useTranslation } from '@/contexts/LanguageContext'
@@ -146,6 +147,18 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
     viewerCount: number
   }>>([])
   const [loading, setLoading] = useState(true)
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly')
+  
+  // Subscription handler
+  const handleSubscribe = async (plan: string) => {
+    if (!isSignedIn) {
+      window.location.href = '/sign-in?redirect_url=' + encodeURIComponent('/pricing')
+      return
+    }
+    
+    // Redirect to pricing page for full checkout flow
+    window.location.href = '/pricing'
+  }
   
   // Stable mobile detection function
   const isMobileDevice = () => {
@@ -674,77 +687,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         </div>
       </section>
 
-      {/* How It Works - Mobile Optimized */}
-      <section className="py-16 lg:py-24 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-muted/5 via-transparent to-background/50" />
-          <div className="absolute top-0 left-1/4 w-[200px] lg:w-[600px] h-[200px] lg:h-[600px] bg-gradient-to-br from-blue-500/12 via-blue-500/6 to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-[150px] lg:w-[500px] h-[150px] lg:h-[500px] bg-gradient-to-tl from-blue-500/12 via-blue-500/6 to-transparent rounded-full blur-3xl" />
-          <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-24" />
-        </div>
-        <div className="container mx-auto px-4 lg:px-8 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-12 lg:mb-16"
-          >
-            <Badge className="mb-4 px-4 py-2 text-sm" variant="outline">
-              <Zap className="w-4 h-4 mr-2" />
-              {t('landing.quickStart.badge')}
-            </Badge>
-            <h2 className="text-3xl lg:text-5xl font-bold">{t('landing.getStartedInSeconds')}</h2>
-          </motion.div>
-          
-          <div className="grid gap-8 lg:grid-cols-3 max-w-5xl mx-auto">
-            {[
-              {
-                step: "1",
-                title: t('landing.quickStart.findStreamers.title'),
-                description: t('landing.quickStart.findStreamers.description'),
-                icon: Plus,
-                color: "from-purple-500 to-purple-600"
-              },
-              {
-                step: "2",
-                title: t('landing.quickStart.pickView.title'),
-                description: t('landing.quickStart.pickView.description'),
-                icon: Layout,
-                color: "from-purple-500 to-purple-600"
-              },
-              {
-                step: "3",
-                title: t('landing.quickStart.watchChat.title'),
-                description: t('landing.quickStart.watchChat.description'),
-                icon: PlayCircle,
-                color: "from-green-500 to-emerald-500"
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={item.step}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
-              >
-                <Card className="p-6 lg:p-8 h-full hover:shadow-2xl transition-all duration-500 group cursor-pointer border-0 bg-gradient-to-br from-background via-background/95 to-muted/10 backdrop-blur-sm hover:scale-[1.02]">
-                  <div className={cn(
-                    "w-16 h-16 lg:w-20 lg:h-20 rounded-2xl lg:rounded-3xl bg-gradient-to-r flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg",
-                    item.color
-                  )}>
-                    <span className="text-2xl lg:text-3xl font-black text-white drop-shadow-sm">{item.step}</span>
-                  </div>
-                  <h3 className="text-xl lg:text-2xl font-bold mb-3 flex items-center gap-2">
-                    {item.title}
-                    <ChevronRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1" />
-                  </h3>
-                  <p className="text-muted-foreground text-base lg:text-lg leading-relaxed">{item.description}</p>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Pricing Section - Mobile Optimized */}
+      {/* Pricing Section - Enhanced with Billing Toggle */}
       <section className="py-16 lg:py-24 bg-gradient-to-b from-muted/10 to-background relative">
         <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
         <div className="container mx-auto px-4 lg:px-8 relative">
@@ -761,10 +705,33 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">
               {t('pricing.subtitle')}
             </p>
+            
+            {/* Billing Cycle Toggle */}
+            <div className="flex items-center justify-center gap-4 mt-8">
+              <span className={billingCycle === 'monthly' ? 'font-semibold' : 'text-muted-foreground'}>
+                Monthly
+              </span>
+              <button
+                onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
+                className="relative inline-flex h-6 w-11 items-center rounded-full bg-muted transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              >
+                <span
+                  className={`inline-block h-4 w-4 rounded-full bg-white shadow-lg transform transition-transform ${
+                    billingCycle === 'yearly' ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+              <span className={billingCycle === 'yearly' ? 'font-semibold' : 'text-muted-foreground'}>
+                Yearly
+              </span>
+              {billingCycle === 'yearly' && (
+                <Badge variant="secondary" className="ml-2">Save 17%</Badge>
+              )}
+            </div>
           </motion.div>
           
           <div className="grid gap-8 lg:grid-cols-3 max-w-6xl mx-auto">
-            {/* Free Plan - Mobile Optimized */}
+            {/* Free Plan */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -774,41 +741,42 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             >
               <Card className="p-6 lg:p-8 h-full border-2 border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative">
                 <div className="text-center mb-6">
-                  <h3 className="text-xl lg:text-2xl font-bold mb-2">{t('pricing.free.title')}</h3>
+                  <div className="flex items-center justify-center mb-4">
+                    <Zap className="w-6 h-6 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-xl lg:text-2xl font-bold mb-2">Free</h3>
                   <div className="text-3xl lg:text-4xl font-black mb-2">$0</div>
-                  <p className="text-muted-foreground text-sm lg:text-base">{t('pricing.free.description')}</p>
+                  <p className="text-muted-foreground text-sm lg:text-base">Perfect for getting started</p>
                 </div>
                 <ul className="space-y-4 mb-8">
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.free.features.streams')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Up to 4 simultaneous streams</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.free.features.layouts')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Basic layouts</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.free.features.mobile')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Standard controls</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Community support</span>
                   </li>
                   <li className="flex items-start gap-3 text-muted-foreground">
-                    <X className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.free.features.ads')}</span>
+                    <X className="w-4 h-4 text-muted-foreground mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Ads displayed</span>
                   </li>
                 </ul>
                 <Button className="w-full py-3 text-base" variant="outline" onClick={onAddStream}>
-                  {t('landing.getStartedFree')}
+                  Get Started
                 </Button>
               </Card>
             </motion.div>
 
-            {/* Pro Plan - Mobile Optimized */}
+            {/* Pro Plan */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -817,108 +785,107 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               whileHover={{ scale: 1.02, y: -5 }}
             >
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <Badge className="bg-primary text-primary-foreground px-3 py-1 text-sm">
-                  {t('pricing.pro.badge')}
+                <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 text-sm">
+                  Most Popular
                 </Badge>
               </div>
               <Card className="p-6 lg:p-8 h-full border-2 border-primary hover:shadow-xl transition-all duration-300 relative">
                 <div className="text-center mb-6">
-                  <h3 className="text-xl lg:text-2xl font-bold mb-2">{t('pricing.pro.title')}</h3>
-                  <div className="text-3xl lg:text-4xl font-black mb-2">$4.99<span className="text-base lg:text-lg font-normal text-muted-foreground">/mo</span></div>
-                  <p className="text-muted-foreground text-sm lg:text-base">{t('pricing.pro.description')}</p>
+                  <div className="flex items-center justify-center mb-4">
+                    <Star className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <h3 className="text-xl lg:text-2xl font-bold mb-2">Pro</h3>
+                  <div className="text-3xl lg:text-4xl font-black mb-2">
+                    ${billingCycle === 'monthly' ? '9.99' : '99.99'}
+                    <span className="text-base lg:text-lg font-normal text-muted-foreground">
+                      /{billingCycle === 'monthly' ? 'month' : 'year'}
+                    </span>
+                  </div>
+                  <p className="text-muted-foreground text-sm lg:text-base">Best for streamers and content creators</p>
                 </div>
                 <ul className="space-y-4 mb-8">
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.pro.features.streams')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Up to 8 simultaneous streams</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.pro.features.layouts')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Custom layouts</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.pro.features.adFree')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Advanced controls</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.pro.features.customLayouts')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Priority support</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.pro.features.support')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Ad-free experience</span>
                   </li>
                 </ul>
-                <Button className="w-full py-3 text-base bg-primary hover:bg-primary/90" onClick={() => window.location.href = '/sign-up'}>
-                  {t('pricing.pro.button')}
+                <Button className="w-full py-3 text-base bg-primary hover:bg-primary/90" onClick={() => handleSubscribe('pro')}>
+                  Subscribe to Pro
                 </Button>
               </Card>
             </motion.div>
 
-            {/* Premium Plan - Mobile Optimized */}
+            {/* Premium Plan */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="group"
+              className="group relative"
               whileHover={{ scale: 1.02, y: -5 }}
             >
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 text-sm">
+                  Best Value
+                </Badge>
+              </div>
               <Card className="p-6 lg:p-8 h-full border-2 border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative">
                 <div className="text-center mb-6">
-                  <h3 className="text-xl lg:text-2xl font-bold mb-2">{t('pricing.premium.title')}</h3>
-                  <div className="text-3xl lg:text-4xl font-black mb-2">$9.99<span className="text-base lg:text-lg font-normal text-muted-foreground">/mo</span></div>
-                  <p className="text-muted-foreground text-sm lg:text-base">{t('pricing.premium.description')}</p>
+                  <div className="flex items-center justify-center mb-4">
+                    <Crown className="w-6 h-6 text-purple-500" />
+                  </div>
+                  <h3 className="text-xl lg:text-2xl font-bold mb-2">Premium</h3>
+                  <div className="text-3xl lg:text-4xl font-black mb-2">
+                    ${billingCycle === 'monthly' ? '19.99' : '199.99'}
+                    <span className="text-base lg:text-lg font-normal text-muted-foreground">
+                      /{billingCycle === 'monthly' ? 'month' : 'year'}
+                    </span>
+                  </div>
+                  <p className="text-muted-foreground text-sm lg:text-base">Ultimate streaming experience</p>
                 </div>
                 <ul className="space-y-4 mb-8">
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.premium.features.streams')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Up to 16 simultaneous streams</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.premium.features.layouts')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Unlimited custom layouts</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.premium.features.chat')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Advanced analytics dashboard</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.premium.features.analytics')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Custom branding</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.premium.features.support')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Priority support</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                    </div>
-                    <span className="text-sm lg:text-base leading-relaxed">{t('pricing.premium.features.earlyAccess')}</span>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5" />
+                    <span className="text-sm lg:text-base leading-relaxed">Early access to new features</span>
                   </li>
                 </ul>
-                <Button className="w-full py-3 text-base" variant="outline" onClick={() => window.location.href = '/sign-up'}>
-                  {t('pricing.premium.button')}
+                <Button className="w-full py-3 text-base" variant="outline" onClick={() => handleSubscribe('premium')}>
+                  Subscribe to Premium
                 </Button>
               </Card>
             </motion.div>
@@ -930,7 +897,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             transition={{ delay: 0.5 }}
             className="text-center mt-12 lg:mt-16 text-sm lg:text-base text-muted-foreground"
           >
-            <p>{t('pricing.trialInfo')}</p>
+            <p>All plans include a 7-day free trial. Cancel anytime.</p>
           </motion.div>
         </div>
       </section>
