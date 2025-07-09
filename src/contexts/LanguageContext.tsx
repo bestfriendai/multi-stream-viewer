@@ -32,6 +32,18 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setUpdateTrigger(prev => prev + 1)
   }, [languageHook.currentLanguage, languageHook.isLoaded])
 
+  // Show loading screen until translations are loaded
+  if (!languageHook.isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading translations...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <LanguageContext.Provider value={{ ...languageHook, updateTrigger }}>
       {children}
