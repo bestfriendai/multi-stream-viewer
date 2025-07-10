@@ -1,176 +1,273 @@
-# Enhanced Twitch WebView Integration with Advanced Streaming Features
+# iOS Twitch API Integration Implementation Plan
 
 ## 🎯 Project Overview
-Implement a comprehensive enhanced Twitch WebView integration with advanced streaming features, multi-platform support, iPhone 16 Pro optimizations, and professional streaming capabilities. This implementation will provide robust video streaming with gesture controls, chat integration, and performance monitoring.
+Implement real Twitch API integration for the iOS multi-stream-viewer app using Twitch Helix API with OAuth authentication, real-time chat via WebSocket, and comprehensive stream monitoring. This builds upon the existing web embed functionality to add native API capabilities.
 
 ## 📋 Todo List
 
-### ✅ Phase 1: Core WebView Components
-- [ ] **Task 1**: Create TwitchEmbedWebView.swift with advanced streaming features
-- [ ] **Task 2**: Enhance existing StreamWebView.swift with optimizations and gesture support
-- [ ] **Task 3**: Implement multi-platform support (Twitch, YouTube, Kick) with unified interface
-- [ ] **Task 4**: Add Twitch chat integration capabilities with real-time messaging
+### 🔧 Phase 1: Core Twitch API Service Setup
+- [ ] **Task 1**: Create TwitchService.swift with Helix API client implementation
+- [ ] **Task 2**: Implement OAuth 2.0 authentication flow for Twitch
+- [ ] **Task 3**: Add secure token storage and refresh mechanisms
+- [ ] **Task 4**: Create comprehensive API request/response models
+- [ ] **Task 5**: Implement rate limiting and error handling for API calls
 
-### ⚡ Phase 2: iPhone 16 Pro Optimizations
-- [ ] **Task 5**: Configure iPhone 16 Pro specific optimizations (ProMotion, HDR support)
-- [ ] **Task 6**: Implement Dynamic Island integration for stream controls
-- [ ] **Task 7**: Add Action Button customization for stream functions
-- [ ] **Task 8**: Optimize for A18 Pro chip performance and GPU enhancements
+### 🔍 Phase 2: Stream Data Integration
+- [ ] **Task 6**: Implement real-time stream status monitoring (online/offline)
+- [ ] **Task 7**: Add stream metadata fetching (viewer count, game, title)
+- [ ] **Task 8**: Create stream search and discovery functionality
+- [ ] **Task 9**: Implement stream category and game information retrieval
+- [ ] **Task 10**: Add stream thumbnail and preview image fetching
 
-### 🎮 Phase 3: Advanced Gesture Controls
-- [ ] **Task 9**: Implement comprehensive gesture controls (pinch, swipe, tap)
-- [ ] **Task 10**: Add stream quality selection with adaptive bitrate
-- [ ] **Task 11**: Create custom gesture recognizers for stream navigation
-- [ ] **Task 12**: Implement haptic feedback for gesture interactions
+### 💬 Phase 3: Real-time Chat Integration
+- [ ] **Task 11**: Implement WebSocket connection for Twitch chat
+- [ ] **Task 12**: Add chat message parsing and display
+- [ ] **Task 13**: Implement emote support and rendering
+- [ ] **Task 14**: Add chat moderation and filtering capabilities
+- [ ] **Task 15**: Create chat connection management and reconnection logic
 
-### 📱 Phase 4: Picture-in-Picture & Multi-Stream
-- [ ] **Task 13**: Add picture-in-picture support for iOS with advanced controls
-- [ ] **Task 14**: Implement multi-stream view with synchronized playback
-- [ ] **Task 15**: Create stream switching and focus modes
-- [ ] **Task 16**: Add stream audio mixing and priority controls
+### 📊 Phase 4: Advanced Stream Features
+- [ ] **Task 16**: Implement stream analytics and metrics collection
+- [ ] **Task 17**: Add follower/subscriber information retrieval
+- [ ] **Task 18**: Create stream notification system for followed channels
+- [ ] **Task 19**: Implement stream quality and bitrate information
+- [ ] **Task 20**: Add stream schedule and upcoming streams
 
-### 🛡️ Phase 5: Error Handling & Performance
-- [ ] **Task 17**: Set up comprehensive error handling and recovery systems
-- [ ] **Task 18**: Add memory management and performance monitoring
-- [ ] **Task 19**: Implement network quality detection and adaptation
-- [ ] **Task 20**: Create fallback mechanisms for stream failures
+### 🔗 Phase 5: Integration with Existing Components
+- [ ] **Task 21**: Update StreamWebView to use real Twitch API data
+- [ ] **Task 22**: Integrate TwitchService with existing StreamManager
+- [ ] **Task 23**: Update stream models to use real API data
+- [ ] **Task 24**: Enhance existing UI components with real-time data
+- [ ] **Task 25**: Add proper error handling for API failures
 
-### 🧪 Phase 6: Testing & Validation
-- [ ] **Task 21**: Test with multiple concurrent streams (up to 20)
-- [ ] **Task 22**: Validate performance on various iOS devices
-- [ ] **Task 23**: Test chat integration and real-time features
-- [ ] **Task 24**: Verify picture-in-picture functionality
+### 🧪 Phase 6: Testing and Validation
+- [ ] **Task 26**: Create comprehensive unit tests for TwitchService
+- [ ] **Task 27**: Test OAuth authentication flow with real Twitch accounts
+- [ ] **Task 28**: Validate real-time chat functionality
+- [ ] **Task 29**: Test stream status monitoring accuracy
+- [ ] **Task 30**: Perform load testing with multiple streams
 
-## 📚 Technical Specifications
+## 🔧 Technical Implementation Details
 
-### TwitchEmbedWebView Features
-- **Advanced Streaming**: 4K/HDR support, adaptive bitrate, low-latency mode
-- **Chat Integration**: Real-time chat overlay, emote support, moderation tools
-- **Gesture Controls**: Pinch-to-zoom, swipe navigation, tap-to-focus
-- **Performance**: Hardware acceleration, memory optimization, battery efficiency
-- **Platform Support**: Twitch, YouTube, Kick with unified API
+### Core Components to Create:
 
-### iPhone 16 Pro Optimizations
-- **ProMotion Display**: 120Hz refresh rate optimization
-- **HDR Support**: HDR10 and Dolby Vision streaming
-- **Dynamic Island**: Stream controls and notifications
-- **Action Button**: Customizable stream functions
-- **A18 Pro Chip**: Neural Engine utilization for video processing
+#### 1. **TwitchService.swift**
+- Helix API client with OAuth 2.0 authentication
+- Stream data fetching and caching
+- Real-time stream status monitoring
+- Rate limiting and error handling
 
-### Multi-Platform Integration
-- **Twitch**: Enhanced player with chat, emotes, and channel points
-- **YouTube**: Live streaming support with Super Chat
-- **Kick**: Real-time streaming with integrated chat
-- **Unified API**: Common interface for all platforms
+#### 2. **TwitchAuthManager.swift**
+- OAuth 2.0 authentication flow
+- Token storage and refresh
+- User authentication state management
+- Integration with existing auth system
 
-## 🔄 Implementation Strategy
+#### 3. **TwitchChatService.swift**
+- WebSocket connection for real-time chat
+- Chat message parsing and formatting
+- Emote support and rendering
+- Connection management and reconnection
 
-### Architecture Design
-- **Modular Components**: Separate WebView classes for each platform
-- **Protocol-Oriented**: Unified streaming protocols
-- **Performance-First**: Hardware acceleration and optimization
-- **Real-time Communication**: WebSocket for chat and live updates
+#### 4. **TwitchAPIModels.swift**
+- Comprehensive API request/response models
+- Stream, user, and chat data structures
+- Error handling and validation
+- Codable implementations for API responses
 
-### Advanced Features
-- **Stream Quality**: Automatic quality adjustment based on connection
-- **Chat Overlay**: Non-intrusive chat integration
-- **Gesture Support**: Comprehensive touch and gesture handling
-- **Memory Management**: Efficient resource usage for multiple streams
+#### 5. **TwitchStreamMonitor.swift**
+- Real-time stream status monitoring
+- Batch processing for multiple streams
+- Webhook integration for instant updates
+- Performance optimization for large stream lists
 
-### Performance Optimization
-- **Hardware Acceleration**: Metal and GPU optimization
-- **Memory Pool**: Efficient memory management for video streams
-- **Battery Optimization**: Power-efficient streaming
-- **Background Processing**: Minimal impact when app is backgrounded
+### API Integration Features:
 
-## 🎨 Component Structure
+#### **Stream Management:**
+- ✅ Real-time stream status (online/offline)
+- ✅ Stream metadata (title, category, viewer count)
+- ✅ Stream thumbnails and previews
+- ✅ Stream quality and bitrate information
+- ✅ Stream schedule and upcoming content
 
-### TwitchEmbedWebView.swift
-- Advanced Twitch player with chat integration
-- Real-time emote support and channel points
-- Stream quality selection and adaptive bitrate
-- Custom gesture recognizers and controls
+#### **Chat Integration:**
+- ✅ Real-time chat via WebSocket
+- ✅ Message parsing and display
+- ✅ Emote support and rendering
+- ✅ Chat moderation and filtering
+- ✅ Connection management and reconnection
 
-### Enhanced StreamWebView.swift
-- Multi-platform streaming support
-- Gesture-based navigation and controls
-- Picture-in-picture integration
-- Performance monitoring and optimization
+#### **User Features:**
+- ✅ OAuth 2.0 authentication
+- ✅ User profile and channel information
+- ✅ Follower/subscriber data
+- ✅ Stream notifications for followed channels
+- ✅ User preferences and settings
 
-### StreamGestureController.swift
-- Comprehensive gesture handling
-- Haptic feedback integration
-- Custom gesture recognizers
-- Accessibility support
+#### **Performance Features:**
+- ✅ API rate limiting and throttling
+- ✅ Request caching and optimization
+- ✅ Batch processing for multiple streams
+- ✅ Error handling and retry logic
+- ✅ Network connectivity monitoring
 
-### StreamPerformanceMonitor.swift
-- Real-time performance metrics
-- Memory usage tracking
-- Network quality monitoring
-- Battery impact analysis
+### Configuration Requirements:
+
+#### **Twitch API Configuration:**
+```swift
+struct TwitchConfig {
+    static let clientId = "your_twitch_client_id"
+    static let clientSecret = "your_twitch_client_secret"
+    static let redirectUri = "streamyyy://auth/twitch"
+    static let scopes = ["user:read:email", "chat:read", "channel:read:subscriptions"]
+    static let apiBaseUrl = "https://api.twitch.tv/helix"
+    static let chatWebSocketUrl = "wss://irc-ws.chat.twitch.tv:443"
+}
+```
+
+#### **OAuth Flow Configuration:**
+- Authorization URL generation
+- Token exchange handling
+- Token refresh mechanisms
+- Secure token storage using Keychain
+
+### Integration Points:
+
+#### **Existing Components:**
+1. **StreamWebView.swift** - Enhanced with real API data
+2. **StreamManager.swift** - Updated to use TwitchService
+3. **SupabaseService.swift** - Integrated with Twitch data sync
+4. **ClerkManager.swift** - Coordinated with Twitch authentication
+
+#### **New Service Architecture:**
+```
+TwitchService
+├── TwitchAuthManager (OAuth 2.0)
+├── TwitchAPIClient (Helix API)
+├── TwitchChatService (WebSocket)
+├── TwitchStreamMonitor (Real-time status)
+└── TwitchDataCache (Performance optimization)
+```
+
+### Error Handling Strategy:
+
+#### **API Error Types:**
+- Authentication errors (401, 403)
+- Rate limiting errors (429)
+- Network connectivity issues
+- Invalid stream/user errors
+- API deprecation notices
+
+#### **Recovery Mechanisms:**
+- Automatic token refresh
+- Exponential backoff for retries
+- Graceful degradation for offline mode
+- User-friendly error messages
+- Fallback to cached data
+
+### Performance Optimizations:
+
+#### **API Efficiency:**
+- Batch requests for multiple streams
+- Intelligent caching strategies
+- Connection pooling and reuse
+- Compression for large responses
+- Background data fetching
+
+#### **Real-time Features:**
+- WebSocket connection management
+- Message queuing and batching
+- Efficient UI updates
+- Memory management for chat history
+- Battery optimization for continuous monitoring
+
+## 🚀 Implementation Priority
+
+### **High Priority:**
+1. TwitchService core implementation
+2. OAuth 2.0 authentication flow
+3. Basic stream status monitoring
+4. Integration with existing StreamWebView
+
+### **Medium Priority:**
+1. Real-time chat via WebSocket
+2. Stream metadata fetching
+3. Error handling and recovery
+4. Performance optimizations
+
+### **Low Priority:**
+1. Advanced chat features (emotes, moderation)
+2. Stream analytics and metrics
+3. Notification system
+4. Advanced caching strategies
 
 ## 📊 Success Metrics
 
-### Performance Targets
-- **Stream Load Time**: < 3 seconds for 1080p streams
-- **Quality Switching**: < 1 second for adaptive bitrate
-- **Chat Latency**: < 500ms for real-time messages
-- **Memory Usage**: < 200MB for 4 concurrent streams
-- **Battery Life**: < 10% additional drain per hour
+### **Functionality Targets:**
+- ✅ OAuth authentication success rate > 95%
+- ✅ Stream status accuracy > 99%
+- ✅ Chat message latency < 500ms
+- ✅ API response time < 2 seconds
+- ✅ Token refresh success rate > 98%
 
-### Feature Completeness
-- **Multi-Platform Support**: 100% for Twitch, YouTube, Kick
-- **Gesture Controls**: Full suite of streaming gestures
-- **Picture-in-Picture**: Complete iOS PiP integration
-- **Chat Integration**: Real-time messaging for all platforms
+### **Performance Targets:**
+- ✅ Memory usage < 50MB for API services
+- ✅ Battery impact < 5% additional drain
+- ✅ Network usage < 1MB per hour per stream
+- ✅ API rate limit compliance 100%
+- ✅ Connection stability > 99.5%
 
-## 🔍 Risk Assessment
+## 🔍 Testing Strategy
 
-### Technical Risks
-- **Memory Leaks**: Multiple concurrent video streams
-- **Network Issues**: Adaptive streaming under poor conditions
-- **Platform Changes**: API updates from streaming platforms
-- **Performance**: Maintaining 60fps during heavy usage
+### **Unit Testing:**
+- TwitchService API methods
+- OAuth authentication flow
+- Chat message parsing
+- Stream status monitoring
+- Error handling scenarios
 
-### Mitigation Strategies
-- **Memory Monitoring**: Continuous memory usage tracking
-- **Fallback Systems**: Graceful degradation for network issues
-- **API Abstraction**: Flexible platform integration layer
-- **Performance Testing**: Continuous performance validation
+### **Integration Testing:**
+- End-to-end stream monitoring
+- Real-time chat functionality
+- Authentication with real accounts
+- API rate limiting behavior
+- Network connectivity scenarios
+
+### **Performance Testing:**
+- Multiple concurrent streams
+- Extended chat monitoring
+- Memory usage over time
+- Battery drain assessment
+- Network efficiency analysis
 
 ## 📝 Dependencies
 
-### External Dependencies
-- **WebKit**: Advanced WebView capabilities
-- **AVKit**: Picture-in-picture and video optimization
-- **Metal**: Hardware acceleration for video processing
-- **Network Framework**: Connection quality monitoring
-- **Combine**: Real-time data streaming
+### **External Dependencies:**
+- Twitch Helix API access
+- OAuth 2.0 client configuration
+- WebSocket library (URLSessionWebSocketTask)
+- Keychain access for secure storage
+- Network connectivity monitoring
 
-### Platform APIs
-- **Twitch API**: Chat, emotes, and channel data
-- **YouTube API**: Live streaming and chat integration
-- **Kick API**: Real-time streaming and messaging
-- **iOS APIs**: ProMotion, Dynamic Island, Action Button
+### **Internal Dependencies:**
+- Existing StreamManager integration
+- SupabaseService coordination
+- ClerkManager authentication bridge
+- Config.swift configuration system
+- Stream model compatibility
 
-## 🚀 Deployment Plan
+## 🎯 Current Status
 
-### Development Environment
-- **iOS 16.0+**: Minimum supported version
-- **iPhone 14 Pro+**: Optimal experience
-- **Xcode 15+**: Development requirements
-- **Swift 5.9+**: Modern concurrency features
+### **Implementation Progress:**
+- **Planned**: 30 tasks across 6 phases
+- **Not Started**: 30 tasks (100%)
+- **Focus**: Real Twitch API integration with OAuth and WebSocket chat
 
-### Testing Strategy
-- **Unit Tests**: All WebView components
-- **Integration Tests**: Multi-platform streaming
-- **Performance Tests**: Memory and battery usage
-- **UI Tests**: Gesture controls and navigation
+### **Next Steps:**
+1. Start with Phase 1: Core TwitchService implementation
+2. Set up OAuth 2.0 authentication flow
+3. Implement basic stream status monitoring
+4. Add real-time chat via WebSocket
+5. Integrate with existing StreamWebView component
 
-### Rollout Plan
-- **Alpha**: Core WebView functionality
-- **Beta**: Gesture controls and chat integration
-- **Production**: Full feature set with monitoring
-- **Post-Launch**: Performance optimization and updates
-
-This comprehensive plan ensures a cutting-edge streaming experience with advanced features, optimal performance, and seamless integration across all supported platforms.
+This comprehensive plan transforms the existing web embed functionality into a full-featured Twitch API integration with native iOS capabilities, real-time chat, and comprehensive stream monitoring.

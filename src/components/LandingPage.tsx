@@ -130,7 +130,7 @@ const useCases = [
 export default function LandingPage({ onAddStream }: LandingPageProps) {
   const { addStream } = useStreamStore()
   const { isLoaded, isSignedIn, user } = useUser()
-  const { t, isLoaded: translationsLoaded } = useTranslation()
+  const { t } = useTranslation()
   
 
   const [liveChannels, setLiveChannels] = useState<Array<{

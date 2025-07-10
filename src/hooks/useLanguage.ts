@@ -104,6 +104,7 @@ export function useLanguage() {
   // Translation function that looks up translations from loaded files
   const t = (key: string, params?: Record<string, any> | string): string => {
     if (!translations || Object.keys(translations).length === 0) {
+      console.warn(`Translations not loaded for key: ${key}`);
       return typeof params === 'string' ? params : key
     }
 
@@ -116,11 +117,13 @@ export function useLanguage() {
         value = value[k]
       } else {
         // Key not found, return fallback or key
+        console.warn(`Translation key not found: ${key}`);
         return typeof params === 'string' ? params : key
       }
     }
 
     if (typeof value !== 'string') {
+      console.warn(`Translation value is not a string for key: ${key}`);
       return typeof params === 'string' ? params : key
     }
 
