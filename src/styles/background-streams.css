@@ -27,14 +27,12 @@
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  background-color: black;
 }
 
 /* Background Stream Iframe Styles */
 .background-stream-iframe {
   opacity: 0.7;
   pointer-events: none;
-  background-color: black;
 }
 
 /* Preload hint for better performance */

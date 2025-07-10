@@ -46,6 +46,7 @@ import {
 import { useStreamStore } from '@/store/streamStore'
 import { useTranslation } from '@/contexts/LanguageContext'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 import '@/styles/landing.css'
 import '@/styles/landing-mobile-enhancements.css'
 import OptimizedBackgroundStreams from './OptimizedBackgroundStreams'
@@ -131,7 +132,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
   const { addStream } = useStreamStore()
   const { isLoaded, isSignedIn, user } = useUser()
   const { t, isLoaded: translationsLoaded } = useTranslation()
-  
+
 
   const [liveChannels, setLiveChannels] = useState<Array<{
     channelName: string
@@ -149,18 +150,18 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
   }>>([])
   const [loading, setLoading] = useState(true)
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly')
-  
+
   // Subscription handler
   const handleSubscribe = async (plan: string) => {
     if (!isSignedIn) {
       window.location.href = '/sign-in?redirect_url=' + encodeURIComponent('/pricing')
       return
     }
-    
+
     // Redirect to pricing page for full checkout flow
     window.location.href = '/pricing'
   }
-  
+
   // Stable mobile detection function
   const isMobileDevice = () => {
     return typeof window !== 'undefined' && window.innerWidth < 768
@@ -184,11 +185,11 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           body: JSON.stringify({ limit: 20 }),
           priority: 'high' as RequestPriority
         })
-        
+
         if (response.ok) {
           const data = await response.json()
           console.log('API Response:', data)
-          
+
           if (data.streams && Array.isArray(data.streams)) {
             const channels = data.streams.map((stream: any) => ({
               channelName: stream.user_login || stream.user_name,
@@ -197,11 +198,11 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               title: stream.title || '',
               isLive: true
             }))
-            
+
             // Sort by viewer count
             channels.sort((a: any, b: any) => b.viewerCount - a.viewerCount)
             setLiveChannels(channels)
-            
+
             // Set demo streams from top live channels
             setDemoStreams(channels.slice(0, 9).map((ch: any) => ({
               channelName: ch.channelName,
@@ -215,11 +216,11 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         setLoading(false)
       }
     }
-    
+
     fetchTopStreams()
     // Refresh every 2 minutes
     const interval = setInterval(fetchTopStreams, 120000)
-    
+
     return () => clearInterval(interval)
   }, [])
 
@@ -258,7 +259,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       <OptimizedBackgroundStreams channels={liveChannels} />
 
       {/* Mobile-First Hero Section */}
-      <section className="relative min-h-[calc(100vh-4rem)] flex items-start bg-gradient-to-b from-background to-muted/20 pt-0 pb-8 px-4 sm:px-6 lg:px-8 -mt-px">
+      <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20 pt-20 pb-8 px-4 sm:px-6 lg:px-8 -mt-20 lg:-mt-24 z-10">
         {/* Enhanced Professional Background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-muted/30" />
@@ -267,7 +268,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           {/* Subtle grid pattern for desktop */}
           <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-32 hidden lg:block" />
         </div>
-        
+
         <div className="container mx-auto relative z-10">
           <div className="max-w-6xl mx-auto">
             {/* Hero Layout - Full Right Side Demo */}
@@ -300,7 +301,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed">
                     {t('landing.heroSubtitle')}
                   </p>
-                  
+
                   {/* Key Benefits - Mobile Optimized */}
                   <div className="space-y-3 pt-4 lg:pt-6">
                     {[
@@ -374,7 +375,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                 </motion.div>
 
                 {/* Trust Indicators - Mobile Optimized */}
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.8 }}
@@ -404,25 +405,25 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               >
                 <div className="relative bg-gradient-to-br from-card via-card/95 to-card/80 rounded-2xl lg:rounded-3xl border border-border/50 shadow-2xl hover:shadow-3xl p-4 lg:p-8 backdrop-blur-sm transition-all duration-500 w-full max-w-lg lg:max-w-none">
                   {/* Floating Elements */}
-                  <motion.div 
-                    className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full animate-pulse" 
-                    animate={{ 
+                  <motion.div
+                    className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full animate-pulse"
+                    animate={{
                       y: [0, -10, 0],
                       scale: [1, 1.1, 1]
                     }}
-                    transition={{ 
+                    transition={{
                       duration: 3,
                       repeat: Infinity,
                       ease: "easeInOut"
                     }}
                   />
-                  <motion.div 
-                    className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-r from-primary to-blue-600 rounded-full blur-sm opacity-60" 
-                    animate={{ 
+                  <motion.div
+                    className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-r from-primary to-blue-600 rounded-full blur-sm opacity-60"
+                    animate={{
                       y: [0, 10, 0],
                       x: [0, 5, 0]
                     }}
-                    transition={{ 
+                    transition={{
                       duration: 4,
                       repeat: Infinity,
                       ease: "easeInOut"
@@ -452,7 +453,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                           >
                             {stream ? (
                               <>
-                                <motion.img 
+                                <motion.img
                                   src={`https://static-cdn.jtvnw.net/previews-ttv/live_user_${stream.channelName}-640x360.jpg`}
                                   alt={stream.channelName}
                                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -483,7 +484,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                                     LIVE
                                   </Badge>
                                 </motion.div>
-                                
+
                                 {/* Animated viewer count */}
                                 <motion.div
                                   className="absolute top-2 lg:top-3 left-2 lg:left-3 bg-black/60 backdrop-blur-sm rounded px-2 lg:px-3 py-1 lg:py-1.5"
@@ -502,16 +503,16 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                                 </motion.div>
                               </>
                             ) : (
-                              <motion.div 
+                              <motion.div
                                 className="absolute inset-0 bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center"
                                 whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.3)" }}
                               >
                                 <motion.div
-                                  animate={{ 
+                                  animate={{
                                     rotate: 360,
                                     scale: [1, 1.2, 1]
                                   }}
-                                  transition={{ 
+                                  transition={{
                                     rotate: { duration: 4, repeat: Infinity, ease: "linear" },
                                     scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
                                   }}
@@ -525,7 +526,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                       })}
                     </div>
                   </div>
-                  
+
                   {/* Feature Callouts for Full-Width Container */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -562,7 +563,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       <section id="demo" className="mobile-section-spacing lg:py-24 bg-gradient-to-b from-background via-muted/10 to-muted/20 relative">
         <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
         <div className="container mx-auto px-4 lg:px-8 relative">
-          <motion.div 
+          <motion.div
             className="text-center mb-12 lg:mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -572,14 +573,14 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               <Eye className="w-4 h-4 mr-2" />
               {t('landing.demo.liveDemo')}
             </Badge>
-            <h2 className="text-3xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">{t('landing.demo.watchLiveNow')}</h2>
-            <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">{t('landing.demo.watchLiveNow')}</h2>
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">
               {loading ? t('landing.demo.loadingChannels') : t('landing.demo.realStreamers')}
             </p>
           </motion.div>
-          
+
           <div className="max-w-6xl mx-auto">
-            <Card className="mobile-content-spacing lg:p-8 bg-gradient-to-br from-card via-card/80 to-card/50 border-2 shadow-2xl backdrop-blur-sm mobile-card-enhanced">
+            <Card className="p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-card via-card/80 to-card/50 border-2 shadow-2xl backdrop-blur-sm mobile-card-enhanced">
               {/* Demo Controls - Enhanced Mobile Experience */}
               <div className="flex flex-wrap justify-center gap-3 mb-8">
                 {demoLayouts.map((layout, index) => (
@@ -596,7 +597,11 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                     >
                       <layout.icon className="w-4 h-4" />
                       <span className="hidden sm:inline">{layout.name}</span>
-                      <span className="sm:hidden">{layout.name.split(' ')[0]}</span>
+                      <span className="sm:hidden">
+                        {layout.name === '2x2 Grid' ? '2×2' :
+                         layout.name === '3x3 Grid' ? '3×3' :
+                         layout.name === 'Picture in Picture' ? 'PiP' : layout.name.split(' ')[0]}
+                      </span>
                       {activeDemo === index && (
                         <motion.div
                           layoutId="activeDemo"
@@ -608,23 +613,48 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   </motion.div>
                 ))}
               </div>
-              
-              {/* Animated Demo Grid - Mobile Optimized */}
-              <div className="relative aspect-video bg-black/10 rounded-lg overflow-hidden">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeDemo}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
-                    className={cn(
-                      "absolute inset-0 p-2 lg:p-4 grid gap-1 lg:gap-2",
-                      activeDemo === 0 && "grid-cols-2 grid-rows-2",
-                      activeDemo === 1 && "grid-cols-3 grid-rows-3",
-                      activeDemo === 2 && "grid-cols-12 grid-rows-8"
-                    )}
-                  >
+
+              {/* Demo Display - Screenshots on Mobile, Live Grid on Desktop */}
+              <div className="relative aspect-video sm:aspect-[4/3] bg-black/10 rounded-lg overflow-hidden">
+                {/* Mobile: Show Screenshots */}
+                <div className="block lg:hidden">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeDemo}
+                      className="absolute inset-0 w-full h-full"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Image
+                        src={`/${activeDemo === 0 ? '2by2' : activeDemo === 1 ? '3by3' : 'pip'}.svg`}
+                        alt={`${demoLayouts[activeDemo]?.name} Layout Demo`}
+                        fill
+                        className="object-contain rounded-lg"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        priority={activeDemo === 0}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                {/* Desktop: Show Live Grid */}
+                <div className="hidden lg:block">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeDemo}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.3 }}
+                      className={cn(
+                        "absolute inset-0 p-4 grid gap-2",
+                        activeDemo === 0 && "grid-cols-2 grid-rows-2",
+                        activeDemo === 1 && "grid-cols-3 grid-rows-3",
+                        activeDemo === 2 && "grid-cols-12 grid-rows-8"
+                      )}
+                    >
                     {Array.from({ length: demoLayouts[activeDemo]?.streams || 0 }).map((_, i) => {
                       const stream = demoStreams[i]
                       return (
@@ -634,7 +664,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: i * 0.05 }}
                           className={cn(
-                            "bg-black rounded-md relative overflow-hidden",
+                            "bg-black rounded-sm sm:rounded-md relative overflow-hidden min-h-[40px] sm:min-h-[60px]",
                             activeDemo === 2 && i === 0 && "col-span-8 row-span-6",
                             activeDemo === 2 && i === 1 && "col-span-4 row-span-3",
                             activeDemo === 2 && i === 2 && "col-span-4 row-span-3",
@@ -644,59 +674,65 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                         >
                           {stream ? (
                             <>
-                              {isMobileDevice() ? (
-                                // Mobile: Show thumbnail
-                                <>
-                                  <img 
-                                    src={`https://static-cdn.jtvnw.net/previews-ttv/live_user_${stream.channelName}-1920x1080.jpg`}
-                                    alt={stream.channelName}
-                                    className="absolute inset-0 w-full h-full object-cover"
-                                    loading="lazy"
-                                  />
-                                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent" />
-                                  <div className="absolute inset-0 flex items-center justify-center">
-                                    <PlayCircle className="w-10 h-10 text-white/80 drop-shadow-lg" />
+                              {/* Always show thumbnail on mobile, iframe on desktop */}
+                              <img
+                                src={`https://static-cdn.jtvnw.net/previews-ttv/live_user_${stream.channelName}-1920x1080.jpg`}
+                                alt={stream.channelName}
+                                className="absolute inset-0 w-full h-full object-cover block lg:hidden"
+                                loading="lazy"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent block lg:hidden" />
+                              <div className="absolute inset-0 flex items-center justify-center block lg:hidden">
+                                <PlayCircle className="w-4 h-4 sm:w-6 sm:h-6 text-white/80 drop-shadow-lg" />
+                              </div>
+                              {/* Stream info for larger cells on mobile */}
+                              {(activeDemo === 2 && i === 0) && (
+                                <div className="absolute bottom-1 left-1 right-1 block lg:hidden">
+                                  <div className="text-white text-xs font-medium truncate bg-black/50 px-1 py-0.5 rounded">
+                                    {stream.channelName}
                                   </div>
-                                </>
-                              ) : (
-                                // Desktop: Show live iframe
-                                <iframe
-                                  src={`https://player.twitch.tv/?channel=${stream.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true`}
-                                  className="absolute inset-0 w-full h-full"
-                                  frameBorder="0"
-                                  scrolling="no"
-                                  allowFullScreen={true}
-                                />
+                                </div>
                               )}
-                              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-1 lg:p-2">
-                                <p className="text-xs font-medium text-white truncate">{stream.channelName}</p>
-                                <p className="text-xs text-white/80">
+
+                              {/* Desktop: Show live iframe */}
+                              <iframe
+                                src={`https://player.twitch.tv/?channel=${stream.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true`}
+                                className="absolute inset-0 w-full h-full hidden lg:block"
+                                frameBorder="0"
+                                scrolling="no"
+                                allowFullScreen={true}
+                              />
+                              {/* Desktop stream info overlay */}
+                              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-0.5 sm:p-1 lg:p-2 hidden lg:block">
+                                <p className="text-[10px] sm:text-xs font-medium text-white truncate">{stream.channelName}</p>
+                                <p className="text-[9px] sm:text-xs text-white/80">
                                   {stream.viewerCount.toLocaleString()} viewers
                                 </p>
                               </div>
-                              <Badge className="absolute top-1 right-1 lg:top-2 lg:right-2 bg-red-600 text-white border-0 text-xs">
+                              <Badge className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 lg:top-2 lg:right-2 bg-red-600 text-white border-0 text-[8px] sm:text-xs">
                                 LIVE
                               </Badge>
                             </>
                           ) : (
                             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-blue-500/20 flex flex-col items-center justify-center">
-                              <PlayCircle className="w-6 h-6 lg:w-8 lg:h-8 text-white/50" />
-                              <div className="text-xs text-white/70 mt-1 lg:mt-2">
-                                Stream {i + 1}
+                              <PlayCircle className="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 text-white/50" />
+                              <div className="text-[10px] sm:text-xs text-white/70 mt-0.5 sm:mt-1 lg:mt-2">
+                                {activeDemo === 2 && i === 0 ? 'Main' : `${i + 1}`}
                               </div>
                             </div>
                           )}
                         </motion.div>
                       )
                     })}
-                  </motion.div>
-                </AnimatePresence>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
               </div>
-              
+
               <p className="text-center text-sm lg:text-base text-muted-foreground mt-4 lg:mt-6">
-                {demoStreams.length > 0 
+                {demoStreams.length > 0
                   ? t('landing.demo.showingLiveStreams')
-                  : loading 
+                  : loading
                     ? t('landing.demo.loadingStreams')
                     : t('landing.demo.layoutsAdjust')}
               </p>
@@ -710,7 +746,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       <section className="py-16 lg:py-24 bg-gradient-to-b from-muted/10 to-background relative">
         <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
         <div className="container mx-auto px-4 lg:px-8 relative">
-          <motion.div 
+          <motion.div
             className="text-center mb-12 lg:mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -723,7 +759,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">
               {t('pricing.subtitle')}
             </p>
-            
+
             {/* Billing Cycle Toggle */}
             <div className="flex items-center justify-center gap-4 mt-8">
               <span className={billingCycle === 'monthly' ? 'font-semibold' : 'text-muted-foreground'}>
@@ -747,7 +783,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               )}
             </div>
           </motion.div>
-          
+
           <div className="grid gap-8 lg:grid-cols-3 max-w-6xl mx-auto">
             {/* Free Plan */}
             <motion.div
@@ -909,7 +945,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             </motion.div>
           </div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
@@ -923,7 +959,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       {/* Benefits Section - Mobile Optimized */}
       <section className="py-16 lg:py-24 relative">
         <div className="container mx-auto px-4 lg:px-8 relative">
-          <motion.div 
+          <motion.div
             className="text-center mb-16 lg:mb-20"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -938,7 +974,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               {t('landing.benefits.subtitle')}
             </p>
           </motion.div>
-          
+
           {/* Primary Benefits Grid - Mobile Optimized */}
           <div className="grid gap-8 lg:grid-cols-3 mb-16">
             {[
@@ -1044,7 +1080,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       {/* Use Cases - Mobile Optimized */}
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1056,7 +1092,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
             <h2 className="text-3xl lg:text-5xl font-bold mb-4">{t('landing.useCases.title')}</h2>
             <p className="text-lg lg:text-xl text-muted-foreground">{t('landing.useCases.subtitle')}</p>
           </motion.div>
-          
+
           <div className="grid gap-6 lg:grid-cols-4 max-w-6xl mx-auto">
             {useCases.map((useCase, index) => (
               <motion.div
@@ -1084,7 +1120,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
         <section className="py-16 lg:py-24 border-t bg-gradient-to-b from-background via-muted/10 to-muted/20 relative">
           <div className="absolute inset-0 bg-grid-white/[0.01] bg-grid-16" />
           <div className="container mx-auto px-4 lg:px-8 relative">
-            <motion.div 
+            <motion.div
               className="mb-16"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1101,7 +1137,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               </h2>
               <p className="text-lg lg:text-xl text-muted-foreground text-center">{t('landing.liveStreamers.clickToAdd')}</p>
             </motion.div>
-            
+
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
               {liveChannels.slice(0, 12).map((channel, index) => (
                 <motion.div
@@ -1121,7 +1157,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                       {isMobileDevice() ? (
                         // Mobile: Show thumbnail only
                         <>
-                          <img 
+                          <img
                             src={channel.thumbnailUrl || `https://static-cdn.jtvnw.net/previews-ttv/live_user_${channel.channelName}-1920x1080.jpg`}
                             alt={channel.channelName}
                             className="absolute inset-0 w-full h-full object-cover"
@@ -1152,7 +1188,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                         <Plus className="w-12 h-12 text-white" />
                       </div>
                     </div>
-                    
+
                     <div className="p-3 lg:p-4">
                       <h4 className="font-semibold truncate mb-1 text-sm lg:text-base">{channel.channelName}</h4>
                       <p className="text-xs text-muted-foreground truncate mb-2">{channel.gameName}</p>
@@ -1212,7 +1248,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   </span>
                 </h2>
               </motion.div>
-              
+
               {/* Subheading - Mobile Optimized */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -1223,9 +1259,9 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   {t('landing.finalCta.subtitle')}
                 </p>
               </motion.div>
-              
+
               {/* CTAs - Mobile Optimized */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
@@ -1235,8 +1271,8 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  <Button 
-                    size="lg" 
+                  <Button
+                    size="lg"
                     onClick={onAddStream}
                     className="gap-3 text-lg lg:text-xl px-10 lg:px-12 py-7 lg:py-8 bg-gradient-to-r from-blue-600 via-blue-600 to-cyan-600 hover:from-blue-700 hover:via-blue-700 hover:to-cyan-700 shadow-2xl hover:shadow-3xl transition-all duration-500 font-bold text-white border-0 rounded-2xl w-full lg:w-auto"
                   >
@@ -1244,7 +1280,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                     {t('landing.finalCta.startButton')}
                   </Button>
                 </motion.div>
-                
+
                 {!isSignedIn && (
                   <motion.div
                     whileHover={{ scale: 1.03 }}

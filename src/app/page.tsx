@@ -66,7 +66,7 @@ export default function HomePage() {
   const [isMobile, setIsMobile] = useState(false)
   const { addStream, setGridLayout, streams, gridLayout } = useStreamStore()
   const { trackChatToggle, trackFeatureUsage, trackStreamAdded } = useAnalytics()
-  
+
   // Store previous stream count to detect when new streams are added
   const [prevStreamCount, setPrevStreamCount] = useState(0)
 
@@ -82,7 +82,7 @@ export default function HomePage() {
 
     const checkMobile = () => {
       if (timeoutId) clearTimeout(timeoutId)
-      
+
       timeoutId = setTimeout(() => {
         const mobile = window.innerWidth < 768
         setIsMobile(mobile)
@@ -292,7 +292,7 @@ export default function HomePage() {
         "relative" // Relative positioning for proper layout
       )}>
         <main className="flex-1">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col gap-0">
             {streams.length > 0 && (
               <div className="border-b px-4 py-0">
                 <TabsList className="h-10 bg-transparent">

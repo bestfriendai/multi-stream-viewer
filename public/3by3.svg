@@ -1,0 +1,119 @@
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="450" fill="#0a0a0a"/>
+  
+  <!-- Grid pattern -->
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="streamGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="streamGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="streamGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="streamGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="streamGradient5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="streamGradient6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="streamGradient7" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#0891b2;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="streamGradient8" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#84cc16;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#65a30d;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="streamGradient9" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#ea580c;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="800" height="450" fill="url(#grid)" opacity="0.3"/>
+  
+  <!-- 3x3 Grid Layout -->
+  <!-- Row 1 -->
+  <rect x="20" y="40" width="240" height="120" rx="6" fill="url(#streamGradient1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <circle cx="140" cy="100" r="20" fill="rgba(255,255,255,0.9)"/>
+  <polygon points="133,93 133,107 147,100" fill="#0a0a0a"/>
+  <text x="140" y="125" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Stream 1</text>
+  <rect x="25" y="135" width="40" height="15" rx="7" fill="#dc2626"/>
+  <text x="45" y="145" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">LIVE</text>
+  
+  <rect x="280" y="40" width="240" height="120" rx="6" fill="url(#streamGradient2)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <circle cx="400" cy="100" r="20" fill="rgba(255,255,255,0.9)"/>
+  <polygon points="393,93 393,107 407,100" fill="#0a0a0a"/>
+  <text x="400" y="125" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Stream 2</text>
+  <rect x="285" y="135" width="40" height="15" rx="7" fill="#dc2626"/>
+  <text x="305" y="145" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">LIVE</text>
+  
+  <rect x="540" y="40" width="240" height="120" rx="6" fill="url(#streamGradient3)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <circle cx="660" cy="100" r="20" fill="rgba(255,255,255,0.9)"/>
+  <polygon points="653,93 653,107 667,100" fill="#0a0a0a"/>
+  <text x="660" y="125" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Stream 3</text>
+  <rect x="545" y="135" width="40" height="15" rx="7" fill="#dc2626"/>
+  <text x="565" y="145" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">LIVE</text>
+  
+  <!-- Row 2 -->
+  <rect x="20" y="180" width="240" height="120" rx="6" fill="url(#streamGradient4)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <circle cx="140" cy="240" r="20" fill="rgba(255,255,255,0.9)"/>
+  <polygon points="133,233 133,247 147,240" fill="#0a0a0a"/>
+  <text x="140" y="265" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Stream 4</text>
+  <rect x="25" y="275" width="40" height="15" rx="7" fill="#dc2626"/>
+  <text x="45" y="285" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">LIVE</text>
+  
+  <rect x="280" y="180" width="240" height="120" rx="6" fill="url(#streamGradient5)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <circle cx="400" cy="240" r="20" fill="rgba(255,255,255,0.9)"/>
+  <polygon points="393,233 393,247 407,240" fill="#0a0a0a"/>
+  <text x="400" y="265" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Stream 5</text>
+  <rect x="285" y="275" width="40" height="15" rx="7" fill="#dc2626"/>
+  <text x="305" y="285" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">LIVE</text>
+  
+  <rect x="540" y="180" width="240" height="120" rx="6" fill="url(#streamGradient6)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <circle cx="660" cy="240" r="20" fill="rgba(255,255,255,0.9)"/>
+  <polygon points="653,233 653,247 667,240" fill="#0a0a0a"/>
+  <text x="660" y="265" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Stream 6</text>
+  <rect x="545" y="275" width="40" height="15" rx="7" fill="#dc2626"/>
+  <text x="565" y="285" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">LIVE</text>
+  
+  <!-- Row 3 -->
+  <rect x="20" y="320" width="240" height="120" rx="6" fill="url(#streamGradient7)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <circle cx="140" cy="380" r="20" fill="rgba(255,255,255,0.9)"/>
+  <polygon points="133,373 133,387 147,380" fill="#0a0a0a"/>
+  <text x="140" y="405" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Stream 7</text>
+  <rect x="25" y="415" width="40" height="15" rx="7" fill="#dc2626"/>
+  <text x="45" y="425" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">LIVE</text>
+  
+  <rect x="280" y="320" width="240" height="120" rx="6" fill="url(#streamGradient8)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <circle cx="400" cy="380" r="20" fill="rgba(255,255,255,0.9)"/>
+  <polygon points="393,373 393,387 407,380" fill="#0a0a0a"/>
+  <text x="400" y="405" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Stream 8</text>
+  <rect x="285" y="415" width="40" height="15" rx="7" fill="#dc2626"/>
+  <text x="305" y="425" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">LIVE</text>
+  
+  <rect x="540" y="320" width="240" height="120" rx="6" fill="url(#streamGradient9)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <circle cx="660" cy="380" r="20" fill="rgba(255,255,255,0.9)"/>
+  <polygon points="653,373 653,387 667,380" fill="#0a0a0a"/>
+  <text x="660" y="405" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Stream 9</text>
+  <rect x="545" y="415" width="40" height="15" rx="7" fill="#dc2626"/>
+  <text x="565" y="425" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">LIVE</text>
+  
+  <!-- Title -->
+  <text x="400" y="25" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="20" font-weight="bold" opacity="0.8">3×3 Grid Layout</text>
+</svg>

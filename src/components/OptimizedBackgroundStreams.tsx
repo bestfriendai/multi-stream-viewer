@@ -67,51 +67,39 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
     }
   }, [])
 
-  // Staggered loading for better performance with thumbnail-to-stream transition
+  // Immediate thumbnail loading with staggered stream transitions
   useEffect(() => {
-    if (!shouldLoadStreams || channels.length === 0 || !isVisible) return
+    if (channels.length === 0) return
 
-    // First, load thumbnails immediately
-    const loadThumbnail = (index: number, delay: number) => {
-      setTimeout(() => {
-        setLoadedStreams(prev => [...prev, index])
-      }, delay)
-    }
+    // Load all thumbnails immediately - no delays, no gray screens
+    setLoadedStreams([0, 1, 2, 3])
 
-    // Then, transition to actual streams after thumbnails are loaded
-    const transitionToStream = (index: number, delay: number) => {
-      setTimeout(() => {
-        setStreamTransitions(prev => new Set([...prev, index]))
-      }, delay)
-    }
+    // Only transition to actual streams on desktop after thumbnails are visible
+    if (!isMobileDevice() && isVisible) {
+      const transitionToStream = (index: number, delay: number) => {
+        setTimeout(() => {
+          setStreamTransitions(prev => new Set([...prev, index]))
+        }, delay)
+      }
 
-    // Load thumbnails first (fast)
-    loadThumbnail(0, 0)
-    loadThumbnail(1, 100)
-    loadThumbnail(2, 200)
-    loadThumbnail(3, 300)
-
-    // Transition to streams after thumbnails are visible (slower, staggered)
-    if (!isMobileDevice()) {
-      transitionToStream(0, 1500)  // 1.5s delay for first stream
-      transitionToStream(1, 2500)  // 2.5s delay for second stream
-      transitionToStream(2, 3500)  // 3.5s delay for third stream
-      transitionToStream(3, 4500)  // 4.5s delay for fourth stream
+      // Staggered stream transitions (only on desktop)
+      transitionToStream(0, 2000)  // 2s delay for first stream
+      transitionToStream(1, 3000)  // 3s delay for second stream
+      transitionToStream(2, 4000)  // 4s delay for third stream
+      transitionToStream(3, 5000)  // 5s delay for fourth stream
     }
 
     return () => {
-      // Cleanup timeouts if component unmounts
-      setLoadedStreams([])
+      // Cleanup on unmount
       setStreamTransitions(new Set())
     }
-  }, [shouldLoadStreams, channels.length, isVisible])
+  }, [channels.length, isVisible])
 
   if (channels.length === 0) return null
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none optimized-background-streams">
-      {/* Black background shown until streams are loaded */}
-      <div className="absolute inset-0 bg-black" />
+    <div className="fixed inset-0 overflow-hidden pointer-events-none optimized-background-streams z-0">
+      {/* Background container - thumbnails load immediately */}
       
       <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-4 scale-105">
         {[...Array(4)].map((_, index) => {
@@ -124,42 +112,34 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
             `https://static-cdn.jtvnw.net/previews-ttv/live_user_${channel.channelName}-1920x1080.jpg`
 
           return (
-            <motion.div 
+            <div 
               key={`bg-${channel.channelName}-${index}`} 
-              className="relative overflow-hidden rounded-lg bg-black"
-              initial={{ opacity: 0.9, scale: 1 }}
-              animate={{ opacity: 0.9, scale: 1 }}
-              transition={{ duration: 0 }}
+              className="relative overflow-hidden rounded-lg"
             >
-              <div className="aspect-video relative bg-black">
-                {/* Show thumbnail immediately when loaded (no gray screen) */}
+              <div className="aspect-video relative">
+                {/* Show thumbnail immediately (no gray screen, no play button) */}
                 {shouldLoad && (
-                  <motion.div 
+                  <div 
                     className="absolute inset-0"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: shouldTransition && !isMobileDevice() ? 0 : 1 }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    style={{ opacity: shouldTransition && !isMobileDevice() ? 0 : 1, transition: 'opacity 0.8s ease-in-out' }}
                   >
                     <img 
                       src={thumbnailUrl}
                       alt={channel.channelName}
-                      className="w-full h-full object-cover opacity-70"
-                      loading="lazy"
+                      className="w-full h-full object-cover opacity-80"
+                      loading="eager"
                       decoding="async"
                       onError={() => {
                         console.log(`Thumbnail failed to load for ${channel.channelName}`)
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <PlayCircle className="w-16 h-16 text-white/70 animate-pulse" />
-                    </div>
-                  </motion.div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                  </div>
                 )}
                 
                 {/* Actual stream embed - transitions in smoothly on desktop */}
                 {shouldTransition && !isMobileDevice() && (
-                  <motion.iframe
+                  <iframe
                     src={`https://player.twitch.tv/?channel=${channel.channelName}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}&muted=true&autoplay=true&controls=false`}
                     className="absolute inset-0 w-full h-full background-stream-iframe"
                     frameBorder="0"
@@ -167,9 +147,7 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
                     allowFullScreen={false}
                     loading="lazy"
                     title={`${channel.channelName} stream`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    style={{ opacity: 1, transition: 'opacity 0.8s ease-in-out' }}
                     onLoad={() => {
                       console.log(`Stream ${channel.channelName} loaded and transitioned`)
                     }}
@@ -179,16 +157,9 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
                   />
                 )}
                 
-                {/* Loading state - only show if nothing is loaded yet */}
-                {!shouldLoad && (
-                  <div className="absolute inset-0 bg-black">
-                    <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                      <PlayCircle className="w-12 h-12 text-white/50" />
-                    </div>
-                  </div>
-                )}
+                {/* No loading state needed - thumbnails load immediately */}
               </div>
-            </motion.div>
+            </div>
           )
         })}
       </div>
