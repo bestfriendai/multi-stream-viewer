@@ -258,7 +258,7 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
       <OptimizedBackgroundStreams channels={liveChannels} />
 
       {/* Mobile-First Hero Section */}
-      <section className="relative min-h-screen flex items-center bg-gradient-to-b from-background to-muted/20 pt-16 pb-8 px-4 sm:px-6 lg:px-8">
+      <section className="relative min-h-[calc(100vh-4rem)] flex items-start bg-gradient-to-b from-background to-muted/20 pt-0 pb-8 px-4 sm:px-6 lg:px-8 -mt-px">
         {/* Enhanced Professional Background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-muted/30" />
