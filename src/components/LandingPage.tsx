@@ -208,10 +208,38 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
               channelName: ch.channelName,
               viewerCount: ch.viewerCount
             })))
+          } else {
+            // Use fallback demo data if API doesn't return streams
+            setDemoStreams([
+              { channelName: 'demo1', viewerCount: 12500 },
+              { channelName: 'demo2', viewerCount: 8300 },
+              { channelName: 'demo3', viewerCount: 6100 },
+              { channelName: 'demo4', viewerCount: 4200 },
+              { channelName: 'demo5', viewerCount: 3800 },
+              { channelName: 'demo6', viewerCount: 2900 },
+              { channelName: 'demo7', viewerCount: 2400 },
+              { channelName: 'demo8', viewerCount: 1800 },
+              { channelName: 'demo9', viewerCount: 1200 }
+            ])
           }
+        } else {
+          // Use fallback demo data on API error
+          setDemoStreams([
+            { channelName: 'demo1', viewerCount: 12500 },
+            { channelName: 'demo2', viewerCount: 8300 },
+            { channelName: 'demo3', viewerCount: 6100 },
+            { channelName: 'demo4', viewerCount: 4200 }
+          ])
         }
       } catch (error) {
         console.error('Failed to fetch top streams:', error)
+        // Use fallback demo data on fetch error
+        setDemoStreams([
+          { channelName: 'demo1', viewerCount: 12500 },
+          { channelName: 'demo2', viewerCount: 8300 },
+          { channelName: 'demo3', viewerCount: 6100 },
+          { channelName: 'demo4', viewerCount: 4200 }
+        ])
       } finally {
         setLoading(false)
       }

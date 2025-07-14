@@ -41,11 +41,13 @@ export async function performStartupSync(): Promise<void> {
       console.log('Startup sync completed:', result);
       lastSyncTime = new Date();
     } else {
-      console.error('Startup sync failed:', response.status, response.statusText);
+      console.warn('Startup sync failed (non-critical):', response.status, response.statusText);
+      // Don't throw error for sync failures - they're not critical for app functionality
     }
 
   } catch (error) {
-    console.error('Error during startup sync:', error);
+    console.warn('Error during startup sync (non-critical):', error);
+    // Startup sync failures should not crash the app
   } finally {
     syncInProgress = false;
   }
@@ -73,12 +75,13 @@ export async function forceStartupSync(): Promise<void> {
       lastSyncTime = new Date();
       return result;
     } else {
-      throw new Error(`Sync failed: ${response.status} ${response.statusText}`);
+      console.warn(`Forced sync failed: ${response.status} ${response.statusText}`);
+      // Don't throw error - sync failures should not crash the app
     }
 
   } catch (error) {
-    console.error('Error during forced sync:', error);
-    throw error;
+    console.warn('Error during forced sync:', error);
+    // Don't throw error - sync failures should not crash the app
   } finally {
     syncInProgress = false;
   }
