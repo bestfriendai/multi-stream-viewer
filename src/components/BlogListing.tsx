@@ -13,6 +13,51 @@ import { cn } from '@/lib/utils'
 
 const blogPosts = [
   {
+    slug: 'twitch-ad-blocker-not-working-2025',
+    title: 'Twitch Ad Blocker Not Working? Best Solutions for 2025',
+    excerpt: 'Twitch ad blockers stopped working? Learn why uBlock Origin, AdBlock Plus fail and discover the best ad-free Twitch alternatives that actually work in 2025.',
+    category: 'Ad Blocking',
+    readTime: '12 min read',
+    date: '2025-01-15',
+    author: 'Streamyyy Team',
+    authorAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop',
+    image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=400&fit=crop',
+    icon: Monitor,
+    featured: true,
+    views: '28.4K',
+    rating: 4.9
+  },
+  {
+    slug: 'watch-multiple-twitch-streams-mobile',
+    title: 'How to Watch Multiple Twitch Streams on Mobile: Complete 2025 Guide',
+    excerpt: 'Complete guide to watching multiple Twitch streams on mobile devices. Best mobile multi-stream apps, tips for iOS/Android, and optimization techniques.',
+    category: 'Mobile Guide',
+    readTime: '10 min read',
+    date: '2025-01-14',
+    author: 'Streamyyy Team',
+    authorAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop',
+    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=400&fit=crop',
+    icon: Monitor,
+    featured: true,
+    views: '19.7K',
+    rating: 4.8
+  },
+  {
+    slug: 'multitwitch-vs-streamyyy-comparison',
+    title: 'Multitwitch vs Streamyyy: The Ultimate Multi-Stream Viewer Comparison',
+    excerpt: 'Complete comparison of Multitwitch.tv vs Streamyyy. Features, performance, mobile support, and which multi-stream viewer is best for watching multiple Twitch streams.',
+    category: 'Comparison',
+    readTime: '15 min read',
+    date: '2025-01-13',
+    author: 'Streamyyy Team',
+    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop',
+    icon: Monitor,
+    featured: false,
+    views: '22.1K',
+    rating: 4.8
+  },
+  {
     slug: 'how-to-watch-multiple-streams',
     title: 'How to Watch Multiple Streams at Once: The Ultimate MultiStream Guide',
     excerpt: 'Learn how to watch multiple Twitch and YouTube streams simultaneously. STREAMYYY makes multistream viewing simple and powerful.',
@@ -23,7 +68,7 @@ const blogPosts = [
     authorAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop',
     image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&h=400&fit=crop',
     icon: Monitor,
-    featured: true,
+    featured: false,
     views: '15.2K',
     rating: 4.9
   },
@@ -103,6 +148,9 @@ const blogPosts = [
 
 const categories = [
   { name: 'All Posts', count: blogPosts.length, icon: BookOpen },
+  { name: 'Ad Blocking', count: 1, icon: Monitor },
+  { name: 'Mobile Guide', count: 1, icon: Video },
+  { name: 'Comparison', count: 1, icon: TrendingUp },
   { name: 'Tutorials', count: 1, icon: Video },
   { name: 'Getting Started', count: 1, icon: Sparkles },
   { name: 'Equipment', count: 1, icon: Camera },

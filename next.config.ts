@@ -17,15 +17,15 @@ const nextConfig: NextConfig = {
     cssChunking: 'strict',
   },
   
-  // Turbopack configuration
-  turbopack: {
-    rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
-      },
-    },
-  },
+  // Turbopack configuration - disabled due to runtime errors
+  // turbopack: {
+  //   rules: {
+  //     '*.svg': {
+  //       loaders: ['@svgr/webpack'],
+  //       as: '*.js',
+  //     },
+  //   },
+  // },
   
   // Image optimization - merged from both configs
   images: {
@@ -73,6 +73,12 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'streamyyy.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
         port: '',
         pathname: '/**',
       },

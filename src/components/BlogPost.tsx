@@ -198,87 +198,59 @@ export default function BlogPost({ title, author, date, readTime, category, imag
                 <ReactMarkdown
                   components={{
                     img: ({ node, ...props }) => (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5 }}
-                        className="my-8 rounded-xl overflow-hidden shadow-2xl"
-                      >
-                        <Image
-                          src={typeof props.src === 'string' ? props.src : ''}
-                          alt={props.alt || ''}
-                          width={1200}
-                          height={600}
-                          className="w-full h-auto"
-                        />
-                      </motion.div>
+                      <Image
+                        src={typeof props.src === 'string' ? props.src : ''}
+                        alt={props.alt || ''}
+                        width={1200}
+                        height={600}
+                        className="w-full h-auto my-8 rounded-xl shadow-2xl"
+                      />
                     ),
-                    iframe: ({ node, ...props }) => (
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="relative aspect-video my-8 rounded-xl overflow-hidden shadow-2xl bg-black"
-                      >
-                        <iframe
-                          {...props}
-                          className="absolute inset-0 w-full h-full"
-                          allowFullScreen
-                        />
-                      </motion.div>
-                    ),
+                    iframe: ({ node, ...props }) => {
+                      // Remove deprecated frameborder attribute and replace with CSS
+                      const { frameborder, ...cleanProps } = props;
+                      return (
+                        <div className="relative aspect-video my-8 rounded-xl overflow-hidden shadow-2xl bg-black">
+                          <iframe
+                            {...cleanProps}
+                            className="absolute inset-0 w-full h-full border-0"
+                            allowFullScreen
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          />
+                        </div>
+                      );
+                    },
                     h2: ({ node, children, ...props }) => (
-                      <motion.h2
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5 }}
+                      <h2
                         className="text-3xl md:text-4xl font-bold mt-16 mb-6 text-foreground flex items-center gap-3"
                         id={props.id}
                       >
                         <span className="w-1 h-8 bg-primary rounded-full" />
                         {children}
-                      </motion.h2>
+                      </h2>
                     ),
                     h3: ({ node, children, ...props }) => (
-                      <motion.h3
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5 }}
+                      <h3
                         className="text-2xl md:text-3xl font-semibold mt-12 mb-4 text-foreground"
                         id={props.id}
                       >
                         {children}
-                      </motion.h3>
+                      </h3>
                     ),
                     p: ({ node, children, ...props }) => (
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                        className="leading-relaxed mb-6 text-muted-foreground text-lg"
-                      >
+                      <p className="leading-relaxed mb-6 text-muted-foreground text-lg">
                         {children}
-                      </motion.p>
+                      </p>
                     ),
                     ul: ({ node, children, ...props }) => (
-                      <motion.ul
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="space-y-3 mb-6 ml-4"
-                      >
+                      <ul className="space-y-3 mb-6 ml-4">
                         {children}
-                      </motion.ul>
+                      </ul>
                     ),
                     ol: ({ node, children, ...props }) => (
-                      <motion.ol
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="space-y-3 mb-6 ml-4"
-                      >
+                      <ol className="space-y-3 mb-6 ml-4">
                         {children}
-                      </motion.ol>
+                      </ol>
                     ),
                     li: ({ node, children, ...props }) => (
                       <li className="flex items-start gap-2">
@@ -287,14 +259,9 @@ export default function BlogPost({ title, author, date, readTime, category, imag
                       </li>
                     ),
                     blockquote: ({ node, children, ...props }) => (
-                      <motion.blockquote
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="border-l-4 border-primary pl-6 italic my-8 text-xl text-muted-foreground bg-muted/30 py-4 pr-4 rounded-r-lg"
-                      >
+                      <blockquote className="border-l-4 border-primary pl-6 italic my-8 text-xl text-muted-foreground bg-muted/30 py-4 pr-4 rounded-r-lg">
                         {children}
-                      </motion.blockquote>
+                      </blockquote>
                     ),
                     a: ({ node, children, ...props }) => (
                       <a href={props.href} className="text-primary hover:underline font-medium" target="_blank" rel="noopener noreferrer">
