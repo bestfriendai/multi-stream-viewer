@@ -15,8 +15,17 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
-  title: 'Contact Us - Streamyyy',
-  description: 'Get in touch with the Streamyyy team. Contact us for support, feedback, business inquiries, or report issues.',
+  title: 'Contact Us - Streamyyy Support & Business Inquiries',
+  description: 'Get in touch with the Streamyyy team. Contact us for support, feedback, business inquiries, bug reports, or feature requests. Fast response times.',
+  keywords: 'streamyyy contact, streamyyy support, streamyyy help, streamyyy feedback, streamyyy business inquiries, streamyyy customer service',
+  openGraph: {
+    title: 'Contact Streamyyy - Support & Business Inquiries',
+    description: 'Get help with Streamyyy or reach out for business opportunities. Fast, friendly support team.',
+    type: 'website'
+  },
+  alternates: {
+    canonical: 'https://streamyyy.com/contact'
+  }
 }
 
 export default function ContactPage() {

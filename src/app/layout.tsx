@@ -49,12 +49,12 @@ export const viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://streamyyy.com'),
-  title: "Streamyyy - Watch Multiple Twitch Streams Simultaneously | Best Multi Stream Viewer",
-  description: "Watch multiple Twitch streams at once with Streamyyy. Superior performance, easy setup, and advanced chat management. Free multi-stream viewer with sync controls.",
-  keywords: "watch multiple twitch streams, multi stream viewer, twitch multistream, multitwitch alternative, stream aggregator, esports viewing, gaming streams",
+  title: "Watch Multiple Twitch Streams Without Ads | Free Multi Stream Viewer - Streamyyy",
+  description: "Watch multiple Twitch streams simultaneously with built-in ad blocking. Best multitwitch alternative with 16+ streams, mobile support, and no interruptions. 100% free.",
+  keywords: "watch multiple twitch streams, multi stream viewer, twitch multistream, twitch ad blocker, multitwitch alternative, watch twitch no ads, twitch ad free, block twitch ads",
   openGraph: {
-    title: "Streamyyy - Watch Multiple Twitch Streams Simultaneously",
-    description: "The best multi-stream viewer for Twitch. Watch multiple streams at once with advanced layouts and chat management.",
+    title: "Watch Multiple Twitch Streams Without Ads - Free Multi Stream Viewer",
+    description: "Best multitwitch alternative with built-in ad blocking, 16+ streams, and mobile support. Watch multiple Twitch streams simultaneously - 100% free.",
     url: "https://streamyyy.com",
     siteName: "Streamyyy",
     type: "website",
@@ -63,14 +63,14 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Streamyyy Multi Stream Viewer"
+        alt: "Streamyyy Multi Stream Viewer - Watch Multiple Twitch Streams"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Streamyyy - Watch Multiple Twitch Streams Simultaneously",
-    description: "The best multi-stream viewer for Twitch. Watch multiple streams at once with advanced layouts and chat management.",
+    title: "Watch Multiple Twitch Streams Without Ads - Streamyyy",
+    description: "Best multitwitch alternative with built-in ad blocking. Watch 16+ streams simultaneously on any device. 100% free forever.",
     images: ["/og-image.png"]
   },
   robots: {
@@ -376,6 +376,14 @@ export default function RootLayout({
             `
           }}
         />
+
+        {/* NoScript fallback for search engines and users without JavaScript */}
+        <noscript>
+          <style>{`
+            .js-only { display: none !important; }
+            .noscript-fallback { display: block !important; }
+          `}</style>
+        </noscript>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased safari-mobile-fix`}

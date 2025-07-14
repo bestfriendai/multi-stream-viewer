@@ -1,9 +1,5 @@
-'use client'
-
-import { useState, useEffect } from 'react'
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import { useUser } from '@clerk/nextjs'
-import { useTranslation } from '@/contexts/LanguageContext'
 import { 
   ArrowLeft, 
   Zap, 
@@ -18,114 +14,75 @@ import {
   Sparkles,
   Heart
 } from 'lucide-react'
-import { motion } from 'framer-motion'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+
+export const metadata: Metadata = {
+  title: 'About Streamyyy - The Future of Multi-Stream Viewing',
+  description: 'Learn about Streamyyy, the most advanced multi-stream viewer for Twitch, YouTube, and more. Built for creators, viewers, and esports fans who demand better.',
+  keywords: 'about streamyyy, multi stream viewer, twitch viewer, youtube viewer, streaming platform, esports viewer, content creator tools',
+  openGraph: {
+    title: 'About Streamyyy - Multi-Stream Viewing Revolution',
+    description: 'Discover why Streamyyy is the future of watching multiple streams simultaneously. Fast, free, and privacy-focused.',
+    type: 'website'
+  },
+  alternates: {
+    canonical: 'https://streamyyy.com/about'
+  }
+}
 
 export default function AboutPage() {
-  const { isLoaded, isSignedIn } = useUser()
-  const { t } = useTranslation()
-  const [isClientLoaded, setIsClientLoaded] = useState(false)
-
-  // Client-side hydration effect
-  useEffect(() => {
-    setIsClientLoaded(true)
-  }, [])
-
-  // Show loading state while authentication is being determined
-  // BUT provide SEO content immediately for search engines
-  if (!isLoaded) {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              About Streamyyy
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              The most advanced multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously. Built for creators, viewers, and esports fans.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            <div className="text-center p-6 border rounded-lg">
-              <h3 className="text-lg font-semibold mb-2">Multi-Platform</h3>
-              <p className="text-muted-foreground">Watch streams from Twitch, YouTube, Kick, and Rumble in one interface</p>
-            </div>
-            <div className="text-center p-6 border rounded-lg">
-              <h3 className="text-lg font-semibold mb-2">High Performance</h3>
-              <p className="text-muted-foreground">Handle up to 16 streams with optimized performance and low latency</p>
-            </div>
-            <div className="text-center p-6 border rounded-lg">
-              <h3 className="text-lg font-semibold mb-2">Mobile First</h3>
-              <p className="text-muted-foreground">Perfect experience on desktop, tablet, and mobile devices</p>
-            </div>
-          </div>
-          
-          {/* Loading indicator - only show on client side after hydration */}
-          {isClientLoaded && (
-            <div className="flex items-center justify-center mt-8">
-              <div className="text-center space-y-4">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                <p className="text-muted-foreground">Loading content...</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    )
-  }
-
   const problems = [
     {
       icon: Eye,
-      title: t('about.problems.multiStream.title'),
-      problem: t('about.problems.multiStream.problem'),
-      solution: t('about.problems.multiStream.solution'),
+      title: "Multiple Stream Viewing",
+      problem: "Watching multiple streams meant juggling tabs, high CPU usage, and missed moments across different platforms.",
+      solution: "Streamyyy provides optimized multi-stream viewing with unified layouts, efficient resource management, and seamless platform integration.",
       color: "from-purple-500 to-pink-500"
     },
     {
       icon: Monitor,
-      title: t('about.problems.multiMonitor.title'),
-      problem: t('about.problems.multiMonitor.problem'),
-      solution: t('about.problems.multiMonitor.solution'),
+      title: "Multi-Monitor Complexity",
+      problem: "Multi-monitor setups were expensive, took desk space, and required complex window management to watch multiple streams.",
+      solution: "Our advanced grid layouts maximize screen real estate on any device, from mobile phones to ultrawide monitors.",
       color: "from-blue-500 to-cyan-500"
     },
     {
       icon: Users,
-      title: t('about.problems.tournament.title'),
-      problem: t('about.problems.tournament.problem'),
-      solution: t('about.problems.tournament.solution'),
+      title: "Tournament Coverage",
+      problem: "Following esports tournaments meant missing crucial moments when switching between different player perspectives.",
+      solution: "Watch up to 16 streams simultaneously with synchronized controls and instant switching between perspectives.",
       color: "from-green-500 to-emerald-500"
     },
     {
       icon: Smartphone,
-      title: t('about.problems.mobile.title'),
-      problem: t('about.problems.mobile.problem'),
-      solution: t('about.problems.mobile.solution'),
+      title: "Mobile Limitations",
+      problem: "Mobile devices couldn't handle multiple streams effectively, with poor performance and limited viewing options.",
+      solution: "Mobile-first design with optimized layouts, touch controls, and efficient performance on any device.",
       color: "from-orange-500 to-red-500"
     },
     {
       icon: Globe,
-      title: t('about.problems.platform.title'),
-      problem: t('about.problems.platform.problem'),
-      solution: t('about.problems.platform.solution'),
+      title: "Platform Fragmentation",
+      problem: "Content was scattered across Twitch, YouTube, Kick, and other platforms, requiring separate tools and interfaces.",
+      solution: "Unified multi-platform support bringing together all your favorite streams in one powerful interface.",
       color: "from-purple-500 to-indigo-500"
     },
     {
       icon: Shuffle,
-      title: t('about.problems.accessibility.title'),
-      problem: t('about.problems.accessibility.problem'),
-      solution: t('about.problems.accessibility.solution'),
+      title: "Complex Setup",
+      problem: "Existing solutions required complex setup, accounts, subscriptions, and technical knowledge to get started.",
+      solution: "Zero setup required. Open Streamyyy and start watching immediately. No account, no subscription, no complexity.",
       color: "from-yellow-500 to-orange-500"
     }
   ]
 
   const stats = [
-    { number: "1M+", label: t('about.stats.streamsWatched'), icon: Eye },
-    { number: "50K+", label: t('about.stats.activeUsers'), icon: Users },
-    { number: t('about.stats.free'), label: t('about.stats.basicAccess'), icon: Heart },
-    { number: "16", label: t('about.stats.maxStreams'), icon: Monitor }
+    { number: "1M+", label: "Streams Watched", icon: Eye },
+    { number: "50K+", label: "Active Users", icon: Users },
+    { number: "Free", label: "Always", icon: Heart },
+    { number: "16", label: "Max Streams", icon: Monitor }
   ]
 
   return (
@@ -136,50 +93,35 @@ export default function AboutPage() {
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
-          {t('common.back')}
+          Back to Streamyyy
         </Link>
 
         {/* Hero Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 text-transparent bg-clip-text">
-              {t('about.hero.title')}
+              About Streamyyy
             </span>
             <br />
             <span className="text-2xl md:text-4xl text-muted-foreground">
-              {t('about.hero.subtitle')}
+              The Future of Multi-Stream Viewing
             </span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            {t('about.hero.description')}
+            We built Streamyyy because watching one stream at a time is like watching TV in black and white. 
+            The future is multi-stream, and we're leading the way.
           </p>
-        </motion.div>
+        </div>
 
         {/* Problems & Solutions Grid */}
         <div className="mb-20">
-          <motion.h2 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-3xl md:text-4xl font-bold text-center mb-12"
-          >
-            {t('about.problems.title')}
-          </motion.h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+            Problems We Solved
+          </h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {problems.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ scale: 1.02, y: -5 }}
-              >
+              <div key={index}>
                 <Card className="h-full p-6 hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/50">
                   <div className="flex items-start gap-4">
                     <div className={`p-3 rounded-xl bg-gradient-to-br ${item.color} bg-opacity-20`}>
@@ -189,81 +131,66 @@ export default function AboutPage() {
                       <h3 className="text-xl font-bold mb-3">{item.title}</h3>
                       <div className="space-y-3">
                         <div>
-                          <Badge variant="destructive" className="mb-2">{t('about.problems.theProblem')}</Badge>
+                          <Badge variant="destructive" className="mb-2">The Problem</Badge>
                           <p className="text-sm text-muted-foreground">{item.problem}</p>
                         </div>
                         <div>
-                          <Badge variant="default" className="mb-2 bg-green-600">{t('about.problems.ourSolution')}</Badge>
+                          <Badge variant="default" className="mb-2 bg-green-600">Our Solution</Badge>
                           <p className="text-sm">{item.solution}</p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </Card>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Philosophy Section */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mb-20"
-        >
+        <div className="mb-20">
           <Card className="p-8 md:p-12 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-500/30">
             <h2 className="text-3xl font-bold mb-6 text-center">
-              {t('about.philosophy.title')}: <span className="text-primary">{t('about.philosophy.subtitle')}</span>
+              Our Philosophy: <span className="text-primary">Simplicity First</span>
             </h2>
             <div className="space-y-6 max-w-4xl mx-auto">
               <div className="flex items-start gap-4">
                 <Brain className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="font-bold mb-2">{t('about.philosophy.noAccount.title')}</h3>
+                  <h3 className="font-bold mb-2">No Account Required</h3>
                   <p className="text-muted-foreground">
-                    {t('about.philosophy.noAccount.description')}
+                    Your time is valuable. You shouldn't need to create an account, verify email, or remember passwords just to watch streams. Open Streamyyy and start watching immediately.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <Sparkles className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="font-bold mb-2">{t('about.philosophy.features.title')}</h3>
+                  <h3 className="font-bold mb-2">All Features Free</h3>
                   <p className="text-muted-foreground">
-                    {t('about.philosophy.features.description')}
+                    We believe powerful tools shouldn't be locked behind paywalls. Every feature in Streamyyy is free, forever. No premium tiers, no feature limits, no hidden costs.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <Heart className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="font-bold mb-2">{t('about.philosophy.built.title')}</h3>
+                  <h3 className="font-bold mb-2">Built for Users</h3>
                   <p className="text-muted-foreground">
-                    {t('about.philosophy.built.description')}
+                    Every decision we make prioritizes user experience over profit. We're not owned by big tech, we don't sell data, and we don't show ads. This is your platform.
                   </p>
                 </div>
               </div>
             </div>
           </Card>
-        </motion.div>
+        </div>
 
         {/* Stats Section */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1 }}
-          className="mb-20"
-        >
-          <h2 className="text-3xl font-bold text-center mb-12">{t('about.stats.title')}</h2>
+        <div className="mb-20">
+          <h2 className="text-3xl font-bold text-center mb-12">By the Numbers</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.5, delay: 1.2 + index * 0.1 }}
-              >
+              <div key={index}>
                 <Card className="p-6 text-center hover:shadow-lg transition-all">
                   <stat.icon className="w-8 h-8 mx-auto mb-3 text-primary" />
                   <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-purple-400 text-transparent bg-clip-text">
@@ -271,84 +198,50 @@ export default function AboutPage() {
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
                 </Card>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Why Different Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.4 }}
-          className="mb-20"
-        >
+        <div className="mb-20">
           <h2 className="text-3xl font-bold text-center mb-12">Why We're Different</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div 
-              className="text-center"
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <motion.div 
-                className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4"
-                whileHover={{ rotate: 10 }}
-                transition={{ duration: 0.3 }}
-              >
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Zap className="w-10 h-10 text-white" />
-              </motion.div>
+              </div>
               <h3 className="text-xl font-bold mb-3">Blazing Fast</h3>
               <p className="text-muted-foreground">
                 Optimized for speed with minimal overhead. Clean, efficient code that loads quickly 
                 and runs smoothly across all devices.
               </p>
-            </motion.div>
-            <motion.div 
-              className="text-center"
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <motion.div 
-                className="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4"
-                whileHover={{ rotate: 10 }}
-                transition={{ duration: 0.3 }}
-              >
+            </div>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-10 h-10 text-white" />
-              </motion.div>
+              </div>
               <h3 className="text-xl font-bold mb-3">Privacy Focused</h3>
               <p className="text-muted-foreground">
                 We respect your privacy. We don't sell your data. No account required to start watching. 
                 Transparent about our data practices.
               </p>
-            </motion.div>
-            <motion.div 
-              className="text-center"
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <motion.div 
-                className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4"
-                whileHover={{ rotate: 10 }}
-                transition={{ duration: 0.3 }}
-              >
+            </div>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Users className="w-10 h-10 text-white" />
-              </motion.div>
+              </div>
               <h3 className="text-xl font-bold mb-3">Community Driven</h3>
               <p className="text-muted-foreground">
                 Built by the community, for the community. Every feature request is considered. 
                 Every bug report is valued. This is your platform.
               </p>
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* The Future Section */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1.6 }}
-          className="mb-20"
-        >
+        <div className="mb-20">
           <Card className="p-8 md:p-12 border-2 border-primary/30">
             <h2 className="text-3xl font-bold text-center mb-6">The Future is Multi-Stream</h2>
             <div className="max-w-3xl mx-auto space-y-4 text-center">
@@ -369,50 +262,38 @@ export default function AboutPage() {
               </p>
             </div>
           </Card>
-        </motion.div>
+        </div>
 
         {/* Call to Action */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.8 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-6">Ready to Experience the Difference?</h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Stop juggling tabs. Stop missing moments. Stop paying for basic features.
             Start watching smarter.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/"
-              className="px-8 py-4 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground rounded-xl font-bold text-lg transition-all transform hover:scale-105"
-            >
-              {t('about.cta.button')}
-            </Link>
-            <Link
-              href="/contact"
-              className="px-8 py-4 bg-card hover:bg-card/80 border-2 border-primary rounded-xl font-bold text-lg transition-all"
-            >
-              {t('common.contact')}
-            </Link>
+            <Button asChild size="lg" className="px-8 py-4 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground rounded-xl font-bold text-lg">
+              <Link href="/">
+                Start Watching Now
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="px-8 py-4 border-2 border-primary rounded-xl font-bold text-lg">
+              <Link href="/contact">
+                Contact Us
+              </Link>
+            </Button>
           </div>
-        </motion.div>
+        </div>
 
         {/* Footer Quote */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 2 }}
-          className="text-center pb-8"
-        >
+        <div className="text-center pb-8">
           <p className="text-lg text-muted-foreground italic">
             "We didn't disrupt the industry. We just built what should have existed all along."
           </p>
           <p className="text-sm text-muted-foreground mt-2">
             - The Streamyyy Team
           </p>
-        </motion.div>
+        </div>
       </div>
     </div>
   )

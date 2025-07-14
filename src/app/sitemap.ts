@@ -64,6 +64,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // SEO landing pages
   const seoPages = [
     {
+      url: `${baseUrl}/how-to-watch-multiple-streams`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.98,
+    },
+    {
+      url: `${baseUrl}/twitch-ad-blocker`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.97,
+    },
+    {
+      url: `${baseUrl}/multitwitch-alternative`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.96,
+    },
+    {
       url: `${baseUrl}/watch-twitch-no-ads`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
@@ -98,6 +116,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/mobile-multi-stream-viewer`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
     }
   ]
 

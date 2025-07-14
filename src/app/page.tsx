@@ -290,13 +290,69 @@ export default function HomePage() {
           
           {/* Loading indicator - only show on client side after hydration */}
           {isClientLoaded && (
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center js-only">
               <div className="text-center space-y-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
                 <p className="text-muted-foreground">Loading application...</p>
               </div>
             </div>
           )}
+
+          {/* NoScript fallback content for search engines */}
+          <noscript>
+            <div className="noscript-fallback" style={{display: 'none'}}>
+              <div className="container mx-auto px-4 py-8">
+                <div className="text-center mb-12">
+                  <h2 className="text-2xl font-bold mb-4">How to Use Streamyyy</h2>
+                  <p className="text-muted-foreground mb-8">Follow these simple steps to watch multiple streams:</p>
+                </div>
+                
+                <div className="grid md:grid-cols-3 gap-6 mb-12">
+                  <div className="text-center p-6 border rounded-lg">
+                    <h3 className="text-lg font-semibold mb-2">1. Add Streams</h3>
+                    <p className="text-muted-foreground">Enter Twitch usernames or YouTube URLs to add streams to your viewer</p>
+                  </div>
+                  <div className="text-center p-6 border rounded-lg">
+                    <h3 className="text-lg font-semibold mb-2">2. Choose Layout</h3>
+                    <p className="text-muted-foreground">Select from 2x2, 3x3, or custom layouts to arrange your streams</p>
+                  </div>
+                  <div className="text-center p-6 border rounded-lg">
+                    <h3 className="text-lg font-semibold mb-2">3. Watch & Chat</h3>
+                    <p className="text-muted-foreground">Enjoy multiple streams with unified chat and synchronized controls</p>
+                  </div>
+                </div>
+
+                <div className="text-center mb-8">
+                  <h2 className="text-2xl font-bold mb-4">Key Features</h2>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="p-4 border rounded">
+                      <h4 className="font-semibold">16+ Streams</h4>
+                      <p className="text-sm text-muted-foreground">Watch up to 16 streams simultaneously</p>
+                    </div>
+                    <div className="p-4 border rounded">
+                      <h4 className="font-semibold">No Ads</h4>
+                      <p className="text-sm text-muted-foreground">Ad-free viewing experience</p>
+                    </div>
+                    <div className="p-4 border rounded">
+                      <h4 className="font-semibold">Multi-Platform</h4>
+                      <p className="text-sm text-muted-foreground">Twitch, YouTube, Kick support</p>
+                    </div>
+                    <div className="p-4 border rounded">
+                      <h4 className="font-semibold">Mobile Ready</h4>
+                      <p className="text-sm text-muted-foreground">Perfect on any device</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <p className="text-lg mb-4">Enable JavaScript to access the full Streamyyy experience</p>
+                  <a href="/guide/watching-multiple-streams" className="text-purple-600 hover:text-purple-700 font-medium">
+                    View Complete Guide →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </noscript>
         </div>
       </div>
     )
