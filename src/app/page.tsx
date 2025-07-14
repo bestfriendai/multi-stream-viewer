@@ -64,6 +64,7 @@ export default function HomePage() {
   const [activeTab, setActiveTab] = useState('streams')
   const [showGestureHints, setShowGestureHints] = useState(false) // Always start with false to prevent tutorial blocking
   const [isMobile, setIsMobile] = useState(false)
+  const [isClientLoaded, setIsClientLoaded] = useState(false)
   const { addStream, setGridLayout, streams, gridLayout } = useStreamStore()
   const { trackChatToggle, trackFeatureUsage, trackStreamAdded } = useAnalytics()
 
@@ -75,6 +76,11 @@ export default function HomePage() {
 
   // Mobile gesture support
   const streamGestures = useStreamGestures()
+
+  // Client-side hydration effect
+  useEffect(() => {
+    setIsClientLoaded(true)
+  }, [])
 
   // Mobile detection (debounced to prevent excessive updates)
   useEffect(() => {
@@ -205,12 +211,92 @@ export default function HomePage() {
   }
 
   // Show loading state while authentication is being determined
+  // BUT provide SEO content immediately for search engines
   if (!isLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="text-muted-foreground">{t('common.loading')}</p>
+      <div className="min-h-screen bg-background">
+        {/* SEO Content - Always render for search engines */}
+        <SEOSchema faqs={faqItems} type="WebApplication" />
+        <SEOContent
+          keywords={[
+            "streamyyy",
+            "streamy",
+            "streamyy",
+            "streamy app",
+            "streamy viewer",
+            "watch multiple streams",
+            "multi stream viewer",
+            "twitch multistream",
+            "youtube multi stream",
+            "stream aggregator",
+            "esports viewing",
+            "gaming streams",
+            "live streaming platform",
+            "multitwitch alternative",
+            "stream viewer"
+          ]}
+          topics={[
+            "Streamyyy multi-stream viewing",
+            "Streamy platform for content creators",
+            "Esports tournament viewing",
+            "Gaming content creation",
+            "Live streaming entertainment",
+            "Multi-platform stream monitoring",
+            "Content creator collaboration"
+          ]}
+          features={[
+            "Streamyyy multi-stream grid layouts",
+            "Streamy real-time chat integration",
+            "Mobile responsive design",
+            "Keyboard shortcuts support",
+            "Stream synchronization",
+            "Picture-in-picture mode",
+            "Dark/light theme support",
+            "Accessibility features"
+          ]}
+          platforms={[
+            "Twitch",
+            "YouTube",
+            "Kick",
+            "Rumble"
+          ]}
+        />
+        
+        {/* SEO-friendly loading content */}
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              Streamyyy - Watch Multiple Streams Simultaneously
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              The best multi-stream viewer for Twitch, YouTube, and more. Watch multiple streams at once with advanced layouts and chat management.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <div className="text-center p-6 border rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">Multi-Platform Support</h3>
+              <p className="text-muted-foreground">Watch Twitch, YouTube, Kick, and Rumble streams together</p>
+            </div>
+            <div className="text-center p-6 border rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">16+ Streams</h3>
+              <p className="text-muted-foreground">Superior performance with up to 16 streams simultaneously</p>
+            </div>
+            <div className="text-center p-6 border rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">Mobile Optimized</h3>
+              <p className="text-muted-foreground">Perfect multi-stream experience on any device</p>
+            </div>
+          </div>
+          
+          {/* Loading indicator - only show on client side after hydration */}
+          {isClientLoaded && (
+            <div className="flex items-center justify-center">
+              <div className="text-center space-y-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                <p className="text-muted-foreground">Loading application...</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     )

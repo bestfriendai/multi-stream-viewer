@@ -64,13 +64,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // SEO landing pages
   const seoPages = [
     {
-      url: `${baseUrl}/multi-stream-viewer`,
+      url: `${baseUrl}/watch-twitch-no-ads`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/watch-multiple-twitch-streams`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/twitch-multistream`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/watch-multiple-twitch-streams`,
+      url: `${baseUrl}/multi-stream-viewer`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.9,

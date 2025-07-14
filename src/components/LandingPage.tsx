@@ -1323,6 +1323,107 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
           </div>
         </div>
       </section>
+
+      {/* SEO Internal Links Section */}
+      <section className="py-16 px-6 bg-muted/30">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+              Explore Streamyyy's Advanced Features
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Discover all the ways Streamyyy enhances your streaming experience
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <Card className="p-6 h-full hover:shadow-lg transition-shadow">
+                <Shield className="h-8 w-8 text-green-600 mb-3" />
+                <h3 className="font-semibold mb-2">Ad-Free Viewing</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Watch Twitch streams without any advertisements or interruptions
+                </p>
+                <a
+                  href="/watch-twitch-no-ads"
+                  className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+                >
+                  Learn More →
+                </a>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <Card className="p-6 h-full hover:shadow-lg transition-shadow">
+                <Monitor className="h-8 w-8 text-blue-600 mb-3" />
+                <h3 className="font-semibold mb-2">Multi-Stream Viewing</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Watch multiple Twitch streams simultaneously with advanced layouts
+                </p>
+                <a
+                  href="/watch-multiple-twitch-streams"
+                  className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+                >
+                  Learn More →
+                </a>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <Card className="p-6 h-full hover:shadow-lg transition-shadow">
+                <Zap className="h-8 w-8 text-purple-600 mb-3" />
+                <h3 className="font-semibold mb-2">Multistream Technology</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Advanced Twitch multistream viewer with superior performance
+                </p>
+                <a
+                  href="/twitch-multistream"
+                  className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+                >
+                  Learn More →
+                </a>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <Card className="p-6 h-full hover:shadow-lg transition-shadow">
+                <Users className="h-8 w-8 text-orange-600 mb-3" />
+                <h3 className="font-semibold mb-2">Complete Guide</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Learn how to master multi-stream viewing with our tutorials
+                </p>
+                <a
+                  href="/guide/watching-multiple-streams"
+                  className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+                >
+                  Learn More →
+                </a>
+              </Card>
+            </motion.div>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

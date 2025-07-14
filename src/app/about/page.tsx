@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useUser } from '@clerk/nextjs'
 import { useTranslation } from '@/contexts/LanguageContext'
@@ -24,14 +25,52 @@ import { Badge } from '@/components/ui/badge'
 export default function AboutPage() {
   const { isLoaded, isSignedIn } = useUser()
   const { t } = useTranslation()
+  const [isClientLoaded, setIsClientLoaded] = useState(false)
+
+  // Client-side hydration effect
+  useEffect(() => {
+    setIsClientLoaded(true)
+  }, [])
 
   // Show loading state while authentication is being determined
+  // BUT provide SEO content immediately for search engines
   if (!isLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="text-muted-foreground">{t('common.loading')}</p>
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              About Streamyyy
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              The most advanced multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously. Built for creators, viewers, and esports fans.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div className="text-center p-6 border rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">Multi-Platform</h3>
+              <p className="text-muted-foreground">Watch streams from Twitch, YouTube, Kick, and Rumble in one interface</p>
+            </div>
+            <div className="text-center p-6 border rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">High Performance</h3>
+              <p className="text-muted-foreground">Handle up to 16 streams with optimized performance and low latency</p>
+            </div>
+            <div className="text-center p-6 border rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">Mobile First</h3>
+              <p className="text-muted-foreground">Perfect experience on desktop, tablet, and mobile devices</p>
+            </div>
+          </div>
+          
+          {/* Loading indicator - only show on client side after hydration */}
+          {isClientLoaded && (
+            <div className="flex items-center justify-center mt-8">
+              <div className="text-center space-y-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                <p className="text-muted-foreground">Loading content...</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     )
