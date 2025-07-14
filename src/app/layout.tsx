@@ -48,8 +48,45 @@ export const viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "Streamyyy - Watch Multiple Streams at Once",
-  description: "Streamyyy is a free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously.",
+  metadataBase: new URL('https://streamyyy.com'),
+  title: "Streamyyy - Watch Multiple Twitch Streams Simultaneously | Best Multi Stream Viewer",
+  description: "Watch multiple Twitch streams at once with Streamyyy. Superior performance, easy setup, and advanced chat management. Free multi-stream viewer with sync controls.",
+  keywords: "watch multiple twitch streams, multi stream viewer, twitch multistream, multitwitch alternative, stream aggregator, esports viewing, gaming streams",
+  openGraph: {
+    title: "Streamyyy - Watch Multiple Twitch Streams Simultaneously",
+    description: "The best multi-stream viewer for Twitch. Watch multiple streams at once with advanced layouts and chat management.",
+    url: "https://streamyyy.com",
+    siteName: "Streamyyy",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Streamyyy Multi Stream Viewer"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Streamyyy - Watch Multiple Twitch Streams Simultaneously",
+    description: "The best multi-stream viewer for Twitch. Watch multiple streams at once with advanced layouts and chat management.",
+    images: ["/og-image.png"]
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: "https://streamyyy.com"
+  }
 };
 
 export default function RootLayout({
@@ -208,6 +245,116 @@ export default function RootLayout({
           id="json-ld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+
+        {/* Core Web Vitals Monitoring */}
+        <Script
+          id="core-web-vitals"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function sendToGA(name, value, id) {
+                  if (typeof gtag !== 'undefined') {
+                    gtag('event', name, {
+                      event_category: 'Web Vitals',
+                      value: Math.round(name === 'CLS' ? value * 1000 : value),
+                      event_label: id,
+                      non_interaction: true,
+                    });
+                  }
+                }
+
+                // Core Web Vitals monitoring
+                function getCLS(callback) {
+                  let clsValue = 0;
+                  let clsEntries = [];
+                  let sessionValue = 0;
+                  let sessionEntries = [];
+                  
+                  const entryHandler = (entry) => {
+                    if (!entry.hadRecentInput) {
+                      const firstSessionEntry = sessionEntries[0];
+                      const lastSessionEntry = sessionEntries[sessionEntries.length - 1];
+                      
+                      if (sessionValue && entry.startTime - lastSessionEntry.startTime < 1000 && entry.startTime - firstSessionEntry.startTime < 5000) {
+                        sessionValue += entry.value;
+                        sessionEntries.push(entry);
+                      } else {
+                        sessionValue = entry.value;
+                        sessionEntries = [entry];
+                      }
+                      
+                      if (sessionValue > clsValue) {
+                        clsValue = sessionValue;
+                        clsEntries = sessionEntries;
+                        callback({
+                          name: 'CLS',
+                          value: clsValue,
+                          id: entry.id,
+                          entries: clsEntries
+                        });
+                      }
+                    }
+                  };
+                  
+                  const observer = new PerformanceObserver((list) => {
+                    list.getEntries().forEach(entryHandler);
+                  });
+                  observer.observe({type: 'layout-shift', buffered: true});
+                }
+
+                function getFID(callback) {
+                  const observer = new PerformanceObserver((list) => {
+                    list.getEntries().forEach((entry) => {
+                      callback({
+                        name: 'FID',
+                        value: entry.processingStart - entry.startTime,
+                        id: entry.id || 'fid-' + Date.now()
+                      });
+                    });
+                  });
+                  observer.observe({type: 'first-input', buffered: true});
+                }
+
+                function getLCP(callback) {
+                  const observer = new PerformanceObserver((list) => {
+                    list.getEntries().forEach((entry) => {
+                      callback({
+                        name: 'LCP',
+                        value: entry.startTime,
+                        id: entry.id || 'lcp-' + Date.now()
+                      });
+                    });
+                  });
+                  observer.observe({type: 'largest-contentful-paint', buffered: true});
+                }
+
+                function getFCP(callback) {
+                  const observer = new PerformanceObserver((list) => {
+                    list.getEntries().forEach((entry) => {
+                      if (entry.name === 'first-contentful-paint') {
+                        callback({
+                          name: 'FCP',
+                          value: entry.startTime,
+                          id: 'fcp-' + Date.now()
+                        });
+                      }
+                    });
+                  });
+                  observer.observe({type: 'paint', buffered: true});
+                }
+
+                // Initialize monitoring when page loads
+                window.addEventListener('load', function() {
+                  getCLS(sendToGA);
+                  getFID(sendToGA);
+                  getLCP(sendToGA);
+                  getFCP(sendToGA);
+                });
+              })();
+            `
+          }}
         />
 
         {/* Safari Mobile Fixes */}
