@@ -62,8 +62,8 @@
     "clearAll": "Clear All"
   },
   "landing": {
-    "heroTitle": "Watch Multiple Live Streams At Once",
-    "heroSubtitle": "The ultimate multi-stream viewer for Twitch, YouTube, and more. Watch up to 16 streams simultaneously with customizable layouts.",
+    "heroTitle": "Free Multi-Stream Viewer - Watch Multiple Streams Simultaneously",
+    "heroSubtitle": "The best multi-stream viewer for watching multiple Twitch streams, YouTube streams, and Kick streams at once. Watch up to 16 streams simultaneously with no download required.",
     "startWatchingNow": "Start Watching Now",
     "signUpFree": "Sign Up Free",
     "noCreditCard": "No credit card required",
@@ -161,11 +161,11 @@
     "features": {
       "multiPlatform": {
         "title": "Multi-Platform Support",
-        "description": "Multi-platform support for Twitch, YouTube, Kick, and more"
+        "description": "Watch multiple Twitch streams, YouTube streams, and Kick streams together in one view"
       },
       "customLayouts": {
-        "title": "Custom Layouts",
-        "description": "Customizable grid layouts and picture-in-picture mode"
+        "title": "Multiple Stream Layouts",
+        "description": "Advanced multi-stream viewer with 2x2, 3x3, 4x4 grid layouts and picture-in-picture mode"
       },
       "realTime": {
         "title": "Real-Time Sync",
@@ -189,7 +189,7 @@
       "subtitle": "Join thousands of users who love Streamyyy"
     },
     "getStartedInSeconds": "Get Started in Seconds",
-    "getStartedFree": "Get Started Free",
+    "getStartedFree": "Start Free Multi-Stream Viewing",
     "quickStart": "Quick Start"
   },
   "layouts": {
@@ -831,20 +831,28 @@
   },
   "faq": {
     "howManyStreams": {
-      "question": "How many streams can I watch at once?",
-      "answer": "You can watch up to 16 streams simultaneously with Streamyyy. The layout automatically adjusts based on the number of streams you add."
+      "question": "How many streams can I watch at once with this multi-stream viewer?",
+      "answer": "You can watch up to 16 streams simultaneously with Streamyyy's free multi-stream viewer. The layout automatically adjusts based on the number of streams you add."
     },
     "isFree": {
-      "question": "Is Streamyyy free to use?",
-      "answer": "Yes! Streamyyy is completely free to use. No registration, subscription, or hidden fees required."
+      "question": "Is this multi-stream viewer free to use?",
+      "answer": "Yes! Streamyyy is a completely free multi-stream viewer. No download required, no registration, subscription, or hidden fees. Start watching multiple streams instantly."
     },
     "mixPlatforms": {
-      "question": "Can I watch Twitch and YouTube streams together?",
-      "answer": "Absolutely! You can mix streams from Twitch, YouTube, Rumble and other supported platforms in the same viewer."
+      "question": "Can I watch multiple Twitch and YouTube streams together?",
+      "answer": "Absolutely! Our multi-stream viewer lets you watch multiple Twitch streams, YouTube streams, and Kick streams together in one view. Perfect for esports tournaments and gaming content."
     },
     "mobileSupport": {
-      "question": "Does it work on mobile devices?",
-      "answer": "Yes, Streamyyy is fully responsive and optimized for phones, tablets, and desktop computers."
+      "question": "Does the multi-stream viewer work on mobile devices?",
+      "answer": "Yes, Streamyyy's multi-stream viewer is fully responsive and optimized for mobile phones, tablets, and desktop computers. Watch multiple streams anywhere."
+    },
+    "noDownload": {
+      "question": "Do I need to download anything to use this multi-stream viewer?",
+      "answer": "No download required! Streamyyy is a browser-based multi-stream viewer that works instantly. Just visit our website and start watching multiple streams immediately."
+    },
+    "esportsViewing": {
+      "question": "Is this good for watching esports tournaments?",
+      "answer": "Perfect for esports! Our multi-stream viewer is ideal for watching multiple streamers during tournaments, comparing gameplay, and following team perspectives simultaneously."
     }
   }
 }

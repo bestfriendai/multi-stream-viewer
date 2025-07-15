@@ -104,7 +104,19 @@ export function useLanguage() {
   // Translation function that looks up translations from loaded files
   const t = (key: string, params?: Record<string, any> | string): string => {
     if (!translations || Object.keys(translations).length === 0) {
-      return typeof params === 'string' ? params : key
+      // Provide better fallbacks for common keys during loading
+      const fallbacks: Record<string, string> = {
+        'common.loading': 'Loading...',
+        'common.error': 'Error',
+        'common.success': 'Success',
+        'header.addStream': 'Add Stream',
+        'tabs.streams': 'Streams',
+        'tabs.discover': 'Discover',
+        'tabs.following': 'Following',
+        'tabs.features': 'Features',
+        'tabs.new': 'NEW'
+      }
+      return fallbacks[key] || (typeof params === 'string' ? params : key)
     }
 
     // Navigate through nested keys (e.g., "header.addStream")

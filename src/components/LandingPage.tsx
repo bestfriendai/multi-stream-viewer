@@ -59,15 +59,15 @@ interface LandingPageProps {
 const features = [
   {
     icon: Monitor,
-    title: "Multiple Streams",
-    description: "Watch up to 16 streams simultaneously",
+    title: "Multi-Stream Viewer",
+    description: "Watch multiple streams simultaneously - up to 16 streams at once",
     gradient: "from-blue-500 to-cyan-500",
     stats: "16 Streams"
   },
   {
     icon: Globe,
-    title: "All Platforms",
-    description: "Twitch, YouTube, Kick, and more",
+    title: "Multi-Platform Support",
+    description: "Watch multiple Twitch streams, YouTube streams, and Kick streams together",
     gradient: "from-green-500 to-teal-500",
     stats: "5+ Platforms"
   },

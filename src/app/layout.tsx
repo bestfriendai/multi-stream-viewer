@@ -49,12 +49,12 @@ export const viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://streamyyy.com'),
-  title: "Watch Multiple Twitch Streams Without Ads | Free Multi Stream Viewer - Streamyyy",
-  description: "Watch multiple Twitch streams simultaneously with built-in ad blocking. Best multitwitch alternative with 16+ streams, mobile support, and no interruptions. 100% free.",
-  keywords: "watch multiple twitch streams, multi stream viewer, twitch multistream, twitch ad blocker, multitwitch alternative, watch twitch no ads, twitch ad free, block twitch ads",
+  title: "Streamyyy - Free Multi-Stream Viewer | Watch Multiple Twitch & YouTube Streams",
+  description: "Watch multiple Twitch, YouTube, and Kick streams simultaneously with Streamyyy's free multi-stream viewer. No download required. Perfect for esports and gaming. 16+ streams supported.",
+  keywords: "multi stream viewer, watch multiple streams, multistream viewer, twitch multi viewer, youtube multi stream, watch multiple twitch streams simultaneously, free multi stream viewer, multiple stream viewer no download, esports multistream viewer, streamyyy, multitwitch alternative, stream viewer",
   openGraph: {
-    title: "Watch Multiple Twitch Streams Without Ads - Free Multi Stream Viewer",
-    description: "Best multitwitch alternative with built-in ad blocking, 16+ streams, and mobile support. Watch multiple Twitch streams simultaneously - 100% free.",
+    title: "Streamyyy - Free Multi-Stream Viewer | Watch Multiple Streams Simultaneously",
+    description: "Watch multiple Twitch, YouTube, and Kick streams at once with Streamyyy. Free multi-stream viewer supporting 16+ streams. Perfect for esports and gaming.",
     url: "https://streamyyy.com",
     siteName: "Streamyyy",
     type: "website",
@@ -69,8 +69,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Watch Multiple Twitch Streams Without Ads - Streamyyy",
-    description: "Best multitwitch alternative with built-in ad blocking. Watch 16+ streams simultaneously on any device. 100% free forever.",
+    title: "Streamyyy - Free Multi-Stream Viewer | Watch Multiple Streams",
+    description: "Watch multiple Twitch, YouTube & Kick streams simultaneously. Free multi-stream viewer supporting 16+ streams. Perfect for esports and gaming.",
     images: ["/og-image.png"]
   },
   robots: {
@@ -97,8 +97,8 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Streamyyy - Watch Multiple Streams at Once",
-    "description": "Streamyyy is a free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and more simultaneously. Never miss a moment from your favorite creators. Watch multiple live streams at once and stay connected to all the action across platforms.",
+    "name": "Streamyyy - Free Multi-Stream Viewer",
+    "description": "Streamyyy is the best free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and Kick streams simultaneously. Watch up to 16 streams at once with our advanced multistream viewer. Perfect for esports viewing and gaming content. No download required - access instantly in your browser.",
     "url": "https://streamyyy.com",
     "downloadUrl": "https://streamyyy.com",
     "applicationCategory": "MultimediaApplication",
@@ -126,22 +126,22 @@ export default function RootLayout({
       "worstRating": "1"
     },
     "featureList": [
-      "Watch up to 16 streams at once with Streamyyy",
-      "Streamy interface for multi-stream viewing",
-      "Watch multiple Twitch streams simultaneously",
-      "Watch multiple YouTube streams at once",
-      "Mix Twitch, YouTube, Kick streams in one view",
-      "Custom grid layouts (2x2, 3x3, 4x4, mosaic)",
-      "Unified chat panel for all streams",
-      "Mobile optimized multi-stream viewer",
-      "100% free - no premium features",
-      "No registration required - instant access",
-      "Keyboard shortcuts for power users",
-      "Picture-in-picture mode",
-      "Stream synchronization controls",
+      "Free multi-stream viewer - watch multiple streams simultaneously",
+      "Watch multiple Twitch streams at once - no download required",
+      "YouTube multi-stream support - watch multiple YouTube streams",
+      "Kick streams integration - mix platforms in one view",
+      "Watch up to 16 streams simultaneously with advanced layouts",
+      "Multistream viewer with custom grid layouts (2x2, 3x3, 4x4, mosaic)",
+      "Multiple stream viewer optimized for esports tournaments",
+      "Twitch multi viewer with unified chat integration",
+      "Mobile multi-stream viewer - perfect on any device",
+      "100% free multistream viewer - no premium features or ads",
+      "No download multi-stream viewer - instant browser access",
+      "Multitwitch alternative with superior performance",
+      "Stream synchronization and quality controls",
       "Save and share multistream layouts",
-      "Auto-quality adjustment for bandwidth",
-      "Dark and light theme support"
+      "Keyboard shortcuts for power users",
+      "Picture-in-picture mode for focused viewing"
     ],
     "sameAs": [
       "https://twitter.com/streamyyy",
