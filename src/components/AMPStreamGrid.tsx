@@ -119,12 +119,9 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
                 animate="visible"
                 exit="exit"
                 className={cn(
-                  'relative bg-black rounded-xl overflow-hidden shadow-lg',
-                  'border border-border/20',
+                  'relative flex flex-col',
                   'will-change-transform',
-                  'isolate',
-                  isLive && 'ring-2 ring-red-500 ring-opacity-50 live-stream',
-                  !isLive && 'opacity-90'
+                  'isolate'
                 )}
                 style={{
                   contain: 'layout style paint',
@@ -134,11 +131,9 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
                 role="gridcell"
                 aria-label={`Stream ${index + 1}: ${stream.channelName || 'Unknown stream'}${isLive ? ' - LIVE' : ''}`}
               >
-                <AMPStreamEmbed stream={stream} />
-                
-                {/* Live indicator overlay */}
+                {/* Live indicator above stream box */}
                 {isLive && (
-                  <div className="absolute bottom-3 left-3 z-10">
+                  <div className="mb-2 flex justify-start">
                     <div className="flex items-center gap-2 px-3 py-1.5 bg-red-600 rounded-full shadow-lg backdrop-blur-sm">
                       <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />
                       <span className="text-white text-sm font-bold">LIVE</span>
@@ -151,14 +146,23 @@ const AMPStreamGrid: React.FC<AMPStreamGridProps> = React.memo(({ streams, liveS
                   </div>
                 )}
                 
-                {/* Offline overlay */}
-                {!isLive && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <div className="text-white/70 text-sm font-medium px-3 py-1.5 bg-black/50 rounded-lg backdrop-blur-sm">
-                      OFFLINE
+                <div className={cn(
+                  'relative bg-black rounded-xl overflow-hidden shadow-lg flex-1',
+                  'border border-border/20',
+                  isLive && 'ring-2 ring-red-500 ring-opacity-50 live-stream',
+                  !isLive && 'opacity-90'
+                )}>
+                  <AMPStreamEmbed stream={stream} />
+                  
+                  {/* Offline overlay */}
+                  {!isLive && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                      <div className="text-white/70 text-sm font-medium px-3 py-1.5 bg-black/50 rounded-lg backdrop-blur-sm">
+                        OFFLINE
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </motion.div>
             )
           })}

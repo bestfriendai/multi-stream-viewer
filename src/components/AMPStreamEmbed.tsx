@@ -105,13 +105,13 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
         <div ref={embedRef} className="absolute inset-0 w-full h-full" />
         
         {/* Mute/Unmute Control Overlay - Always visible for AMP */}
-        <div className="absolute top-2 right-2 opacity-80 hover:opacity-100 transition-opacity duration-200 z-20">
+        <div className="absolute top-2 right-2 opacity-100 transition-opacity duration-200 z-30">
           <button
             onClick={handleMuteToggle}
-            className="p-2 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all duration-150 border border-white/20 shadow-lg"
+            className="p-3 rounded-full bg-black/90 backdrop-blur-sm hover:bg-black text-white transition-all duration-150 border border-white/30 shadow-xl"
             title={streamMuted ? 'Unmute' : 'Mute'}
           >
-            {streamMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+            {streamMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
           </button>
         </div>
       </div>
@@ -139,13 +139,13 @@ const AMPStreamEmbed: React.FC<AMPStreamEmbedProps> = ({ stream }) => {
         </div>
         
         {/* Mute/Unmute Control Overlay - Always visible for AMP */}
-        <div className="absolute top-2 right-2 opacity-80 hover:opacity-100 transition-opacity duration-200 z-20">
+        <div className="absolute top-2 right-2 opacity-100 transition-opacity duration-200 z-30">
           <button
             onClick={handleMuteToggle}
-            className="p-2 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/80 text-white transition-all duration-150 border border-white/20 shadow-lg"
+            className="p-3 rounded-full bg-black/90 backdrop-blur-sm hover:bg-black text-white transition-all duration-150 border border-white/30 shadow-xl"
             title={streamMuted ? 'Unmute' : 'Mute'}
           >
-            {streamMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+            {streamMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
           </button>
         </div>
       </div>
