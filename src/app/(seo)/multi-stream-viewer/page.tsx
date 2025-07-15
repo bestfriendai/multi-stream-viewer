@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import SEOSchema from '@/components/SEOSchema'
+import Breadcrumb from '@/components/Breadcrumb'
+import RelatedArticles, { multiStreamArticles, tutorialArticles } from '@/components/RelatedArticles'
 import { 
   Monitor, Users, Zap, Globe, MessageSquare, Layout, 
   CheckCircle2, Star, TrendingUp, Shield, Clock, Smartphone 
@@ -53,9 +55,18 @@ export default function MultiStreamViewer() {
     }
   ]
 
+  const breadcrumbItems = [
+    { label: 'Multi-Stream Viewer' }
+  ]
+
   return (
     <article className="min-h-screen bg-background">
       <SEOSchema faqs={faqs} type="Article" />
+      
+      {/* Breadcrumb Navigation */}
+      <div className="container mx-auto px-6 pt-6">
+        <Breadcrumb items={breadcrumbItems} />
+      </div>
       
       {/* Hero Section with E-E-A-T signals */}
       <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 to-background py-24 px-6">
@@ -489,6 +500,16 @@ export default function MultiStreamViewer() {
               4.8/5 User Rating
             </span>
           </div>
+        </div>
+      </section>
+
+      {/* Related Articles Section */}
+      <section className="py-16 px-6 bg-muted/30">
+        <div className="max-w-6xl mx-auto">
+          <RelatedArticles 
+            title="Continue Learning About Multi-Stream Viewing"
+            articles={[...multiStreamArticles, ...tutorialArticles.slice(0, 2)]}
+          />
         </div>
       </section>
     </article>

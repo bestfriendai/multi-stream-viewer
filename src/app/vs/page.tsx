@@ -38,14 +38,14 @@ const competitors = [
     users: '200K+'
   },
   {
-    name: 'Other Alternatives',
-    description: 'Comparison with other multi-stream solutions',
-    href: '/vs/alternatives',
-    features: ['Various approaches', 'Different platforms', 'Mixed results'],
-    pros: ['Variety of options'],
-    cons: ['Inconsistent quality', 'Limited features'],
+    name: 'Multistre.am',
+    description: 'Basic multi-stream viewer with reliability issues',
+    href: '/vs/multistre-am',
+    features: ['Simple grid', 'Twitch only', 'Basic features'],
+    pros: ['Minimalist design'],
+    cons: ['Frequent downtime', 'No mobile support', 'Limited features'],
     rating: 2.8,
-    users: 'Various'
+    users: '150K+'
   }
 ]
 
@@ -83,14 +83,15 @@ const streamyyyFeatures = [
 ]
 
 const comparisonTable = [
-  { feature: 'Multiple Platforms', streamyyy: true, multitwitch: false, twitchtheater: false, others: 'partial' },
-  { feature: 'Mobile Support', streamyyy: true, multitwitch: false, twitchtheater: 'limited', others: false },
-  { feature: 'Custom Layouts', streamyyy: true, multitwitch: 'limited', twitchtheater: true, others: 'limited' },
-  { feature: 'Unified Chat', streamyyy: true, multitwitch: false, twitchtheater: 'basic', others: false },
-  { feature: 'Performance (16+ streams)', streamyyy: true, multitwitch: false, twitchtheater: false, others: false },
-  { feature: 'Keyboard Shortcuts', streamyyy: true, multitwitch: 'limited', twitchtheater: false, others: 'limited' },
-  { feature: 'Free to Use', streamyyy: true, multitwitch: true, twitchtheater: true, others: 'varies' },
-  { feature: 'Regular Updates', streamyyy: true, multitwitch: 'slow', twitchtheater: 'rare', others: 'varies' }
+  { feature: 'Multiple Platforms', streamyyy: true, multitwitch: false, twitchtheater: 'limited', multistre: false },
+  { feature: 'Mobile Support', streamyyy: true, multitwitch: false, twitchtheater: 'limited', multistre: false },
+  { feature: 'Custom Layouts', streamyyy: true, multitwitch: 'limited', twitchtheater: true, multistre: 'basic' },
+  { feature: 'Unified Chat', streamyyy: true, multitwitch: false, twitchtheater: 'basic', multistre: false },
+  { feature: 'Performance (16+ streams)', streamyyy: true, multitwitch: false, twitchtheater: false, multistre: false },
+  { feature: 'Reliability/Uptime', streamyyy: true, multitwitch: true, twitchtheater: 'limited', multistre: false },
+  { feature: 'Keyboard Shortcuts', streamyyy: true, multitwitch: 'limited', twitchtheater: false, multistre: false },
+  { feature: 'Free to Use', streamyyy: true, multitwitch: true, twitchtheater: true, multistre: true },
+  { feature: 'Regular Updates', streamyyy: true, multitwitch: 'slow', twitchtheater: 'rare', multistre: 'rare' }
 ]
 
 function FeatureIcon({ value }: { value: boolean | string }) {
@@ -219,7 +220,7 @@ export default function VSPage() {
                 <div className="text-center">Streamyyy</div>
                 <div className="text-center">MultiTwitch</div>
                 <div className="text-center">TwitchTheater</div>
-                <div className="text-center">Others</div>
+                <div className="text-center">Multistre.am</div>
               </div>
               {comparisonTable.map((row, index) => (
                 <div key={index} className="grid grid-cols-5 gap-4 p-4 border-b last:border-b-0 items-center">
@@ -234,7 +235,7 @@ export default function VSPage() {
                     <FeatureIcon value={row.twitchtheater} />
                   </div>
                   <div className="flex justify-center">
-                    <FeatureIcon value={row.others} />
+                    <FeatureIcon value={row.multistre} />
                   </div>
                 </div>
               ))}

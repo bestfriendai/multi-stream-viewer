@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.png",
+        url: "/streamyyy-logo-og.png",
         width: 1200,
         height: 630,
         alt: "Streamyyy Multi Stream Viewer - Watch Multiple Twitch Streams"
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Streamyyy - Free Multi-Stream Viewer | Watch Multiple Streams",
     description: "Watch multiple Twitch, YouTube & Kick streams simultaneously. Free multi-stream viewer supporting 16+ streams. Perfect for esports and gaming.",
-    images: ["/og-image.png"]
+    images: ["/streamyyy-logo-og.png"]
   },
   robots: {
     index: true,
@@ -106,7 +106,7 @@ export default function RootLayout({
     "softwareVersion": "2.0",
     "datePublished": "2025-01-01",
     "dateModified": "2025-01-01T00:00:00Z",
-    "screenshot": "https://streamyyy.com/og-image.png",
+    "screenshot": "https://streamyyy.com/streamyyy-screenshot.png",
     "author": {
       "@type": "Organization",
       "name": "Streamyyy Team",
@@ -174,9 +174,10 @@ export default function RootLayout({
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="apple-touch-fullscreen" content="yes" />
         <meta name="apple-mobile-web-app-orientations" content="portrait-any landscape-any" />
-        <link rel="apple-touch-icon" href="/favicon.png" />
-        <link rel="icon" type="image/png" href="/favicon.png" />
-        <link rel="shortcut icon" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/streamyyy-logo-192.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/streamyyy-logo-32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/streamyyy-logo-16.png" />
+        <link rel="shortcut icon" href="/streamyyy-favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         
         {/* Performance and mobile optimizations */}

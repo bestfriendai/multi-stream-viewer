@@ -25,14 +25,18 @@ export async function GET(request: NextRequest) {
                request.headers.get('x-real-ip') ||
                '1.1.1.1' // Fallback IP
 
-    // Using ip-api.com as a free fallback (consider using a paid service in production)
-    const geoResponse = await fetch(`http://ip-api.com/json/${ip}?fields=countryCode`)
+    // Using ipapi.co as a free fallback (HTTPS support, 1000 requests/day)
+    const geoResponse = await fetch(`https://ipapi.co/${ip}/country_code/`, {
+      headers: {
+        'User-Agent': 'Streamyyy/1.0'
+      }
+    })
     
     if (geoResponse.ok) {
-      const data = await geoResponse.json()
+      const countryCode = await geoResponse.text()
       return NextResponse.json({ 
-        countryCode: data.countryCode || 'US',
-        source: 'ip-api' 
+        countryCode: countryCode.trim().toUpperCase() || 'US',
+        source: 'ipapi' 
       })
     }
 

@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { CheckCircle, X, Star, ArrowLeft, Users, Clock, Zap, Smartphone, Globe } from 'lucide-react'
+import Breadcrumb from '@/components/Breadcrumb'
+import RelatedArticles, { competitorArticles } from '@/components/RelatedArticles'
 
 export const metadata: Metadata = {
   title: 'Streamyyy vs MultiTwitch: Complete Feature Comparison | Best Multi-Stream Viewer',
@@ -140,9 +142,19 @@ const features = [
 ]
 
 export default function StreamyyyVsMultiTwitchPage() {
+  const breadcrumbItems = [
+    { label: 'Comparisons', href: '/vs' },
+    { label: 'Streamyyy vs MultiTwitch' }
+  ]
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
+        {/* Breadcrumb Navigation */}
+        <div className="mb-6">
+          <Breadcrumb items={breadcrumbItems} />
+        </div>
+        
         {/* Back Navigation */}
         <div className="mb-6">
           <Button asChild variant="ghost" className="mb-4">
@@ -352,6 +364,14 @@ export default function StreamyyyVsMultiTwitchPage() {
           <p className="text-sm text-muted-foreground mt-4">
             No registration required • Free forever • Migration takes under 5 minutes
           </p>
+        </div>
+
+        {/* Related Comparisons */}
+        <div className="mt-16">
+          <RelatedArticles 
+            title="More Streamyyy Comparisons"
+            articles={competitorArticles}
+          />
         </div>
       </div>
     </div>

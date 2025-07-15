@@ -7,12 +7,28 @@ interface FAQItem {
   answer: string
 }
 
+interface HowToStep {
+  name: string
+  text: string
+  url?: string
+  image?: string
+}
+
 interface SEOSchemaProps {
   faqs?: FAQItem[]
   type?: 'WebApplication' | 'Article' | 'HowTo'
+  howToSteps?: HowToStep[]
+  title?: string
+  description?: string
 }
 
-export default function SEOSchema({ faqs, type = 'WebApplication' }: SEOSchemaProps) {
+export default function SEOSchema({ 
+  faqs, 
+  type = 'WebApplication', 
+  howToSteps,
+  title,
+  description 
+}: SEOSchemaProps) {
   // BreadcrumbList Schema
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -67,6 +83,28 @@ export default function SEOSchema({ faqs, type = 'WebApplication' }: SEOSchemaPr
     }
   }
 
+  // HowTo Schema for step-by-step guides
+  const howToSchema = howToSteps ? {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": title || "How to Watch Multiple Streams",
+    "description": description || "Step-by-step guide to watching multiple streams simultaneously",
+    "totalTime": "PT5M",
+    "estimatedCost": {
+      "@type": "MonetaryAmount",
+      "currency": "USD",
+      "value": "0"
+    },
+    "step": howToSteps.map((step, index) => ({
+      "@type": "HowToStep",
+      "position": index + 1,
+      "name": step.name,
+      "text": step.text,
+      "url": step.url,
+      "image": step.image
+    }))
+  } : null
+
   // VideoObject Schema for tutorials
   const videoSchema = {
     "@context": "https://schema.org",
@@ -99,6 +137,14 @@ export default function SEOSchema({ faqs, type = 'WebApplication' }: SEOSchemaPr
           id="faq-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+
+      {howToSchema && (
+        <Script
+          id="howto-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
         />
       )}
 

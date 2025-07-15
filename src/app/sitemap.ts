@@ -70,28 +70,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.98,
     },
     {
-      url: `${baseUrl}/twitch-ad-blocker`,
+      url: `${baseUrl}/how-to-watch-multiple-twitch-streams-mobile`,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: 'weekly' as const,
       priority: 0.97,
     },
     {
-      url: `${baseUrl}/multitwitch-alternative`,
+      url: `${baseUrl}/twitch-ad-blocker`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.96,
     },
     {
-      url: `${baseUrl}/watch-twitch-no-ads`,
+      url: `${baseUrl}/multitwitch-alternative`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.95,
     },
     {
+      url: `${baseUrl}/watch-twitch-no-ads`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.94,
+    },
+    {
       url: `${baseUrl}/watch-multiple-twitch-streams`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
-      priority: 0.95,
+      priority: 0.93,
     },
     {
       url: `${baseUrl}/twitch-multistream`,
@@ -153,31 +159,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   ]
 
-  // Comparison pages (to be created)
+  // Comparison pages
   const comparisonPages = [
     {
       url: `${baseUrl}/vs`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
-      priority: 0.7,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/vs/multitwitch`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
-      priority: 0.8,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/vs/twitchtheater`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
-      priority: 0.7,
+      priority: 0.8,
     },
     {
-      url: `${baseUrl}/vs/alternatives`,
+      url: `${baseUrl}/vs/multistre-am`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
-      priority: 0.7,
+      priority: 0.8,
     }
   ]
 
