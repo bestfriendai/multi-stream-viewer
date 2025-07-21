@@ -4,12 +4,15 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import SEOSchema from '@/components/SEOSchema'
+import EnhancedSEOSchema from '@/components/EnhancedSEOSchema'
+import CoreWebVitalsMonitor from '@/components/CoreWebVitalsMonitor'
+import PerformanceOptimizer from '@/components/PerformanceOptimizer'
+import { generateLandingPageMetadata } from '@/components/SEOMetadata'
 import Breadcrumb from '@/components/Breadcrumb'
 import RelatedArticles, { multiStreamArticles, tutorialArticles } from '@/components/RelatedArticles'
-import { 
-  Monitor, Users, Zap, Globe, MessageSquare, Layout, 
-  CheckCircle2, Star, TrendingUp, Shield, Clock, Smartphone 
+import {
+  Monitor, Users, Zap, Globe, MessageSquare, Layout,
+  CheckCircle2, Star, TrendingUp, Shield, Clock, Smartphone, PlayCircle, Award
 } from 'lucide-react'
 
 export const viewport: Viewport = {
@@ -18,40 +21,43 @@ export const viewport: Viewport = {
   themeColor: [{ media: '(prefers-color-scheme: dark)', color: '#0a0a0a' }],
 }
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generateLandingPageMetadata({
   title: 'Multi-Stream Viewer - Watch Multiple Live Streams Simultaneously | Streamyyy',
   description: 'The best free multi-stream viewer for watching multiple Twitch, YouTube, and live streams at once. Perfect for esports, gaming events, and content creators. Updated for 2025.',
-  alternates: {
-    canonical: 'https://streamyyy.com/multi-stream-viewer',
-  },
-  other: {
-    'article:published_time': new Date().toISOString(),
-    'article:modified_time': new Date().toISOString(),
-    'article:author': 'Streamyyy Team',
-  }
-}
+  canonical: 'https://streamyyy.com/multi-stream-viewer',
+  image: '/og-multi-stream-viewer.jpg',
+  imageAlt: 'Streamyyy Multi-Stream Viewer - Watch Multiple Streams Simultaneously',
+  publishedTime: new Date().toISOString(),
+  modifiedTime: new Date().toISOString(),
+  author: 'Streamyyy Team',
+  tags: ['multi-stream viewer', 'watch multiple streams', 'twitch multi stream', 'youtube multi stream', 'esports viewing', 'streaming tools']
+})
 
 export default function MultiStreamViewer() {
   const faqs = [
     {
-      question: "What is a multi-stream viewer?",
-      answer: "A multi-stream viewer is a tool that allows you to watch multiple live streams simultaneously in one window. Streamyyy lets you watch up to 16 streams from platforms like Twitch, YouTube, and Rumble at the same time."
+      question: "What is a multi-stream viewer and how does it work?",
+      answer: "A multi-stream viewer is a powerful tool that allows you to watch multiple live streams simultaneously in one window. Streamyyy's free multi-stream viewer lets you watch up to 16 streams from platforms like Twitch, YouTube, and Rumble at the same time with customizable layouts and unified chat management."
     },
     {
-      question: "How does Streamyyy's multi-stream viewer work?",
-      answer: "Simply add stream URLs or channel names, choose your preferred layout (2x2, 3x3, 4x4, or custom), and start watching. Each stream can be controlled independently with audio, quality, and chat options."
+      question: "How do I watch multiple Twitch streams simultaneously?",
+      answer: "Simply enter Twitch usernames or stream URLs into Streamyyy's multi-stream viewer, choose your preferred layout (2x2, 3x3, 4x4, or custom), and start watching. Each stream can be controlled independently with audio, quality, and chat options. Perfect for esports tournaments and gaming events."
     },
     {
-      question: "Is the multi-stream viewer free?",
-      answer: "Yes, Streamyyy is 100% free to use with no limits. No sign-up required, no premium features, just add streams and start watching multiple streams instantly."
+      question: "Is Streamyyy's multi-stream viewer completely free?",
+      answer: "Yes, Streamyyy is 100% free to use with no limits, no registration required, and no premium features. Unlike other multi-stream viewers, we offer unlimited access to watch multiple streams simultaneously without any cost or subscription fees."
     },
     {
-      question: "Which platforms are supported?",
-      answer: "Streamyyy supports Twitch, YouTube Live, Rumble, and more platforms. You can mix streams from different platforms in the same viewing session."
+      question: "Which streaming platforms are supported for multi-viewing?",
+      answer: "Streamyyy supports all major streaming platforms including Twitch, YouTube Live, Rumble, and more. You can mix and match streams from different platforms in the same viewing session, making it the most versatile cross-platform multi-stream viewer available."
     },
     {
-      question: "Can I use it on mobile?",
-      answer: "Yes! Streamyyy is fully responsive and works perfectly on smartphones, tablets, and desktop computers with optimized layouts for each device type."
+      question: "Can I use the multi-stream viewer on mobile devices?",
+      answer: "Absolutely! Streamyyy is a fully responsive mobile multi-stream viewer that works perfectly on smartphones, tablets, and desktop computers. Our mobile-optimized interface includes touch gestures, swipe controls, and adaptive layouts for the best mobile multi-streaming experience."
+    },
+    {
+      question: "How many streams can I watch at once with Streamyyy?",
+      answer: "You can watch up to 16 streams simultaneously with Streamyyy's advanced multi-stream viewer. Choose from various layout options including 2x2 (4 streams), 3x3 (9 streams), 4x4 (16 streams), or create custom arrangements to suit your viewing preferences."
     }
   ]
 
@@ -61,7 +67,19 @@ export default function MultiStreamViewer() {
 
   return (
     <article className="min-h-screen bg-background">
-      <SEOSchema faqs={faqs} type="Article" />
+      <CoreWebVitalsMonitor />
+      <PerformanceOptimizer />
+      <EnhancedSEOSchema
+        faqs={faqs}
+        type="SoftwareApplication"
+        title="Multi-Stream Viewer - Watch Multiple Live Streams Simultaneously"
+        description="The best free multi-stream viewer for watching multiple Twitch, YouTube, and live streams at once. Perfect for esports, gaming events, and content creators."
+        url="https://streamyyy.com/multi-stream-viewer"
+        image="/og-multi-stream-viewer.jpg"
+        datePublished={new Date().toISOString()}
+        dateModified={new Date().toISOString()}
+        author="Streamyyy Team"
+      />
       
       {/* Breadcrumb Navigation */}
       <div className="container mx-auto px-6 pt-6">
@@ -77,26 +95,34 @@ export default function MultiStreamViewer() {
               Updated June 2025
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Multi-Stream Viewer by Streamyyy
+              Multi-Stream Viewer - Watch Multiple Streams Simultaneously
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Watch multiple live streams simultaneously from Twitch, YouTube, and more. 
-              The most advanced free multi-stream viewer trusted by over 50,000 users.
+              The best free multi-stream viewer for watching multiple Twitch, YouTube, and live streams at once.
+              Perfect for esports tournaments, gaming events, and content creators. Trusted by over 50,000 users worldwide.
             </p>
             
-            {/* Trust Signals */}
-            <div className="flex justify-center gap-8 mb-8">
+            {/* Enhanced Trust Signals with E-E-A-T */}
+            <div className="flex justify-center gap-6 mb-8 flex-wrap">
               <div className="flex items-center gap-2">
                 <Users className="w-5 h-5 text-primary" />
-                <span className="font-semibold">50K+ Users</span>
+                <span className="font-semibold">50K+ Active Users</span>
               </div>
               <div className="flex items-center gap-2">
                 <Star className="w-5 h-5 text-yellow-500" />
-                <span className="font-semibold">4.8/5 Rating</span>
+                <span className="font-semibold">4.8/5 User Rating</span>
               </div>
               <div className="flex items-center gap-2">
                 <Shield className="w-5 h-5 text-green-600" />
-                <span className="font-semibold">100% Free</span>
+                <span className="font-semibold">100% Free Forever</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Award className="w-5 h-5 text-blue-600" />
+                <span className="font-semibold">Industry Leading</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-purple-600" />
+                <span className="font-semibold">Updated 2025</span>
               </div>
             </div>
 
@@ -121,10 +147,11 @@ export default function MultiStreamViewer() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Why Choose Streamyyy Multi-Stream Viewer?
+              Why Choose Streamyyy as Your Multi-Stream Viewer?
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Built with the latest technology for optimal performance and user experience in 2025
+              The most advanced free multi-stream viewer built with cutting-edge technology for optimal performance,
+              mobile-first design, and superior user experience in 2025. Watch up to 16 streams simultaneously.
             </p>
           </div>
           
@@ -132,12 +159,13 @@ export default function MultiStreamViewer() {
             <Card>
               <CardHeader>
                 <Zap className="w-12 h-12 text-primary mb-4" />
-                <CardTitle>Lightning Fast Performance</CardTitle>
+                <CardTitle>Lightning Fast Multi-Stream Performance</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Optimized for Core Web Vitals with instant loading, smooth interactions, 
-                  and zero layout shifts. Experience the fastest multi-stream viewer available.
+                  Optimized for Core Web Vitals with instant loading, smooth interactions,
+                  and zero layout shifts. Experience the fastest free multi-stream viewer available
+                  with superior performance for watching multiple streams simultaneously.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -145,12 +173,13 @@ export default function MultiStreamViewer() {
             <Card>
               <CardHeader>
                 <Smartphone className="w-12 h-12 text-primary mb-4" />
-                <CardTitle>Mobile-First Design</CardTitle>
+                <CardTitle>Mobile Multi-Stream Viewer</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Fully responsive with touch gestures, swipe controls, and optimized 
-                  layouts for every device. Perfect performance on phones and tablets.
+                  Fully responsive mobile multi-stream viewer with touch gestures, swipe controls,
+                  and optimized layouts for every device. Perfect for watching multiple Twitch streams
+                  on mobile, tablets, and desktop computers.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -158,12 +187,13 @@ export default function MultiStreamViewer() {
             <Card>
               <CardHeader>
                 <TrendingUp className="w-12 h-12 text-primary mb-4" />
-                <CardTitle>Real-Time Analytics</CardTitle>
+                <CardTitle>Advanced Stream Analytics</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Live viewer counts, stream statistics, and performance metrics. 
-                  Track engagement across all your streams in real-time.
+                  Live viewer counts, stream statistics, and performance metrics for all platforms.
+                  Track engagement across multiple streams in real-time with comprehensive analytics
+                  for Twitch, YouTube, and more.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -467,26 +497,98 @@ export default function MultiStreamViewer() {
         </div>
       </section>
 
-      {/* Final CTA with Trust Signals */}
+      {/* Competitor Comparison Section */}
+      <section className="py-20 px-6 bg-muted/30">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+            Why Streamyyy is the Best MultiTwitch Alternative
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">🚀 Better than MultiTwitch</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <span>Up to 16 streams vs MultiTwitch&apos;s 4 streams</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <span>Mobile-optimized interface (MultiTwitch lacks mobile support)</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <span>Cross-platform support (Twitch, YouTube, Rumble)</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <span>Always online and reliable (no downtime issues)</span>
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">⚡ Superior to TwitchTheater</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <span>Modern, responsive design vs outdated interface</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <span>Advanced layout customization options</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <span>Unified chat management across all streams</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <span>Regular updates and new features</span>
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center">
+            <p className="text-lg text-muted-foreground mb-6">
+              Trusted by esports enthusiasts, content creators, and gaming communities worldwide as the
+              premier free multi-stream viewer and MultiTwitch replacement.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Enhanced Final CTA with Trust Signals */}
       <section className="py-20 px-6 bg-primary/5">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Start Using the Best Multi-Stream Viewer Today
+            Start Using the Best Free Multi-Stream Viewer Today
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Join thousands of users who trust Streamyyy for their multi-stream viewing needs.
-            No sign-up, no fees, just instant multi-streaming.
+            Join over 50,000 users who trust Streamyyy as their go-to multi-stream viewer for watching
+            multiple Twitch streams, YouTube live streams, and more. No sign-up required, completely free forever.
           </p>
           
           <div className="flex gap-4 justify-center flex-wrap mb-8">
             <Link href="/">
               <Button size="lg" className="text-lg px-12">
+                <PlayCircle className="mr-2" />
                 Launch Multi-Stream Viewer
+              </Button>
+            </Link>
+            <Link href="#features">
+              <Button size="lg" variant="outline" className="text-lg px-12">
+                Explore Features
               </Button>
             </Link>
           </div>
 
-          <div className="flex justify-center gap-6 text-sm text-muted-foreground">
+          <div className="flex justify-center gap-6 text-sm text-muted-foreground flex-wrap">
             <span className="flex items-center gap-1">
               <Shield className="w-4 h-4" />
               100% Free Forever
@@ -498,6 +600,10 @@ export default function MultiStreamViewer() {
             <span className="flex items-center gap-1">
               <Star className="w-4 h-4" />
               4.8/5 User Rating
+            </span>
+            <span className="flex items-center gap-1">
+              <Smartphone className="w-4 h-4" />
+              Mobile Optimized
             </span>
           </div>
         </div>
