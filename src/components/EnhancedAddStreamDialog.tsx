@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import Image from 'next/image'
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { BottomSheet } from '@/components/ui/bottom-sheet'
@@ -246,11 +247,17 @@ export default function EnhancedAddStreamDialog({ open, onOpenChange }: Enhanced
               onMouseEnter={() => setSelectedIndex(index)}
             >
               {channel.profile_image_url && (
-                <img 
-                  src={channel.profile_image_url} 
-                  alt={channel.display_name}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
+                <div className="relative w-10 h-10">
+                  <Image 
+                    src={channel.profile_image_url} 
+                    alt={`${channel.display_name} profile`}
+                    width={40}
+                    height={40}
+                    className="rounded-full object-cover"
+                    sizes="40px"
+                    priority={false}
+                  />
+                </div>
               )}
               <div className="flex-1 min-w-0">
                 <div className="font-medium truncate">{channel.display_name}</div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { PlayCircle } from 'lucide-react'
+import Image from 'next/image'
 import '@/styles/background-streams.css'
 
 interface StreamChannel {
@@ -123,12 +124,13 @@ export default function OptimizedBackgroundStreams({ channels }: OptimizedBackgr
                     className="absolute inset-0"
                     style={{ opacity: shouldTransition && !isMobileDevice() ? 0 : 1, transition: 'opacity 0.8s ease-in-out' }}
                   >
-                    <img 
+                    <Image 
                       src={thumbnailUrl}
-                      alt={channel.channelName}
-                      className="w-full h-full object-cover opacity-80"
-                      loading="eager"
-                      decoding="async"
+                      alt={`${channel.channelName} background stream`}
+                      fill
+                      className="object-cover opacity-80"
+                      priority={false} // Background images don't need priority
+                      sizes="(max-width: 768px) 100vw, 50vw"
                       onError={() => {
                         console.log(`Thumbnail failed to load for ${channel.channelName}`)
                       }}

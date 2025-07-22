@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -137,11 +138,17 @@ export default function TwitchStatsCard({
         <CardContent className="p-3">
           <div className="flex items-center gap-3">
             {channelData?.profile_image_url && (
-              <img
-                src={channelData.profile_image_url}
-                alt={channelData.display_name}
-                className="w-10 h-10 rounded-full"
-              />
+              <div className="relative w-10 h-10">
+                <Image
+                  src={channelData.profile_image_url}
+                  alt={`${channelData.display_name} profile`}
+                  width={40}
+                  height={40}
+                  className="rounded-full object-cover"
+                  sizes="40px"
+                  priority={false}
+                />
+              </div>
             )}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
@@ -184,11 +191,17 @@ export default function TwitchStatsCard({
         <div className="p-4 border-b">
           <div className="flex items-start gap-3">
             {channelData?.profile_image_url && (
-              <img
-                src={channelData.profile_image_url}
-                alt={channelData.display_name}
-                className="w-12 h-12 rounded-full flex-shrink-0"
-              />
+              <div className="relative w-12 h-12 flex-shrink-0">
+                <Image
+                  src={channelData.profile_image_url}
+                  alt={`${channelData.display_name} profile`}
+                  width={48}
+                  height={48}
+                  className="rounded-full object-cover"
+                  sizes="48px"
+                  priority={false}
+                />
+              </div>
             )}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">

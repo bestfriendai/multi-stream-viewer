@@ -84,7 +84,68 @@ export const trackSignup = () => {
   })
 }
 
+// Core Web Vitals tracking for SEO performance monitoring
+export const trackWebVitals = (metric: {
+  name: string
+  value: number
+  id: string
+  delta: number
+}) => {
+  if (!GA_TRACKING_ID || !hasAnalyticsConsent()) return
+  
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', metric.name, {
+      event_category: 'Web Vitals',
+      event_label: metric.id,
+      value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+      non_interaction: true,
+      custom_parameters: {
+        metric_delta: metric.delta,
+        metric_rating: getWebVitalRating(metric.name, metric.value)
+      }
+    })
+  }
+}
+
+// Helper function to rate Web Vitals performance
+const getWebVitalRating = (name: string, value: number): string => {
+  switch (name) {
+    case 'LCP':
+      return value <= 2500 ? 'good' : value <= 4000 ? 'needs-improvement' : 'poor'
+    case 'FID':
+      return value <= 100 ? 'good' : value <= 300 ? 'needs-improvement' : 'poor'
+    case 'CLS':
+      return value <= 0.1 ? 'good' : value <= 0.25 ? 'needs-improvement' : 'poor'
+    case 'FCP':
+      return value <= 1800 ? 'good' : value <= 3000 ? 'needs-improvement' : 'poor'
+    case 'TTFB':
+      return value <= 800 ? 'good' : value <= 1800 ? 'needs-improvement' : 'poor'
+    default:
+      return 'unknown'
+  }
+}
+
 export default function GoogleAnalytics() {
+  useEffect(() => {
+    // Initialize Core Web Vitals tracking
+    if (typeof window !== 'undefined' && hasAnalyticsConsent()) {
+      // Dynamically import web-vitals to avoid SSR issues
+      import('web-vitals').then((webVitals) => {
+        // Use dynamic access to handle different web-vitals versions
+        if (webVitals.onCLS) webVitals.onCLS(trackWebVitals)
+        if (webVitals.onINP) webVitals.onINP(trackWebVitals) // Modern replacement for FID
+        if (webVitals.onFID) webVitals.onFID(trackWebVitals) // Fallback for older versions
+        if (webVitals.onFCP) webVitals.onFCP(trackWebVitals)
+        if (webVitals.onLCP) webVitals.onLCP(trackWebVitals)
+        if (webVitals.onTTFB) webVitals.onTTFB(trackWebVitals)
+      }).catch((error) => {
+        if (!IS_PRODUCTION) {
+          console.warn('Failed to load web-vitals:', error)
+        }
+      })
+    }
+  }, [])
+  
   useEffect(() => {
     // Only initialize if we have a tracking ID
     if (!GA_TRACKING_ID) {

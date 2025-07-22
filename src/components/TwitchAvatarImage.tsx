@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { getTwitchProfileImage } from '@/lib/twitchApi'
 
@@ -120,13 +121,17 @@ export default function TwitchAvatarImage({
   }
 
   return (
-    <img
-      src={imageUrl}
-      alt={`${name} avatar`}
-      className={cn("rounded-full object-cover", className)}
-      style={{ width: size, height: size }}
-      onError={() => setImageError(true)}
-      loading="lazy"
-    />
+    <div className="relative" style={{ width: size, height: size }}>
+      <Image
+        src={imageUrl}
+        alt={`${name} avatar`}
+        width={size || 32}
+        height={size || 32}
+        className={cn("rounded-full object-cover", className)}
+        sizes={`${size || 32}px`}
+        priority={false}
+        onError={() => setImageError(true)}
+      />
+    </div>
   )
 }

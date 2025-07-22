@@ -23,25 +23,25 @@
   ],
   "icons": [
     {
-      "src": "/favicon-16x16.png",
+      "src": "/streamyyy-logo-box.png",
       "sizes": "16x16",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/favicon-32x32.png",
+      "src": "/streamyyy-logo-box.png",
       "sizes": "32x32",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/favicon.png",
+      "src": "/streamyyy-logo-box.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/logo-512.png",
+      "src": "/streamyyy-logo-box.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

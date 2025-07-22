@@ -140,6 +140,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/blog/complete-multi-stream-setup-guide-2025`,
+      lastModified: '2025-01-15T00:00:00.000Z',
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/summer-2025-gaming-events-multi-stream-guide`,
+      lastModified: '2025-01-21T00:00:00.000Z',
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
   ]
 
   // Comparison pages
@@ -161,6 +173,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: currentDate,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
+    },
+  ]
+
+  // New keyword landing pages
+  const keywordPages = [
+    {
+      url: `${baseUrl}/16-stream-viewer`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/mobile-multi-stream`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/best-multitwitch-alternative-2025`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
     },
   ]
 
@@ -265,6 +299,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...corePages,
     ...seoPages,
+    ...keywordPages,
     ...blogPages,
     ...comparisonPages,
     ...featurePages,

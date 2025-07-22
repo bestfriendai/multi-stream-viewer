@@ -23,7 +23,9 @@ export default function ShareDialog({ mobile = false }: ShareDialogProps) {
   const { t, isLoaded: translationsLoaded } = useTranslation()
   const { isMobile } = useMobileDetection()
   
-  const shareableLink = generateShareableLink([...streams], gridLayout)
+  // Ensure streams is always an array
+  const safeStreams = Array.isArray(streams) ? streams : []
+  const shareableLink = generateShareableLink([...safeStreams], gridLayout)
   
   const handleCopy = async () => {
     try {
@@ -70,7 +72,7 @@ export default function ShareDialog({ mobile = false }: ShareDialogProps) {
     <Button 
       variant="outline" 
       className="w-full justify-start h-12" 
-      disabled={streams.length === 0}
+      disabled={safeStreams.length === 0}
       onClick={() => setIsOpen(true)}
     >
       <Share2 className="mr-3 h-5 w-5" />
@@ -81,7 +83,7 @@ export default function ShareDialog({ mobile = false }: ShareDialogProps) {
       variant="outline" 
       size="sm" 
       className="h-9" 
-      disabled={streams.length === 0}
+      disabled={safeStreams.length === 0}
       onClick={() => setIsOpen(true)}
     >
       <Share2 size={16} className="mr-2" />
@@ -113,7 +115,7 @@ export default function ShareDialog({ mobile = false }: ShareDialogProps) {
           {t('share.linkIncludes')}:
         </p>
         <ul className="text-sm text-muted-foreground list-disc list-inside">
-          <li>{t('share.streamsCount', { count: streams.length })}</li>
+          <li>{t('share.streamsCount', { count: safeStreams.length })}</li>
           <li>{t('share.layoutInfo', { layout: gridLayout })}</li>
         </ul>
       </div>

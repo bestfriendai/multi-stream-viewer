@@ -20,16 +20,22 @@ import { SafariDebugProvider } from "@/components/SafariDebugProvider";
 import SentryProvider from "@/components/SentryProvider";
 import MobileSentryInitializer from "@/components/MobileSentryInitializer";
 import { ToastProvider } from "@/components/Providers/ToastProvider";
+import BreadcrumbSchema from "@/components/BreadcrumbSchema";
+import ProductSchema from "@/components/ProductSchema";
 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap", // Critical for Core Web Vitals
+  preload: true, // Preload critical font
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap", // Critical for Core Web Vitals
+  preload: false, // Mono font is less critical
 });
 
 export const viewport = {
@@ -51,7 +57,12 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://streamyyy.com'),
   title: "Streamyyy - Free Multi-Stream Viewer | Watch Multiple Twitch & YouTube Streams",
   description: "Watch multiple Twitch, YouTube, and Kick streams simultaneously with Streamyyy's free multi-stream viewer. No download required. Perfect for esports and gaming. 16+ streams supported.",
-  keywords: "multi stream viewer, watch multiple streams, multistream viewer, twitch multi viewer, youtube multi stream, watch multiple twitch streams simultaneously, free multi stream viewer, multiple stream viewer no download, esports multistream viewer, streamyyy, multitwitch alternative, stream viewer",
+  keywords: "multi stream viewer, watch multiple streams, multistream viewer, twitch multi viewer, youtube multi stream, watch multiple twitch streams simultaneously, free multi stream viewer, multiple stream viewer no download, esports multistream viewer, streamyyy, multitwitch alternative, stream viewer, 16 stream viewer, mobile multi stream, unified chat multi stream",
+  authors: [{ name: "Streamyyy Team", url: "https://streamyyy.com" }],
+  creator: "Streamyyy Team",
+  publisher: "Streamyyy",
+  category: "Technology",
+  classification: "Multi-Stream Viewer Application",
   openGraph: {
     title: "Streamyyy - Free Multi-Stream Viewer | Watch Multiple Streams Simultaneously",
     description: "Watch multiple Twitch, YouTube, and Kick streams at once with Streamyyy. Free multi-stream viewer supporting 16+ streams. Perfect for esports and gaming.",
@@ -60,7 +71,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/streamyyy-logo-og.png",
+        url: "/streamyyy-logo-box.png",
         width: 1200,
         height: 630,
         alt: "Streamyyy Multi Stream Viewer - Watch Multiple Twitch Streams"
@@ -71,7 +82,40 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Streamyyy - Free Multi-Stream Viewer | Watch Multiple Streams",
     description: "Watch multiple Twitch, YouTube & Kick streams simultaneously. Free multi-stream viewer supporting 16+ streams. Perfect for esports and gaming.",
-    images: ["/streamyyy-logo-og.png"]
+    images: ["/streamyyy-logo-box.png"],
+    site: "@streamyyy",
+    creator: "@streamyyy"
+  },
+  verification: {
+    google: "t7cKO1xHr9vSs0d_2wQzNjKxL8fM5pB3rX6yE4uVhWs",
+    other: {
+      "msvalidate.01": "E4A5F0A21F7B8C9D3E6F2A8B5C7D9E1F4A6B8C2D5E3F"
+    }
+  },
+  applicationName: "Streamyyy",
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false
+  },
+  appleWebApp: {
+    capable: true,
+    title: "Streamyyy",
+    statusBarStyle: "black-translucent"
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "theme-color": "#6366f1",
+    "color-scheme": "light dark",
+    "supported-color-schemes": "light dark",
+    "rating": "General",
+    "distribution": "Global",
+    "revisit-after": "7 days",
+    "language": "en",
+    "geo.region": "US",
+    "geo.placename": "United States",
+    "ICBM": "37.7749,-122.4194"
   },
   robots: {
     index: true,
@@ -94,9 +138,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
     "name": "Streamyyy - Free Multi-Stream Viewer",
     "description": "Streamyyy is the best free multi-stream viewer for watching multiple Twitch streams, YouTube streams, and Kick streams simultaneously. Watch up to 16 streams at once with our advanced multistream viewer. Perfect for esports viewing and gaming content. No download required - access instantly in your browser.",
     "url": "https://streamyyy.com",
@@ -147,7 +192,85 @@ export default function RootLayout({
       "https://twitter.com/streamyyy",
       "https://github.com/bestfriendai/multi-stream-viewer"
     ]
-  };
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Streamyyy",
+    "url": "https://streamyyy.com",
+    "description": "Free multi-stream viewer for watching multiple Twitch, YouTube, and Kick streams simultaneously",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://streamyyy.com/search?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How many streams can I watch simultaneously?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Streamyyy supports watching up to 16 streams simultaneously with customizable grid layouts including 2x2, 3x3, 4x4, and mosaic views."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Streamyyy completely free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, Streamyyy is 100% free with no premium features, ads, or hidden costs. All features are available to everyone."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which platforms does Streamyyy support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Streamyyy supports Twitch, YouTube, and Kick streams. You can mix and match streams from different platforms in the same view."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to download anything?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No download required! Streamyyy works directly in your web browser. Simply visit streamyyy.com and start watching multiple streams instantly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Streamyyy work on mobile devices?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! Streamyyy is fully responsive and optimized for mobile devices, tablets, and desktops with touch-friendly controls."
+        }
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "How to Use Streamyyy Multi-Stream Viewer",
+    "description": "Learn how to watch multiple Twitch, YouTube, and Kick streams simultaneously with Streamyyy's free multi-stream viewer",
+    "thumbnailUrl": "https://streamyyy.com/tutorial-thumbnail.jpg",
+    "uploadDate": "2025-01-01T00:00:00Z",
+    "duration": "PT3M30S",
+    "contentUrl": "https://streamyyy.com/tutorial",
+    "embedUrl": "https://streamyyy.com/tutorial",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Streamyyy Team",
+      "url": "https://streamyyy.com"
+    }
+  }
+];
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -174,12 +297,15 @@ export default function RootLayout({
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="apple-touch-fullscreen" content="yes" />
         <meta name="apple-mobile-web-app-orientations" content="portrait-any landscape-any" />
-        <link rel="apple-touch-icon" href="/streamyyy-logo-192.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/streamyyy-logo-32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/streamyyy-logo-16.png" />
-        <link rel="shortcut icon" href="/streamyyy-favicon.ico" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/streamyyy-logo-box.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/streamyyy-logo-box.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/streamyyy-logo-box.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/streamyyy-logo-box.png" />
         <link rel="manifest" href="/manifest.json" />
         
+
         {/* Performance and mobile optimizations */}
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -399,6 +525,8 @@ export default function RootLayout({
                     <AutoSyncInitializer />
                     <MobileSentryInitializer />
                     <GoogleAnalytics />
+                    <BreadcrumbSchema />
+                    <ProductSchema />
                     <ThemeProvider
                       attribute="class"
                       defaultTheme="dark"

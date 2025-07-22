@@ -457,6 +457,25 @@ export const useStreamStore = create<StreamStore>()(
           gridLayout: state.gridLayout,
           primaryStreamId: state.primaryStreamId,
         }),
+        migrate: (persistedState: any, version: number) => {
+          // Handle migration from older versions or corrupted state
+          if (version < 1 || !persistedState) {
+            // Migration logic for version 0 to 1 or corrupted state
+            return {
+              streams: Array.isArray(persistedState?.streams) ? persistedState.streams : [],
+              gridLayout: persistedState?.gridLayout || getDefaultLayout(),
+              primaryStreamId: persistedState?.primaryStreamId || null,
+            }
+          }
+          
+          // Ensure streams is always an array even for current version
+          const migratedState = {
+            ...persistedState,
+            streams: Array.isArray(persistedState.streams) ? persistedState.streams : [],
+          }
+          
+          return migratedState
+        },
       }
     ),
     {

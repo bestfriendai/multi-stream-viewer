@@ -703,11 +703,13 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                           {stream ? (
                             <>
                               {/* Always show thumbnail on mobile, iframe on desktop */}
-                              <img
+                              <Image
                                 src={`https://static-cdn.jtvnw.net/previews-ttv/live_user_${stream.channelName}-1920x1080.jpg`}
-                                alt={stream.channelName}
-                                className="absolute inset-0 w-full h-full object-cover block lg:hidden"
-                                loading="lazy"
+                                alt={`${stream.channelName} stream thumbnail`}
+                                fill
+                                className="object-cover block lg:hidden"
+                                sizes="(max-width: 1024px) 100vw, 0px"
+                                priority={i < 4} // Prioritize first 4 images for LCP
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent block lg:hidden" />
                               <div className="absolute inset-0 flex items-center justify-center block lg:hidden">
@@ -1185,11 +1187,13 @@ export default function LandingPage({ onAddStream }: LandingPageProps) {
                       {isMobileDevice() ? (
                         // Mobile: Show thumbnail only
                         <>
-                          <img
+                          <Image
                             src={channel.thumbnailUrl || `https://static-cdn.jtvnw.net/previews-ttv/live_user_${channel.channelName}-1920x1080.jpg`}
-                            alt={channel.channelName}
-                            className="absolute inset-0 w-full h-full object-cover"
-                            loading="lazy"
+                            alt={`${channel.channelName} live stream`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            priority={false} // Below fold, no priority needed
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                           <div className="absolute inset-0 flex items-center justify-center">

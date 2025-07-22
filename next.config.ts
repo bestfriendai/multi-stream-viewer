@@ -134,19 +134,57 @@ const nextConfig: NextConfig = {
   
   // Bundle analyzer for production builds
   webpack: (config, { dev, isServer }) => {
-    // Optimize bundle size
+    // Optimize bundle size with advanced splitting
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
+        minSize: 20000,
+        maxSize: 244000,
         cacheGroups: {
+          // React and core libraries
+          react: {
+            test: /[\/]node_modules[\/](react|react-dom)[\/]/,
+            name: 'react',
+            chunks: 'all',
+            priority: 20,
+          },
+          // UI libraries (Radix, Lucide)
+          ui: {
+            test: /[\/]node_modules[\/](@radix-ui|lucide-react|@headlessui)[\/]/,
+            name: 'ui',
+            chunks: 'all',
+            priority: 15,
+          },
+          // Analytics and tracking
+          analytics: {
+            test: /[\/]node_modules[\/](@sentry|@clerk|web-vitals)[\/]/,
+            name: 'analytics',
+            chunks: 'all',
+            priority: 10,
+          },
+          // Other vendor libraries
           vendor: {
-            test: /[\\/]node_modules[\\/]/,
+            test: /[\/]node_modules[\/]/,
             name: 'vendors',
             chunks: 'all',
+            priority: 5,
+            minChunks: 2,
+          },
+          // Common components
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            priority: 1,
           },
         },
       };
     }
+    
+    // Optimize for better tree shaking
+    config.optimization.usedExports = true;
+    config.optimization.sideEffects = false;
+    
     return config;
   },
 };
